@@ -7,8 +7,8 @@
     <ProjectGuid>{DBE61B94-D8E1-403F-802B-D40F3B95FAD3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WWCP_Gireve</RootNamespace>
-    <AssemblyName>WWCP_Gireve</AssemblyName>
+    <RootNamespace>org.GraphDefined.WWCP.Gireve</RootNamespace>
+    <AssemblyName>org.GraphDefined.WWCP.Gireve</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\..\..\ChargeITMobilityEMP\libs\WWCP_Core\WWCP.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\org.GraphDefined.WWCP.Gireve.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +45,28 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aegir\Aegir\Aegir.csproj">
+      <Project>{4d8ffccd-738d-41aa-a527-8cfdfe0a681d}</Project>
+      <Name>Aegir</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BouncyCastle\crypto\crypto.csproj">
+      <Project>{38872a5f-e87e-4fad-b109-8eb7b2e6a4a0}</Project>
+      <Name>crypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hermod\Hermod\Hermod.csproj">
+      <Project>{477efd16-3627-4473-957d-44ca9a9dfb79}</Project>
+      <Name>Hermod</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Illias\Illias\Illias.csproj">
+      <Project>{23d37453-2d4e-4bd8-b40f-3e731fee7712}</Project>
+      <Name>Illias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Styx\Styx\Styx.csproj">
+      <Project>{af76ecc0-2ca5-4cff-9e1e-ff5478c4b6e4}</Project>
+      <Name>Styx</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

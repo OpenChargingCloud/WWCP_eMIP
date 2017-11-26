@@ -7,8 +7,8 @@
     <ProjectGuid>{5582FB6F-14B2-497E-9B00-08A871EE6D52}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WWCP_Gireve_Adapter</RootNamespace>
-    <AssemblyName>WWCP_Gireve_Adapter</AssemblyName>
+    <RootNamespace>org.GraphDefined.WWCP.Gireve.Adapter</RootNamespace>
+    <AssemblyName>org.GraphDefined.WWCP.Gireve.Adapter</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\..\..\ChargeITMobilityEMP\libs\WWCP_Core\WWCP.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\org.GraphDefined.WWCP.Gireve.Adapter.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +45,36 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Aegir\Aegir\Aegir.csproj">
+      <Project>{4d8ffccd-738d-41aa-a527-8cfdfe0a681d}</Project>
+      <Name>Aegir</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BouncyCastle\crypto\crypto.csproj">
+      <Project>{38872a5f-e87e-4fad-b109-8eb7b2e6a4a0}</Project>
+      <Name>crypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hermod\Hermod\Hermod.csproj">
+      <Project>{477efd16-3627-4473-957d-44ca9a9dfb79}</Project>
+      <Name>Hermod</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Illias\Illias\Illias.csproj">
+      <Project>{23d37453-2d4e-4bd8-b40f-3e731fee7712}</Project>
+      <Name>Illias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Styx\Styx\Styx.csproj">
+      <Project>{af76ecc0-2ca5-4cff-9e1e-ff5478c4b6e4}</Project>
+      <Name>Styx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WWCP_Core\WWCP_Core\WWCP_Core.csproj">
+      <Project>{33836742-af1d-4aa4-963f-b0a8e60e6480}</Project>
+      <Name>WWCP_Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WWCP_Gireve\WWCP_Gireve.csproj">
+      <Project>{dbe61b94-d8e1-403f-802b-d40f3b95fad3}</Project>
+      <Name>WWCP_Gireve</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

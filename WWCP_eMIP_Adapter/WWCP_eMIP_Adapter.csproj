@@ -71,7 +71,7 @@
       <Project>{33836742-af1d-4aa4-963f-b0a8e60e6480}</Project>
       <Name>WWCP_Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WWCP_Gireve\WWCP_eMIP.csproj">
+    <ProjectReference Include="..\WWCP_eMIP\WWCP_eMIP.csproj">
       <Project>{dbe61b94-d8e1-403f-802b-d40f3b95fad3}</Project>
       <Name>WWCP_eMIP</Name>
     </ProjectReference>

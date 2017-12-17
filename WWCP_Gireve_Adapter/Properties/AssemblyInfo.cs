@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WWCP Gireve Adapter")]
+[assembly: AssemblyTitle("WWCP eMIP Adapter")]
 [assembly: AssemblyDescription("Communication between the World Wide Charging Protocol (WWCP) and the Gireve eMIP Protocol.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GraphDefined GmbH")]
-[assembly: AssemblyProduct("WWCP_Gireve_Adapter")]
+[assembly: AssemblyProduct("WWCP_eMIP_Adapter")]
 [assembly: AssemblyCopyright("Copyright © 2016-2017 GraphDefined GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -277,7 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(CountryCode, Suffix, IdFormat = OperatorIdFormats.ISO_STAR)
+        #region TryParse(CountryCode, Suffix, IdFormat = OperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.
@@ -299,7 +299,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(CountryCode, Suffix, out OperatorId, IdFormat = OperatorIdFormats.ISO_STAR)
+        #region TryParse(CountryCode, Suffix, out OperatorId, IdFormat = OperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.

@@ -21,8 +21,8 @@ namespace org.GraphDefined.WWCP.eMIPv1_4
     /// <summary>
     /// An exception thrown whenever an illegal combination of EVSE major and minor status occured.
     /// </summary>
-    public class IllegalEVSEStatusCombinationException : eMIPException
-    {
+    //public class IllegalEVSEStatusCombinationException : eMIPException
+    //{
 
         ///// <summary>
         ///// Create a new illegal EVSE major and minor status combination exception.
@@ -38,6 +38,6 @@ namespace org.GraphDefined.WWCP.eMIPv1_4
 
         //{ }
 
-    }
+    //}
 
 }

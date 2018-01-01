@@ -106,7 +106,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 switch (OperatorId.Format)
                 {
 
-                    case OperatorIdFormats.ISO_STAR:
+                    case OperatorIdFormats.eMI3_STAR:
                         return (UInt64) (OperatorId.CountryCode.Alpha2Code.Length             + 1 + OperatorId.Suffix.Length + 2 + Suffix.Length);
 
                     default:  // ISO
@@ -174,7 +174,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             //                 EVSEId.OperatorId.Suffix
             //             }.Concat(EVSEId.ToString().Substring(2 + EVSEId.OperatorId.Suffix.Length).ToUpper().Split('*', '-')).ToArray();
 
-            //if (EVSEId.Format == OperatorIdFormats.ISO || EVSEId.Format == OperatorIdFormats.ISO_STAR)
+            //if (EVSEId.Format == OperatorIdFormats.eMI3 || EVSEId.Format == OperatorIdFormats.eMI3_STAR)
             //{
             //    if (_Array[2].StartsWith("E", StringComparison.Ordinal))
             //        _Array[2] = "S" + _Array[2].Substring(1);
@@ -291,7 +291,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                     var TmpEVSEId = EVSE_Id.Parse(_Prefix);
 
-                    if (TmpEVSEId.Format == OperatorIdFormats.ISO)
+                    if (TmpEVSEId.Format == OperatorIdFormats.eMI3)
                     {
                         if (((UInt64) _Prefix.Length) > _EVSEIds[0].OperatorId.Length + 2)
                             _Prefix = TmpEVSEId.Suffix; //TmpEVSEId.OperatorId + "*S" + TmpEVSEId.Suffix;
@@ -408,14 +408,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (OperatorId.Format)
             {
 
-                case OperatorIdFormats.ISO_STAR:
+                case OperatorIdFormats.eMI3_STAR:
                     return Parse(OperatorId.ToString() + "*S" + Suffix);
 
-                case OperatorIdFormats.ISO:
+                case OperatorIdFormats.eMI3:
                     return Parse(OperatorId.ToString() + "S" + Suffix);
 
                 default:
-                    return Parse(OperatorId.ToString(OperatorIdFormats.ISO_STAR) + "*S" + Suffix);
+                    return Parse(OperatorId.ToString(OperatorIdFormats.eMI3_STAR) + "*S" + Suffix);
 
             }
 
@@ -742,7 +742,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (OperatorId.Format)
             {
 
-                case OperatorIdFormats.ISO_STAR:
+                case OperatorIdFormats.eMI3_STAR:
                     return OperatorId.CountryCode.Alpha2Code + "*" + OperatorId.Suffix + "*S" + Suffix;
 
                 default: // ISO
@@ -766,13 +766,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (OperatorId.Format)
             {
 
-                case OperatorIdFormats.ISO:
+                case OperatorIdFormats.eMI3:
                     return String.Concat(OperatorId.CountryCode.Alpha2Code,
                                          OperatorId.Suffix,
                                          "S",
                                          Suffix);
 
-                case OperatorIdFormats.ISO_STAR:
+                case OperatorIdFormats.eMI3_STAR:
                     return String.Concat(OperatorId.CountryCode.Alpha2Code,
                                          "*",
                                          OperatorId.Suffix,

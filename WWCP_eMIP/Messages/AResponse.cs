@@ -66,7 +66,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                             IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : this(Request,
-                   DateTime.Now,
+                   DateTime.UtcNow,
                    CustomData)
 
         { }
@@ -90,7 +90,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             this.Request            = Request;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.Now;
+            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
 
         }
 

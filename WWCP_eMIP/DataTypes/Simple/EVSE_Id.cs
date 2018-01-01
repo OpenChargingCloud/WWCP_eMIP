@@ -75,7 +75,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 switch (Format)
                 {
 
-                    case OperatorIdFormats.ISO_STAR:
+                    case OperatorIdFormats.eMI3_STAR:
                         return OperatorId.Length + 2 + (UInt64) Suffix.Length;
 
                     default:  // ISO
@@ -181,7 +181,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (OperatorId.Format)
             {
 
-                case OperatorIdFormats.ISO:
+                case OperatorIdFormats.eMI3:
                     return Parse(OperatorId +  "E" + Suffix);
 
                 default: // ISO_STAR
@@ -517,7 +517,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (Format)
             {
 
-                case OperatorIdFormats.ISO:
+                case OperatorIdFormats.eMI3:
                     return String.Concat(OperatorId,  "E", Suffix);
 
                 default: // ISO_STAR

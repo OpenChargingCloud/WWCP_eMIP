@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
+using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
@@ -30,113 +31,63 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// An eMIP add charge details records response.
+    /// A heartbeat response.
     /// </summary>
-    public class AddCDRsResponse : AResponse<ToIOP_HeartBeatRequest,
-                                             AddCDRsResponse>
+    public class ToIOP_HeartbeatResponse : AResponse<ToIOP_HeartbeatRequest,
+                                                     ToIOP_HeartbeatResponse>
     {
 
         #region Properties
 
         /// <summary>
-        /// An enumeration of refused charge detail record identifications.
+        /// The heartbeat period.
         /// </summary>
-        public IEnumerable<CDR_Id>  ImplausibleCDRs   { get; }
-
-        #endregion
-
-        #region Statics
+        public TimeSpan        HeartbeatPeriod   { get; }
 
         /// <summary>
-        /// Data accepted and processed.
+        /// The current time.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse OK(ToIOP_HeartBeatRequest  Request,
-                                         String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.OK(Description));
-
+        public DateTime        CurrentTime       { get; }
 
         /// <summary>
-        /// Only part of the data was accepted.
+        /// The transaction identification.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse Partly(ToIOP_HeartBeatRequest  Request,
-                                             String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.Partly(Description));
-
+        public Transaction_Id  TransactionId     { get; }
 
         /// <summary>
-        /// Wrong username and/or password.
+        /// The status of the request.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse NotAuthorized(ToIOP_HeartBeatRequest  Request,
-                                                    String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.NotAuthorized(Description));
-
-
-        /// <summary>
-        /// One or more ID (EVSE/Contract) were not valid for this user.
-        /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse InvalidId(ToIOP_HeartBeatRequest  Request,
-                                                String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.InvalidId(Description));
-
-
-        /// <summary>
-        /// Internal server error.
-        /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse Server(ToIOP_HeartBeatRequest  Request,
-                                             String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.Server(Description));
-
-
-        /// <summary>
-        /// Data has technical errors.
-        /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Description">A human-readable error description.</param>
-        public static AddCDRsResponse Format(ToIOP_HeartBeatRequest  Request,
-                                             String          Description = null)
-
-            => new AddCDRsResponse(Request,
-                                   Result.Format(Description));
+        public RequestStatus   RequestStatus     { get; }
 
         #endregion
 
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new eMIP add charge details records response.
+        /// Create a new heartbeat response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="Result">A generic eMIP result.</param>
-        /// <param name="ImplausibleCDRs">An enumeration of refused charge detail record identifications.</param>
-        public AddCDRsResponse(ToIOP_HeartBeatRequest       Request,
-                               Result               Result,
-                               IEnumerable<CDR_Id>  ImplausibleCDRs = null)
+        /// <param name="HeartbeatPeriod">A heartbeat period.</param>
+        /// <param name="CurrentTime">The current time.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        public ToIOP_HeartbeatResponse(ToIOP_HeartbeatRequest               Request,
+                                       TimeSpan                             HeartbeatPeriod,
+                                       DateTime                             CurrentTime,
+                                       Transaction_Id                       TransactionId,
+                                       RequestStatus                        RequestStatus,
+                                       IReadOnlyDictionary<String, Object>  CustomData  = null)
 
-            : base(Request, Result)
+            : base(Request,
+                   CustomData)
 
         {
 
-            this.ImplausibleCDRs  = ImplausibleCDRs ?? new CDR_Id[0];
+            this.HeartbeatPeriod  = HeartbeatPeriod;
+            this.CurrentTime      = CurrentTime;
+            this.TransactionId    = TransactionId;
+            this.RequestStatus    = RequestStatus;
 
         }
 
@@ -145,60 +96,39 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Documentation
 
-        // <soapenv:Envelope xmlns:soapenv = "http://schemas.xmlsoap.org/soap/envelope/"
-        //                   xmlns:eMIP    = "http://ochp.eu/1.4">
+        // <soap:Envelope xmlns:soap = "http://www.w3.org/2003/05/soap-envelope"
+        //                xmlns:eMIP = "https://api-iop.gireve.com/schemas/PlatformV1/">
         //
-        //    <soapenv:Header/>
-        //    <soapenv:Body>
-        //      <eMIP:AddCDRsResponse>
+        //    <soap:Header/>
         //
-        //         <eMIP:result>
-        //            <eMIP:resultCode>
-        //               <eMIP:resultCode>?</eMIP:resultCode>
-        //            </eMIP:resultCode>
-        //            <eMIP:resultDescription>?</eMIP:resultDescription>
-        //         </eMIP:result>
+        //    <soap:Body>
+        //       <eMIP:eMIP_ToIOP_HeartBeatResponse>
+        //          <heartBeatPeriod>2000</heartBeatPeriod>
+        //          <currentTime>2015-10-26T10:32:52</currentTime>
+        //          <transactionId>TRANSACTION_46151</transactionId>
+        //          <requestStatus>1</requestStatus>
+        //       </eMIP:eMIP_ToIOP_HeartBeatResponse>
+        //    </soap:Body>
         //
-        //         <!--Zero or more repetitions:-->
-        //         <eMIP:implausibleCdrsArray>?</eMIP:implausibleCdrsArray>
-        //
-        //      </eMIP:AddCDRsResponse>
-        //    </soapenv:Body>
-        // </soapenv:Envelope>
-
-        // <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        //   <soap:Body>
-        //     <AddCDRsResponse xmlns="http://ochp.eu/1.4">
-        //
-        //       <result>
-        //         <resultCode><resultCode>partly</resultCode></resultCode>
-        //         <resultDescription>Only part of the data was accepted.</resultDescription>
-        //       </result>
-        //
-        //       <implausibleCdrsArray>47E18B5C29FE4BDB818E74082F0101AD</implausibleCdrsArray>
-        //       <implausibleCdrsArray>71267A5E0370400AAE3E47428986BE60</implausibleCdrsArray>
-        //
-        //     </AddCDRsResponse>
-        //   </soap:Body>
         // </soap:Envelope>
 
         #endregion
 
-        #region (static) Parse   (Request, AddCDRsResponseXML,  OnException = null)
+        #region (static) Parse   (Request, HeartbeatResponseXML,  OnException = null)
 
         /// <summary>
         /// Parse the given XML representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="AddCDRsResponseXML">The XML to parse.</param>
+        /// <param name="HeartbeatResponseXML">The XML to parse.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static AddCDRsResponse Parse(ToIOP_HeartBeatRequest       Request,
-                                            XElement             AddCDRsResponseXML,
-                                            OnExceptionDelegate  OnException = null)
+        public static ToIOP_HeartbeatResponse Parse(ToIOP_HeartbeatRequest  Request,
+                                                    XElement                HeartbeatResponseXML,
+                                                    OnExceptionDelegate     OnException = null)
         {
 
-            if (TryParse(Request, AddCDRsResponseXML, out AddCDRsResponse _AddCDRsResponse, OnException))
-                return _AddCDRsResponse;
+            if (TryParse(Request, HeartbeatResponseXML, out ToIOP_HeartbeatResponse HeartbeatResponse, OnException))
+                return HeartbeatResponse;
 
             return null;
 
@@ -206,21 +136,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse   (Request, AddCDRsResponseText, OnException = null)
+        #region (static) Parse   (Request, HeartbeatResponseText, OnException = null)
 
         /// <summary>
         /// Parse the given text representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="AddCDRsResponseText">The text to parse.</param>
+        /// <param name="HeartbeatResponseText">The text to parse.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static AddCDRsResponse Parse(ToIOP_HeartBeatRequest       Request,
-                                            String               AddCDRsResponseText,
-                                            OnExceptionDelegate  OnException = null)
+        public static ToIOP_HeartbeatResponse Parse(ToIOP_HeartbeatRequest  Request,
+                                                    String                  HeartbeatResponseText,
+                                                    OnExceptionDelegate     OnException = null)
         {
 
-            if (TryParse(Request, AddCDRsResponseText, out AddCDRsResponse _AddCDRsResponse, OnException))
-                return _AddCDRsResponse;
+            if (TryParse(Request, HeartbeatResponseText, out ToIOP_HeartbeatResponse HeartbeatResponse, OnException))
+                return HeartbeatResponse;
 
             return null;
 
@@ -228,36 +158,41 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(Request, AddCDRsResponseXML,  out AddCDRsResponse, OnException = null)
+        #region (static) TryParse(Request, HeartbeatResponseXML,  out HeartbeatResponse, OnException = null)
 
         /// <summary>
         /// Try to parse the given XML representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="AddCDRsResponseXML">The XML to parse.</param>
-        /// <param name="AddCDRsResponse">The parsed add charge details records response.</param>
+        /// <param name="HeartbeatResponseXML">The XML to parse.</param>
+        /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(ToIOP_HeartBeatRequest       Request,
-                                       XElement             AddCDRsResponseXML,
-                                       out AddCDRsResponse  AddCDRsResponse,
-                                       OnExceptionDelegate  OnException  = null)
+        public static Boolean TryParse(ToIOP_HeartbeatRequest       Request,
+                                       XElement                     HeartbeatResponseXML,
+                                       out ToIOP_HeartbeatResponse  HeartbeatResponse,
+                                       OnExceptionDelegate          OnException  = null)
         {
 
             try
             {
 
-                AddCDRsResponse = new AddCDRsResponse(
+                HeartbeatResponse = new ToIOP_HeartbeatResponse(
 
-                                      Request,
+                                        Request,
 
-                                      AddCDRsResponseXML.MapElementOrFail(eMIPNS.Default + "result",
-                                                                          Result.Parse,
-                                                                          OnException),
+                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "heartBeatPeriod",
+                                                                            s => TimeSpan.FromSeconds(UInt32.Parse(s))),
 
-                                      AddCDRsResponseXML.MapValues       (eMIPNS.Default + "implausibleCdrsArray",
-                                                                          CDR_Id.Parse)
+                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "currentTime",
+                                                                            s => DateTime.Parse(s)),
 
-                                  );
+                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "transactionId",
+                                                                            s => Transaction_Id.Parse(s)),
+
+                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "requestStatus",
+                                                                            s => RequestStatus.Parse(s))
+
+                                    );
 
                 return true;
 
@@ -265,9 +200,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, AddCDRsResponseXML, e);
+                OnException?.Invoke(DateTime.UtcNow, HeartbeatResponseXML, e);
 
-                AddCDRsResponse = null;
+                HeartbeatResponse = null;
                 return false;
 
             }
@@ -276,27 +211,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(Request, AddCDRsResponseText, out AddCDRsResponse, OnException = null)
+        #region (static) TryParse(Request, HeartbeatResponseText, out HeartbeatResponse, OnException = null)
 
         /// <summary>
         /// Try to parse the given text representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
-        /// <param name="AddCDRsResponseText">The text to parse.</param>
-        /// <param name="AddCDRsResponse">The parsed add charge details records response.</param>
+        /// <param name="HeartbeatResponseText">The text to parse.</param>
+        /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(ToIOP_HeartBeatRequest       Request,
-                                       String               AddCDRsResponseText,
-                                       out AddCDRsResponse  AddCDRsResponse,
-                                       OnExceptionDelegate  OnException  = null)
+        public static Boolean TryParse(ToIOP_HeartbeatRequest       Request,
+                                       String                       HeartbeatResponseText,
+                                       out ToIOP_HeartbeatResponse  HeartbeatResponse,
+                                       OnExceptionDelegate          OnException  = null)
         {
 
             try
             {
 
                 if (TryParse(Request,
-                             XDocument.Parse(AddCDRsResponseText).Root,
-                             out AddCDRsResponse,
+                             XDocument.Parse(HeartbeatResponseText).Root,
+                             out HeartbeatResponse,
                              OnException))
 
                     return true;
@@ -304,80 +239,87 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, AddCDRsResponseText, e);
+                OnException?.Invoke(DateTime.UtcNow, HeartbeatResponseText, e);
             }
 
-            AddCDRsResponse = null;
+            HeartbeatResponse = null;
             return false;
 
         }
 
         #endregion
 
-        #region ToXML()
+        #region ToXML(CustomHeartbeatResponseSerializer = null)
 
         /// <summary>
         /// Return a XML representation of this object.
         /// </summary>
-        public XElement ToXML()
+        /// <param name="CustomHeartbeatResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
+        public XElement ToXML(CustomXMLSerializerDelegate<ToIOP_HeartbeatResponse> CustomHeartbeatResponseSerializer = null)
+        {
 
-            => new XElement(eMIPNS.Default + "AddCDRsResponse",
+            var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartbeatResponse",
 
-                   Result.ToXML(),
+                          new XElement(eMIPNS.Default + "heartBeatPeriod",  HeartbeatPeriod.TotalSeconds.ToString()),
+                          new XElement(eMIPNS.Default + "currentTime",      CurrentTime.                 ToIso8601()),
+                          new XElement(eMIPNS.Default + "transactionId",    TransactionId.               ToString()),
+                          new XElement(eMIPNS.Default + "requestStatus",    RequestStatus.               ToString())
 
-                   ImplausibleCDRs.Any()
-                       ? ImplausibleCDRs.SafeSelect(cdrid => new XElement(eMIPNS.Default + "implausibleCdrsArray", cdrid.ToString()))
-                       : null
+                      );
 
-               );
+
+            return CustomHeartbeatResponseSerializer != null
+                       ? CustomHeartbeatResponseSerializer(this, XML)
+                       : XML;
+
+        }
 
         #endregion
 
 
         #region Operator overloading
 
-        #region Operator == (AddCDRsResponse1, AddCDRsResponse2)
+        #region Operator == (HeartbeatResponse1, HeartbeatResponse2)
 
         /// <summary>
         /// Compares two add charge details records responses for equality.
         /// </summary>
-        /// <param name="AddCDRsResponse1">A add charge details records response.</param>
-        /// <param name="AddCDRsResponse2">Another add charge details records response.</param>
+        /// <param name="HeartbeatResponse1">A add charge details records response.</param>
+        /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (AddCDRsResponse AddCDRsResponse1, AddCDRsResponse AddCDRsResponse2)
+        public static Boolean operator == (ToIOP_HeartbeatResponse HeartbeatResponse1, ToIOP_HeartbeatResponse HeartbeatResponse2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(AddCDRsResponse1, AddCDRsResponse2))
+            if (Object.ReferenceEquals(HeartbeatResponse1, HeartbeatResponse2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) AddCDRsResponse1 == null) || ((Object) AddCDRsResponse2 == null))
+            if (((Object) HeartbeatResponse1 == null) || ((Object) HeartbeatResponse2 == null))
                 return false;
 
-            return AddCDRsResponse1.Equals(AddCDRsResponse2);
+            return HeartbeatResponse1.Equals(HeartbeatResponse2);
 
         }
 
         #endregion
 
-        #region Operator != (AddCDRsResponse1, AddCDRsResponse2)
+        #region Operator != (HeartbeatResponse1, HeartbeatResponse2)
 
         /// <summary>
         /// Compares two add charge details records responses for inequality.
         /// </summary>
-        /// <param name="AddCDRsResponse1">A add charge details records response.</param>
-        /// <param name="AddCDRsResponse2">Another add charge details records response.</param>
+        /// <param name="HeartbeatResponse1">A add charge details records response.</param>
+        /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (AddCDRsResponse AddCDRsResponse1, AddCDRsResponse AddCDRsResponse2)
-
-            => !(AddCDRsResponse1 == AddCDRsResponse2);
-
-        #endregion
+        public static Boolean operator != (ToIOP_HeartbeatResponse HeartbeatResponse1, ToIOP_HeartbeatResponse HeartbeatResponse2)
+            => !(HeartbeatResponse1 == HeartbeatResponse2);
 
         #endregion
 
-        #region IEquatable<AddCDRsResponse> Members
+        #endregion
+
+        #region IEquatable<HeartbeatResponse> Members
 
         #region Equals(Object)
 
@@ -393,30 +335,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 return false;
 
             // Check if the given object is a add charge details records response.
-            var AddCDRsResponse = Object as AddCDRsResponse;
-            if ((Object) AddCDRsResponse == null)
+            var HeartbeatResponse = Object as ToIOP_HeartbeatResponse;
+            if ((Object) HeartbeatResponse == null)
                 return false;
 
-            return this.Equals(AddCDRsResponse);
+            return Equals(HeartbeatResponse);
 
         }
 
         #endregion
 
-        #region Equals(AddCDRsResponse)
+        #region Equals(HeartbeatResponse)
 
         /// <summary>
         /// Compares two add charge details records responses for equality.
         /// </summary>
-        /// <param name="AddCDRsResponse">A add charge details records response to compare with.</param>
+        /// <param name="HeartbeatResponse">A add charge details records response to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(AddCDRsResponse AddCDRsResponse)
+        public override Boolean Equals(ToIOP_HeartbeatResponse HeartbeatResponse)
         {
 
-            if ((Object) AddCDRsResponse == null)
+            if ((Object) HeartbeatResponse == null)
                 return false;
 
-            return this.Result.Equals(AddCDRsResponse.Result);
+            return HeartbeatPeriod.Equals(HeartbeatResponse.HeartbeatPeriod) &&
+                   CurrentTime.    Equals(HeartbeatResponse.CurrentTime)     &&
+                   TransactionId.  Equals(HeartbeatResponse.TransactionId)   &&
+                   RequestStatus.  Equals(HeartbeatResponse.RequestStatus);
 
         }
 
@@ -435,12 +380,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             unchecked
             {
 
-                return ImplausibleCDRs != null
-
-                           ? Result.GetHashCode() * 11 ^
-                             ImplausibleCDRs.SafeSelect(cdr => cdr.GetHashCode()).Aggregate((a, b) => a ^ b)
-
-                           : Result.GetHashCode();
+                return HeartbeatPeriod.GetHashCode() * 7 ^
+                       CurrentTime.    GetHashCode() * 5 ^
+                       TransactionId.  GetHashCode() * 3 ^
+                       RequestStatus.  GetHashCode();
 
             }
         }
@@ -454,54 +397,146 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public override String ToString()
 
-            => String.Concat(Result,
-                             ImplausibleCDRs.Any()
-                                 ? " " + ImplausibleCDRs.Count() + " refused charge detail records"
-                                 : "");
+            => String.Concat(HeartbeatPeriod, ", ",
+                             CurrentTime,     ", ",
+                             TransactionId,   ", ",
+                             RequestStatus);
 
         #endregion
 
 
 
-        public class Builder : ABuilder
+        #region ToBuilder
+
+        /// <summary>
+        /// Return a response builder.
+        /// </summary>
+        public Builder ToBuilder
+            => new Builder(this);
+
+        #endregion
+
+        #region (class) Builder
+
+        /// <summary>
+        /// An AuthorizationStartById response builder.
+        /// </summary>
+        public class Builder : AResponseBuilder<ToIOP_HeartbeatRequest,
+                                                ToIOP_HeartbeatResponse>
         {
 
             #region Properties
 
             /// <summary>
-            /// An enumeration of refused charge detail record identifications.
+            /// The heartbeat period.
             /// </summary>
-            public IEnumerable<CDR_Id>  ImplausibleCDRs   { get; set; }
+            public TimeSpan        HeartbeatPeriod    { get; set; }
+
+            /// <summary>
+            /// The current time.
+            /// </summary>
+            public DateTime        CurrentTime        { get; set; }
+
+            /// <summary>
+            /// The transaction identification.
+            /// </summary>
+            public Transaction_Id  TransactionId      { get; set; }
+
+            /// <summary>
+            /// The status of the request.
+            /// </summary>
+            public RequestStatus   RequestStatus      { get; set; }
 
             #endregion
 
-            public Builder(AddCDRsResponse AddCDRsResponse = null)
+            #region Constructor(s)
+
+            #region Builder(Request,           CustomData = null)
+
+            /// <summary>
+            /// Create a new HeartbeatResponse response builder.
+            /// </summary>
+            /// <param name="Request">A Heartbeat request.</param>
+            /// <param name="CustomData">Optional custom data.</param>
+            public Builder(ToIOP_HeartbeatRequest               Request,
+                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                : base(Request,
+                       CustomData)
+
+            { }
+
+            #endregion
+
+            #region Builder(HeartbeatResponse, CustomData = null)
+
+            /// <summary>
+            /// Create a new Heartbeat response builder.
+            /// </summary>
+            /// <param name="HeartbeatResponse">A Heartbeat response.</param>
+            /// <param name="CustomData">Optional custom data.</param>
+            public Builder(ToIOP_HeartbeatResponse              HeartbeatResponse  = null,
+                           IReadOnlyDictionary<String, Object>  CustomData         = null)
+
+                : base(HeartbeatResponse?.Request,
+                       HeartbeatResponse.HasCustomData
+                           ? CustomData != null && CustomData.Any()
+                                 ? HeartbeatResponse.CustomData.Concat(CustomData)
+                                 : HeartbeatResponse.CustomData
+                           : CustomData)
+
             {
 
-                if (AddCDRsResponse != null)
+                if (HeartbeatResponse != null)
                 {
 
-                    this.ImplausibleCDRs = AddCDRsResponse.ImplausibleCDRs;
-
-                    if (AddCDRsResponse.CustomData != null)
-                        foreach (var item in AddCDRsResponse.CustomData)
-                            CustomData.Add(item.Key, item.Value);
+                    this.HeartbeatPeriod  = HeartbeatResponse.HeartbeatPeriod;
+                    this.CurrentTime      = HeartbeatResponse.CurrentTime;
+                    this.TransactionId    = HeartbeatResponse.TransactionId;
+                    this.RequestStatus    = HeartbeatResponse.RequestStatus;
 
                 }
 
             }
 
+            #endregion
 
-            //public Acknowledgement<T> ToImmutable()
+            #endregion
 
-            //    => new Acknowledgement<T>(Request,
-            //                              Result,
-            //                              StatusCode,
-            //                              SessionId,
-            //                              PartnerSessionId,
-            //                              CustomData);
+
+            #region Equals(HeartbeatResponse)
+
+            /// <summary>
+            /// Compares two Heartbeat responses for equality.
+            /// </summary>
+            /// <param name="HeartbeatResponse">A Heartbeat response to compare with.</param>
+            /// <returns>True if both match; False otherwise.</returns>
+            public override Boolean Equals(ToIOP_HeartbeatResponse HeartbeatResponse)
+            {
+
+                if ((Object) HeartbeatResponse == null)
+                    return false;
+
+                return HeartbeatPeriod.Equals(HeartbeatResponse.HeartbeatPeriod) &&
+                       CurrentTime.    Equals(HeartbeatResponse.CurrentTime)     &&
+                       TransactionId.  Equals(HeartbeatResponse.TransactionId)   &&
+                       RequestStatus.  Equals(HeartbeatResponse.RequestStatus);
+
+            }
+
+            #endregion
+
+            public override ToIOP_HeartbeatResponse ToImmutable
+
+                => new ToIOP_HeartbeatResponse(Request,
+                                               HeartbeatPeriod,
+                                               CurrentTime,
+                                               TransactionId,
+                                               RequestStatus);
 
         }
+
+        #endregion
 
     }
 

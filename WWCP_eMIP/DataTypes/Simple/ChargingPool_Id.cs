@@ -96,7 +96,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length
-            => (UInt64) (OperatorId.ToString(OperatorIdFormats.ISO_STAR).Length + 2 + Suffix.Length);
+            => (UInt64) (OperatorId.ToString(OperatorIdFormats.eMI3_STAR).Length + 2 + Suffix.Length);
 
         #endregion
 
@@ -231,7 +231,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static ChargingPool_Id Parse(Operator_Id  OperatorId,
                                             String                      Suffix)
 
-            => Parse(OperatorId.ToString(OperatorIdFormats.ISO_STAR) + "*P" + Suffix);
+            => Parse(OperatorId.ToString(OperatorIdFormats.eMI3_STAR) + "*P" + Suffix);
 
         #endregion
 

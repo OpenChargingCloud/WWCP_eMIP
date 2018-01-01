@@ -1,0 +1,115 @@
+﻿/*
+ * Copyright (c) 2014-2018 GraphDefined GmbH
+ * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#region Usings
+
+using System;
+using System.Collections.Generic;
+
+#endregion
+
+namespace org.GraphDefined.WWCP.eMIPv0_7_4
+{
+
+    /// <summary>
+    /// An abstract generic eMIP response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the eMIP request.</typeparam>
+    /// <typeparam name="TResponse">The type of the eMIP response.</typeparam>
+    public abstract class AResponse<TRequest, TResponse> : ACustomData,
+                                                           IResponse,
+                                                           IEquatable<TResponse>
+
+        where TRequest  : class, IRequest
+        where TResponse : class, IResponse
+
+    {
+
+        #region Properties
+
+        /// <summary>
+        /// The request leading to this response.
+        /// </summary>
+        public TRequest  Request              { get; }
+
+        /// <summary>
+        /// The timestamp of the response message creation.
+        /// </summary>
+        public DateTime  ResponseTimestamp    { get; }
+
+        #endregion
+
+        #region Constructor(s)
+
+        #region AResponse(Request, CustomData = null)
+
+        /// <summary>
+        /// Create a new generic eMIP response.
+        /// </summary>
+        /// <param name="Request">The eMIP request leading to this result.</param>
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        protected AResponse(TRequest                             Request,
+                            IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+            : this(Request,
+                   DateTime.Now,
+                   CustomData)
+
+        { }
+
+        #endregion
+
+        #region AResponse(Request, ResponseTimestamp = null, CustomData = null)
+
+        /// <summary>
+        /// Create a new generic eMIP response.
+        /// </summary>
+        /// <param name="Request">The eMIP request leading to this result.</param>
+        /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        protected AResponse(TRequest                             Request,
+                            DateTime?                            ResponseTimestamp  = null,
+                            IReadOnlyDictionary<String, Object>  CustomData         = null)
+
+            : base(CustomData)
+
+        {
+
+            this.Request            = Request;
+            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.Now;
+
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region IEquatable<AResponse> Members
+
+        /// <summary>
+        /// Compare two abstract responses for equality.
+        /// </summary>
+        /// <param name="AResponse">Another abstract eMIP response.</param>
+        public abstract Boolean Equals(TResponse AResponse);
+
+        #endregion
+
+
+    }
+
+}

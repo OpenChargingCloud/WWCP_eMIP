@@ -1,6 +1,6 @@
 ﻿/*
  * Copyright (c) 2014-2018 GraphDefined GmbH
- * This file is part of WWCP Gireve <https://github.com/OpenChargingCloud/WWCP_Gireve>
+ * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,22 @@ using System;
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
-    /// <summary>
-    /// The current eMIP version.
-    /// </summary>
-    public static class Version
+    public interface ICustomDataBuilder
     {
 
-        /// <summary>
-        /// The current eMIP version.
-        /// </summary>
-        public const String Number = "v0.7.4";
+        Boolean HasCustomData { get; }
+
+        void SetCustomData(string Key, object Value);
+
+        object GetCustomData(string Key);
+
+        T GetCustomDataAs<T>(string Key);
+
+        void IfDefined(string Key, Action<object> ValueDelegate);
+
+        void IfDefinedAs<T>(String Key, Action<T> ValueDelegate);
+
+        bool IsDefined(string Key);
 
     }
 

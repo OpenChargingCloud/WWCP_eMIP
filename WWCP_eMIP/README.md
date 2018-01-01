@@ -1,15 +1,15 @@
-WWCP OCHP v1.4
+WWCP eMIP v1.4
 ==============
 
 This software will allow the communication between World Wide Charging
 Protocol (WWCP) entities and entities implementing the
-[Open Clearing House Protocol (OCHP)](http://www.ochp.eu), which is
+[Open Clearing House Protocol (eMIP)](http://www.ochp.eu), which is
 defined and used by [SmartLab GmbH](https://www.smartlab-gmbh.de). The
 focus of this protocol are the communication aspects of a central
 clearing house with additional direct links between communication
 partners. For more details on this protocol please visit
 http://www.e-clearing.eu or the
-[OCHP repository](https://github.com/e-clearing-net/OCHP) on GitHub.
+[eMIP repository](https://github.com/e-clearing-net/eMIP) on GitHub.
 
 
 ### Your participation

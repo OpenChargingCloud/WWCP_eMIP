@@ -1,6 +1,6 @@
 ﻿/*
  * Copyright (c) 2014-2018 GraphDefined GmbH
- * This file is part of WWCP Gireve <https://github.com/OpenChargingCloud/WWCP_Gireve>
+ * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 #region Usings
 
-using System;
+using System.Xml.Linq;
 
 #endregion
 
@@ -25,15 +25,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// The current eMIP version.
+    /// eMIP XML Namespaces
     /// </summary>
-    public static class Version
+    public static class eMIPNS
     {
 
         /// <summary>
-        /// The current eMIP version.
+        /// The default namespace of the eMobility Protocol Inter-Operation (eMIP) Version 0.7.4.
         /// </summary>
-        public const String Number = "v0.7.4";
+        public static readonly XNamespace Default  = "https://api-iop.gireve.com/schemas/PlatformV1/";
 
     }
 

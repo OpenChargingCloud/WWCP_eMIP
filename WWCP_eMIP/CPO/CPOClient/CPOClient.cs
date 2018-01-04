@@ -175,6 +175,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Hostname">The hostname of the remote eMIP service.</param>
         /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
+        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="ClientCert">The TLS client certificate to use.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
         /// <param name="URIPrefix">An default URI prefix.</param>
@@ -189,7 +190,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          String                               Hostname,
                          IPPort                               RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionCallback    LocalCertificateSelector     = null,
+                         LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          X509Certificate                      ClientCert                   = null,
                          String                               HTTPVirtualHost              = null,
                          String                               URIPrefix                    = DefaultURIPrefix,
@@ -205,7 +206,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    Hostname,
                    RemotePort ?? DefaultRemotePort,
                    RemoteCertificateValidator,
-                   LocalCertificateSelector,
+                   ClientCertificateSelector,
                    ClientCert,
                    HTTPVirtualHost,
                    URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
@@ -217,17 +218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            #region Initial checks
-
-            if (ClientId.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Logger),    "The given client identification must not be null or empty!");
-
-            if (Hostname.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Hostname),  "The given hostname must not be null or empty!");
-
-            #endregion
-
-            this.PlatformURI  = PlatformURI ?? DefaultPlatformURI;
+            this.PlatformURI  = PlatformURI.WhenNullOrEmpty(DefaultPlatformURI);
 
             this.Logger       = new CPOClientLogger(this,
                                                     LoggingContext,
@@ -243,9 +234,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Create a new eMIP CPO Client.
         /// </summary>
         /// <param name="ClientId">A unqiue identification of this client.</param>
+        /// <param name="Logger">A CPO client logger.</param>
         /// <param name="Hostname">The hostname of the remote eMIP service.</param>
         /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
+        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="ClientCert">The TLS client certificate to use.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
         /// <param name="URIPrefix">An default URI prefix.</param>
@@ -259,7 +252,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          String                               Hostname,
                          IPPort                               RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionCallback    LocalCertificateSelector     = null,
+                         LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          X509Certificate                      ClientCert                   = null,
                          String                               HTTPVirtualHost              = null,
                          String                               URIPrefix                    = DefaultURIPrefix,
@@ -273,7 +266,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    Hostname,
                    RemotePort ?? DefaultRemotePort,
                    RemoteCertificateValidator,
-                   LocalCertificateSelector,
+                   ClientCertificateSelector,
                    ClientCert,
                    HTTPVirtualHost,
                    URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
@@ -285,22 +278,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            #region Initial checks
+            this.PlatformURI  = PlatformURI.WhenNullOrEmpty(DefaultPlatformURI);
 
-            if (ClientId.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Logger),    "The given client identification must not be null or empty!");
-
-            if (Logger == null)
-                throw new ArgumentNullException(nameof(Logger),    "The given mobile client logger must not be null!");
-
-            if (Hostname.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Hostname),  "The given hostname must not be null or empty!");
-
-            #endregion
-
-            this.PlatformURI  = PlatformURI ?? DefaultPlatformURI;
-
-            this.Logger       = Logger;
+            this.Logger       = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
 
         }
 
@@ -375,7 +355,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         HTTPVirtualHost,
                                                         URIPrefix + PlatformURI,
                                                         RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
+                                                        ClientCertificateSelector,
                                                         ClientCert,
                                                         UserAgent,
                                                         RequestTimeout,

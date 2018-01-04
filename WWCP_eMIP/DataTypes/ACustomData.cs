@@ -41,7 +41,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             this.CustomData = new Dictionary<String, Object>();
 
-            if (CustomData != null && CustomData.Count > 0)
+            if (CustomData?.Count > 0)
                 foreach (var item in CustomData)
                     this.CustomData.Add(item.Key, item.Value);
 
@@ -51,7 +51,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
         public Boolean HasCustomData
-            => CustomData != null && CustomData.Count > 0;
+            => CustomData?.Count > 0;
 
         public Boolean IsDefined(String Key)
             => CustomData.TryGetValue(Key, out Object _Value);
@@ -76,7 +76,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return (T) _Value;
 
             }
-            catch (Exception e)
+            catch (Exception)
             { }
 
             return default(T);
@@ -110,7 +110,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     ValueDelegate((T)_Value);
 
             }
-            catch (Exception e)
+            catch (Exception)
             { }
 
         }

@@ -245,7 +245,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
             // Multiple OperatorIds which do not match!
-            if (_EVSEIds.Select(evse => evse.OperatorId.ToString()).Distinct().Count() > 1)
+            if (_EVSEIds.Select(evse => evse.OperatorId.ToString()).Distinct().Skip(1).Any())
                 return null;
 
             #region EVSEIdSuffix contains '*'...
@@ -381,10 +381,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 throw new ArgumentException("Illegal text representation of a charging station identification: '" + Text + "'!",
                                             nameof(Text));
 
-            Operator_Id _OperatorId;
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out _OperatorId))
-                return new ChargingStation_Id(_OperatorId,
+            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
+                return new ChargingStation_Id(OperatorId,
                                               MatchCollection[0].Groups[2].Value);
 
             throw new ArgumentException("Illegal charging station identification '" + Text + "'!",
@@ -431,9 +430,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static ChargingStation_Id? TryParse(String Text)
         {
 
-            ChargingStation_Id ChargingStationId;
-
-            if (TryParse(Text, out ChargingStationId))
+            if (TryParse(Text, out ChargingStation_Id ChargingStationId))
                 return ChargingStationId;
 
             return null;
@@ -470,9 +467,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 if (_MatchCollection.Count != 1)
                     return false;
 
-                Operator_Id _OperatorId;
 
-                if (Operator_Id.TryParse(_MatchCollection[0].Groups[1].Value, out _OperatorId))
+                if (Operator_Id.TryParse(_MatchCollection[0].Groups[1].Value, out Operator_Id _OperatorId))
                 {
 
                     ChargingStationId = new ChargingStation_Id(_OperatorId,
@@ -485,7 +481,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             }
 #pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch (Exception e)
+            catch (Exception)
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
 #pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
@@ -754,44 +750,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region ToString(Format)
-
-        /// <summary>
-        /// Return the identification in the given format.
-        /// </summary>
-        /// <param name="Format">The format of the identification.</param>
-        public String ToString(OperatorIdFormats Format)
-        {
-
-            switch (OperatorId.Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(OperatorId.CountryCode.Alpha2Code,
-                                         OperatorId.Suffix,
-                                         "S",
-                                         Suffix);
-
-                case OperatorIdFormats.eMI3_STAR:
-                    return String.Concat(OperatorId.CountryCode.Alpha2Code,
-                                         "*",
-                                         OperatorId.Suffix,
-                                         "*S",
-                                         Suffix);
-
-                default: // DIN
-                    return String.Concat("+",
-                                         OperatorId.CountryCode.TelefonCode,
-                                         "*",
-                                         OperatorId.Suffix,
-                                         "*S",
-                                         Suffix);
-
-            }
-
-        }
-
-        #endregion
 
     }
 

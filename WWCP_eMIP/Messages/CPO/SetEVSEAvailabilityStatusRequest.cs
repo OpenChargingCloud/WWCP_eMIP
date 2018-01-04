@@ -113,7 +113,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.AvailabilityStatus         = AvailabilityStatus;
             this.TransactionId              = TransactionId;
             this.AvailabilityStatusUntil    = AvailabilityStatusUntil;
-            this.AvailabilityStatusComment  = AvailabilityStatusComment.IsNeitherNullNorEmpty() ? AvailabilityStatusComment.Trim() : null;
+            this.AvailabilityStatusComment  = AvailabilityStatusComment?.Trim();
 
         }
 
@@ -165,7 +165,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">A delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEAvailabilityStatusRequest Parse(XElement                                                   SetEVSEAvailabilityStatusRequestXML,
-                                                             CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser, 
+                                                             CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                                              OnExceptionDelegate                                        OnException = null)
         {
 
@@ -287,7 +287,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                     SetEVSEAvailabilityStatusRequestText,
-                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser, 
+                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                        out SetEVSEAvailabilityStatusRequest                       SetEVSEAvailabilityStatusRequest,
                                        OnExceptionDelegate                                        OnException  = null)
         {

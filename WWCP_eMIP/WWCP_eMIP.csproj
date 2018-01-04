@@ -61,7 +61,7 @@
     <Compile Include="DataTypes\Simple\EVSE_Id.cs" />
     <Compile Include="DataTypes\Simple\RequestStatus.cs" />
     <Compile Include="DataTypes\Simple\Transaction_Id.cs" />
-    <Compile Include="IO\Exceptions\IllegalEVSEStatusCombinationException.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IO\Exceptions\OCHPException.cs" />
     <Compile Include="IO\OCHPNS.cs" />
     <Compile Include="IO\SOAP.cs" />

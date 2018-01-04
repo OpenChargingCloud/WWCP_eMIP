@@ -31,7 +31,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// OCHP XML I/O.
+    /// eMIP XML I/O.
     /// </summary>
     public static partial class XML_IO
     {

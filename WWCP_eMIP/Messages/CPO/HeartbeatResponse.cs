@@ -529,7 +529,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 : base(HeartbeatResponse?.Request,
                        HeartbeatResponse.HasCustomData
-                           ? CustomData != null && CustomData.Any()
+                           ? CustomData?.Count > 0
                                  ? HeartbeatResponse.CustomData.Concat(CustomData)
                                  : HeartbeatResponse.CustomData
                            : CustomData)

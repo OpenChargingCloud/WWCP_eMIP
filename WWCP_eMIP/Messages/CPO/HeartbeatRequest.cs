@@ -126,7 +126,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static HeartbeatRequest Parse(XElement                                   HeartbeatRequestXML,
-                                             CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser, 
+                                             CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                              OnExceptionDelegate                        OnException = null)
         {
 
@@ -234,7 +234,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                     HeartbeatRequestText,
-                                       CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser, 
+                                       CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                        out HeartbeatRequest                       HeartbeatRequest,
                                        OnExceptionDelegate                        OnException  = null)
         {

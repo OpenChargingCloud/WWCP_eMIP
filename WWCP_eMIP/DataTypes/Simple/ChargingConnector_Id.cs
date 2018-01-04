@@ -79,7 +79,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public  static readonly Regex  ChargingStationId_RegEx  = new Regex(@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?X([A-Z0-9][A-Z0-9\*]{0,50})$",
                                                                             RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Char[] StarSplitter             = new Char[] { '*' };
+        //private static readonly Char[] StarSplitter             = new Char[] { '*' };
 
         #endregion
 
@@ -192,11 +192,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 throw new ArgumentException("Illegal text representation of a charging connector identification: '" + Text + "'!",
                                             nameof(Text));
 
-            Operator_Id _OperatorId;
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out _OperatorId))
-                return new ChargingConnector_Id(_OperatorId,
-                                              MatchCollection[0].Groups[2].Value);
+            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
+                return new ChargingConnector_Id(OperatorId,
+                                                MatchCollection[0].Groups[2].Value);
 
             throw new ArgumentException("Illegal charging connector identification '" + Text + "'!",
                                         nameof(Text));
@@ -242,9 +241,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static ChargingConnector_Id? TryParse(String Text)
         {
 
-            ChargingConnector_Id ChargingStationId;
-
-            if (TryParse(Text, out ChargingStationId))
+            if (TryParse(Text, out ChargingConnector_Id ChargingStationId))
                 return ChargingStationId;
 
             return null;
@@ -281,9 +278,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 if (_MatchCollection.Count != 1)
                     return false;
 
-                Operator_Id _OperatorId;
 
-                if (Operator_Id.TryParse(_MatchCollection[0].Groups[1].Value, out _OperatorId))
+                if (Operator_Id.TryParse(_MatchCollection[0].Groups[1].Value, out Operator_Id _OperatorId))
                 {
 
                     ChargingStationId = new ChargingConnector_Id(_OperatorId,
@@ -296,7 +292,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             }
 #pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch (Exception e)
+            catch (Exception)
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
 #pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
@@ -565,44 +561,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region ToString(Format)
-
-        /// <summary>
-        /// Return the identification in the given format.
-        /// </summary>
-        /// <param name="Format">The format of the identification.</param>
-        public String ToString(OperatorIdFormats Format)
-        {
-
-            switch (OperatorId.Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(OperatorId.CountryCode.Alpha2Code,
-                                         OperatorId.Suffix,
-                                         "S",
-                                         Suffix);
-
-                case OperatorIdFormats.eMI3_STAR:
-                    return String.Concat(OperatorId.CountryCode.Alpha2Code,
-                                         "*",
-                                         OperatorId.Suffix,
-                                         "*S",
-                                         Suffix);
-
-                default: // DIN
-                    return String.Concat("+",
-                                         OperatorId.CountryCode.TelefonCode,
-                                         "*",
-                                         OperatorId.Suffix,
-                                         "*S",
-                                         Suffix);
-
-            }
-
-        }
-
-        #endregion
 
     }
 

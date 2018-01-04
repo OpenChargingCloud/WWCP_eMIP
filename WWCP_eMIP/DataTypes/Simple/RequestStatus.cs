@@ -154,6 +154,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+        public static RequestStatus Ok
+            => new RequestStatus(0);
+
+        public static RequestStatus SystemError
+            => new RequestStatus(-9999990);
+
+        public static RequestStatus HTTPError
+            => new RequestStatus(-9999991);
+
+        public static RequestStatus ServiceNotAvailable
+            => new RequestStatus(-9999992);
+
+        public static RequestStatus DataError
+            => new RequestStatus(-9999993);
+
+
         #region Operator overloading
 
         #region Operator == (RequestStatus1, RequestStatus2)

@@ -33,8 +33,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// <summary>
     /// A heartbeat response.
     /// </summary>
-    public class ToIOP_HeartbeatResponse : AResponse<ToIOP_HeartbeatRequest,
-                                                     ToIOP_HeartbeatResponse>
+    public class HeartbeatResponse : AResponse<HeartbeatRequest,
+                                               HeartbeatResponse>
     {
 
         #region Properties
@@ -67,17 +67,39 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Create a new heartbeat response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        public HeartbeatResponse(HeartbeatRequest                     Request,
+                                 Transaction_Id                       TransactionId,
+                                 RequestStatus                        RequestStatus,
+                                 IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+            : this(Request,
+                   TimeSpan.FromMinutes(5),
+                   DateTime.UtcNow,
+                   TransactionId,
+                   RequestStatus,
+                   CustomData)
+
+        { }
+
+
+        /// <summary>
+        /// Create a new heartbeat response.
+        /// </summary>
+        /// <param name="Request">The add charge details records request leading to this response.</param>
         /// <param name="HeartbeatPeriod">A heartbeat period.</param>
         /// <param name="CurrentTime">The current time.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public ToIOP_HeartbeatResponse(ToIOP_HeartbeatRequest               Request,
-                                       TimeSpan                             HeartbeatPeriod,
-                                       DateTime                             CurrentTime,
-                                       Transaction_Id                       TransactionId,
-                                       RequestStatus                        RequestStatus,
-                                       IReadOnlyDictionary<String, Object>  CustomData  = null)
+        public HeartbeatResponse(HeartbeatRequest                     Request,
+                                 TimeSpan                             HeartbeatPeriod,
+                                 DateTime                             CurrentTime,
+                                 Transaction_Id                       TransactionId,
+                                 RequestStatus                        RequestStatus,
+                                 IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : base(Request,
                    CustomData)
@@ -114,21 +136,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse   (Request, HeartbeatResponseXML,  OnException = null)
+        #region (static) Parse   (Request, HeartbeatResponseXML,  ..., OnException = null)
 
         /// <summary>
         /// Parse the given XML representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static ToIOP_HeartbeatResponse Parse(ToIOP_HeartbeatRequest  Request,
-                                                    XElement                HeartbeatResponseXML,
-                                                    OnExceptionDelegate     OnException = null)
+        public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
+                                              XElement                                    HeartbeatResponseXML,
+                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
+                                              OnExceptionDelegate                         OnException = null)
         {
 
-            if (TryParse(Request, HeartbeatResponseXML, out ToIOP_HeartbeatResponse HeartbeatResponse, OnException))
+            if (TryParse(Request,
+                         HeartbeatResponseXML,
+                         CustomSendHeartbeatResponseParser,
+                         out HeartbeatResponse HeartbeatResponse,
+                         OnException))
+            {
                 return HeartbeatResponse;
+            }
 
             return null;
 
@@ -136,21 +166,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse   (Request, HeartbeatResponseText, OnException = null)
+        #region (static) Parse   (Request, HeartbeatResponseText, ..., OnException = null)
 
         /// <summary>
         /// Parse the given text representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static ToIOP_HeartbeatResponse Parse(ToIOP_HeartbeatRequest  Request,
-                                                    String                  HeartbeatResponseText,
-                                                    OnExceptionDelegate     OnException = null)
+        public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
+                                              String                                      HeartbeatResponseText,
+                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
+                                              OnExceptionDelegate                         OnException = null)
         {
 
-            if (TryParse(Request, HeartbeatResponseText, out ToIOP_HeartbeatResponse HeartbeatResponse, OnException))
+            if (TryParse(Request,
+                         HeartbeatResponseText,
+                         CustomSendHeartbeatResponseParser,
+                         out HeartbeatResponse HeartbeatResponse,
+                         OnException))
+            {
                 return HeartbeatResponse;
+            }
 
             return null;
 
@@ -158,25 +196,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(Request, HeartbeatResponseXML,  out HeartbeatResponse, OnException = null)
+        #region (static) TryParse(Request, HeartbeatResponseXML,  ..., out HeartbeatResponse, OnException = null)
 
         /// <summary>
         /// Try to parse the given XML representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(ToIOP_HeartbeatRequest       Request,
-                                       XElement                     HeartbeatResponseXML,
-                                       out ToIOP_HeartbeatResponse  HeartbeatResponse,
-                                       OnExceptionDelegate          OnException  = null)
+        public static Boolean TryParse(HeartbeatRequest                            Request,
+                                       XElement                                    HeartbeatResponseXML,
+                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
+                                       out HeartbeatResponse                       HeartbeatResponse,
+                                       OnExceptionDelegate                         OnException  = null)
         {
 
             try
             {
 
-                HeartbeatResponse = new ToIOP_HeartbeatResponse(
+                HeartbeatResponse = new HeartbeatResponse(
 
                                         Request,
 
@@ -187,12 +227,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                             s => DateTime.Parse(s)),
 
                                         HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "transactionId",
-                                                                            s => Transaction_Id.Parse(s)),
+                                                                            Transaction_Id.Parse),
 
                                         HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "requestStatus",
-                                                                            s => RequestStatus.Parse(s))
+                                                                            RequestStatus.Parse)
 
                                     );
+
+
+                if (CustomSendHeartbeatResponseParser != null)
+                    HeartbeatResponse = CustomSendHeartbeatResponseParser(HeartbeatResponseXML,
+                                                                  HeartbeatResponse);
 
                 return true;
 
@@ -211,19 +256,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(Request, HeartbeatResponseText, out HeartbeatResponse, OnException = null)
+        #region (static) TryParse(Request, HeartbeatResponseText, ..., out HeartbeatResponse, OnException = null)
 
         /// <summary>
         /// Try to parse the given text representation of an eMIP add charge details records response.
         /// </summary>
         /// <param name="Request">The add charge details records request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(ToIOP_HeartbeatRequest       Request,
-                                       String                       HeartbeatResponseText,
-                                       out ToIOP_HeartbeatResponse  HeartbeatResponse,
-                                       OnExceptionDelegate          OnException  = null)
+        public static Boolean TryParse(HeartbeatRequest                            Request,
+                                       String                                      HeartbeatResponseText,
+                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
+                                       out HeartbeatResponse                       HeartbeatResponse,
+                                       OnExceptionDelegate                         OnException  = null)
         {
 
             try
@@ -231,10 +278,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(HeartbeatResponseText).Root,
+                             CustomSendHeartbeatResponseParser,
                              out HeartbeatResponse,
                              OnException))
-
+                {
                     return true;
+                }
 
             }
             catch (Exception e)
@@ -255,7 +304,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomHeartbeatResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<ToIOP_HeartbeatResponse> CustomHeartbeatResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<HeartbeatResponse> CustomHeartbeatResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartbeatResponse",
@@ -287,7 +336,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponse1">A add charge details records response.</param>
         /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (ToIOP_HeartbeatResponse HeartbeatResponse1, ToIOP_HeartbeatResponse HeartbeatResponse2)
+        public static Boolean operator == (HeartbeatResponse HeartbeatResponse1, HeartbeatResponse HeartbeatResponse2)
         {
 
             // If both are null, or both are same instance, return true.
@@ -312,7 +361,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponse1">A add charge details records response.</param>
         /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (ToIOP_HeartbeatResponse HeartbeatResponse1, ToIOP_HeartbeatResponse HeartbeatResponse2)
+        public static Boolean operator != (HeartbeatResponse HeartbeatResponse1, HeartbeatResponse HeartbeatResponse2)
             => !(HeartbeatResponse1 == HeartbeatResponse2);
 
         #endregion
@@ -335,7 +384,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 return false;
 
             // Check if the given object is a add charge details records response.
-            var HeartbeatResponse = Object as ToIOP_HeartbeatResponse;
+            var HeartbeatResponse = Object as HeartbeatResponse;
             if ((Object) HeartbeatResponse == null)
                 return false;
 
@@ -352,7 +401,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="HeartbeatResponse">A add charge details records response to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(ToIOP_HeartbeatResponse HeartbeatResponse)
+        public override Boolean Equals(HeartbeatResponse HeartbeatResponse)
         {
 
             if ((Object) HeartbeatResponse == null)
@@ -421,8 +470,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An AuthorizationStartById response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<ToIOP_HeartbeatRequest,
-                                                ToIOP_HeartbeatResponse>
+        public class Builder : AResponseBuilder<HeartbeatRequest,
+                                                HeartbeatResponse>
         {
 
             #region Properties
@@ -458,7 +507,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A Heartbeat request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(ToIOP_HeartbeatRequest               Request,
+            public Builder(HeartbeatRequest               Request,
                            IReadOnlyDictionary<String, Object>  CustomData  = null)
 
                 : base(Request,
@@ -475,7 +524,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="HeartbeatResponse">A Heartbeat response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(ToIOP_HeartbeatResponse              HeartbeatResponse  = null,
+            public Builder(HeartbeatResponse              HeartbeatResponse  = null,
                            IReadOnlyDictionary<String, Object>  CustomData         = null)
 
                 : base(HeartbeatResponse?.Request,
@@ -511,7 +560,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="HeartbeatResponse">A Heartbeat response to compare with.</param>
             /// <returns>True if both match; False otherwise.</returns>
-            public override Boolean Equals(ToIOP_HeartbeatResponse HeartbeatResponse)
+            public override Boolean Equals(HeartbeatResponse HeartbeatResponse)
             {
 
                 if ((Object) HeartbeatResponse == null)
@@ -526,9 +575,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            public override ToIOP_HeartbeatResponse ToImmutable
+            public override HeartbeatResponse ToImmutable
 
-                => new ToIOP_HeartbeatResponse(Request,
+                => new HeartbeatResponse(Request,
                                                HeartbeatPeriod,
                                                CurrentTime,
                                                TransactionId,

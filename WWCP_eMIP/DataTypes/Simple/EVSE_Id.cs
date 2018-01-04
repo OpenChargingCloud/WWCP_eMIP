@@ -51,12 +51,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The charging station operator identification.
         /// </summary>
-        public Operator_Id     OperatorId   { get; }
+        public Operator_Id        OperatorId   { get; }
 
         /// <summary>
         /// The suffix of the EVSE identification.
         /// </summary>
-        public String                  Suffix       { get; }
+        public String             Suffix       { get; }
 
         /// <summary>
         /// The detected format of the EVSE identification.
@@ -78,7 +78,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     case OperatorIdFormats.eMI3_STAR:
                         return OperatorId.Length + 2 + (UInt64) Suffix.Length;
 
-                    default:  // ISO
+                    default:  // eMI3
                         return OperatorId.Length + 1 + (UInt64) Suffix.Length;
 
                 }

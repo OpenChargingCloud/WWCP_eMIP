@@ -32,7 +32,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// <summary>
     /// A Heartbeat request.
     /// </summary>
-    public class ToIOP_HeartbeatRequest : ARequest<ToIOP_HeartbeatRequest>
+    public class HeartbeatRequest : ARequest<HeartbeatRequest>
     {
 
         #region Properties
@@ -57,7 +57,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Constructor(s)
 
         /// <summary>
-        /// Create an eMIP AddCDRs XML/SOAP request.
+        /// Create an eMIP Heartbeat XML/SOAP request.
         /// </summary>
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>
@@ -67,14 +67,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public ToIOP_HeartbeatRequest(Partner_Id          PartnerId,
-                                      Operator_Id         OperatorId,
-                                      Transaction_Id?     TransactionId       = null,
+        public HeartbeatRequest(Partner_Id          PartnerId,
+                                Operator_Id         OperatorId,
+                                Transaction_Id?     TransactionId       = null,
 
-                                      DateTime?           Timestamp           = null,
-                                      CancellationToken?  CancellationToken   = null,
-                                      EventTracking_Id    EventTrackingId     = null,
-                                      TimeSpan?           RequestTimeout      = null)
+                                DateTime?           Timestamp           = null,
+                                CancellationToken?  CancellationToken   = null,
+                                EventTracking_Id    EventTrackingId     = null,
+                                TimeSpan?           RequestTimeout      = null)
 
             : base(Timestamp,
                    CancellationToken,
@@ -101,6 +101,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //   <soap:Body xmlns:eMIP="https://api-iop.gireve.com/schemas/PlatformV1/">
         //     <eMIP:eMIP_ToIOP_HeartbeatRequest>
         //
+        //       <!--Optional:-->
         //       <transactionId>TRANSACTION_46151</transactionId>
         //
         //       <partnerIdType>eMI3</partnerIdType>
@@ -116,19 +117,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse(HeartbeatRequestXML,  OnException = null)
+        #region (static) Parse   (HeartbeatRequestXML,  ..., OnException = null)
 
         /// <summary>
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static ToIOP_HeartbeatRequest Parse(XElement             HeartbeatRequestXML,
-                                                   OnExceptionDelegate  OnException = null)
+        public static HeartbeatRequest Parse(XElement                                   HeartbeatRequestXML,
+                                             CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser, 
+                                             OnExceptionDelegate                        OnException = null)
         {
 
-            if (TryParse(HeartbeatRequestXML, out ToIOP_HeartbeatRequest _HeartbeatRequest, OnException))
+            if (TryParse(HeartbeatRequestXML,
+                         CustomSendHeartbeatRequestParser,
+                         out HeartbeatRequest _HeartbeatRequest,
+                         OnException))
+            {
                 return _HeartbeatRequest;
+            }
 
             return null;
 
@@ -136,19 +144,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse(HeartbeatRequestText, OnException = null)
+        #region (static) Parse   (HeartbeatRequestText, ..., OnException = null)
 
         /// <summary>
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestText">The text to parse.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static ToIOP_HeartbeatRequest Parse(String               HeartbeatRequestText,
-                                                   OnExceptionDelegate  OnException = null)
+        public static HeartbeatRequest Parse(String                                     HeartbeatRequestText,
+                                             CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
+                                             OnExceptionDelegate                        OnException = null)
         {
 
-            if (TryParse(HeartbeatRequestText, out ToIOP_HeartbeatRequest _HeartbeatRequest, OnException))
+            if (TryParse(HeartbeatRequestText,
+                         CustomSendHeartbeatRequestParser,
+                         out HeartbeatRequest _HeartbeatRequest,
+                         OnException))
+            {
                 return _HeartbeatRequest;
+            }
 
             return null;
 
@@ -156,23 +171,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(HeartbeatRequestXML,  out HeartbeatRequest, OnException = null)
+        #region (static) TryParse(HeartbeatRequestXML,  ..., out HeartbeatRequest, OnException = null)
 
         /// <summary>
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(XElement                    HeartbeatRequestXML,
-                                       out ToIOP_HeartbeatRequest  HeartbeatRequest,
-                                       OnExceptionDelegate         OnException  = null)
+        public static Boolean TryParse(XElement                                   HeartbeatRequestXML,
+                                       CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
+                                       out HeartbeatRequest                       HeartbeatRequest,
+                                       OnExceptionDelegate                        OnException  = null)
         {
 
             try
             {
 
-                HeartbeatRequest = new ToIOP_HeartbeatRequest(
+                HeartbeatRequest = new HeartbeatRequest(
 
                                        HeartbeatRequestXML.MapValueOrFail    (eMIPNS.Default + "partnerId",
                                                                               Partner_Id.Parse),
@@ -184,6 +201,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                               Transaction_Id.Parse)
 
                                    );
+
+
+                if (CustomSendHeartbeatRequestParser != null)
+                    HeartbeatRequest = CustomSendHeartbeatRequestParser(HeartbeatRequestXML,
+                                                                        HeartbeatRequest);
 
                 return true;
 
@@ -202,27 +224,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(HeartbeatRequestText, out HeartbeatRequest, OnException = null)
+        #region (static) TryParse(HeartbeatRequestText, ..., out HeartbeatRequest, OnException = null)
 
         /// <summary>
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestText">The text to parse.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(String                      HeartbeatRequestText,
-                                       out ToIOP_HeartbeatRequest  HeartbeatRequest,
-                                       OnExceptionDelegate         OnException  = null)
+        public static Boolean TryParse(String                                     HeartbeatRequestText,
+                                       CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser, 
+                                       out HeartbeatRequest                       HeartbeatRequest,
+                                       OnExceptionDelegate                        OnException  = null)
         {
 
             try
             {
 
                 if (TryParse(XDocument.Parse(HeartbeatRequestText).Root,
+                             CustomSendHeartbeatRequestParser,
                              out HeartbeatRequest,
                              OnException))
-
+                {
                     return true;
+                }
 
             }
             catch (Exception e)
@@ -243,7 +269,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomHeartbeatRequestSerializer">A delegate to serialize custom Heartbeat request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<ToIOP_HeartbeatRequest> CustomHeartbeatRequestSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<HeartbeatRequest> CustomHeartbeatRequestSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartbeatRequest",
@@ -280,7 +306,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequest1">A heartbeat request.</param>
         /// <param name="HeartbeatRequest2">Another heartbeat request.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (ToIOP_HeartbeatRequest HeartbeatRequest1, ToIOP_HeartbeatRequest HeartbeatRequest2)
+        public static Boolean operator == (HeartbeatRequest HeartbeatRequest1, HeartbeatRequest HeartbeatRequest2)
         {
 
             // If both are null, or both are same instance, return true.
@@ -305,7 +331,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequest1">A heartbeat request.</param>
         /// <param name="HeartbeatRequest2">Another heartbeat request.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (ToIOP_HeartbeatRequest HeartbeatRequest1, ToIOP_HeartbeatRequest HeartbeatRequest2)
+        public static Boolean operator != (HeartbeatRequest HeartbeatRequest1, HeartbeatRequest HeartbeatRequest2)
 
             => !(HeartbeatRequest1 == HeartbeatRequest2);
 
@@ -328,7 +354,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object == null)
                 return false;
 
-            var HeartbeatRequest = Object as ToIOP_HeartbeatRequest;
+            var HeartbeatRequest = Object as HeartbeatRequest;
             if ((Object) HeartbeatRequest == null)
                 return false;
 
@@ -345,7 +371,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="HeartbeatRequest">A heartbeat request to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(ToIOP_HeartbeatRequest HeartbeatRequest)
+        public override Boolean Equals(HeartbeatRequest HeartbeatRequest)
         {
 
             if ((Object) HeartbeatRequest == null)
@@ -393,9 +419,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public override String ToString()
 
-            => String.Concat(PartnerId, ", ",
-                             OperatorId,
-                             TransactionId.HasValue ? ", " + TransactionId.ToString() : "");
+            => String.Concat(PartnerId, " / ",
+                             OperatorId);
 
         #endregion
 

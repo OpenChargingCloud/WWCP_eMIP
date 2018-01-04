@@ -173,6 +173,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+        public static Transaction_Id Zero
+            => new Transaction_Id("0");
+
+
         #region Provider overloading
 
         #region Provider == (HubProviderId1, HubProviderId2)

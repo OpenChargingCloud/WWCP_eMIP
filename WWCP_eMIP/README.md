@@ -1,16 +1,17 @@
-WWCP eMIP v1.4
-==============
+WWCP eMIP
+=========
 
-This software will allow the communication between World Wide Charging
-Protocol (WWCP) entities and entities implementing the
-[Open Clearing House Protocol (eMIP)](http://www.ochp.eu), which is
-defined and used by [SmartLab GmbH](https://www.smartlab-gmbh.de). The
-focus of this protocol are the communication aspects of a central
-clearing house with additional direct links between communication
-partners. For more details on this protocol please visit
-http://www.e-clearing.eu or the
-[eMIP repository](https://github.com/e-clearing-net/eMIP) on GitHub.
+This software will allow the communication between World Wide Charging Protocol
+(WWCP) entities and entities implementing the _eMIP protocol_,
+which is defined and used by [Gireve](http://www.gireve.com). The focus
+of this protocol are the communication aspects between a central clearing house,
+charge point operators (CPOs) and e-mobility providers (EMPs). For more details
+on this protocol please visit http://www.gireve.com.
 
+### Requirements & Configuration
+
+1. You must be a client of Gireve.
+2. You need .NET 4.7+
 
 ### Your participation
 

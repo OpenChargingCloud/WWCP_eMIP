@@ -37,6 +37,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
+        private readonly static Random random = new Random(Guid.NewGuid().GetHashCode());
+
         /// <summary>
         /// The internal identification.
         /// </summary>
@@ -172,6 +174,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
+
+        public static Transaction_Id Random
+            => new Transaction_Id(random.GetString(20));
 
         public static Transaction_Id Zero
             => new Transaction_Id("0");

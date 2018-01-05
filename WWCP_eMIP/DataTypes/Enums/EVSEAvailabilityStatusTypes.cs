@@ -25,36 +25,66 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// eMIP XML I/O.
+    /// eMIP data conversion methods.
     /// </summary>
-    public static partial class XML_IO
+    public static partial class ConversionMethods
     {
 
         #region AsEVSEAvailabilityStatusTypes(Number)
 
+        /// <summary>
+        /// Parse the given numeric representation of an EVSE availability status.
+        /// </summary>
+        /// <param name="Number">A numeric-representation of an EVSE availability status</param>
         public static EVSEAvailabilityStatusTypes AsEVSEAvailabilityStatusTypes(Byte Number)
-            => AsEVSEAvailabilityStatusTypes(Number.ToString());
+        {
+
+            switch (Number)
+            {
+
+                case 1:
+                    return EVSEAvailabilityStatusTypes.OutOfOrder;
+
+                case 2:
+                    return EVSEAvailabilityStatusTypes.InService;
+
+                case 3:
+                    return EVSEAvailabilityStatusTypes.Future;
+
+                case 4:
+                    return EVSEAvailabilityStatusTypes.Deleted;
+
+                default:
+                    return EVSEAvailabilityStatusTypes.Unspecified;
+
+            }
+
+        }
 
         #endregion
 
         #region AsEVSEAvailabilityStatusTypes(Text)
 
+        /// <summary>
+        /// Parse the given text representation of an EVSE availability status.
+        /// </summary>
+        /// <param name="Text">A text representation of an EVSE availability status</param>
         public static EVSEAvailabilityStatusTypes AsEVSEAvailabilityStatusTypes(String Text)
         {
 
             switch (Text)
             {
 
-                case "1":
+                case "out-of-order":
                     return EVSEAvailabilityStatusTypes.OutOfOrder;
 
-                case "2":
+                case "in-service":
                     return EVSEAvailabilityStatusTypes.InService;
 
-                case "3":
+                case "future":
                     return EVSEAvailabilityStatusTypes.Future;
 
-                case "4":
+                case "deleted":
                     return EVSEAvailabilityStatusTypes.Deleted;
 
                 default:
@@ -69,6 +99,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region AsText  (this AvailabilityStatus)
 
+        /// <summary>
+        /// Return a text representation of the given EVSE availability status.
+        /// </summary>
+        /// <param name="AvailabilityStatus">An EVSE availability status.</param>
         public static String AsText(this EVSEAvailabilityStatusTypes AvailabilityStatus)
         {
 
@@ -98,6 +132,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region AsNumber(this AvailabilityStatus)
 
+        /// <summary>
+        /// Return a numeric representation of the given EVSE availability status.
+        /// </summary>
+        /// <param name="AvailabilityStatus">An EVSE availability status.</param>
         public static Byte AsNumber(this EVSEAvailabilityStatusTypes AvailabilityStatus)
         {
 
@@ -125,7 +163,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-
     }
 
     /// <summary>
@@ -135,26 +172,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     {
 
         /// <summary>
-        /// The EVCI element status is unknown.
+        /// The EVSE status is unknown.
         /// </summary>
         Unspecified,
 
         /// <summary>
-        /// The EVCI element is not available to the end-user.
+        /// The EVSE is not available to the end-user.
         /// </summary>
         OutOfOrder,
 
         /// <summary>
-        /// The EVCI element is available to the end-user.
+        /// The EVSE is available to the end-user.
         /// </summary>
         InService,
 
         /// <summary>
-        /// The EVCI element is not available to the end-user because it does not exist yet. The installation of this element is scheduled.        /// </summary>
+        /// The EVSE is not available to the end-user because it does not exist yet.
+        /// The installation of this element is scheduled.
+        /// </summary>
         Future,
 
         /// <summary>
-        /// The EVCI element is not available to the end-user because it does not exist anymore.        /// </summary>
+        /// The EVSE is not available to the end-user because it does not exist anymore.
+        /// </summary>
         Deleted
 
     }

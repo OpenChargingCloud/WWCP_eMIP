@@ -331,7 +331,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return TryParse(CountryCode.Alpha2Code +       Suffix,
                                     out PartnerId);
 
-                default: // eMI3_STAR:
+                default:_STAR:
                     return TryParse(CountryCode.Alpha2Code + "*" + Suffix,
                                     out PartnerId);
 
@@ -604,7 +604,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case PartnerIdFormats.eMI3_STAR:
                     return CountryCode.Alpha2Code + "*" + Suffix;
 
-                default: // eMI3
+                default:
                     return CountryCode.Alpha2Code       + Suffix;
 
             }

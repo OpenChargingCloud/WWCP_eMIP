@@ -33,7 +33,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// eMIP XML I/O.
     /// </summary>
-    public static partial class XML_IO
+    public static partial class ConversionMethods
     {
 
         //#region AsEVSEAvailabilityStatusTypes(Text)

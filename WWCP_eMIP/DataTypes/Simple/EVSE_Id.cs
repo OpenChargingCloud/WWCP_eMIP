@@ -28,7 +28,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// The unique identification of an eMIP Electric Vehicle Supply Equipment (EVSE).
+    /// The unique identification of an Electric Vehicle Supply Equipment (EVSE).
     /// </summary>
     public struct EVSE_Id : IId,
                             IEquatable<EVSE_Id>,
@@ -38,18 +38,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
+        private static readonly Random _Random       = new Random(DateTime.UtcNow.Millisecond);
+
         /// <summary>
         /// The regular expression for parsing an EVSE identification.
+        /// All '*' are optional!
         /// </summary>
-        public static readonly Regex EVSEId_RegEx = new Regex(@"^([A-Za-z]{2}\*?[A-Za-z0-9]{3})\*?E([A-Za-z0-9\*]{1,30})$",
-                                                              RegexOptions.IgnorePatternWhitespace);
+        public  static readonly Regex  EVSEId_RegEx  = new Regex(@"^([A-Za-z]{2}\*?[A-Za-z0-9]{3})\*?E([A-Za-z0-9\*]{1,30})$",
+                                                                 RegexOptions.IgnorePatternWhitespace);
+
+        private        readonly String MinSuffix;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The charging station operator identification.
+        /// The operator identification.
         /// </summary>
         public Operator_Id        OperatorId   { get; }
 
@@ -59,7 +64,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public String             Suffix       { get; }
 
         /// <summary>
-        /// The detected format of the EVSE identification.
+        /// The format of the EVSE identification.
         /// </summary>
         public OperatorIdFormats  Format
             => OperatorId.Format;
@@ -78,7 +83,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     case OperatorIdFormats.eMI3_STAR:
                         return OperatorId.Length + 2 + (UInt64) Suffix.Length;
 
-                    default:  // eMI3
+                    default:
                         return OperatorId.Length + 1 + (UInt64) Suffix.Length;
 
                 }
@@ -91,13 +96,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Generate a new Electric Vehicle Supply Equipment (EVSE) identification
-        /// based on the given charging station operator and identification suffix.
+        /// Create a new Electric Vehicle Supply Equipment (EVSE) identification based on the given
+        /// operator identification and identification suffix.
         /// </summary>
-        /// <param name="OperatorId">The unique identification of a charging station operator.</param>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Suffix">The suffix of the EVSE identification.</param>
         private EVSE_Id(Operator_Id  OperatorId,
-                        String               Suffix)
+                        String       Suffix)
         {
 
             #region Initial checks
@@ -109,11 +114,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             this.OperatorId  = OperatorId;
             this.Suffix      = Suffix;
+            this.MinSuffix   = Suffix.Replace("*", "");
 
         }
 
         #endregion
 
+
+        #region Random(OperatorId, Length = 10, Mapper = null)
+
+        /// <summary>
+        /// Generate a new unique identification of an EVSE identification.
+        /// </summary>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
+        /// <param name="Length">The desired length of the identification suffix.</param>
+        /// <param name="Mapper">A delegate to modify the newly generated EVSE identification.</param>
+        public static EVSE_Id Random(Operator_Id           OperatorId,
+                                     Byte                  Length  = 10,
+                                     Func<String, String>  Mapper  = null)
+
+            => new EVSE_Id(OperatorId,
+                           (Mapper ?? (_ => _)) (_Random.RandomString((UInt16) (Length < 10 ? 10 : Length > 50 ? 50 : Length))));
+
+        #endregion
 
         #region (static) Parse(Text)
 
@@ -145,11 +168,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 return new EVSE_Id(_OperatorId,
                                    MatchCollection[0].Groups[2].Value);
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[3].Value, out _OperatorId))
-                return new EVSE_Id(_OperatorId,
-                                   MatchCollection[0].Groups[4].Value);
-
-
             throw new ArgumentException("Illegal EVSE identification '" + Text + "'!",
                                         nameof(Text));
 
@@ -162,21 +180,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as an EVSE identification.
         /// </summary>
-        /// <param name="OperatorId">The unique identification of a charging station operator.</param>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Suffix">The suffix of the EVSE identification.</param>
         public static EVSE_Id Parse(Operator_Id  OperatorId,
                                     String       Suffix)
         {
-
-            #region Initial checks
-
-            if (Suffix != null)
-                Suffix = Suffix.Trim();
-
-            if (Suffix.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Suffix), "The given text representation of an EVSE identification suffix must not be null or empty!");
-
-            #endregion
 
             switch (OperatorId.Format)
             {
@@ -184,7 +192,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case OperatorIdFormats.eMI3:
                     return Parse(OperatorId +  "E" + Suffix);
 
-                default: // ISO_STAR
+                default:
                     return Parse(OperatorId + "*E" + Suffix);
 
             }
@@ -237,30 +245,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = EVSEId_RegEx.Matches(Text.Trim().ToUpper());
+                var MatchCollection = EVSEId_RegEx.Matches(Text);
 
-                if (MatchCollection.Count == 1)
+                if (MatchCollection.Count != 1)
+                {
+                    EVSEId = default(EVSE_Id);
+                    return false;
+                }
+
+                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
                 {
 
-                    if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id _EVSEOperatorId))
-                    {
+                    EVSEId = new EVSE_Id(OperatorId,
+                                         MatchCollection[0].Groups[2].Value);
 
-                        EVSEId = new EVSE_Id(_EVSEOperatorId,
-                                             MatchCollection[0].Groups[2].Value);
-
-                        return true;
-
-                    }
+                    return true;
 
                 }
 
             }
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch (Exception)
             { }
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
 
             EVSEId = default(EVSE_Id);
             return false;
@@ -272,7 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this EVSE identification.
+        /// Return a clone of this EVSE identification.
         /// </summary>
         public EVSE_Id Clone
 
@@ -428,16 +433,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) EVSEId == null)
                 throw new ArgumentNullException(nameof(EVSEId),  "The given EVSE identification must not be null!");
 
-            // Compare the length of the EVSE identifications
-            var _Result = Length.CompareTo(EVSEId.Length);
+            var _Result = OperatorId.CompareTo(EVSEId.OperatorId);
 
-            // If equal: Compare operator identifications
             if (_Result == 0)
-                _Result = OperatorId.CompareTo(EVSEId.OperatorId);
-
-            // If equal: Compare EVSE identification suffix
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, EVSEId.Suffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, EVSEId.MinSuffix, StringComparison.Ordinal);
 
             return _Result;
 
@@ -485,7 +484,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 return false;
 
             return OperatorId.Equals(EVSEId.OperatorId) &&
-                   Suffix.    Equals(EVSEId.Suffix);
+                   MinSuffix. Equals(EVSEId.MinSuffix);
 
         }
 
@@ -498,11 +497,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Return the HashCode of this object.
         /// </summary>
-        /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
 
             => OperatorId.GetHashCode() ^
-               Suffix.    GetHashCode();
+               MinSuffix. GetHashCode();
 
         #endregion
 
@@ -520,7 +518,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case OperatorIdFormats.eMI3:
                     return String.Concat(OperatorId,  "E", Suffix);
 
-                default: // ISO_STAR
+                default:
                     return String.Concat(OperatorId, "*E", Suffix);
 
             }

@@ -106,7 +106,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             var Nonce             = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
             var CreatedTimestamp  = DateTime.UtcNow.ToIso8601();
-            var HashedPassword    = Convert.ToBase64String(new SHA1CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(Nonce + CreatedTimestamp + WSSPassword)));
+            var HashedPassword    = System.Convert.ToBase64String(new SHA1CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(Nonce + CreatedTimestamp + WSSPassword)));
 
             #endregion
 
@@ -114,8 +114,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             return XMLNamespaces(
                 new XElement(SOAPNS.NS.SOAPEnvelope_v1_1 + "Envelope",
 
-                    new XAttribute(XNamespace.Xmlns + "SOAP",  SOAPNS.NS.SOAPEnvelope_v1_1.NamespaceName),
-                    new XAttribute(XNamespace.Xmlns + "eMIP",  eMIPNS.Default.             NamespaceName),
+                    new XAttribute(XNamespace.Xmlns + "SOAP", SOAPNS.NS.SOAPEnvelope_v1_1.NamespaceName),
+                    new XAttribute(XNamespace.Xmlns + "eMIP", eMIPNS.Default.             NamespaceName),
 
                     new XElement(SOAPNS.NS.SOAPEnvelope_v1_1 + "Header",
 
@@ -136,7 +136,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                                 new XElement(WSSE + "Nonce",
                                              new XAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary"),
-                                             Convert.ToBase64String(Encoding.UTF8.GetBytes(Nonce))),
+                                             System.Convert.ToBase64String(Encoding.UTF8.GetBytes(Nonce))),
 
                                 new XElement(WSU + "Created",
                                              CreatedTimestamp)

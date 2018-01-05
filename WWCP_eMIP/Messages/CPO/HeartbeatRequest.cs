@@ -57,7 +57,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Constructor(s)
 
         /// <summary>
-        /// Create an eMIP Heartbeat XML/SOAP request.
+        /// Create a Heartbeat XML/SOAP request.
         /// </summary>
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>

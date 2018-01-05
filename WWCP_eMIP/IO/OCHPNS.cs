@@ -33,7 +33,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The default namespace of the eMobility Protocol Inter-Operation (eMIP) Version 0.7.4.
         /// </summary>
-        public static readonly XNamespace Default  = "https://api-iop.gireve.com/schemas/PlatformV1/";
+        public static readonly XNamespace Default      = "https://api-iop.gireve.com/schemas/PlatformV1/";
+
+        /// <summary>
+        /// The EVCIDynamic namespace of the eMobility Protocol Inter-Operation (eMIP) Version 0.7.4.
+        /// </summary>
+        public static readonly XNamespace EVCIDynamic  = "https://api-iop.gireve.com/schemas/EVCIDynamicV1/";
 
     }
 

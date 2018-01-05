@@ -50,6 +50,9 @@
     <Compile Include="CPO\CPOClient\ICPOClientExtentions.cs" />
     <Compile Include="DataTypes\ACustomData.cs" />
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
+    <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
+    <Compile Include="DataTypes\Enums\ChargingPoolAvailabilityStatusTypes.cs" />
+    <Compile Include="DataTypes\Enums\ChargingStationAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\EVSEBusyStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\EVSEAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\ICustomData.cs" />
@@ -69,6 +72,17 @@
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />
+    <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
+    <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />
+    <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetChargingStationAvailabilityStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetEVSESyntheticStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetEVSESyntheticStatusRequest.cs" />
+    <Compile Include="Messages\CPO\SetEVSEBusyStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetEVSEBusyStatusRequest.cs" />
+    <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusResponse.cs" />
+    <Compile Include="Messages\CPO\SetChargingStationAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatResponse.cs" />

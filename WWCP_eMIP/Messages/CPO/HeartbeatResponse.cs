@@ -31,7 +31,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A heartbeat response.
+    /// A Heartbeat response.
     /// </summary>
     public class HeartbeatResponse : AResponse<HeartbeatRequest,
                                                HeartbeatResponse>
@@ -64,9 +64,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new heartbeat response.
+        /// Create a new Heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
@@ -88,7 +88,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// Create a new heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatPeriod">A heartbeat period.</param>
         /// <param name="CurrentTime">The current time.</param>
         /// <param name="TransactionId">A transaction identification.</param>
@@ -139,9 +139,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) Parse   (Request, HeartbeatResponseXML,  ..., OnException = null)
 
         /// <summary>
-        /// Parse the given XML representation of an eMIP add charge details records response.
+        /// Parse the given XML representation of a Heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
@@ -169,9 +169,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) Parse   (Request, HeartbeatResponseText, ..., OnException = null)
 
         /// <summary>
-        /// Parse the given text representation of an eMIP add charge details records response.
+        /// Parse the given text representation of a Heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
@@ -199,12 +199,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) TryParse(Request, HeartbeatResponseXML,  ..., out HeartbeatResponse, OnException = null)
 
         /// <summary>
-        /// Try to parse the given XML representation of an eMIP add charge details records response.
+        /// Try to parse the given XML representation of a Heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
-        /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
+        /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        XElement                                    HeartbeatResponseXML,
@@ -259,12 +259,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) TryParse(Request, HeartbeatResponseText, ..., out HeartbeatResponse, OnException = null)
 
         /// <summary>
-        /// Try to parse the given text representation of an eMIP add charge details records response.
+        /// Try to parse the given text representation of a Heartbeat response.
         /// </summary>
-        /// <param name="Request">The add charge details records request leading to this response.</param>
+        /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">A delegate to parse custom HeartbeatResponse XML elements.</param>
-        /// <param name="HeartbeatResponse">The parsed add charge details records response.</param>
+        /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        String                                      HeartbeatResponseText,
@@ -331,10 +331,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Operator == (HeartbeatResponse1, HeartbeatResponse2)
 
         /// <summary>
-        /// Compares two add charge details records responses for equality.
+        /// Compares two Heartbeat responses for equality.
         /// </summary>
-        /// <param name="HeartbeatResponse1">A add charge details records response.</param>
-        /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
+        /// <param name="HeartbeatResponse1">A Heartbeat response.</param>
+        /// <param name="HeartbeatResponse2">Another Heartbeat response.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public static Boolean operator == (HeartbeatResponse HeartbeatResponse1, HeartbeatResponse HeartbeatResponse2)
         {
@@ -356,10 +356,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Operator != (HeartbeatResponse1, HeartbeatResponse2)
 
         /// <summary>
-        /// Compares two add charge details records responses for inequality.
+        /// Compares two Heartbeat responses for inequality.
         /// </summary>
-        /// <param name="HeartbeatResponse1">A add charge details records response.</param>
-        /// <param name="HeartbeatResponse2">Another add charge details records response.</param>
+        /// <param name="HeartbeatResponse1">A Heartbeat response.</param>
+        /// <param name="HeartbeatResponse2">Another Heartbeat response.</param>
         /// <returns>False if both match; True otherwise.</returns>
         public static Boolean operator != (HeartbeatResponse HeartbeatResponse1, HeartbeatResponse HeartbeatResponse2)
             => !(HeartbeatResponse1 == HeartbeatResponse2);
@@ -383,7 +383,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object == null)
                 return false;
 
-            // Check if the given object is a add charge details records response.
             var HeartbeatResponse = Object as HeartbeatResponse;
             if ((Object) HeartbeatResponse == null)
                 return false;
@@ -397,9 +396,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Equals(HeartbeatResponse)
 
         /// <summary>
-        /// Compares two add charge details records responses for equality.
+        /// Compares two Heartbeat responses for equality.
         /// </summary>
-        /// <param name="HeartbeatResponse">A add charge details records response to compare with.</param>
+        /// <param name="HeartbeatResponse">A Heartbeat response to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public override Boolean Equals(HeartbeatResponse HeartbeatResponse)
         {
@@ -468,7 +467,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (class) Builder
 
         /// <summary>
-        /// An AuthorizationStartById response builder.
+        /// A Heartbeat response builder.
         /// </summary>
         public class Builder : AResponseBuilder<HeartbeatRequest,
                                                 HeartbeatResponse>
@@ -503,11 +502,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Builder(Request,           CustomData = null)
 
             /// <summary>
-            /// Create a new HeartbeatResponse response builder.
+            /// Create a new Heartbeat response builder.
             /// </summary>
             /// <param name="Request">A Heartbeat request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(HeartbeatRequest               Request,
+            public Builder(HeartbeatRequest                     Request,
                            IReadOnlyDictionary<String, Object>  CustomData  = null)
 
                 : base(Request,
@@ -524,7 +523,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="HeartbeatResponse">A Heartbeat response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(HeartbeatResponse              HeartbeatResponse  = null,
+            public Builder(HeartbeatResponse                    HeartbeatResponse  = null,
                            IReadOnlyDictionary<String, Object>  CustomData         = null)
 
                 : base(HeartbeatResponse?.Request,
@@ -575,17 +574,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
+            #region ToImmutable
+
+            /// <summary>
+            /// Return an immutable representation.
+            /// </summary>
             public override HeartbeatResponse ToImmutable
 
                 => new HeartbeatResponse(Request,
-                                               HeartbeatPeriod,
-                                               CurrentTime,
-                                               TransactionId,
-                                               RequestStatus);
+                                         HeartbeatPeriod,
+                                         CurrentTime,
+                                         TransactionId,
+                                         RequestStatus);
+
+            #endregion
 
         }
 
         #endregion
+
 
     }
 

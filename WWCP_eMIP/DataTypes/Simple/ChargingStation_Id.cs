@@ -60,7 +60,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
     /// <summary>
-    /// The unique identification of an electric vehicle charging station (EVCS).
+    /// The unique identification of a charging station.
     /// </summary>
     public struct ChargingStation_Id : IId,
                                        IEquatable<ChargingStation_Id>,
@@ -70,30 +70,38 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        //ToDo: Replace with better randomness!
         private static readonly Random _Random                  = new Random(DateTime.UtcNow.Millisecond);
 
         /// <summary>
         /// The regular expression for parsing a charging station identification.
+        /// All '*' are optional!
         /// </summary>
         public  static readonly Regex  ChargingStationId_RegEx  = new Regex(@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?S([A-Z0-9][A-Z0-9\*]{0,50})$",
                                                                             RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Char[] StarSplitter             = new Char[] { '*' };
 
+        private        readonly String MinSuffix;
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The charging station operator identification.
+        /// The operator identification.
         /// </summary>
         public Operator_Id  OperatorId   { get; }
 
         /// <summary>
         /// The suffix of the identification.
         /// </summary>
-        public String               Suffix       { get; }
+        public String       Suffix       { get; }
+
+        /// <summary>
+        /// The format of the charging station identification.
+        /// </summary>
+        public OperatorIdFormats Format
+            => OperatorId.Format;
 
         /// <summary>
         /// Returns the length of the identification.
@@ -107,10 +115,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 {
 
                     case OperatorIdFormats.eMI3_STAR:
-                        return (UInt64) (OperatorId.CountryCode.Alpha2Code.Length             + 1 + OperatorId.Suffix.Length + 2 + Suffix.Length);
+                        return OperatorId.Length + 2 + (UInt64) Suffix.Length;
 
-                    default:  // ISO
-                        return (UInt64) (OperatorId.CountryCode.Alpha2Code.Length                 + OperatorId.Suffix.Length + 1 + Suffix.Length);
+                    default:
+                        return OperatorId.Length + 1 + (UInt64) Suffix.Length;
 
                 }
 
@@ -122,11 +130,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Generate a new charging station identification
-        /// based on the given charging station operator and identification suffix.
+        /// Create a new charging station identification based on the given
+        /// operator identification and identification suffix.
         /// </summary>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
+        /// <param name="Suffix">The suffix of the charging station identification.</param>
         private ChargingStation_Id(Operator_Id  OperatorId,
-                                   String               Suffix)
+                                   String       Suffix)
         {
 
             #region Initial checks
@@ -138,13 +148,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             this.OperatorId  = OperatorId;
             this.Suffix      = Suffix;
+            this.MinSuffix   = Suffix.Replace("*", "");
 
         }
 
         #endregion
 
 
-        #region Create(EVSEId, RemoveLastStar = true)
+        #region Create(EVSEId,  RemoveLastStar = true)
 
         /// <summary>
         /// Create a ChargingStationId based on the given EVSE identification.
@@ -333,29 +344,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Random(OperatorId, Length = 50, Mapper = null)
+        #region Random(OperatorId, Length = 8, Mapper = null)
 
         /// <summary>
         /// Generate a new unique identification of a charging station identification.
         /// </summary>
-        /// <param name="OperatorId">The unique identification of a charging station operator.</param>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Length">The desired length of the identification suffix.</param>
         /// <param name="Mapper">A delegate to modify the newly generated charging station identification.</param>
-        public static ChargingStation_Id Random(Operator_Id   OperatorId,
-                                                Byte                  Length  = 50,
+        public static ChargingStation_Id Random(Operator_Id           OperatorId,
+                                                Byte                  Length  = 8,
                                                 Func<String, String>  Mapper  = null)
 
-        {
-
-            if (Length < 12 || Length > 50)
-                Length = 50;
-
-            return new ChargingStation_Id(OperatorId,
-                                          Mapper != null
-                                              ? Mapper(_Random.RandomString(Length))
-                                              : _Random.RandomString(Length));
-
-        }
+            => new ChargingStation_Id(OperatorId,
+                                      (Mapper ?? (_ => _)) (_Random.RandomString((UInt16)(Length < 8 ? 8 : Length > 50 ? 50 : Length))));
 
         #endregion
 
@@ -398,23 +400,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as a charging station identification.
         /// </summary>
-        /// <param name="OperatorId">The unique identification of a charging station operator.</param>
+        /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Suffix">The suffix of the charging station identification.</param>
         public static ChargingStation_Id Parse(Operator_Id  OperatorId,
-                                               String                      Suffix)
+                                               String       Suffix)
         {
 
             switch (OperatorId.Format)
             {
 
-                case OperatorIdFormats.eMI3_STAR:
-                    return Parse(OperatorId.ToString() + "*S" + Suffix);
-
                 case OperatorIdFormats.eMI3:
-                    return Parse(OperatorId.ToString() + "S" + Suffix);
+                    return Parse(OperatorId.ToString() +  "S" + Suffix);
 
                 default:
-                    return Parse(OperatorId.ToString(OperatorIdFormats.eMI3_STAR) + "*S" + Suffix);
+                    return Parse(OperatorId.ToString() + "*S" + Suffix);
 
             }
 
@@ -427,6 +426,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as a charging station identification.
         /// </summary>
+        /// <param name="Text">A text representation of a charging station identification.</param>
         public static ChargingStation_Id? TryParse(String Text)
         {
 
@@ -444,10 +444,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as a charging station identification.
         /// </summary>
+        /// <param name="Text">A text representation of a charging station identification.</param>
+        /// <param name="ChargingStationId">The parsed charging station identification.</param>
         public static Boolean TryParse(String Text, out ChargingStation_Id ChargingStationId)
         {
 
             #region Initial checks
+
+            if (Text != null)
+                Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -460,30 +465,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                ChargingStationId = default(ChargingStation_Id);
+                var MatchCollection = ChargingStationId_RegEx.Matches(Text);
 
-                var _MatchCollection = ChargingStationId_RegEx.Matches(Text);
-
-                if (_MatchCollection.Count != 1)
+                if (MatchCollection.Count != 1)
+                {
+                    ChargingStationId = default(ChargingStation_Id);
                     return false;
+                }
 
-
-                if (Operator_Id.TryParse(_MatchCollection[0].Groups[1].Value, out Operator_Id _OperatorId))
+                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
                 {
 
-                    ChargingStationId = new ChargingStation_Id(_OperatorId,
-                                                               _MatchCollection[0].Groups[2].Value);
+                    ChargingStationId = new ChargingStation_Id(OperatorId,
+                                                               MatchCollection[0].Groups[2].Value);
 
                     return true;
 
                 }
 
             }
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch (Exception)
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
             ChargingStationId = default(ChargingStation_Id);
@@ -496,7 +497,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this charging station identification.
+        /// Return a clone of this charging station identification.
         /// </summary>
         public ChargingStation_Id Clone
 
@@ -649,16 +650,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargingStationId == null)
                 throw new ArgumentNullException(nameof(ChargingStationId), "The given charging station identification must not be null!");
 
-            // Compare the length of the ChargingStationIds
-            var _Result = Length.CompareTo(ChargingStationId.Length);
+            var _Result = OperatorId.CompareTo(ChargingStationId.OperatorId);
 
-            // If equal: Compare charging operator identifications
             if (_Result == 0)
-                _Result = OperatorId.CompareTo(ChargingStationId.OperatorId);
-
-            // If equal: Compare ChargingStationId suffix
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, ChargingStationId.Suffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, ChargingStationId.MinSuffix, StringComparison.Ordinal);
 
             return _Result;
 
@@ -706,7 +701,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 return false;
 
             return OperatorId.Equals(ChargingStationId.OperatorId) &&
-                   Suffix.    Equals(ChargingStationId.Suffix);
+                   MinSuffix. Equals(ChargingStationId.MinSuffix);
 
         }
 
@@ -719,11 +714,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Return the HashCode of this object.
         /// </summary>
-        /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
 
             => OperatorId.GetHashCode() ^
-               Suffix.    GetHashCode();
+               MinSuffix. GetHashCode();
 
         #endregion
 
@@ -735,21 +729,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override String ToString()
         {
 
-            switch (OperatorId.Format)
+            switch (Format)
             {
 
-                case OperatorIdFormats.eMI3_STAR:
-                    return OperatorId.CountryCode.Alpha2Code + "*" + OperatorId.Suffix + "*S" + Suffix;
+                case OperatorIdFormats.eMI3:
+                    return String.Concat(OperatorId,  "S", Suffix);
 
-                default: // ISO
-                    return OperatorId.CountryCode.Alpha2Code       + OperatorId.Suffix + "S" + Suffix;
+                default:
+                    return String.Concat(OperatorId, "*S", Suffix);
 
             }
 
         }
 
         #endregion
-
 
     }
 

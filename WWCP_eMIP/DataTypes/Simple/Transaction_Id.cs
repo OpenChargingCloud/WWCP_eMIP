@@ -27,7 +27,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// The unique identification of an eMIP transaction.
+    /// The unique identification of a transaction.
     /// </summary>
     public struct Transaction_Id : IId,
                                    IEquatable <Transaction_Id>,
@@ -37,7 +37,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private readonly static Random random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly static Random _Random = new Random(Guid.NewGuid().GetHashCode());
 
         /// <summary>
         /// The internal identification.
@@ -49,7 +49,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
-        /// The length of the hub provider identificator.
+        /// The length of the transaction identificator.
         /// </summary>
         public UInt64 Length
             => (UInt64) InternalId.Length;
@@ -59,9 +59,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new hub provider identification.
+        /// Create a new transaction identification.
         /// based on the given string.
         /// </summary>
+        /// <param name="Text">The text representation of a transaction.</param>
         private Transaction_Id(String Text)
         {
             InternalId = Text;
@@ -73,9 +74,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Parse   (Text)
 
         /// <summary>
-        /// Parse the given string as a hub provider identification.
+        /// Parse the given string as a transaction identification.
         /// </summary>
-        /// <param name="Text">A text representation of a hub provider identification.</param>
+        /// <param name="Text">A text representation of a transaction identification.</param>
         public static Transaction_Id Parse(String Text)
         {
 
@@ -85,7 +86,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a hub provider identification must not be null or empty!");
+                throw new ArgumentNullException(nameof(Text), "The given text representation of a transaction identification must not be null or empty!");
 
             #endregion
 
@@ -98,9 +99,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region TryParse(Text)
 
         /// <summary>
-        /// Try to parse the given string as a hub provider identification.
+        /// Try to parse the given string as a transaction identification.
         /// </summary>
-        /// <param name="Text">A text representation of a hub provider identification.</param>
+        /// <param name="Text">A text representation of a transaction identification.</param>
         public static Transaction_Id? TryParse(String Text)
         {
 
@@ -115,14 +116,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out HubProviderId)
+        #region TryParse(Text, out TransactionId)
 
         /// <summary>
-        /// Try to parse the given string as a hub provider identification.
+        /// Try to parse the given string as a transaction identification.
         /// </summary>
-        /// <param name="Text">A text representation of a hub provider identification.</param>
-        /// <param name="HubProviderId">The parsed hub provider identification.</param>
-        public static Boolean TryParse(String Text, out Transaction_Id HubProviderId)
+        /// <param name="Text">A text representation of a transaction identification.</param>
+        /// <param name="TransactionId">The parsed transaction identification.</param>
+        public static Boolean TryParse(String Text, out Transaction_Id TransactionId)
         {
 
             #region Initial checks
@@ -132,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                HubProviderId = default(Transaction_Id);
+                TransactionId = default(Transaction_Id);
                 return false;
             }
 
@@ -141,20 +142,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                HubProviderId = new Transaction_Id(Text);
+                TransactionId = new Transaction_Id(Text);
 
                 return true;
 
             }
-
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch (Exception)
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
-            HubProviderId = default(Transaction_Id);
+            TransactionId = default(Transaction_Id);
             return false;
 
         }
@@ -164,7 +160,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this hub provider identification.
+        /// Clone this transaction identification.
         /// </summary>
         public Transaction_Id Clone
 
@@ -175,8 +171,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        public static Transaction_Id Random
-            => new Transaction_Id(random.GetString(20));
+        public static Transaction_Id Random(Byte Length = 20)
+            => new Transaction_Id(_Random.GetString(Length));
 
         public static Transaction_Id Zero
             => new Transaction_Id("0");
@@ -184,113 +180,113 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Provider overloading
 
-        #region Provider == (HubProviderId1, HubProviderId2)
+        #region Provider == (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
+        public static Boolean operator == (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(HubProviderId1, HubProviderId2))
+            if (Object.ReferenceEquals(TransactionId1, TransactionId2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) HubProviderId1 == null) || ((Object) HubProviderId2 == null))
+            if (((Object) TransactionId1 == null) || ((Object) TransactionId2 == null))
                 return false;
 
-            return HubProviderId1.Equals(HubProviderId2);
+            return TransactionId1.Equals(TransactionId2);
 
         }
 
         #endregion
 
-        #region Provider != (HubProviderId1, HubProviderId2)
+        #region Provider != (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
-            => !(HubProviderId1 == HubProviderId2);
+        public static Boolean operator != (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
+            => !(TransactionId1 == TransactionId2);
 
         #endregion
 
-        #region Provider <  (HubProviderId1, HubProviderId2)
+        #region Provider <  (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
+        public static Boolean operator < (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
         {
 
-            if ((Object) HubProviderId1 == null)
-                throw new ArgumentNullException(nameof(HubProviderId1), "The given HubProviderId1 must not be null!");
+            if ((Object) TransactionId1 == null)
+                throw new ArgumentNullException(nameof(TransactionId1), "The given TransactionId1 must not be null!");
 
-            return HubProviderId1.CompareTo(HubProviderId2) < 0;
+            return TransactionId1.CompareTo(TransactionId2) < 0;
 
         }
 
         #endregion
 
-        #region Provider <= (HubProviderId1, HubProviderId2)
+        #region Provider <= (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
-            => !(HubProviderId1 > HubProviderId2);
+        public static Boolean operator <= (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
+            => !(TransactionId1 > TransactionId2);
 
         #endregion
 
-        #region Provider >  (HubProviderId1, HubProviderId2)
+        #region Provider >  (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
+        public static Boolean operator > (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
         {
 
-            if ((Object) HubProviderId1 == null)
-                throw new ArgumentNullException(nameof(HubProviderId1), "The given HubProviderId1 must not be null!");
+            if ((Object) TransactionId1 == null)
+                throw new ArgumentNullException(nameof(TransactionId1), "The given TransactionId1 must not be null!");
 
-            return HubProviderId1.CompareTo(HubProviderId2) > 0;
+            return TransactionId1.CompareTo(TransactionId2) > 0;
 
         }
 
         #endregion
 
-        #region Provider >= (HubProviderId1, HubProviderId2)
+        #region Provider >= (TransactionId1, TransactionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId1">A hub provider identification.</param>
-        /// <param name="HubProviderId2">Another hub provider identification.</param>
+        /// <param name="TransactionId1">A transaction identification.</param>
+        /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Transaction_Id HubProviderId1, Transaction_Id HubProviderId2)
-            => !(HubProviderId1 < HubProviderId2);
+        public static Boolean operator >= (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
+            => !(TransactionId1 < TransactionId2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<HubProviderId> Members
+        #region IComparable<TransactionId> Members
 
         #region CompareTo(Object)
 
@@ -305,7 +301,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
             if (!(Object is Transaction_Id))
-                throw new ArgumentException("The given object is not a hub provider identification!",
+                throw new ArgumentException("The given object is not a transaction identification!",
                                             nameof(Object));
 
             return CompareTo((Transaction_Id) Object);
@@ -314,25 +310,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region CompareTo(HubProviderId)
+        #region CompareTo(TransactionId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="HubProviderId">An object to compare with.</param>
-        public Int32 CompareTo(Transaction_Id HubProviderId)
+        /// <param name="TransactionId">An object to compare with.</param>
+        public Int32 CompareTo(Transaction_Id TransactionId)
         {
 
-            if ((Object) HubProviderId == null)
-                throw new ArgumentNullException(nameof(HubProviderId),  "The given hub provider identification must not be null!");
+            if ((Object) TransactionId == null)
+                throw new ArgumentNullException(nameof(TransactionId),  "The given transaction identification must not be null!");
 
-            // Compare the length of the HubProviderIds
-            var _Result = this.Length.CompareTo(HubProviderId.Length);
-
-            if (_Result == 0)
-                _Result = String.Compare(InternalId, HubProviderId.InternalId, StringComparison.Ordinal);
-
-            return _Result;
+            return String.Compare(InternalId, TransactionId.InternalId, StringComparison.Ordinal);
 
         }
 
@@ -340,7 +330,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<HubProviderId> Members
+        #region IEquatable<TransactionId> Members
 
         #region Equals(Object)
 
@@ -364,20 +354,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Equals(HubProviderId)
+        #region Equals(TransactionId)
 
         /// <summary>
-        /// Compares two HubProviderIds for equality.
+        /// Compares two TransactionIds for equality.
         /// </summary>
-        /// <param name="HubProviderId">A hub provider identification to compare with.</param>
+        /// <param name="TransactionId">A transaction identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(Transaction_Id HubProviderId)
+        public Boolean Equals(Transaction_Id TransactionId)
         {
 
-            if ((Object) HubProviderId == null)
+            if ((Object) TransactionId == null)
                 return false;
 
-            return InternalId.Equals(HubProviderId.InternalId);
+            return InternalId.Equals(TransactionId.InternalId);
 
         }
 

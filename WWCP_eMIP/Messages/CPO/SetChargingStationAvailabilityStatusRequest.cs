@@ -176,7 +176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingStationAvailabilityStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">A delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingStationAvailabilityStatusRequest Parse(XElement                                                              SetChargingStationAvailabilityStatusRequestXML,
                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingStationAvailabilityStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">A delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingStationAvailabilityStatusRequest Parse(String                                                                SetChargingStationAvailabilityStatusRequestText,
                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
@@ -230,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingStationAvailabilityStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">A delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                                              SetChargingStationAvailabilityStatusRequestXML,
@@ -303,7 +303,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingStationAvailabilityStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">A delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                                SetChargingStationAvailabilityStatusRequestText,

@@ -176,7 +176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingPoolAvailabilityStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">A delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingPoolAvailabilityStatusRequest Parse(XElement                                                           SetChargingPoolAvailabilityStatusRequestXML,
                                                                      CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusRequest>  CustomSendSetChargingPoolAvailabilityStatusRequestParser,
@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingPoolAvailabilityStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">A delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingPoolAvailabilityStatusRequest Parse(String                                                             SetChargingPoolAvailabilityStatusRequestText,
                                                                      CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusRequest>  CustomSendSetChargingPoolAvailabilityStatusRequestParser,
@@ -230,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingPoolAvailabilityStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">A delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingPoolAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                                           SetChargingPoolAvailabilityStatusRequestXML,
@@ -303,7 +303,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetChargingPoolAvailabilityStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">A delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingPoolAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                             SetChargingPoolAvailabilityStatusRequestText,

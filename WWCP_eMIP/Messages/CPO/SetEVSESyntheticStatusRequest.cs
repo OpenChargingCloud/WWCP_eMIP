@@ -190,7 +190,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <operatorId>FR*798</operatorId>
         //
         //       <EVSEIdType>eMI3</EVSEIdType>
-        //       <EVSEId>?</EVSEId>        //
+        //       <EVSEId>?</EVSEId>
+        //
         //       <!--Optional:-->
         //       <availabilityStatusEventDate>?</availabilityStatusEventDate>
         //       <!--Optional:-->
@@ -207,7 +208,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <!--Optional:-->
         //       <busyStatusUntil>?</busyStatusUntil>
         //       <!--Optional:-->
-        //       <busyStatusComment>?</busyStatusComment>        //
+        //       <busyStatusComment>?</busyStatusComment>
+        //
         //     </eMIP:eMIP_ToIOP_SetEVSESyntheticStatusRequest>
         //   </soap:Body>
         //
@@ -221,7 +223,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">A delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusRequest Parse(XElement                                                SetEVSESyntheticStatusRequestXML,
                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
@@ -248,7 +250,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">A delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusRequest Parse(String                                                  SetEVSESyntheticStatusRequestText,
                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
@@ -275,7 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">A delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                                SetEVSESyntheticStatusRequestXML,
@@ -361,7 +363,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">A delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                  SetEVSESyntheticStatusRequestText,

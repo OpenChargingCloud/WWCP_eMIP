@@ -99,10 +99,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 {
 
                     case OperatorIdFormats.eMI3_STAR:
-                        return (UInt64) (CountryCode.Alpha2Code.Length             + 1 + Suffix.Length);
+                        return (UInt64) (CountryCode.Alpha2Code.Length + 1 + Suffix.Length);
 
-                    default:  // ISO
-                        return (UInt64) (CountryCode.Alpha2Code.Length                 + Suffix.Length);
+                    default:
+                        return (UInt64) (CountryCode.Alpha2Code.Length     + Suffix.Length);
 
                 }
 
@@ -136,16 +136,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Parse(Text)
 
         /// <summary>
-        /// Parse the given text representation of a charging operator identification.
+        /// Parse the given text representation of an operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of a charging operator identification.</param>
+        /// <param name="Text">A text representation of an operator identification.</param>
         public static Operator_Id Parse(String Text)
         {
 
             #region Initial checks
 
-            if (Text.IsNullOrEmpty() || Text.Trim().IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a charging operator identification must not be null or empty!");
+            if (Text != null)
+                Text = Text.Trim();
+
+            if (Text.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(Text), "The given text representation of an operator identification must not be null or empty!");
 
             #endregion
 
@@ -161,7 +164,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             }
 
-            throw new ArgumentException("Illegal text representation of a charging operator identification: '" + Text + "'!", nameof(Text));
+            throw new ArgumentException("Illegal text representation of an operator identification: '" + Text + "'!", nameof(Text));
 
         }
 
@@ -208,9 +211,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region TryParse(Text)
 
         /// <summary>
-        /// Try to parse the given text representation of a charging operator identification.
+        /// Try to parse the given text representation of an operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of a charging operator identification.</param>
+        /// <param name="Text">A text representation of an operator identification.</param>
         public static Operator_Id? TryParse(String Text)
         {
 
@@ -226,9 +229,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region TryParse(Text, out OperatorId)
 
         /// <summary>
-        /// Try to parse the given text representation of a charging operator identification.
+        /// Try to parse the given text representation of an operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of a charging operator identification.</param>
+        /// <param name="Text">A text representation of an operator identification.</param>
         /// <param name="OperatorId">The parsed charging operator identification.</param>
         public static Boolean TryParse(String           Text,
                                        out Operator_Id  OperatorId)
@@ -492,7 +495,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
             if (!(Object is Operator_Id))
-                throw new ArgumentException("The given object is not a charging operator identification!", nameof(Object));
+                throw new ArgumentException("The given object is not an operator identification!", nameof(Object));
 
             return CompareTo((Operator_Id) Object);
 
@@ -512,14 +515,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) OperatorId == null)
                 throw new ArgumentNullException(nameof(OperatorId), "The given charging operator identification must not be null!");
 
-            // Compare the length of the OperatorIds
-            var _Result = this.Length.CompareTo(OperatorId.Length);
+            var _Result = CountryCode.CompareTo(OperatorId.CountryCode);
 
-            // If equal: Compare country codes
-            if (_Result == 0)
-                _Result = CountryCode.CompareTo(OperatorId.CountryCode);
-
-            // If equal: Compare provider ids
             if (_Result == 0)
                 _Result = String.Compare(Suffix, OperatorId.Suffix, StringComparison.Ordinal);
 
@@ -604,41 +601,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case OperatorIdFormats.eMI3_STAR:
                     return CountryCode.Alpha2Code + "*" + Suffix;
 
-                default: // ISO
+                default:
                     return CountryCode.Alpha2Code       + Suffix;
-
-            }
-
-        }
-
-        #endregion
-
-        #region ToString(Format)
-
-        /// <summary>
-        /// Return the identification in the given format.
-        /// </summary>
-        /// <param name="Format">The format of the identification.</param>
-        public String ToString(OperatorIdFormats Format)
-        {
-
-            switch (Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(CountryCode.Alpha2Code,
-                                         Suffix);
-
-                case OperatorIdFormats.eMI3_STAR:
-                    return String.Concat(CountryCode.Alpha2Code,
-                                         "*",
-                                         Suffix);
-
-                default: // DIN
-                    return String.Concat("+",
-                                         CountryCode.TelefonCode,
-                                         "*",
-                                         Suffix);
 
             }
 

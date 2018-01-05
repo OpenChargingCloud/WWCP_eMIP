@@ -103,7 +103,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingPoolAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">A delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingPoolAvailabilityStatusResponse Parse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                                                       XElement                                                            SetChargingPoolAvailabilityStatusResponseXML,
@@ -133,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingPoolAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">A delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingPoolAvailabilityStatusResponse Parse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                                                       String                                                              SetChargingPoolAvailabilityStatusResponseText,
@@ -163,7 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingPoolAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">A delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponse">The parsed SetChargingPoolAvailabilityStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingPoolAvailabilityStatusRequest                            Request,
@@ -217,7 +217,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingPoolAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">A delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingPoolAvailabilityStatusResponse">The parsed SetChargingPoolAvailabilityStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingPoolAvailabilityStatusRequest                            Request,

@@ -103,7 +103,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingConnectorAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">A delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingConnectorAvailabilityStatusResponse Parse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                                                            XElement                                                                 SetChargingConnectorAvailabilityStatusResponseXML,
@@ -133,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingConnectorAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">A delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingConnectorAvailabilityStatusResponse Parse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                                                            String                                                                   SetChargingConnectorAvailabilityStatusResponseText,
@@ -163,7 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingConnectorAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">A delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponse">The parsed SetChargingConnectorAvailabilityStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingConnectorAvailabilityStatusRequest                            Request,
@@ -217,7 +217,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingConnectorAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">A delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingConnectorAvailabilityStatusResponse">The parsed SetChargingConnectorAvailabilityStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingConnectorAvailabilityStatusRequest                            Request,

@@ -176,7 +176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">A delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEBusyStatusRequest Parse(XElement                                           SetEVSEBusyStatusRequestXML,
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">A delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEBusyStatusRequest Parse(String                                             SetEVSEBusyStatusRequestText,
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
@@ -230,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">A delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                           SetEVSEBusyStatusRequestXML,
@@ -303,7 +303,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">A delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                             SetEVSEBusyStatusRequestText,

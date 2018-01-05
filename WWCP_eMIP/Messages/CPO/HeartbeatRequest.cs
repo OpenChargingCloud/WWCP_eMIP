@@ -123,7 +123,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static HeartbeatRequest Parse(XElement                                   HeartbeatRequestXML,
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
@@ -150,7 +150,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestText">The text to parse.</param>
-        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static HeartbeatRequest Parse(String                                     HeartbeatRequestText,
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
@@ -177,7 +177,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
-        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                   HeartbeatRequestXML,
@@ -230,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="HeartbeatRequestText">The text to parse.</param>
-        /// <param name="CustomSendHeartbeatRequestParser">A delegate to parse custom HeartbeatRequest XML elements.</param>
+        /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                     HeartbeatRequestText,

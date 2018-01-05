@@ -103,7 +103,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">A delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            XElement                                                 SetEVSESyntheticStatusResponseXML,
@@ -133,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">A delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            String                                                   SetEVSESyntheticStatusResponseText,
@@ -163,7 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">A delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,
@@ -217,7 +217,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">A delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,

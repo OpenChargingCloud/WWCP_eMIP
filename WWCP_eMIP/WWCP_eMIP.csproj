@@ -50,7 +50,9 @@
     <Compile Include="CPO\CPOClient\ICPOClientExtentions.cs" />
     <Compile Include="DataTypes\ACustomData.cs" />
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
+    <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
+    <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeIds.cs" />
     <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />
+    <Compile Include="Messages\CPO\SetChargeDetailRecordRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusResponse.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Messages\CPO\SetChargingStationAvailabilityStatusResponse.cs" />
     <Compile Include="Messages\CPO\GetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\CPO\GetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\CPO\SetChargeDetailRecordResponse.cs" />
     <Compile Include="Messages\CPO\SetEVSESyntheticStatusResponse.cs" />
     <Compile Include="Messages\CPO\SetEVSESyntheticStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetEVSEBusyStatusResponse.cs" />

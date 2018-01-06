@@ -94,11 +94,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Documentation
 
-        // <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+        // <soap:Envelope xmlns:soap = "http://www.w3.org/2003/05/soap-envelope"
+        //                xmlns:eMIP = "https://api-iop.gireve.com/schemas/PlatformV1/">
         //
         //   <soap:Header />
         //
-        //   <soap:Body xmlns:eMIP="https://api-iop.gireve.com/schemas/PlatformV1/">
+        //   <soap:Body>
         //     <eMIP:eMIP_ToIOP_HeartbeatRequest>
         //
         //       <!--Optional:-->

@@ -497,21 +497,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 return (TransactionId.HasValue
-                            ? TransactionId.GetHashCode() * 23
+                            ? TransactionId.            GetHashCode() * 19
                             : 0) ^
 
-                       PartnerId.         GetHashCode() * 21 ^
-                       OperatorId.        GetHashCode() * 17 ^
-                       ChargingStationId. GetHashCode() * 13 ^
-                       StatusEventDate.   GetHashCode() * 11 ^
-                       AvailabilityStatus.GetHashCode() *  7 ^
+                       PartnerId.                       GetHashCode() * 17 ^
+                       OperatorId.                      GetHashCode() * 13 ^
+                       ChargingStationId.               GetHashCode() * 11 ^
+                       StatusEventDate.                 GetHashCode() *  7 ^
+                       AvailabilityStatus.              GetHashCode() *  5 ^
 
                        (AvailabilityStatusUntil.HasValue
-                            ? AvailabilityStatusUntil.  GetHashCode() * 5
+                            ? AvailabilityStatusUntil.  GetHashCode() * 3
                             : 0) ^
 
                        (AvailabilityStatusComment.IsNeitherNullNorEmpty()
-                            ? AvailabilityStatusComment.GetHashCode() * 3
+                            ? AvailabilityStatusComment.GetHashCode()
                             : 0);
 
             }

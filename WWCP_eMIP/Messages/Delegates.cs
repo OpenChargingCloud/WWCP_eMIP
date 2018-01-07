@@ -24,10 +24,10 @@ using System.Xml.Linq;
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
-    /// <summary>
-    /// A delegate for post-processing XML before sending it upstream.
-    /// </summary>
-    /// <param name="XML">A XML element to process.</param>
-    public delegate XElement XMLPostProcessingDelegate(XElement XML);
+  //  /// <summary>
+  //  /// A delegate for post-processing XML before sending it upstream.
+  //  /// </summary>
+  //  /// <param name="XML">A XML element to process.</param>
+  //  public delegate XElement XMLPostProcessingDelegate(XElement XML);
 
 }

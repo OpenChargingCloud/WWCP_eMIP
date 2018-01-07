@@ -52,11 +52,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public EVSE_Id                       EVSEId                         { get; }
 
-        /// <summary>
-        /// The optional transaction identification.
-        /// </summary>
-        public Transaction_Id?               TransactionId                  { get; }
-
 
         /// <summary>
         /// The timestamp of the EVSE availability status change.
@@ -143,7 +138,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              EventTracking_Id              EventTrackingId              = null,
                                              TimeSpan?                     RequestTimeout               = null)
 
-            : base(Timestamp,
+            : base(TransactionId,
+                   Timestamp,
                    CancellationToken,
                    EventTrackingId,
                    RequestTimeout)
@@ -153,7 +149,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.PartnerId                    = PartnerId;
             this.OperatorId                   = OperatorId;
             this.EVSEId                       = EVSEId;
-            this.TransactionId                = TransactionId;
 
             this.AvailabilityStatusEventDate  = AvailabilityStatusEventDate;
             this.AvailabilityStatus           = AvailabilityStatus;

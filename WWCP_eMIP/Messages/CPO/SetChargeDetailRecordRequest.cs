@@ -52,11 +52,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public ChargeDetailRecord  ChargeDetailRecord    { get; }
 
-        /// <summary>
-        /// The optional transaction identification.
-        /// </summary>
-        public Transaction_Id?     TransactionId         { get; }
-
         #endregion
 
         #region Constructor(s)
@@ -83,7 +78,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                             EventTracking_Id    EventTrackingId     = null,
                                             TimeSpan?           RequestTimeout      = null)
 
-            : base(Timestamp,
+            : base(TransactionId,
+                   Timestamp,
                    CancellationToken,
                    EventTrackingId,
                    RequestTimeout)
@@ -93,7 +89,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.PartnerId           = PartnerId;
             this.OperatorId          = OperatorId;
             this.ChargeDetailRecord  = ChargeDetailRecord;
-            this.TransactionId       = TransactionId;
 
         }
 
@@ -119,7 +114,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <operatorIdType>eMI3</operatorIdType>
         //       <operatorId>FR*798</operatorId>
         //
-        //       <chargeDetailRecord>        //           [...]        //       </chargeDetailRecord>        //
+        //       <chargeDetailRecord>
+        //           [...]
+        //       </chargeDetailRecord>
+        //
         //     </eMIP:eMIP_ToIOP_SetChargeDetailRecordRequest>
         //   </soap:Body>
         //

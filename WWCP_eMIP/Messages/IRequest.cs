@@ -34,6 +34,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     {
 
         /// <summary>
+        /// The transaction identification.
+        /// </summary>
+        Transaction_Id?     TransactionId       { get; }
+
+
+
+        /// <summary>
         /// The optional timestamp of the request.
         /// </summary>
         DateTime?           Timestamp           { get; }

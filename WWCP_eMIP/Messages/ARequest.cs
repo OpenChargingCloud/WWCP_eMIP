@@ -50,6 +50,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
+        /// The optional eMIP transaction identification.
+        /// </summary>
+        public Transaction_Id?          TransactionId              { get; }
+
+
+        /// <summary>
         /// The optional timestamp of the request.
         /// </summary>
         public DateTime?                Timestamp                  { get; }
@@ -81,15 +87,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Create a new generic eMIP request message.
         /// </summary>
+        /// <param name="TransactionId">An optional eMIP transaction identification.</param>
+        /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public ARequest(DateTime?           Timestamp           = null,
+        public ARequest(Transaction_Id?     TransactionId       = null,
+
+                        DateTime?           Timestamp           = null,
                         CancellationToken?  CancellationToken   = null,
                         EventTracking_Id    EventTrackingId     = null,
                         TimeSpan?           RequestTimeout      = null)
         {
+
+            this.TransactionId            = TransactionId;
 
             this.Timestamp                = Timestamp         ?? DateTime.UtcNow;
             this.CancellationTokenSource  = CancellationToken == null ? new CancellationTokenSource() : null;

@@ -63,11 +63,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public ChargingConnectorAvailabilityStatusTypes  AvailabilityStatus           { get; }
 
         /// <summary>
-        /// The optional transaction identification.
-        /// </summary>
-        public Transaction_Id?                           TransactionId                { get; }
-
-        /// <summary>
         /// The optional timestamp until which the given availability status is valid.
         /// </summary>
         public DateTime?                                 AvailabilityStatusUntil      { get; }
@@ -111,7 +106,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              EventTracking_Id                          EventTrackingId             = null,
                                                              TimeSpan?                                 RequestTimeout              = null)
 
-            : base(Timestamp,
+            : base(TransactionId,
+                   Timestamp,
                    CancellationToken,
                    EventTrackingId,
                    RequestTimeout)
@@ -123,7 +119,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.ChargingConnectorId        = ChargingConnectorId;
             this.StatusEventDate            = StatusEventDate;
             this.AvailabilityStatus         = AvailabilityStatus;
-            this.TransactionId              = TransactionId;
             this.AvailabilityStatusUntil    = AvailabilityStatusUntil;
             this.AvailabilityStatusComment  = AvailabilityStatusComment?.Trim();
 

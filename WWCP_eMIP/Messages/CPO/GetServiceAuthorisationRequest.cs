@@ -63,11 +63,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public Service_Id                 RequestedServiceId         { get; }
 
         /// <summary>
-        /// The optional transaction identification.
-        /// </summary>
-        public Transaction_Id?            TransactionId              { get; }
-
-        /// <summary>
         /// The optional partner session identification.
         /// </summary>
         public PartnerServiceSession_Id?  PartnerServiceSessionId    { get; }
@@ -104,7 +99,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                               EventTracking_Id           EventTrackingId           = null,
                                               TimeSpan?                  RequestTimeout            = null)
 
-            : base(Timestamp,
+            : base(TransactionId,
+                   Timestamp,
                    CancellationToken,
                    EventTrackingId,
                    RequestTimeout)
@@ -116,7 +112,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.EVSEId                   = EVSEId;
             this.UserId                   = UserId;
             this.RequestedServiceId       = RequestedServiceId;
-            this.TransactionId            = TransactionId;
             this.PartnerServiceSessionId  = PartnerServiceSessionId;
 
         }
@@ -152,7 +147,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <requestedServiceId>?</requestedServiceId>
         //
         //       <!--Optional:-->
-        //       <partnerServiceSessionId>?</partnerServiceSessionId>        //
+        //       <partnerServiceSessionId>?</partnerServiceSessionId>
+        //
         //     </eMIP:eMIP_ToIOP_GetServiceAuthorisationRequest>
         //   </soap:Body>
         //

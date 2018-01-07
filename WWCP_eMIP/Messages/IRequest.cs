@@ -28,16 +28,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// The common interface of an eMIP request message.
+    /// The common interface of all eMIP request messages.
     /// </summary>
     public interface IRequest
     {
 
         /// <summary>
-        /// The transaction identification.
+        /// The partner identification.
+        /// </summary>
+        Partner_Id          PartnerId           { get; }
+
+        /// <summary>
+        /// An optional transaction identification.
         /// </summary>
         Transaction_Id?     TransactionId       { get; }
-
 
 
         /// <summary>

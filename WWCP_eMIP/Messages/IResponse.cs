@@ -24,21 +24,8 @@ using System;
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
-    //public delegate T        CustomJObjectParserDelegate<T>    (JObject  JSON, T Data);
-
-    //public delegate T        CustomJArrayParserDelegate<T>     (JArray   JSON, T Data);
-
-    //public delegate JObject  CustomJObjectSerializerDelegate<T>(T ResponseBuilder, JObject JSON);
-
-    //public delegate JArray   CustomJArraySerializerDelegate<T> (T ResponseBuilder, JArray  JSON);
-
-    //public delegate TB CustomMapper2Delegate<TB>(TB ResponseBuilder);
-
-    //public delegate TB CustomMapperDelegate<T, TB>(XElement XML, TB ResponseBuilder);
-
-
     /// <summary>
-    /// The common interface of an eMIP response message.
+    /// The common interface of all eMIP response messages.
     /// </summary>
     public interface IResponse
     {
@@ -49,14 +36,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         DateTime        ResponseTimestamp    { get; }
 
         /// <summary>
-        /// The transaction identification.
+        /// The eMIP transaction identification.
         /// </summary>
         Transaction_Id  TransactionId        { get; }
 
         /// <summary>
-        /// The status of the request.
+        /// The eMIP status of the request.
         /// </summary>
         RequestStatus   RequestStatus        { get; }
+
+    }
+
+
+    /// <summary>
+    /// The common interface of an eMIP response message.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the eMIP request.</typeparam>
+    public interface IResponse<TRequest> : IResponse
+
+        where TRequest : class, IRequest
+
+    {
+
+        /// <summary>
+        /// The request leading to this response.
+        /// </summary>
+        TRequest        Request              { get; }
 
     }
 

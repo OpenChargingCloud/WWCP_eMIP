@@ -92,4 +92,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "RCS1168:Parameter name differs from base name.", Justification = "<Pending>", Scope = "member", Target = "~M:org.GraphDefined.WWCP.eMIPv0_7_4.Provider_Id.CompareTo(org.GraphDefined.WWCP.eMIPv0_7_4.Provider_Id)~System.Int32")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "RCS1168:Parameter name differs from base name.", Justification = "<Pending>", Scope = "member", Target = "~M:org.GraphDefined.WWCP.eMIPv0_7_4.ChargeDetailRecord.Builder.Equals(org.GraphDefined.WWCP.eMIPv0_7_4.ChargeDetailRecord.Builder)~System.Boolean")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "RCS1168:Parameter name differs from base name.", Justification = "<Pending>", Scope = "member", Target = "~M:org.GraphDefined.WWCP.eMIPv0_7_4.ARequest`1.Equals(`0)~System.Boolean")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "RCS1168:Parameter name differs from base name.", Justification = "<Pending>", Scope = "member", Target = "~M:org.GraphDefined.WWCP.eMIPv0_7_4.AResponse`2.Equals(`1)~System.Boolean")]
 

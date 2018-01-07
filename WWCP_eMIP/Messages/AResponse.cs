@@ -31,7 +31,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <typeparam name="TRequest">The type of the eMIP request.</typeparam>
     /// <typeparam name="TResponse">The type of the eMIP response.</typeparam>
     public abstract class AResponse<TRequest, TResponse> : ACustomData,
-                                                           IResponse,
+                                                           IResponse<TRequest>,
                                                            IEquatable<TResponse>
 
         where TRequest  : class, IRequest
@@ -51,13 +51,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         public DateTime        ResponseTimestamp    { get; }
 
+
         /// <summary>
-        /// The transaction identification.
+        /// The eMIP transaction identification.
         /// </summary>
         public Transaction_Id  TransactionId        { get; }
 
         /// <summary>
-        /// The status of the request.
+        /// The eMIP status of the request.
         /// </summary>
         public RequestStatus   RequestStatus        { get; }
 
@@ -121,13 +122,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region IEquatable<AResponse> Members
+        #region IEquatable<TResponse> Members
 
         /// <summary>
         /// Compare two abstract responses for equality.
         /// </summary>
-        /// <param name="AResponse">Another abstract eMIP response.</param>
-        public abstract Boolean Equals(TResponse AResponse);
+        /// <param name="TResponse">Another abstract eMIP response.</param>
+        public abstract Boolean Equals(TResponse TResponse);
 
         #endregion
 

@@ -38,11 +38,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Properties
 
         /// <summary>
-        /// The partner identification.
-        /// </summary>
-        public Partner_Id          PartnerId             { get; }
-
-        /// <summary>
         /// The operator identification.
         /// </summary>
         public Operator_Id         OperatorId            { get; }
@@ -78,7 +73,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                             EventTracking_Id    EventTrackingId     = null,
                                             TimeSpan?           RequestTimeout      = null)
 
-            : base(TransactionId,
+            : base(PartnerId,
+                   TransactionId,
                    Timestamp,
                    CancellationToken,
                    EventTrackingId,
@@ -86,7 +82,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.PartnerId           = PartnerId;
             this.OperatorId          = OperatorId;
             this.ChargeDetailRecord  = ChargeDetailRecord;
 

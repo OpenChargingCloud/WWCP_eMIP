@@ -40,19 +40,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Properties
 
         /// <summary>
-        /// The transaction identification.
-        /// </summary>
-        public Transaction_Id     TransactionId             { get; }
-
-        /// <summary>
         /// The service session identification.
         /// </summary>
         public ServiceSession_Id  ServiceSessionId          { get; }
-
-        /// <summary>
-        /// The status of the request.
-        /// </summary>
-        public RequestStatus      RequestStatus             { get; }
 
         /// <summary>
         /// The optional sales partner operator identification.
@@ -80,13 +70,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
+                   TransactionId,
+                   RequestStatus,
                    CustomData)
 
         {
 
-            this.TransactionId           = TransactionId;
             this.ServiceSessionId        = ServiceSessionId;
-            this.RequestStatus           = RequestStatus;
             this.SalesPartnerOperatorId  = SalesPartnerOperatorId;
 
         }
@@ -111,7 +101,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <!--Optional:-->
         //          <salePartnerOperatorId>?</salePartnerOperatorId>
         //
-        //          <serviceSessionId>?</serviceSessionId>        //
+        //          <serviceSessionId>?</serviceSessionId>
+        //
         //          <requestStatus>1</requestStatus>
         //
         //       </eMIP:eMIP_ToIOP_SetChargeDetailRecordResponse>

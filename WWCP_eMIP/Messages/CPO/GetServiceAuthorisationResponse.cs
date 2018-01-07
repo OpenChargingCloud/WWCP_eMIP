@@ -40,14 +40,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Properties
 
         /// <summary>
-        /// The transaction identification.
-        /// </summary>
-        public Transaction_Id            TransactionId                 { get; }
-
-        /// <summary>
         /// The result of the authorisation.
         /// </summary>
-        public AuthorisationValues       AuthorisationValue            { get; }
+        public AuthorisationValues       AuthorisationValue          { get; }
 
         /// <summary>
         /// The GIREVE session id for this service session.
@@ -57,33 +52,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// Whether the eMSP wishes to receive intermediate charging session records.
         /// </summary>
-        public Boolean                   IntermediateCDRRequested      { get; }
+        public Boolean                   IntermediateCDRRequested    { get; }
 
-        /// <summary>
-        /// The status of the request.
-        /// </summary>
-        public RequestStatus             RequestStatus                 { get; }
 
         /// <summary>
         /// The optional sales operator identification.
         /// </summary>
-        public Operator_Id?              SalesPartnerOperatorIdType    { get; }
+        public Provider_Id?              SalesPartnerOperatorId      { get; }
 
         /// <summary>
         /// An optional alias of the contract id between the end-user and the eMSP.
         /// This alias may have been anonymised by the eMSP.
         /// </summary>
-        public Contract_Id?              UserContractIdAlias           { get; }
+        public Contract_Id?              UserContractIdAlias         { get; }
 
         /// <summary>
         /// An optional meter limits for this authorisation:
-        /// The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.        /// </summary>
-        public IEnumerable<MeterReport>  MeterLimitList                { get; }
+        /// The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.
+        /// </summary>
+        public IEnumerable<MeterReport>  MeterLimits                 { get; }
 
-        // /// <summary>
-        // /// Undocumented! Appears only in the WSDL file!
-        // /// </summary>
-        // public String                    Parameter                     { get; }
+        /// <summary>
+        /// Optional information from the CPO to the eMSP.
+        /// </summary>
+        public String                    Parameter                   { get; }
 
         #endregion
 
@@ -98,9 +90,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceSessionId">The GIREVE session id for this service session.</param>
         /// <param name="IntermediateCDRRequested">Whether the eMSP wishes to receive intermediate charging session records.</param>
         /// <param name="RequestStatus">The status of the request.</param>
-        /// <param name="SalesPartnerOperatorIdType">The optional sales operator identification.</param>
+        /// <param name="SalesPartnerOperatorId">The optional sales operator identification.</param>
         /// <param name="UserContractIdAlias">An optional alias of the contract id between the end-user and the eMSP. This alias may have been anonymised by the eMSP.</param>
-        /// <param name="MeterLimitList">An optional meter limits for this authorisation: The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.</param>
+        /// <param name="MeterLimits">An optional meter limits for this authorisation: The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.</param>
+        /// <param name="Parameter">Optional information from the CPO to the eMSP.</param>
+        /// 
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
@@ -109,26 +103,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Boolean                              IntermediateCDRRequested,
                                                RequestStatus                        RequestStatus,
 
-                                               Operator_Id?                         SalesPartnerOperatorIdType   = null,
-                                               Contract_Id?                         UserContractIdAlias          = null,
-                                               IEnumerable<MeterReport>             MeterLimitList               = null,
-                                               //String                               Parameter                    = null,  //Undocumented! Appears only in the WSDL file!
-                                               IReadOnlyDictionary<String, Object>  CustomData                   = null)
+                                               Provider_Id?                         SalesPartnerOperatorId   = null,
+                                               Contract_Id?                         UserContractIdAlias      = null,
+                                               IEnumerable<MeterReport>             MeterLimits              = null,
+                                               String                               Parameter                = null,
+                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
+                   TransactionId,
+                   RequestStatus,
                    CustomData)
 
         {
 
-            this.TransactionId               = TransactionId;
-            this.AuthorisationValue          = AuthorisationValue;
-            this.ServiceSessionId            = ServiceSessionId;
-            this.IntermediateCDRRequested    = IntermediateCDRRequested;
-            this.RequestStatus               = RequestStatus;
+            this.AuthorisationValue        = AuthorisationValue;
+            this.ServiceSessionId          = ServiceSessionId;
+            this.IntermediateCDRRequested  = IntermediateCDRRequested;
 
-            this.SalesPartnerOperatorIdType  = SalesPartnerOperatorIdType;
-            this.UserContractIdAlias         = UserContractIdAlias;
-            this.MeterLimitList              = MeterLimitList;
+            this.SalesPartnerOperatorId    = SalesPartnerOperatorId;
+            this.UserContractIdAlias       = UserContractIdAlias;
+            this.MeterLimits               = MeterLimits ?? new MeterReport[0];
+            this.Parameter                 = Parameter;
 
         }
 
@@ -172,8 +167,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //
         //          </meterLimitList>
         //
-        //          <!--Optional:-->  [Undocumented! Appears only in the WSDL file!]
-        //          <parameter>?</parameter>        //
+        //          <!--Optional:-->
+        //          <parameter>?</parameter>
+        //
         //          <requestStatus>1</requestStatus>
         //
         //       </eMIP:eMIP_ToIOP_GetServiceAuthorisationResponse>
@@ -291,7 +287,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                             RequestStatus.Parse),
 
                                                       GetServiceAuthorisationResponseXML.MapValueOrNullable(eMIPNS.Authorisation + "salePartnerOperatorId",
-                                                                                                            Operator_Id.Parse),
+                                                                                                            Provider_Id.Parse),
 
                                                       GetServiceAuthorisationResponseXML.MapValueOrNullable(eMIPNS.Authorisation + "userContractIdAlias",
                                                                                                             Contract_Id.Parse),
@@ -300,7 +296,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                             eMIPNS.Authorisation + "meterReport",
                                                                                                             s => MeterReport.Parse(s,
                                                                                                                                    CustomMeterReportParser,
-                                                                                                                                   OnException))
+                                                                                                                                   OnException)),
+
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    (eMIPNS.Authorisation + "parameter")
 
                                                   );
 
@@ -371,19 +369,46 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region ToXML(CustomGetServiceAuthorisationResponseSerializer = null)
+        #region ToXML(CustomGetServiceAuthorisationResponseSerializer = null, CustomMeterReportSerializer = null)
 
         /// <summary>
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomGetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer = null)
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
+        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer   = null,
+                              CustomXMLSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                       = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_GetServiceAuthorisationResponse",
 
-                          new XElement(eMIPNS.Authorisation + "transactionId",  TransactionId.ToString()),
-                          new XElement(eMIPNS.Authorisation + "requestStatus",  RequestStatus.ToString())
+                          new XElement(eMIPNS.Authorisation + "transactionId",                      TransactionId.                      ToString()),
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorIdType",    SalesPartnerOperatorId.Value.Format.ToString())
+                              : null,
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorId",        SalesPartnerOperatorId.       Value.ToString())
+                              : null,
+
+                          new XElement(eMIPNS.Authorisation + "authorisationValue",                 AuthorisationValue.                 AsNumber()),
+                          new XElement(eMIPNS.Authorisation + "serviceSessionId",                   ServiceSessionId.                   ToString()),
+                          new XElement(eMIPNS.Authorisation + "intermediateCDRRequested",           IntermediateCDRRequested ? "1" : "0"),
+
+                          UserContractIdAlias.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "userContractIdAlias",          UserContractIdAlias.          Value.ToString())
+                              : null,
+
+                          MeterLimits.Any()
+                              ? new XElement(eMIPNS.Authorisation + "meterLimitList",
+                                    MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer))
+                                )
+                              : null,
+
+                          new XElement(eMIPNS.Authorisation + "parameter",                          Parameter),
+
+                          new XElement(eMIPNS.Authorisation + "requestStatus",                      RequestStatus.ToString())
 
                       );
 
@@ -483,8 +508,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    IntermediateCDRRequested.Equals(GetServiceAuthorisationResponse.IntermediateCDRRequested) &&
                    RequestStatus.           Equals(GetServiceAuthorisationResponse.RequestStatus)            &&
 
-                   ((!SalesPartnerOperatorIdType.HasValue && !GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.HasValue) ||
-                     (SalesPartnerOperatorIdType.HasValue &&  GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.HasValue && SalesPartnerOperatorIdType.Value.Equals(GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.Value))) &&
+                   ((!SalesPartnerOperatorId.HasValue && !GetServiceAuthorisationResponse.SalesPartnerOperatorId.HasValue) ||
+                     (SalesPartnerOperatorId.HasValue &&  GetServiceAuthorisationResponse.SalesPartnerOperatorId.HasValue && SalesPartnerOperatorId.Value.Equals(GetServiceAuthorisationResponse.SalesPartnerOperatorId.Value))) &&
 
                    ((!UserContractIdAlias.       HasValue && !GetServiceAuthorisationResponse.UserContractIdAlias.       HasValue) ||
                      (UserContractIdAlias.       HasValue &&  GetServiceAuthorisationResponse.UserContractIdAlias.       HasValue && UserContractIdAlias.       Value.Equals(GetServiceAuthorisationResponse.UserContractIdAlias.Value)));
@@ -508,21 +533,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             unchecked
             {
 
-                return TransactionId.                    GetHashCode() * 17 ^
-                       AuthorisationValue.               GetHashCode() * 13 ^
-                       ServiceSessionId.                 GetHashCode() * 11 ^
-                       IntermediateCDRRequested.         GetHashCode() *  7 ^
-                       RequestStatus.                    GetHashCode() *  5 ^
+                return TransactionId.                    GetHashCode() * 19 ^
+                       AuthorisationValue.               GetHashCode() * 17 ^
+                       ServiceSessionId.                 GetHashCode() * 13 ^
+                       IntermediateCDRRequested.         GetHashCode() * 11 ^
+                       RequestStatus.                    GetHashCode() *  7 ^
 
-                       (SalesPartnerOperatorIdType.HasValue
-                            ? SalesPartnerOperatorIdType.GetHashCode() *  3
+                       (SalesPartnerOperatorId.HasValue
+                            ? SalesPartnerOperatorId.    GetHashCode() *  5
                             : 0) ^
 
                        (UserContractIdAlias.HasValue
-                            ? UserContractIdAlias.GetHashCode()
-                            : 0);
+                            ? UserContractIdAlias.       GetHashCode() *  3
+                            : 0) ^
 
-                // ToDo: Add MeterLimitList.GetHashCode()!
+                       // ToDo: Add MeterLimits.GetHashCode()!
+
+                       (Parameter.IsNotNullOrEmpty()
+                            ? Parameter.                 GetHashCode()
+                            : 0);
 
             }
         }
@@ -593,7 +622,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <summary>
             /// The optional sales operator identification.
             /// </summary>
-            public Operator_Id?              SalesPartnerOperatorIdType    { get; set; }
+            public Provider_Id?              SalesPartnerOperatorId        { get; set; }
 
             /// <summary>
             /// An optional alias of the contract id between the end-user and the eMSP.
@@ -603,13 +632,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             /// <summary>
             /// An optional meter limits for this authorisation:
-            /// The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.            /// </summary>
-            public IEnumerable<MeterReport>  MeterLimitList                { get; set; }
+            /// The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.
+            /// </summary>
+            public IEnumerable<MeterReport>  MeterLimits                   { get; set; }
 
-            // /// <summary>
-            // /// Undocumented! Appears only in the WSDL file!
-            // /// </summary>
-            // public String                    Parameter                     { get; set; }
+            /// <summary>
+            /// Optional information from the CPO to the eMSP.
+            /// </summary>
+            public String                    Parameter                     { get; set; }
 
             #endregion
 
@@ -653,8 +683,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (GetServiceAuthorisationResponse != null)
                 {
-                    this.TransactionId  = GetServiceAuthorisationResponse.TransactionId;
-                    this.RequestStatus  = GetServiceAuthorisationResponse.RequestStatus;
+
+                    this.TransactionId              = GetServiceAuthorisationResponse.TransactionId;
+
+                    this.TransactionId              = GetServiceAuthorisationResponse.TransactionId;
+                    this.AuthorisationValue         = GetServiceAuthorisationResponse.AuthorisationValue;
+                    this.ServiceSessionId           = GetServiceAuthorisationResponse.ServiceSessionId;
+                    this.IntermediateCDRRequested   = GetServiceAuthorisationResponse.IntermediateCDRRequested;
+                    this.RequestStatus              = GetServiceAuthorisationResponse.RequestStatus;
+
+                    this.SalesPartnerOperatorId     = GetServiceAuthorisationResponse.SalesPartnerOperatorId;
+                    this.UserContractIdAlias        = GetServiceAuthorisationResponse.UserContractIdAlias;
+                    this.MeterLimits                = GetServiceAuthorisationResponse.MeterLimits;
+                    this.Parameter                  = GetServiceAuthorisationResponse.Parameter;
+
+                    this.RequestStatus              = GetServiceAuthorisationResponse.RequestStatus;
+
                 }
 
             }
@@ -683,8 +727,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                        IntermediateCDRRequested.Equals(GetServiceAuthorisationResponse.IntermediateCDRRequested) &&
                        RequestStatus.           Equals(GetServiceAuthorisationResponse.RequestStatus)            &&
 
-                       ((!SalesPartnerOperatorIdType.HasValue && !GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.HasValue) ||
-                         (SalesPartnerOperatorIdType.HasValue &&  GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.HasValue && SalesPartnerOperatorIdType.Value.Equals(GetServiceAuthorisationResponse.SalesPartnerOperatorIdType.Value))) &&
+                       ((!SalesPartnerOperatorId.HasValue && !GetServiceAuthorisationResponse.SalesPartnerOperatorId.HasValue) ||
+                         (SalesPartnerOperatorId.HasValue &&  GetServiceAuthorisationResponse.SalesPartnerOperatorId.HasValue && SalesPartnerOperatorId.Value.Equals(GetServiceAuthorisationResponse.SalesPartnerOperatorId.Value))) &&
 
                        ((!UserContractIdAlias.       HasValue && !GetServiceAuthorisationResponse.UserContractIdAlias.       HasValue) ||
                          (UserContractIdAlias.       HasValue &&  GetServiceAuthorisationResponse.UserContractIdAlias.       HasValue && UserContractIdAlias.       Value.Equals(GetServiceAuthorisationResponse.UserContractIdAlias.Value)));
@@ -709,9 +753,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                        IntermediateCDRRequested,
                                                        RequestStatus,
 
-                                                       SalesPartnerOperatorIdType,
+                                                       SalesPartnerOperatorId,
                                                        UserContractIdAlias,
-                                                       MeterLimitList);
+                                                       MeterLimits,
+                                                       Parameter);
 
             #endregion
 

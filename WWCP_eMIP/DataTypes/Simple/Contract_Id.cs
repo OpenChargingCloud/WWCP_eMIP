@@ -175,7 +175,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             => new Contract_Id(_Random.GetString(Length));
 
 
-        #region Provider overloading
+        #region Operator overloading
 
         #region Provider == (ContractId1, ContractId2)
 

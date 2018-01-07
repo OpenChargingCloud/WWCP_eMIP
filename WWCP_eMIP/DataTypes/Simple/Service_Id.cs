@@ -171,7 +171,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Provider overloading
+        #region Operator overloading
 
         #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)
 

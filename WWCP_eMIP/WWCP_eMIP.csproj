@@ -63,8 +63,10 @@
     <Compile Include="DataTypes\Enums\EVSEAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\ICustomData.cs" />
     <Compile Include="DataTypes\Simple\ChargingPool_Id.cs" />
+    <Compile Include="DataTypes\Simple\Provider_Id.cs" />
     <Compile Include="DataTypes\Simple\ServiceSession_Id.cs" />
     <Compile Include="DataTypes\Simple\Contract_Id.cs" />
+    <Compile Include="DataTypes\Simple\PartnerProduct_Id.cs" />
     <Compile Include="DataTypes\Simple\User_Id.cs" />
     <Compile Include="DataTypes\Simple\Service_Id.cs" />
     <Compile Include="DataTypes\Simple\Partner_Id.cs" />

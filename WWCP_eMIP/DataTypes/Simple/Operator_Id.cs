@@ -121,7 +121,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Format">The format of the charging operator identification.</param>
         private Operator_Id(Country            CountryCode,
                             String             Suffix,
-                            OperatorIdFormats  Format = OperatorIdFormats.eMI3)
+                            OperatorIdFormats  Format = OperatorIdFormats.eMI3_STAR)
         {
 
             this.CountryCode  = CountryCode;
@@ -145,14 +145,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             #region Initial checks
 
             if (Text != null)
-                Text = Text.Trim();
+                Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text), "The given text representation of an operator identification must not be null or empty!");
 
             #endregion
 
-            var MatchCollection = OperatorId_RegEx.Matches(Text.Trim().ToUpper());
+            var MatchCollection = OperatorId_RegEx.Matches(Text);
 
             if (MatchCollection.Count == 1 &&
                 Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
@@ -170,7 +170,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(CountryCode, Suffix, IdFormat = IdFormatType.ISO)
+        #region Parse(CountryCode, Suffix, IdFormat = IdFormatType.eMI3_STAR)
 
         /// <summary>
         /// Parse the given string as an charging operator identification.
@@ -180,7 +180,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="IdFormat">The format of the charging operator identification [old|new].</param>
         public static Operator_Id Parse(Country            CountryCode,
                                         String             Suffix,
-                                        OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3)
+                                        OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3_STAR)
         {
 
             #region Initial checks
@@ -239,6 +239,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #region Initial checks
 
+            if (Text != null)
+                Text = Text.Trim().ToUpper();
+
             if (Text.IsNullOrEmpty())
             {
                 OperatorId = default(Operator_Id);
@@ -250,7 +253,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = OperatorId_RegEx.Matches(Text.Trim().ToUpper());
+                var MatchCollection = OperatorId_RegEx.Matches(Text);
 
                 if (MatchCollection.Count == 1 &&
                     Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
@@ -334,7 +337,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return TryParse(CountryCode.Alpha2Code +       Suffix,
                                     out OperatorId);
 
-                default: // ISO_STAR:
+                default:
                     return TryParse(CountryCode.Alpha2Code + "*" + Suffix,
                                     out OperatorId);
 

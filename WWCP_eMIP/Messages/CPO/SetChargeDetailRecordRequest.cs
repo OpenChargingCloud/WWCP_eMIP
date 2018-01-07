@@ -135,10 +135,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargeDetailRecordRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargeDetailRecordRequest Parse(XElement                                               SetChargeDetailRecordRequestXML,
                                                          CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                                          CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
+                                                         CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
                                                          OnExceptionDelegate                                    OnException                                   = null)
         {
 
@@ -146,6 +148,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetChargeDetailRecordRequest _SetChargeDetailRecordRequest,
                          CustomSendSetChargeDetailRecordRequestParser,
                          CustomChargeDetailRecordParser,
+                         CustomMeterReportParser,
                          OnException))
             {
                 return _SetChargeDetailRecordRequest;
@@ -165,10 +168,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargeDetailRecordRequestText">The text to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargeDetailRecordRequest Parse(String                                                 SetChargeDetailRecordRequestText,
                                                          CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                                          CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
+                                                         CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
                                                          OnExceptionDelegate                                    OnException                                   = null)
         {
 
@@ -176,6 +181,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetChargeDetailRecordRequest _SetChargeDetailRecordRequest,
                          CustomSendSetChargeDetailRecordRequestParser,
                          CustomChargeDetailRecordParser,
+                         CustomMeterReportParser,
                          OnException))
             {
                 return _SetChargeDetailRecordRequest;
@@ -196,11 +202,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargeDetailRecordRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                               SetChargeDetailRecordRequestXML,
                                        out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
                                        CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                        CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
+                                       CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
                                        OnExceptionDelegate                                    OnException                                   = null)
         {
 
@@ -216,7 +224,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                       Operator_Id.Parse),
 
                                                    SetChargeDetailRecordRequestXML.MapElementOrFail  (eMIPNS.Default + "operatorId",
-                                                                                                      (s, e) => ChargeDetailRecord.Parse(s, CustomChargeDetailRecordParser, e),
+                                                                                                      (s, e) => ChargeDetailRecord.Parse(s,
+                                                                                                                                         CustomChargeDetailRecordParser,
+                                                                                                                                         CustomMeterReportParser,
+                                                                                                                                         e),
                                                                                                       OnException),
 
                                                    SetChargeDetailRecordRequestXML.MapValueOrNullable(eMIPNS.Default + "transactionId",
@@ -255,11 +266,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargeDetailRecordRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                 SetChargeDetailRecordRequestText,
                                        out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
                                        CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                        CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
+                                       CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
                                        OnExceptionDelegate                                    OnException                                   = null)
         {
 
@@ -270,6 +283,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out SetChargeDetailRecordRequest,
                              CustomSendSetChargeDetailRecordRequestParser,
                              CustomChargeDetailRecordParser,
+                             CustomMeterReportParser,
                              OnException))
                 {
                     return true;
@@ -454,7 +468,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              OperatorId);
 
         #endregion
-
 
     }
 

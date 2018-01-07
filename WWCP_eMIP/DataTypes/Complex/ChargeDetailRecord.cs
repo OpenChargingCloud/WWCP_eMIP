@@ -18,6 +18,7 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 
@@ -41,19 +42,76 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
-        /// The meter value.
+        /// State of the charging session.
         /// </summary>
-        public String        Value    { get; }
+        public CDRNatures                CDRNature                { get; }
 
         /// <summary>
-        /// The unit of the meter value.
+        /// GIREVE session id for this charging session.
         /// </summary>
-        public String        Unit     { get; }
+        public ServiceSession_Id         ServiceSessionId         { get; }
 
         /// <summary>
-        /// The type of the meter value.
+        /// The unique identification of the requested service for this charging session.
         /// </summary>
-        public MeterTypeIds  Type     { get; }
+        public Service_Id                RequestedServiceId       { get; }
+
+        /// <summary>
+        /// The unique identification of the EVSE used for charging.
+        /// </summary>
+        public EVSE_Id                   EVSEId                   { get; }
+
+        /// <summary>
+        /// Alias of the contract id between the end-user and the eMSP.
+        /// This alias may have been anonymised by the eMSP.
+        /// </summary>
+        public Contract_Id               UserContractIdAlias      { get; }
+
+        /// <summary>
+        /// The unique identification of the user.
+        /// </summary>
+        public User_Id                   UserId                   { get; }
+
+        /// <summary>
+        /// Start time of the charging session.
+        /// </summary>
+        public DateTime                  StartTime                { get; }
+
+        /// <summary>
+        /// End time of the charging session, or the timestamp of the meter reading for intermediate charge detail records.
+        /// </summary>
+        public DateTime                  EndTime                  { get; }
+
+
+        /// <summary>
+        /// Charging session identification at the operator.
+        /// </summary>
+        public ServiceSession_Id?        ExecPartnerSessionId     { get; }
+
+        /// <summary>
+        /// The unique identification of the charging operator.
+        /// </summary>
+        public Operator_Id?              ExecPartnerOperatorId    { get; }
+
+        /// <summary>
+        /// Charging session identification at the e-mobility provider.
+        /// </summary>
+        public ServiceSession_Id?        SalesPartnerSessionId    { get; }
+
+        /// <summary>
+        /// The unique identification of the e-mobility provider.
+        /// </summary>
+        public Provider_Id?              SalesPartnerOperatorId   { get; }
+
+        /// <summary>
+        /// The unique identification of the charging product.
+        /// </summary>
+        public PartnerProduct_Id?        PartnerProductId         { get; }
+
+        /// <summary>
+        /// An optional enumeration of meter reports.
+        /// </summary>
+        public IEnumerable<MeterReport>  MeterReports             { get; }
 
         #endregion
 
@@ -62,56 +120,62 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Create a new charge detail record.
         /// </summary>
-        /// <param name="Value">The meter value.</param>
-        /// <param name="Unit">The unit of the meter value.</param>
-        /// <param name="Type">The type of the meter value.</param>
+        /// <param name="CDRNature">State of the charging session.</param>
+        /// <param name="ServiceSessionId">GIREVE session id for this charging session.</param>
+        /// <param name="RequestedServiceId">The unique identification of the requested service for this charging session.</param>
+        /// <param name="EVSEId">The unique identification of the EVSE used for charging.</param>
+        /// <param name="UserContractIdAlias">Alias of the contract id between the end-user and the eMSP. This alias may have been anonymised by the eMSP.</param>
+        /// <param name="UserId">The unique identification of the user.</param>
+        /// <param name="StartTime">Start time of the charging session.</param>
+        /// <param name="EndTime">End time of the charging session, or the timestamp of the meter reading for intermediate charge detail records.</param>
+        /// 
+        /// <param name="ExecPartnerSessionId">Charging session identification at the operator.</param>
+        /// <param name="ExecPartnerOperatorId">The unique identification of the charging operator.</param>
+        /// <param name="SalesPartnerSessionId">Charging session identification at the e-mobility provider.</param>
+        /// <param name="SalesPartnerOperatorId">The unique identification of the e-mobility provider.</param>
+        /// <param name="PartnerProductId">The unique identification of the charging product.</param>
+        /// <param name="MeterReports">An optional enumeration of meter reports.</param>
+        /// 
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
-        public ChargeDetailRecord(String                               Value,
-                           String                               Unit,
-                           MeterTypeIds                         Type,
-                           IReadOnlyDictionary<String, Object>  CustomData    = null)
+        public ChargeDetailRecord(CDRNatures                           CDRNature,
+                                  ServiceSession_Id                    ServiceSessionId,
+                                  Service_Id                           RequestedServiceId,
+                                  EVSE_Id                              EVSEId,
+                                  Contract_Id                          UserContractIdAlias,
+                                  User_Id                              UserId,
+                                  DateTime                             StartTime,
+                                  DateTime                             EndTime,
+
+                                  ServiceSession_Id?                   ExecPartnerSessionId     = null,
+                                  Operator_Id?                         ExecPartnerOperatorId    = null,
+                                  ServiceSession_Id?                   SalesPartnerSessionId    = null,
+                                  Provider_Id?                         SalesPartnerOperatorId   = null,
+                                  PartnerProduct_Id?                   PartnerProductId         = null,
+                                  IEnumerable<MeterReport>             MeterReports             = null,
+
+                                  IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(CustomData)
 
         {
 
-            #region Initial checks
+            this.CDRNature               = CDRNature;
+            this.ServiceSessionId        = ServiceSessionId;
+            this.RequestedServiceId      = RequestedServiceId;
+            this.EVSEId                  = EVSEId;
+            this.UserContractIdAlias     = UserContractIdAlias;
+            this.UserId                  = UserId;
+            this.StartTime               = StartTime;
+            this.EndTime                 = EndTime;
 
-            if (Value.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Value),  "The given value must not be null or empty!");
-
-            if (Unit. IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Unit),   "The given unit must not be null or empty!");
-
-            #endregion
-
-            this.Value  = Value.Trim();
-            this.Unit   = Unit. Trim();
-            this.Type   = Type;
+            this.ExecPartnerSessionId    = ExecPartnerSessionId;
+            this.ExecPartnerOperatorId   = ExecPartnerOperatorId;
+            this.SalesPartnerSessionId   = SalesPartnerSessionId;
+            this.SalesPartnerOperatorId  = SalesPartnerOperatorId;
+            this.PartnerProductId        = PartnerProductId;
+            this.MeterReports            = MeterReports ?? new MeterReport[0];
 
         }
-
-        #endregion
-
-
-        #region (static) Create(Value, Unit, Type, ...)
-
-        /// <summary>
-        /// Create a new charge detail record.
-        /// </summary>
-        /// <param name="Value">The meter value.</param>
-        /// <param name="Unit">The unit of the meter value.</param>
-        /// <param name="Type">The type of the meter value.</param>
-        /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
-        public static ChargeDetailRecord Create(String                               Value,
-                                         String                               Unit,
-                                         MeterTypeIds                         Type,
-                                         IReadOnlyDictionary<String, Object>  CustomData    = null)
-
-            => new ChargeDetailRecord(Value,
-                               Unit,
-                               Type,
-                               CustomData);
 
         #endregion
 
@@ -121,39 +185,85 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         // <soap:Envelope xmlns:soap = "http://www.w3.org/2003/05/soap-envelope"
         //                xmlns:eMIP = "https://api-iop.gireve.com/schemas/AuthorisationV1/">
         //
-        //  [...]
+        // [...]
         //
-        //  <meterReport>
-        //     <meterTypeId>?</meterTypeId>
-        //     <meterValue>?</meterValue>
-        //     <meterUnit>?</meterUnit>
-        //  </meterReport>
+        // <chargeDetailRecord>
         //
-        //  [...]
+        //    <CDRNature>?</CDRNature>
+        //
+        //    <serviceSessionId>?</serviceSessionId>
+        //
+        //
+        //    <!--Optional:-->
+        //    <execPartnerSessionId>?</execPartnerSessionId>        //
+        //    <!--Optional:-->
+        //    <execPartnerOperatorIdType>?</execPartnerOperatorIdType>        //    <!--Optional:-->
+        //    <execPartnerOperatorId>?</execPartnerOperatorId>
+        //
+        //
+        //    <!--Optional:-->
+        //    <salePartnerSessionId>?</salePartnerSessionId>        //
+        //    <!--Optional:-->
+        //    <salePartnerOperatorIdType>?</salePartnerOperatorIdType>
+        //    <!--Optional:-->
+        //    <salePartnerOperatorId>?</salePartnerOperatorId>
+        //
+        //
+        //    <requestedServiceId>?</requestedServiceId>
+        //
+        //    <EVSEIdType>?</EVSEIdType>
+        //    <EVSEId>?</EVSEId>
+        //
+        //    <userContractIdAlias>?</userContractIdAlias>
+        //    <userIdType>?</userIdType>
+        //    <userId>?</userId>
+        //
+        //    <!--Optional:-->
+        //    <partnerProductId>?</partnerProductId>
+        //
+        //    <startTime>?</startTime>
+        //    <endTime>?</endTime>
+        //
+        //    <meterReportList>
+        //       <!--Zero or more repetitions:-->
+        //       <meterReport>
+        //          <meterTypeId>?</meterTypeId>
+        //          <meterValue>?</meterValue>
+        //          <meterUnit>?</meterUnit>
+        //       </meterReport>
+        //    </meterReportList>
+        //
+        // </chargeDetailRecord>
+        //
+        // [...]
         //
         // </soap:Envelope>
 
         #endregion
 
-        #region (static) Parse(ChargeDetailRecordXML,  CustomChargeDetailRecordParser = null, OnException = null)
+        #region (static) Parse   (ChargeDetailRecordXML,                          ..., OnException = null)
 
         /// <summary>
         /// Parse the given XML representation of an OICP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecordXML">The XML to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static ChargeDetailRecord Parse(XElement                                     ChargeDetailRecordXML,
                                                CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
+                                               CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
                                                OnExceptionDelegate                          OnException                      = null)
         {
 
             if (TryParse(ChargeDetailRecordXML,
                          out ChargeDetailRecord _ChargeDetailRecord,
                          CustomChargeDetailRecordParser,
+                         CustomMeterReportParser,
                          OnException))
-
+            {
                 return _ChargeDetailRecord;
+            }
 
             return null;
 
@@ -161,25 +271,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region (static) Parse(ChargeDetailRecordText, CustomChargeDetailRecordParser = null, OnException = null)
+        #region (static) Parse   (ChargeDetailRecordText,                         ..., OnException = null)
 
         /// <summary>
         /// Parse the given text representation of an OICP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecordText">The text to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static ChargeDetailRecord Parse(String                                ChargeDetailRecordText,
-                                        CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
-                                        OnExceptionDelegate                   OnException               = null)
+        public static ChargeDetailRecord Parse(String                                       ChargeDetailRecordText,
+                                               CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
+                                               CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
+                                               OnExceptionDelegate                          OnException                      = null)
         {
 
             if (TryParse(ChargeDetailRecordText,
                          out ChargeDetailRecord _ChargeDetailRecord,
                          CustomChargeDetailRecordParser,
+                         CustomMeterReportParser,
                          OnException))
-
+            {
                 return _ChargeDetailRecord;
+            }
 
             return null;
 
@@ -187,7 +301,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region (static) TryParse(ChargeDetailRecordXML,  out ChargeDetailRecord, CustomChargeDetailRecordParser = null, OnException = null)
+        #region (static) TryParse(ChargeDetailRecordXML,  out ChargeDetailRecord, ..., OnException = null)
 
         /// <summary>
         /// Try to parse the given XML representation of an OIOI ChargeDetailRecord.
@@ -195,20 +309,66 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="ChargeDetailRecordXML">The XML to parse.</param>
         /// <param name="ChargeDetailRecord">The parsed charge detail record.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(XElement                              ChargeDetailRecordXML,
+        public static Boolean TryParse(XElement                                     ChargeDetailRecordXML,
                                        out ChargeDetailRecord                       ChargeDetailRecord,
                                        CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
-                                       OnExceptionDelegate                   OnException               = null)
+                                       CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
+                                       OnExceptionDelegate                          OnException                      = null)
         {
 
             try
             {
 
-                ChargeDetailRecord = new ChargeDetailRecord(ChargeDetailRecordXML.ElementValueOrFail (eMIPNS.Authorisation + "meterTypeId"),
-                                              ChargeDetailRecordXML.ElementValueOrFail (eMIPNS.Authorisation + "meterValue"),
-                                              ChargeDetailRecordXML.MapEnumValuesOrFail(eMIPNS.Authorisation + "meterUnit",
-                                                                                 ConversionMethods.AsMeterTypeId));
+                ChargeDetailRecord = new ChargeDetailRecord(
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "CDRNature",
+                                                                                   ConversionMethods.AsCDRNature),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "serviceSessionId",
+                                                                                   ServiceSession_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "requestedServiceId",
+                                                                                   Service_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "EVSEId",
+                                                                                   EVSE_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "userContractIdAlias",
+                                                                                   Contract_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "userId",
+                                                                                   User_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "startTime",
+                                                                                   DateTime.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "endTime",
+                                                                                   DateTime.Parse),
+
+
+                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "execPartnerSessionId",
+                                                                                   ServiceSession_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "execPartnerOperatorId",
+                                                                                   Operator_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "salePartnerSessionId",
+                                                                                   ServiceSession_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "salePartnerOperatorId",
+                                                                                   Provider_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "partnerProductId",
+                                                                                   PartnerProduct_Id.Parse),
+
+                                         ChargeDetailRecordXML.MapElements        (eMIPNS.Authorisation + "meterReportList",
+                                                                                   eMIPNS.Authorisation + "meterReport",
+                                                                                   (s, e) => MeterReport.Parse(s, CustomMeterReportParser, e),
+                                                                                   OnException)
+
+                                     );
 
                 if (CustomChargeDetailRecordParser != null)
                     ChargeDetailRecord = CustomChargeDetailRecordParser(ChargeDetailRecordXML,
@@ -231,7 +391,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region (static) TryParse(ChargeDetailRecordText, out ChargeDetailRecord, CustomChargeDetailRecordParser = null, OnException = null)
+        #region (static) TryParse(ChargeDetailRecordText, out ChargeDetailRecord, ..., OnException = null)
 
         /// <summary>
         /// Try to parse the given text representation of an OIOI charge detail record.
@@ -239,11 +399,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="ChargeDetailRecordText">The text to parse.</param>
         /// <param name="ChargeDetailRecord">The parsed charge detail record.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(String                                ChargeDetailRecordText,
+        public static Boolean TryParse(String                                       ChargeDetailRecordText,
                                        out ChargeDetailRecord                       ChargeDetailRecord,
                                        CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
-                                       OnExceptionDelegate                   OnException               = null)
+                                       CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
+                                       OnExceptionDelegate                          OnException                      = null)
         {
 
             try
@@ -252,6 +414,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 return TryParse(XElement.Parse(ChargeDetailRecordText),
                                 out ChargeDetailRecord,
                                 CustomChargeDetailRecordParser,
+                                CustomMeterReportParser,
                                 OnException);
 
             }
@@ -269,22 +432,72 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region ToXML(XName = null, CustomChargeDetailRecordSerializer = null)
+        #region ToXML(XName = null, CustomChargeDetailRecordSerializer = null, CustomMeterReportSerializer = null)
 
         /// <summary>
         /// Return an XML representation of this EVSE data record.
         /// </summary>
         /// <param name="XName">The XML name to use.</param>
         /// <param name="CustomChargeDetailRecordSerializer">A delegate to serialize custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
         public XElement ToXML(XName                                            XName                                = null,
-                              CustomXMLSerializerDelegate<ChargeDetailRecord>  CustomChargeDetailRecordSerializer   = null)
+                              CustomXMLSerializerDelegate<ChargeDetailRecord>  CustomChargeDetailRecordSerializer   = null,
+                              CustomXMLSerializerDelegate<MeterReport>         CustomMeterReportSerializer          = null)
         {
 
-            var XML = new XElement(XName ?? eMIPNS.Authorisation + "meterReport",
+            var XML = new XElement(XName ?? eMIPNS.Authorisation + "chargeDetailRecord",
 
-                          new XElement(eMIPNS.Authorisation + "meterTypeId",  Type.AsNumber()),
-                          new XElement(eMIPNS.Authorisation + "meterValue",   Value),
-                          new XElement(eMIPNS.Authorisation + "meterUnit",    Unit)
+                          new XElement(eMIPNS.Authorisation + "CDRNature",                          CDRNature.                           AsText()),
+                          new XElement(eMIPNS.Authorisation + "serviceSessionId",                   ServiceSessionId.                  ToString()),
+
+                          ExecPartnerSessionId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
+                              : null,
+
+                          ExecPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.ToString())
+                              : null,
+
+                          ExecPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
+                              : null,
+
+
+                          SalesPartnerSessionId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
+                              : null,
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.ToString())
+                              : null,
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
+                              : null,
+
+
+                          new XElement(eMIPNS.Authorisation + "requestedServiceId",                 RequestedServiceId.                ToString()),
+
+                          new XElement(eMIPNS.Authorisation + "EVSEIdType",                         EVSEId.Format.                     ToString()),
+                          new XElement(eMIPNS.Authorisation + "EVSEId",                             EVSEId.                            ToString()),
+
+                          new XElement(eMIPNS.Authorisation + "userContractIdAlias",                UserContractIdAlias.               ToString()),
+
+                          new XElement(eMIPNS.Authorisation + "userIdType",                         UserId.Format.                     ToString()),
+                          new XElement(eMIPNS.Authorisation + "userId",                             UserId.                            ToString()),
+
+                          PartnerProductId.HasValue
+                              ? new XElement(eMIPNS.Authorisation + "partnerProductId",             PartnerProductId.            Value.ToString())
+                              : null,
+
+                          new XElement(eMIPNS.Authorisation + "startTime",                          StartTime.                         ToString()),
+                          new XElement(eMIPNS.Authorisation + "endTime",                            EndTime.                           ToString()),
+
+                          new XElement(eMIPNS.Authorisation + "meterReportList",
+                              MeterReports.Any()
+                                  ? MeterReports.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer))
+                                  : null
+                          )
 
                       );
 
@@ -442,15 +655,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargeDetailRecord == null)
                 throw new ArgumentNullException(nameof(ChargeDetailRecord), "The given charge detail record must not be null!");
 
-            var _Result = String.Compare(Value, ChargeDetailRecord.Value, StringComparison.Ordinal);
-
-            if (_Result == 0)
-                _Result = String.Compare(Unit,  ChargeDetailRecord.Unit,  StringComparison.Ordinal);
-
-            if (_Result == 0)
-                _Result = Type.CompareTo(ChargeDetailRecord.Type);
-
-            return _Result;
+            return ServiceSessionId.CompareTo(ChargeDetailRecord.ServiceSessionId);
 
         }
 
@@ -496,9 +701,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargeDetailRecord == null)
                 return false;
 
-            return Value.Equals(ChargeDetailRecord.Value) &&
-                   Unit. Equals(ChargeDetailRecord.Type)  &&
-                   Type. Equals(ChargeDetailRecord.Unit);
+            return CDRNature.          Equals(ChargeDetailRecord.CDRNature)           &&
+                   ServiceSessionId.   Equals(ChargeDetailRecord.ServiceSessionId)    &&
+                   RequestedServiceId. Equals(ChargeDetailRecord.RequestedServiceId)  &&
+                   EVSEId.             Equals(ChargeDetailRecord.EVSEId)              &&
+                   UserContractIdAlias.Equals(ChargeDetailRecord.UserContractIdAlias) &&
+                   UserId.             Equals(ChargeDetailRecord.UserId)              &&
+                   StartTime.          Equals(ChargeDetailRecord.StartTime)           &&
+                   EndTime.            Equals(ChargeDetailRecord.EndTime)             &&
+                   MeterReports.       Equals(ChargeDetailRecord.MeterReports)        &&
+
+                   ((!ExecPartnerSessionId.  HasValue && !ChargeDetailRecord.ExecPartnerSessionId.  HasValue) ||
+                     (ExecPartnerSessionId.  HasValue &&  ChargeDetailRecord.ExecPartnerSessionId.  HasValue && ExecPartnerSessionId.  Value.Equals(ChargeDetailRecord.ExecPartnerSessionId.  Value))) &&
+
+                   ((!ExecPartnerOperatorId. HasValue && !ChargeDetailRecord.ExecPartnerOperatorId. HasValue) ||
+                     (ExecPartnerOperatorId. HasValue &&  ChargeDetailRecord.ExecPartnerOperatorId. HasValue && ExecPartnerOperatorId. Value.Equals(ChargeDetailRecord.ExecPartnerOperatorId. Value))) &&
+
+                   ((!SalesPartnerSessionId. HasValue && !ChargeDetailRecord.SalesPartnerSessionId. HasValue) ||
+                     (SalesPartnerSessionId. HasValue &&  ChargeDetailRecord.SalesPartnerSessionId. HasValue && SalesPartnerSessionId. Value.Equals(ChargeDetailRecord.SalesPartnerSessionId. Value))) &&
+
+                   ((!SalesPartnerOperatorId.HasValue && !ChargeDetailRecord.SalesPartnerOperatorId.HasValue) ||
+                     (SalesPartnerOperatorId.HasValue &&  ChargeDetailRecord.SalesPartnerOperatorId.HasValue && SalesPartnerOperatorId.Value.Equals(ChargeDetailRecord.SalesPartnerOperatorId.Value))) &&
+
+                   ((!PartnerProductId.      HasValue && !ChargeDetailRecord.PartnerProductId.      HasValue) ||
+                     (PartnerProductId.      HasValue &&  ChargeDetailRecord.PartnerProductId.      HasValue && PartnerProductId.      Value.Equals(ChargeDetailRecord.PartnerProductId.      Value)));
 
         }
 
@@ -517,9 +743,35 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             unchecked
             {
 
-                return Type. GetHashCode() * 5 ^
-                       Unit. GetHashCode() * 3 ^
-                       Value.GetHashCode();
+                return CDRNature.                    GetHashCode() * 41 ^
+                       ServiceSessionId.             GetHashCode() * 37 ^
+                       RequestedServiceId.           GetHashCode() * 31 ^
+                       EVSEId.                       GetHashCode() * 27 ^
+                       UserContractIdAlias.          GetHashCode() * 23 ^
+                       UserId.                       GetHashCode() * 21 ^
+                       StartTime.                    GetHashCode() * 19 ^
+                       EndTime.                      GetHashCode() * 17 ^
+                       MeterReports.                 GetHashCode() * 13 ^
+
+                       (ExecPartnerSessionId.HasValue
+                            ? ExecPartnerSessionId.  GetHashCode() * 11
+                            : 0) ^
+
+                       (ExecPartnerOperatorId.HasValue
+                            ? ExecPartnerOperatorId. GetHashCode() * 7
+                            : 0) ^
+
+                       (SalesPartnerSessionId.HasValue
+                            ? SalesPartnerSessionId. GetHashCode() * 5
+                            : 0) ^
+
+                       (SalesPartnerOperatorId.HasValue
+                            ? SalesPartnerOperatorId.GetHashCode() * 3
+                            : 0) ^
+
+                       (PartnerProductId.HasValue
+                            ? PartnerProductId.      GetHashCode()
+                            : 0);
 
             }
         }
@@ -533,9 +785,317 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         public override String ToString()
 
-            => String.Concat(Value, " ",
-                             Unit, " (",
-                             Type.AsText(), ")");
+            => String.Concat(UserId, " @ ", EVSEId,
+                             PartnerProductId.HasValue ? " consuming '" + PartnerProductId + "'" : "",
+                             " for ", (EndTime - StartTime).TotalMinutes, " minutes",
+                             " [", CDRNature, "] ");
+
+        #endregion
+
+
+        #region ToBuilder
+
+        /// <summary>
+        /// Return a charge detail record builder.
+        /// </summary>
+        public Builder ToBuilder
+            => new Builder(this);
+
+        #endregion
+
+        #region (class) Builder
+
+        /// <summary>
+        /// A charge detail record builder.
+        /// </summary>
+        public class Builder : ACustomDataBuilder,
+                               IEquatable<Builder>
+        {
+
+            #region Properties
+
+            /// <summary>
+            /// State of the charging session.
+            /// </summary>
+            public CDRNatures                CDRNature                { get; set; }
+
+            /// <summary>
+            /// GIREVE session id for this charging session.
+            /// </summary>
+            public ServiceSession_Id         ServiceSessionId         { get; set; }
+
+            /// <summary>
+            /// The unique identification of the requested service for this charging session.
+            /// </summary>
+            public Service_Id                RequestedServiceId       { get; set; }
+
+            /// <summary>
+            /// The unique identification of the EVSE used for charging.
+            /// </summary>
+            public EVSE_Id                   EVSEId                   { get; set; }
+
+            /// <summary>
+            /// Alias of the contract id between the end-user and the eMSP.
+            /// This alias may have been anonymised by the eMSP.
+            /// </summary>
+            public Contract_Id               UserContractIdAlias      { get; set; }
+
+            /// <summary>
+            /// The unique identification of the user.
+            /// </summary>
+            public User_Id                   UserId                   { get; set; }
+
+            /// <summary>
+            /// Start time of the charging session.
+            /// </summary>
+            public DateTime                  StartTime                { get; set; }
+
+            /// <summary>
+            /// End time of the charging session, or the timestamp of the meter reading for intermediate charge detail records.
+            /// </summary>
+            public DateTime                  EndTime                  { get; set; }
+
+
+            /// <summary>
+            /// Charging session identification at the operator.
+            /// </summary>
+            public ServiceSession_Id?        ExecPartnerSessionId     { get; set; }
+
+            /// <summary>
+            /// The unique identification of the charging operator.
+            /// </summary>
+            public Operator_Id?              ExecPartnerOperatorId    { get; set; }
+
+            /// <summary>
+            /// Charging session identification at the e-mobility provider.
+            /// </summary>
+            public ServiceSession_Id?        SalesPartnerSessionId    { get; set; }
+
+            /// <summary>
+            /// The unique identification of the e-mobility provider.
+            /// </summary>
+            public Provider_Id?              SalesPartnerOperatorId   { get; set; }
+
+            /// <summary>
+            /// The unique identification of the charging product.
+            /// </summary>
+            public PartnerProduct_Id?        PartnerProductId         { get; set; }
+
+            /// <summary>
+            /// An optional enumeration of meter reports.
+            /// </summary>
+            public IEnumerable<MeterReport>  MeterReports             { get; set; }
+
+            #endregion
+
+            #region Constructor(s)
+
+            /// <summary>
+            /// Create a new charge detail record builder.
+            /// </summary>
+            /// <param name="ChargeDetailRecord">An optional charge detail record.</param>
+            /// <param name="CustomData">Optional custom data.</param>
+            public Builder(ChargeDetailRecord                  ChargeDetailRecord   = null,
+                           IReadOnlyDictionary<String, Object> CustomData           = null)
+
+                : base(CustomData)
+
+            {
+
+                if (ChargeDetailRecord != null)
+                {
+
+                    this.CDRNature               = ChargeDetailRecord.CDRNature;
+                    this.ServiceSessionId        = ChargeDetailRecord.ServiceSessionId;
+                    this.RequestedServiceId      = ChargeDetailRecord.RequestedServiceId;
+                    this.EVSEId                  = ChargeDetailRecord.EVSEId;
+                    this.UserContractIdAlias     = ChargeDetailRecord.UserContractIdAlias;
+                    this.UserId                  = ChargeDetailRecord.UserId;
+                    this.StartTime               = ChargeDetailRecord.StartTime;
+                    this.EndTime                 = ChargeDetailRecord.EndTime;
+
+                    this.ExecPartnerSessionId    = ChargeDetailRecord.ExecPartnerSessionId;
+                    this.ExecPartnerOperatorId   = ChargeDetailRecord.ExecPartnerOperatorId;
+                    this.SalesPartnerSessionId   = ChargeDetailRecord.SalesPartnerSessionId;
+                    this.SalesPartnerOperatorId  = ChargeDetailRecord.SalesPartnerOperatorId;
+                    this.PartnerProductId        = ChargeDetailRecord.PartnerProductId;
+                    this.MeterReports            = ChargeDetailRecord.MeterReports;
+
+                }
+
+            }
+
+            #endregion
+
+
+            #region IEquatable<ChargeDetailRecordBuilder> Members
+
+            #region Equals(Object)
+
+            /// <summary>
+            /// Compares two instances of this object.
+            /// </summary>
+            /// <param name="Object">An object to compare with.</param>
+            /// <returns>true|false</returns>
+            public override Boolean Equals(Object Object)
+            {
+
+                if (Object == null)
+                    return false;
+
+                var ChargeDetailRecordBuilder = Object as Builder;
+                if (ChargeDetailRecordBuilder == null)
+                    return false;
+
+                return Equals(ChargeDetailRecordBuilder);
+
+            }
+
+            #endregion
+
+            #region Equals(ChargeDetailRecord)
+
+            /// <summary>
+            /// Compares two charge detail records for equality.
+            /// </summary>
+            /// <param name="ChargeDetailRecord">A charge detail record to compare with.</param>
+            /// <returns>True if both match; False otherwise.</returns>
+            public Boolean Equals(ChargeDetailRecord ChargeDetailRecord)
+            {
+
+                if ((Object) ChargeDetailRecord == null)
+                    return false;
+
+                return CDRNature.             Equals(ChargeDetailRecord.CDRNature)              &&
+                       ServiceSessionId.      Equals(ChargeDetailRecord.ServiceSessionId)       &&
+                       RequestedServiceId.    Equals(ChargeDetailRecord.RequestedServiceId)     &&
+                       EVSEId.                Equals(ChargeDetailRecord.EVSEId)                 &&
+                       UserContractIdAlias.   Equals(ChargeDetailRecord.UserContractIdAlias)    &&
+                       UserId.                Equals(ChargeDetailRecord.UserId)                 &&
+                       StartTime.             Equals(ChargeDetailRecord.StartTime)              &&
+                       EndTime.               Equals(ChargeDetailRecord.EndTime)                &&
+
+                       ExecPartnerSessionId.  Equals(ChargeDetailRecord.ExecPartnerSessionId)   &&
+                       ExecPartnerOperatorId. Equals(ChargeDetailRecord.ExecPartnerOperatorId)  &&
+                       SalesPartnerSessionId. Equals(ChargeDetailRecord.SalesPartnerSessionId)  &&
+                       SalesPartnerOperatorId.Equals(ChargeDetailRecord.SalesPartnerOperatorId) &&
+                       PartnerProductId.      Equals(ChargeDetailRecord.PartnerProductId)       &&
+                       MeterReports.          Equals(ChargeDetailRecord.MeterReports);
+
+            }
+
+            #endregion
+
+            #region Equals(ChargeDetailRecordBuilder)
+
+            /// <summary>
+            /// Compares two charge detail record builder for equality.
+            /// </summary>
+            /// <param name="ChargeDetailRecordBuilder">A charge detail record builder to compare with.</param>
+            /// <returns>True if both match; False otherwise.</returns>
+            public Boolean Equals(Builder ChargeDetailRecordBuilder)
+            {
+
+                if (ChargeDetailRecordBuilder == null)
+                    return false;
+
+                return CDRNature.             Equals(ChargeDetailRecordBuilder.CDRNature)              &&
+                       ServiceSessionId.      Equals(ChargeDetailRecordBuilder.ServiceSessionId)       &&
+                       RequestedServiceId.    Equals(ChargeDetailRecordBuilder.RequestedServiceId)     &&
+                       EVSEId.                Equals(ChargeDetailRecordBuilder.EVSEId)                 &&
+                       UserContractIdAlias.   Equals(ChargeDetailRecordBuilder.UserContractIdAlias)    &&
+                       UserId.                Equals(ChargeDetailRecordBuilder.UserId)                 &&
+                       StartTime.             Equals(ChargeDetailRecordBuilder.StartTime)              &&
+                       EndTime.               Equals(ChargeDetailRecordBuilder.EndTime)                &&
+
+                       ExecPartnerSessionId.  Equals(ChargeDetailRecordBuilder.ExecPartnerSessionId)   &&
+                       ExecPartnerOperatorId. Equals(ChargeDetailRecordBuilder.ExecPartnerOperatorId)  &&
+                       SalesPartnerSessionId. Equals(ChargeDetailRecordBuilder.SalesPartnerSessionId)  &&
+                       SalesPartnerOperatorId.Equals(ChargeDetailRecordBuilder.SalesPartnerOperatorId) &&
+                       PartnerProductId.      Equals(ChargeDetailRecordBuilder.PartnerProductId)       &&
+                       MeterReports.          Equals(ChargeDetailRecordBuilder.MeterReports);
+
+            }
+
+            #endregion
+
+            #endregion
+
+            #region GetHashCode()
+
+            /// <summary>
+            /// Return the HashCode of this object.
+            /// </summary>
+            /// <returns>The HashCode of this object.</returns>
+            public override Int32 GetHashCode()
+            {
+                unchecked
+                {
+
+                    return CDRNature.                    GetHashCode() * 41 ^
+                           ServiceSessionId.             GetHashCode() * 37 ^
+                           RequestedServiceId.           GetHashCode() * 31 ^
+                           EVSEId.                       GetHashCode() * 27 ^
+                           UserContractIdAlias.          GetHashCode() * 23 ^
+                           UserId.                       GetHashCode() * 21 ^
+                           StartTime.                    GetHashCode() * 19 ^
+                           EndTime.                      GetHashCode() * 17 ^
+                           MeterReports.                 GetHashCode() * 13 ^
+
+                           (ExecPartnerSessionId.HasValue
+                                ? ExecPartnerSessionId.  GetHashCode() * 11
+                                : 0) ^
+
+                           (ExecPartnerOperatorId.HasValue
+                                ? ExecPartnerOperatorId. GetHashCode() * 7
+                                : 0) ^
+
+                           (SalesPartnerSessionId.HasValue
+                                ? SalesPartnerSessionId. GetHashCode() * 5
+                                : 0) ^
+
+                           (SalesPartnerOperatorId.HasValue
+                                ? SalesPartnerOperatorId.GetHashCode() * 3
+                                : 0) ^
+
+                           (PartnerProductId.HasValue
+                                ? PartnerProductId.      GetHashCode()
+                                : 0);
+
+                }
+            }
+
+            #endregion
+
+
+            #region ToImmutable
+
+            /// <summary>
+            /// Return an immutable representation.
+            /// </summary>
+            public ChargeDetailRecord ToImmutable
+
+                => new ChargeDetailRecord(CDRNature,
+                                          ServiceSessionId,
+                                          RequestedServiceId,
+                                          EVSEId,
+                                          UserContractIdAlias,
+                                          UserId,
+                                          StartTime,
+                                          EndTime,
+
+                                          ExecPartnerSessionId,
+                                          ExecPartnerOperatorId,
+                                          SalesPartnerSessionId,
+                                          SalesPartnerOperatorId,
+                                          PartnerProductId,
+                                          MeterReports,
+
+                                          CustomData);
+
+            #endregion
+
+        }
 
         #endregion
 

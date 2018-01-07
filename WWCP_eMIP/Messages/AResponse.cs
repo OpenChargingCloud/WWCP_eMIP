@@ -44,28 +44,44 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The request leading to this response.
         /// </summary>
-        public TRequest  Request              { get; }
+        public TRequest        Request              { get; }
 
         /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        public DateTime  ResponseTimestamp    { get; }
+        public DateTime        ResponseTimestamp    { get; }
+
+        /// <summary>
+        /// The transaction identification.
+        /// </summary>
+        public Transaction_Id  TransactionId        { get; }
+
+        /// <summary>
+        /// The status of the request.
+        /// </summary>
+        public RequestStatus   RequestStatus        { get; }
 
         #endregion
 
         #region Constructor(s)
 
-        #region AResponse(Request, CustomData = null)
+        #region AResponse(Request, TransactionId, RequestStatus,                           CustomData = null)
 
         /// <summary>
         /// Create a new generic eMIP response.
         /// </summary>
         /// <param name="Request">The eMIP request leading to this result.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         protected AResponse(TRequest                             Request,
+                            Transaction_Id                       TransactionId,
+                            RequestStatus                        RequestStatus,
                             IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : this(Request,
+                   TransactionId,
+                   RequestStatus,
                    DateTime.UtcNow,
                    CustomData)
 
@@ -73,15 +89,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region AResponse(Request, ResponseTimestamp = null, CustomData = null)
+        #region AResponse(Request, TransactionId, RequestStatus, ResponseTimestamp = null, CustomData = null)
 
         /// <summary>
         /// Create a new generic eMIP response.
         /// </summary>
         /// <param name="Request">The eMIP request leading to this result.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         protected AResponse(TRequest                             Request,
+                            Transaction_Id                       TransactionId,
+                            RequestStatus                        RequestStatus,
                             DateTime?                            ResponseTimestamp  = null,
                             IReadOnlyDictionary<String, Object>  CustomData         = null)
 
@@ -90,6 +110,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             this.Request            = Request;
+            this.TransactionId      = TransactionId;
+            this.RequestStatus      = RequestStatus;
             this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
 
         }

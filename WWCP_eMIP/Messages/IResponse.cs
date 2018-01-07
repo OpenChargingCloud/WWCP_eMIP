@@ -32,9 +32,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
     //public delegate JArray   CustomJArraySerializerDelegate<T> (T ResponseBuilder, JArray  JSON);
 
-    public delegate TB CustomMapper2Delegate<TB>(TB ResponseBuilder);
+    //public delegate TB CustomMapper2Delegate<TB>(TB ResponseBuilder);
 
-  //  public delegate TB CustomMapperDelegate<T, TB>(XElement XML, TB ResponseBuilder);
+    //public delegate TB CustomMapperDelegate<T, TB>(XElement XML, TB ResponseBuilder);
 
 
     /// <summary>
@@ -44,14 +44,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     {
 
         /// <summary>
-        /// The machine-readable result code.
-        /// </summary>
-   //     Result    Result              { get; }
-
-        /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        DateTime  ResponseTimestamp   { get; }
+        DateTime        ResponseTimestamp    { get; }
+
+        /// <summary>
+        /// The transaction identification.
+        /// </summary>
+        Transaction_Id  TransactionId        { get; }
+
+        /// <summary>
+        /// The status of the request.
+        /// </summary>
+        RequestStatus   RequestStatus        { get; }
 
     }
 

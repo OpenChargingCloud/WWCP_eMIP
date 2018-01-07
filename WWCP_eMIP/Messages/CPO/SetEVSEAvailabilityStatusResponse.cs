@@ -37,20 +37,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                SetEVSEAvailabilityStatusResponse>
     {
 
-        #region Properties
-
-        /// <summary>
-        /// The transaction identification.
-        /// </summary>
-        public Transaction_Id  TransactionId    { get; }
-
-        /// <summary>
-        /// The status of the request.
-        /// </summary>
-        public RequestStatus   RequestStatus    { get; }
-
-        #endregion
-
         #region Constructor(s)
 
         /// <summary>
@@ -66,14 +52,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : base(Request,
+                   TransactionId,
+                   RequestStatus,
                    CustomData)
 
-        {
-
-            this.TransactionId    = TransactionId;
-            this.RequestStatus    = RequestStatus;
-
-        }
+        { }
 
         #endregion
 

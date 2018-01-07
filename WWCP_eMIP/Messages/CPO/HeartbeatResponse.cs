@@ -42,22 +42,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The heartbeat period.
         /// </summary>
-        public TimeSpan        HeartbeatPeriod   { get; }
+        public TimeSpan  HeartbeatPeriod    { get; }
 
         /// <summary>
         /// The current time.
         /// </summary>
-        public DateTime        CurrentTime       { get; }
-
-        /// <summary>
-        /// The transaction identification.
-        /// </summary>
-        public Transaction_Id  TransactionId     { get; }
-
-        /// <summary>
-        /// The status of the request.
-        /// </summary>
-        public RequestStatus   RequestStatus     { get; }
+        public DateTime  CurrentTime        { get; }
 
         #endregion
 
@@ -102,14 +92,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                  IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : base(Request,
+                   TransactionId,
+                   RequestStatus,
                    CustomData)
 
         {
 
             this.HeartbeatPeriod  = HeartbeatPeriod;
             this.CurrentTime      = CurrentTime;
-            this.TransactionId    = TransactionId;
-            this.RequestStatus    = RequestStatus;
 
         }
 

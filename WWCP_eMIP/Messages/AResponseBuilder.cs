@@ -44,12 +44,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The request leading to this response.
         /// </summary>
-        public TRequest Request             { get; }
+        public TRequest        Request             { get; }
 
         /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        public DateTime ResponseTimestamp   { get; set; }
+        public DateTime        ResponseTimestamp   { get; set; }
+
+        /// <summary>
+        /// The transaction identification.
+        /// </summary>
+        public Transaction_Id  TransactionId       { get; set; }
+
+        /// <summary>
+        /// The status of the request.
+        /// </summary>
+        public RequestStatus   RequestStatus       { get; set; }
 
         #endregion
 
@@ -66,7 +76,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                    IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : this(Request,
-                   DateTime.Now,
+                   DateTime.UtcNow,
                    CustomData)
 
         { }
@@ -90,7 +100,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             this.Request            = Request;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.Now;
+            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
 
         }
 
@@ -107,7 +117,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                    IEnumerable<KeyValuePair<String, Object>>  CustomData  = null)
 
             : this(Request,
-                   DateTime.Now,
+                   DateTime.UtcNow,
                    CustomData)
 
         { }
@@ -131,7 +141,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             this.Request            = Request;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.Now;
+            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
 
         }
 

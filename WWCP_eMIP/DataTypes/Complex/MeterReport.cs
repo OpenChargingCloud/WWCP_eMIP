@@ -152,8 +152,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                          out MeterReport _MeterReport,
                          CustomMeterReportParser,
                          OnException))
-
+            {
                 return _MeterReport;
+            }
 
             return null;
 
@@ -178,8 +179,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                          out MeterReport _MeterReport,
                          CustomMeterReportParser,
                          OnException))
-
+            {
                 return _MeterReport;
+            }
 
             return null;
 
@@ -205,14 +207,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                MeterReport = new MeterReport(MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterTypeId"),
-                                              MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterValue"),
-                                              MeterReportXML.MapEnumValuesOrFail(eMIPNS.Authorisation + "meterUnit",
-                                                                                 ConversionMethods.AsMeterTypeId));
+                MeterReport = new MeterReport(
+
+                                  MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterTypeId"),
+
+                                  MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterValue"),
+
+                                  MeterReportXML.MapEnumValuesOrFail(eMIPNS.Authorisation + "meterUnit",
+                                                                     ConversionMethods.AsMeterTypeId)
+
+                              );
 
                 if (CustomMeterReportParser != null)
-                    MeterReport = CustomMeterReportParser(MeterReportXML,
-                                                  MeterReport);
+                    MeterReport = CustomMeterReportParser(MeterReportXML, MeterReport);
 
                 return true;
 

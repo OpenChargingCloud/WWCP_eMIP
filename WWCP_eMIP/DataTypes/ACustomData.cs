@@ -17,33 +17,96 @@
 
 #region Usings
 
+using org.GraphDefined.Vanaheimr.Illias;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 #endregion
 
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
-    public abstract class ACustomData
+    /// <summary>
+    /// The abstract class for all custom data holding objects.
+    /// </summary>
+    public abstract class ACustomData : ICustomData
     {
 
         #region Data
 
-        public Dictionary<String, Object> CustomData   { get; }
+        protected Dictionary<String, Object> CustomData;
 
         #endregion
 
         #region Constructor(s)
 
-        protected ACustomData(IReadOnlyDictionary<String, Object> CustomData)
+        protected ACustomData(IReadOnlyDictionary<String, Object> CustomData = null)
         {
 
-            this.CustomData = new Dictionary<String, Object>();
+            if (CustomData != null)
+            {
 
-            if (CustomData?.Count > 0)
+                this.CustomData = new Dictionary<String, Object>();
+
                 foreach (var item in CustomData)
-                    this.CustomData.Add(item.Key, item.Value);
+                {
+
+                    if (!this.CustomData.ContainsKey(item.Key))
+                        this.CustomData.Add(item.Key, item.Value);
+
+                    else
+                        this.CustomData[item.Key] = item.Value;
+
+                }
+
+            }
+
+        }
+
+        protected ACustomData(IDictionary<String, Object> CustomData = null)
+        {
+
+            if (CustomData != null)
+            {
+
+                this.CustomData = new Dictionary<String, Object>();
+
+                foreach (var item in CustomData)
+                {
+
+                    if (!this.CustomData.ContainsKey(item.Key))
+                        this.CustomData.Add(item.Key, item.Value);
+
+                    else
+                        this.CustomData[item.Key] = item.Value;
+
+                }
+
+            }
+
+        }
+
+        protected ACustomData(IEnumerable<KeyValuePair<String, Object>> CustomData = null)
+        {
+
+            if (CustomData != null)
+            {
+
+                this.CustomData = new Dictionary<String, Object>();
+
+                foreach (var item in CustomData)
+                {
+
+                    if (!this.CustomData.ContainsKey(item.Key))
+                        this.CustomData.Add(item.Key, item.Value);
+
+                    else
+                        this.CustomData[item.Key] = item.Value;
+
+                }
+
+            }
 
         }
 
@@ -51,16 +114,39 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
         public Boolean HasCustomData
-            => CustomData?.Count > 0;
+        {
+
+            get
+            {
+
+                if (CustomData == null)
+                    return false;
+
+                return CustomData.Count > 0;
+
+            }
+
+        }
 
         public Boolean IsDefined(String Key)
-            => CustomData.TryGetValue(Key, out Object _Value);
+        {
+
+            if (CustomData == null || Key.IsNullOrEmpty())
+                return false;
+
+            return CustomData.TryGetValue(Key, out Object _Value);
+
+        }
 
         public Object GetCustomData(String Key)
         {
 
-            if (CustomData.TryGetValue(Key, out Object _Value))
+            if (CustomData != null   &&
+                Key.IsNotNullOrEmpty() &&
+                CustomData.TryGetValue(Key, out Object _Value))
+            {
                 return _Value;
+            }
 
             return null;
 
@@ -72,8 +158,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                if (CustomData.TryGetValue(Key, out Object _Value))
+                if (CustomData != null     &&
+                    Key.IsNotNullOrEmpty() &&
+                    CustomData.TryGetValue(Key, out Object _Value))
+                {
                     return (T) _Value;
+                }
 
             }
             catch (Exception)
@@ -88,26 +178,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               Action<Object>  ValueDelegate)
         {
 
-            if (ValueDelegate == null)
-                return;
-
-            if (CustomData.TryGetValue(Key, out Object _Value))
+            if (CustomData    != null  &&
+                ValueDelegate != null  &&
+                Key.IsNotNullOrEmpty() &&
+                CustomData.TryGetValue(Key, out Object _Value))
+            {
                 ValueDelegate(_Value);
+            }
 
         }
 
-        public void IfDefinedAs<T>(String     Key,
-                                   Action<T>  ValueDelegate)
+        public void WhenDefinedAs<T>(String     Key,
+                                     Action<T>  ValueDelegate)
         {
-
-            if (ValueDelegate == null)
-                return;
 
             try
             {
 
-                if (CustomData.TryGetValue(Key, out Object _Value))
-                    ValueDelegate((T)_Value);
+                if (CustomData    != null  &&
+                    ValueDelegate != null  &&
+                    Key.IsNotNullOrEmpty() &&
+                    CustomData.TryGetValue(Key, out Object _Value))
+                {
+                    ValueDelegate((T) _Value);
+                }
 
             }
             catch (Exception)

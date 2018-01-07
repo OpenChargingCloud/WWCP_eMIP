@@ -18,7 +18,6 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
 
 #endregion
 
@@ -26,18 +25,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// The common interface for all custom data holding objects.
+    /// The common interface for all builders of custom data holding objects.
     /// </summary>
-    public interface ICustomData
+    public interface ICustomDataBuilder : ICustomData
     {
 
-        bool HasCustomData { get; }
-
-        object GetCustomData(string Key);
-        T GetCustomDataAs<T>(string Key);
-        void IfDefined(string Key, Action<object> ValueDelegate);
-        void WhenDefinedAs<T>(string Key, Action<T> ValueDelegate);
-        bool IsDefined(string Key);
+        /// <summary>
+        /// Set the given custom data.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        /// <param name="Value">The value of the custom data.</param>
+        void SetCustomData(String Key, Object Value);
 
     }
 

@@ -61,6 +61,7 @@
     <Compile Include="DataTypes\Enums\AuthorisationValues.cs" />
     <Compile Include="DataTypes\Enums\EVSEBusyStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\EVSEAvailabilityStatusTypes.cs" />
+    <Compile Include="DataTypes\ICustomDataBuilder.cs" />
     <Compile Include="DataTypes\ICustomData.cs" />
     <Compile Include="DataTypes\Simple\ChargingPool_Id.cs" />
     <Compile Include="DataTypes\Simple\Provider_Id.cs" />
@@ -78,10 +79,9 @@
     <Compile Include="DataTypes\Simple\PartnerServiceSession_Id.cs" />
     <Compile Include="DataTypes\Simple\Transaction_Id.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IO\Exceptions\OCHPException.cs" />
-    <Compile Include="IO\OCHPNS.cs" />
+    <Compile Include="IO\Exceptions\eMIPException.cs" />
+    <Compile Include="IO\eMIPNS.cs" />
     <Compile Include="IO\SOAP.cs" />
-    <Compile Include="IO\XML_IO.cs" />
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />

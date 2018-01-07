@@ -195,14 +195,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         //
         //
         //    <!--Optional:-->
-        //    <execPartnerSessionId>?</execPartnerSessionId>        //
+        //    <execPartnerSessionId>?</execPartnerSessionId>
+        //
         //    <!--Optional:-->
-        //    <execPartnerOperatorIdType>?</execPartnerOperatorIdType>        //    <!--Optional:-->
+        //    <execPartnerOperatorIdType>?</execPartnerOperatorIdType>
+        //    <!--Optional:-->
         //    <execPartnerOperatorId>?</execPartnerOperatorId>
         //
         //
         //    <!--Optional:-->
-        //    <salePartnerSessionId>?</salePartnerSessionId>        //
+        //    <salePartnerSessionId>?</salePartnerSessionId>
+        //
         //    <!--Optional:-->
         //    <salePartnerOperatorIdType>?</salePartnerOperatorIdType>
         //    <!--Optional:-->

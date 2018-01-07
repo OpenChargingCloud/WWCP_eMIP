@@ -18,7 +18,6 @@
 #region Usings
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 #endregion
@@ -26,65 +25,36 @@ using System.Collections.Generic;
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
-    public abstract class ACustomDataBuilder : ICustomDataBuilder
+    /// <summary>
+    /// The builder of custom data holding objects.
+    /// </summary>
+    public abstract class ACustomDataBuilder : ACustomData,
+                                               ICustomDataBuilder
     {
-
-        #region Data
-
-        public Dictionary<String, Object>  CustomData   { get; }
-
-        #endregion
 
         #region Constructor(s)
 
-        protected ACustomDataBuilder(Dictionary<String, Object> CustomData = null)
-        {
+        protected ACustomDataBuilder(IReadOnlyDictionary<String, Object>        CustomData  = null)
+            : base(CustomData)
+        { }
 
-            this.CustomData = CustomData ?? new Dictionary<String, Object>();
+        protected ACustomDataBuilder(IDictionary<String, Object>                CustomData  = null)
+            : base(CustomData)
+        { }
 
-        }
-
-        protected ACustomDataBuilder(IReadOnlyDictionary<String, Object> CustomData = null)
-        {
-
-            this.CustomData = new Dictionary<String, Object>();
-
-            if (CustomData?.Count > 0)
-                foreach (var item in CustomData)
-                    this.CustomData.Add(item.Key, item.Value);
-
-        }
-
-        protected ACustomDataBuilder(IEnumerable<KeyValuePair<String, Object>> CustomData = null)
-        {
-
-            this.CustomData = new Dictionary<String, Object>();
-
-            if (CustomData?.Any() == true)
-            {
-                foreach (var item in CustomData)
-                {
-
-                    if (!this.CustomData.ContainsKey(item.Key))
-                        this.CustomData.Add(item.Key, item.Value);
-
-                    else
-                        this.CustomData[item.Key] = item.Value;
-
-                }
-            }
-
-        }
+        protected ACustomDataBuilder(IEnumerable<KeyValuePair<String, Object>>  CustomData  = null)
+            : base(CustomData)
+        { }
 
         #endregion
 
-
-        public Boolean HasCustomData
-            => CustomData?.Count > 0;
 
         public void SetCustomData(String Key,
                                   Object Value)
         {
+
+            if (CustomData == null)
+                CustomData = new Dictionary<String, Object>();
 
             if (!CustomData.ContainsKey(Key))
                 CustomData.Add(Key, Value);
@@ -94,67 +64,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         }
 
-        public Boolean IsDefined(String Key)
-            => CustomData.TryGetValue(Key, out Object _Value);
-
-        public Object GetCustomData(String Key)
-        {
-
-            if (CustomData.TryGetValue(Key, out Object _Value))
-                return _Value;
-
-            return null;
-
-        }
-
-        public T GetCustomDataAs<T>(String Key)
-        {
-
-            try
-            {
-
-                if (CustomData.TryGetValue(Key, out Object _Value))
-                    return (T)_Value;
-
-            }
-            catch (Exception)
-            { }
-
-            return default(T);
-
-        }
-
-
-        public void IfDefined(String          Key,
-                              Action<Object>  ValueDelegate)
-        {
-
-            if (ValueDelegate == null)
-                return;
-
-            if (CustomData.TryGetValue(Key, out Object _Value))
-                ValueDelegate(_Value);
-
-        }
-
-        public void IfDefinedAs<T>(String     Key,
-                                   Action<T>  ValueDelegate)
-        {
-
-            if (ValueDelegate == null)
-                return;
-
-            try
-            {
-
-                if (CustomData.TryGetValue(Key, out Object _Value))
-                    ValueDelegate((T)_Value);
-
-            }
-            catch (Exception)
-            { }
-
-        }
 
     }
 

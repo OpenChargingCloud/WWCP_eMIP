@@ -18,6 +18,7 @@
 #region Usings
 
 using System;
+using System.Runtime.Serialization;
 
 #endregion
 
@@ -33,10 +34,34 @@ namespace org.GraphDefined.WWCP.eMIPv1_4
         /// <summary>
         /// Create a new eMIP exception.
         /// </summary>
+        public eMIPException()
+        { }
+
+
+        /// <summary>
+        /// Create a new eMIP exception.
+        /// </summary>
+        /// <param name="Info">The object that holds the serialized object data.</param>
+        /// <param name="Context">The contextual information about the source or destination.</param>
+        protected eMIPException(SerializationInfo  Info,
+                                StreamingContext   Context)
+
+            : base(Info,
+                   Context)
+
+        { }
+
+
+        /// <summary>
+        /// Create a new eMIP exception.
+        /// </summary>
         /// <param name="Message">A message that describes the error.</param>
         public eMIPException(String Message)
+
             : base(Message)
+
         { }
+
 
         /// <summary>
         /// Create a new eMIP exception.
@@ -44,8 +69,12 @@ namespace org.GraphDefined.WWCP.eMIPv1_4
         /// <param name="Message">A message that describes the error.</param>
         /// <param name="InnerException">The exception that is the cause of the current exception.</param>
         public eMIPException(String Message, Exception InnerException)
-            : base(Message, InnerException)
+
+            : base(Message,
+                   InnerException)
+
         { }
+
 
     }
 

@@ -37,6 +37,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Value">The value of the custom data.</param>
         void SetCustomData(String Key, Object Value);
 
+        /// <summary>
+        /// Remove the given custom data key.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        Object RemoveCustomData(String Key);
+
+        /// <summary>
+        /// Remove the given custom data.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        /// <param name="Value">The value of the custom data.</param>
+        Object RemoveCustomData(String Key, Object Value);
+
     }
 
 }

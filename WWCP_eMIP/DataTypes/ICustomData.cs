@@ -31,13 +31,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     public interface ICustomData
     {
 
-        bool HasCustomData { get; }
+        Boolean HasCustomData   { get; }
 
-        object GetCustomData(string Key);
-        T GetCustomDataAs<T>(string Key);
-        void IfDefined(string Key, Action<object> ValueDelegate);
-        void WhenDefinedAs<T>(string Key, Action<T> ValueDelegate);
-        bool IsDefined(string Key);
+        Boolean ContainsCustomData(String Key);
+        Boolean ContainsCustomData(String Key, Object Value);
+
+        void IfDefined     (String Key, Action<Object> ValueDelegate);
+        void IfDefinedAs<T>(String Key, Action<T>      ValueDelegate);
+
+        Object  GetCustomData        (String Key);
+        T       GetCustomDataAs   <T>(String Key);
+        Boolean TryGetCustomData     (String Key, out Object Value);
+        Boolean TryGetCustomDataAs<T>(String Key, out T      Value);
+
+        T       MapCustomData     <T>(String Key, Func<Object, T> ValueDelegate);
 
     }
 

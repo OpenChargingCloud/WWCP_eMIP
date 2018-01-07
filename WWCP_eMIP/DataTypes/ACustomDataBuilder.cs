@@ -20,6 +20,8 @@
 using System;
 using System.Collections.Generic;
 
+using org.GraphDefined.Vanaheimr.Illias;
+
 #endregion
 
 namespace org.GraphDefined.WWCP.eMIPv0_7_4
@@ -34,14 +36,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Constructor(s)
 
+        /// <summary>
+        /// Create a new custom data builder.
+        /// </summary>
+        /// <param name="CustomData">Custom data to add.</param>
         protected ACustomDataBuilder(IReadOnlyDictionary<String, Object>        CustomData  = null)
             : base(CustomData)
         { }
 
+        /// <summary>
+        /// Create a new custom data builder.
+        /// </summary>
+        /// <param name="CustomData">Custom data to add.</param>
         protected ACustomDataBuilder(IDictionary<String, Object>                CustomData  = null)
             : base(CustomData)
         { }
 
+        /// <summary>
+        /// Create a new custom data builder.
+        /// </summary>
+        /// <param name="CustomData">Custom data to add.</param>
         protected ACustomDataBuilder(IEnumerable<KeyValuePair<String, Object>>  CustomData  = null)
             : base(CustomData)
         { }
@@ -49,9 +63,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+        /// <summary>
+        /// Set the given custom data.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        /// <param name="Value">The value of the custom data.</param>
         public void SetCustomData(String Key,
                                   Object Value)
         {
+
+            if (Key.IsNullOrEmpty())
+                return;
 
             if (CustomData == null)
                 CustomData = new Dictionary<String, Object>();
@@ -64,6 +86,53 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         }
 
+
+        /// <summary>
+        /// Remove the given custom data key.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        public Object RemoveCustomData(String Key)
+        {
+
+            if (CustomData != null     &&
+                Key.IsNotNullOrEmpty() &&
+                CustomData.TryGetValue(Key, out Object Value))
+            {
+
+                CustomData.Remove(Key);
+
+                return Value;
+
+            }
+
+            return null;
+
+        }
+
+
+        /// <summary>
+        /// Remove the given custom data.
+        /// </summary>
+        /// <param name="Key">The key of the custom data.</param>
+        /// <param name="Value">The value of the custom data.</param>
+        public Object RemoveCustomData(String Key, Object Value)
+        {
+
+            if (CustomData != null     &&
+                Key.IsNotNullOrEmpty() &&
+                CustomData.TryGetValue(Key, out Object _Value) &&
+                Value.Equals(_Value))
+            {
+
+                CustomData.Remove(Key);
+
+                return _Value;
+
+            }
+
+            return null;
+
+        }
 
     }
 

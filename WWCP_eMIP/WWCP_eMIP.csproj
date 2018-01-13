@@ -48,6 +48,10 @@
     <Compile Include="CPO\CPOClient\CPOClientLogger.cs" />
     <Compile Include="CPO\CPOClient\ICPOClient.cs" />
     <Compile Include="CPO\CPOClient\ICPOClientExtentions.cs" />
+    <Compile Include="CPO\CPORoaming.cs" />
+    <Compile Include="CPO\CPOServer\CPOServer.cs" />
+    <Compile Include="CPO\CPOServer\CPOServerDelegates.cs" />
+    <Compile Include="CPO\CPOServer\CPOServerLogger.cs" />
     <Compile Include="DataTypes\ACustomData.cs" />
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />

@@ -28,6 +28,41 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
+    /// eMIP data conversion methods.
+    /// </summary>
+    public static partial class ConversionMethods
+    {
+
+        #region AsText  (this ProviderIdFormat)
+
+        /// <summary>
+        /// Return a text representation of the given provider identification format.
+        /// </summary>
+        /// <param name="ProviderIdFormat">A provider identification format.</param>
+        public static String AsText(this ProviderIdFormats ProviderIdFormat)
+        {
+
+            switch (ProviderIdFormat)
+            {
+
+                case ProviderIdFormats.eMI3:
+                    return "eMI3";
+
+                case ProviderIdFormats.eMI3_HYPHEN:
+                    return "eMI3";
+
+                default:
+                    return "Gireve";
+
+            }
+
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
     /// The different formats of e-mobility provider identifications.
     /// </summary>
     public enum ProviderIdFormats

@@ -312,10 +312,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               ? new XElement(eMIPNS.Authorisation + "transactionId",  TransactionId.ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "partnerIdType",        PartnerId. Format.ToString()),
+                          new XElement(eMIPNS.Authorisation + "partnerIdType",        PartnerId. Format.AsText()),
                           new XElement(eMIPNS.Authorisation + "partnerId",            PartnerId.        ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "operatorIdType",       OperatorId.Format.ToString()),
+                          new XElement(eMIPNS.Authorisation + "operatorIdType",       OperatorId.Format.AsText()),
                           new XElement(eMIPNS.Authorisation + "operatorId",           OperatorId.       ToString()),
 
                           new XElement(eMIPNS.Authorisation + "chargeDetailRecord",   ChargeDetailRecord.ToXML(CustomChargeDetailRecordSerializer: CustomChargeDetailRecordSerializer))

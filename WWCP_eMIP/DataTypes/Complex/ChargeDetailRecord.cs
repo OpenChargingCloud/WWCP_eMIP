@@ -247,7 +247,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Parse   (ChargeDetailRecordXML,                          ..., OnException = null)
 
         /// <summary>
-        /// Parse the given XML representation of an OICP charge detail record.
+        /// Parse the given XML representation of an eMIP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecordXML">The XML to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
@@ -277,7 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Parse   (ChargeDetailRecordText,                         ..., OnException = null)
 
         /// <summary>
-        /// Parse the given text representation of an OICP charge detail record.
+        /// Parse the given text representation of an eMIP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecordText">The text to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
@@ -458,7 +458,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               : null,
 
                           ExecPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.ToString())
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           ExecPartnerOperatorId.HasValue
@@ -471,7 +471,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               : null,
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.ToString())
+                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           SalesPartnerOperatorId.HasValue

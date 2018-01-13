@@ -290,7 +290,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           new XElement(eMIPNS.Authorisation + "transactionId",                    TransactionId.                      ToString()),
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorIdType",  SalesPartnerOperatorId.Value.Format.ToString())
+                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorIdType",  SalesPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           SalesPartnerOperatorId.HasValue

@@ -29,6 +29,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.SOAP.v1_2;
 
 #endregion
 
@@ -106,29 +107,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region CustomSendHeartbeatSOAPRequestMapper
+        #region CustomHeartbeatSOAPRequestMapper
 
-        private Func<HeartbeatRequest, XElement, XElement> _CustomSendHeartbeatSOAPRequestMapper = (request, xml) => xml;
+        private Func<HeartbeatRequest, XElement, XElement> _CustomHeartbeatSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<HeartbeatRequest, XElement, XElement> CustomSendHeartbeatSOAPRequestMapper
+        public Func<HeartbeatRequest, XElement, XElement> CustomHeartbeatSOAPRequestMapper
         {
 
             get
             {
-                return _CustomSendHeartbeatSOAPRequestMapper;
+                return _CustomHeartbeatSOAPRequestMapper;
             }
 
             set
             {
                 if (value != null)
-                    _CustomSendHeartbeatSOAPRequestMapper = value;
+                    _CustomHeartbeatSOAPRequestMapper = value;
             }
 
         }
 
         #endregion
 
-        public CustomXMLParserDelegate<HeartbeatResponse> CustomSendHeartbeatParser   { get; set; }
+        public CustomXMLParserDelegate<HeartbeatResponse> CustomHeartbeatParser   { get; set; }
 
         #endregion
 
@@ -156,7 +157,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public event ClientResponseLogHandler         OnSendHeartbeatSOAPResponse;
 
         /// <summary>
-        /// An event fired whenever EVSE status records had been sent upstream.
+        /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
         public event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
 
@@ -353,7 +354,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         RemotePort,
                                                         HTTPVirtualHost,
-                                                        URIPrefix + PlatformURI,
+                                                        "/api/emip/",    //URIPrefix + PlatformURI,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
@@ -362,9 +363,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSendHeartbeatSOAPRequestMapper(Request,
+                    result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
                                                                                            SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
                                                      "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
+                                                     ContentType:          new HTTPContentType("application/soap+xml",
+                                                                                               "utf-8",
+                                                                                               "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
+                                                                                               null),
+                                                     Namespace:            Vanaheimr.Hermod.SOAP.v1_2.NS.SOAPEnvelope,
                                                      RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
                                                      ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -378,7 +384,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                           (request, xml, onexception) =>
                                                                                                               HeartbeatResponse.Parse(request,
                                                                                                                                       xml,
-                                                                                                                                      CustomSendHeartbeatParser,
+                                                                                                                                      CustomHeartbeatParser,
                                                                                                                                       onexception)),
 
                                                      #endregion

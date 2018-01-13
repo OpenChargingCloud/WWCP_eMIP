@@ -138,7 +138,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Parse(MeterReportXML,  CustomMeterReportParser = null, OnException = null)
 
         /// <summary>
-        /// Parse the given XML representation of an OICP meter report.
+        /// Parse the given XML representation of an eMIP meter report.
         /// </summary>
         /// <param name="MeterReportXML">The XML to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
@@ -165,7 +165,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Parse(MeterReportText, CustomMeterReportParser = null, OnException = null)
 
         /// <summary>
-        /// Parse the given text representation of an OICP meter report.
+        /// Parse the given text representation of an eMIP meter report.
         /// </summary>
         /// <param name="MeterReportText">The text to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>

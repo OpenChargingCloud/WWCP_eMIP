@@ -210,16 +210,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                         Request,
 
-                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "heartBeatPeriod",
+                                        HeartbeatResponseXML.MapValueOrFail("heartBeatPeriod",
                                                                             s => TimeSpan.FromSeconds(UInt32.Parse(s))),
 
-                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "currentTime",
+                                        HeartbeatResponseXML.MapValueOrFail("currentTime",
                                                                             s => DateTime.Parse(s)),
 
-                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "transactionId",
+                                        HeartbeatResponseXML.MapValueOrFail("transactionId",
                                                                             Transaction_Id.Parse),
 
-                                        HeartbeatResponseXML.MapValueOrFail(eMIPNS.Default + "requestStatus",
+                                        HeartbeatResponseXML.MapValueOrFail("requestStatus",
                                                                             RequestStatus.Parse)
 
                                     );

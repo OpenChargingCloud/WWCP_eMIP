@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CPO\CPODelegates.cs" />
+    <Compile Include="CPO\CPOExtentions.cs" />
+    <Compile Include="CPO\WWCPCPOAdapter.cs" />
+    <Compile Include="eMIPMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

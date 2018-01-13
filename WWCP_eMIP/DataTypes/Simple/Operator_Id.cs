@@ -28,6 +28,41 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
+    /// eMIP data conversion methods.
+    /// </summary>
+    public static partial class ConversionMethods
+    {
+
+        #region AsText  (this OperatorIdFormat)
+
+        /// <summary>
+        /// Return a text representation of the given operator identification format.
+        /// </summary>
+        /// <param name="OperatorIdFormat">A operator identification format.</param>
+        public static String AsText(this OperatorIdFormats OperatorIdFormat)
+        {
+
+            switch (OperatorIdFormat)
+            {
+
+                case OperatorIdFormats.eMI3:
+                    return "eMI3";
+
+                case OperatorIdFormats.eMI3_STAR:
+                    return "eMI3";
+
+                default:
+                    return "Gireve";
+
+            }
+
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
     /// The different formats of operator identifications.
     /// </summary>
     public enum OperatorIdFormats

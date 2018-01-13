@@ -263,17 +263,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public XElement ToXML(CustomXMLSerializerDelegate<HeartbeatRequest> CustomHeartbeatRequestSerializer = null)
         {
 
-            var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartbeatRequest",
+            var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartBeatRequest",
 
                           TransactionId.HasValue
-                              ? new XElement(eMIPNS.Default + "transactionId",  TransactionId.ToString())
+                              ? new XElement("transactionId",  TransactionId.ToString())
                               : null,
 
-                          new XElement(eMIPNS.Default + "partnerIdType",        PartnerId. Format.ToString()),
-                          new XElement(eMIPNS.Default + "partnerId",            PartnerId.        ToString()),
+                          new XElement("partnerIdType",        PartnerId. Format.AsText()),
+                          new XElement("partnerId",            PartnerId.        ToString()),
 
-                          new XElement(eMIPNS.Default + "operatorIdType",       OperatorId.Format.ToString()),
-                          new XElement(eMIPNS.Default + "operatorId",           OperatorId.       ToString())
+                          new XElement("operatorIdType",       OperatorId.Format.AsText()),
+                          new XElement("operatorId",           OperatorId.       ToString())
 
                       );
 

@@ -24,13 +24,13 @@ using System.Net.Security;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography.X509Certificates;
+
+using Org.BouncyCastle.Bcpg.OpenPgp;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 
 #endregion
 
@@ -86,9 +86,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public readonly static  TimeSpan                                                DefaultSendHeartbeatsEvery  = TimeSpan.FromMinutes(5);
 
         private readonly        SemaphoreSlim                                           SendHeartbeatLock           = new SemaphoreSlim(1, 1);
-        private readonly        Timer                                                   SendHeartbeatTimer;
+        private readonly        Timer                                                   SendHeartbeatsTimer;
 
-        private                 UInt64                                                  _SendHeartbeatRunId         = 1;
+        private                 UInt64                                                  _SendHeartbeatsRunId         = 1;
 
         #endregion
 
@@ -147,30 +147,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public Boolean     DisableSendHeartbeats             { get; set; }
 
-
-        #region SendHeartbeatsEvery
-
-        private UInt32 _SendHeartbeatsEvery;
-
-        /// <summary>
-        /// The send heartbeats intervall.
-        /// </summary>
-        public TimeSpan SendHeartbeatsEvery
-        {
-
-            get
-            {
-                return TimeSpan.FromSeconds(_SendHeartbeatsEvery);
-            }
-
-            set
-            {
-                _SendHeartbeatsEvery = (UInt32) value.TotalSeconds;
-            }
-
-        }
-
-        #endregion
+        public TimeSpan    SendHeartbeatsEvery               { get; }
 
         #endregion
 
@@ -348,17 +325,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Description">An optional (multi-language) description of the charging station operator roaming provider.</param>
         /// <param name="RoamingNetwork">A WWCP roaming network.</param>
         /// 
+        /// <param name="PartnerId">The unique identification of an eMIP communication partner.</param>
         /// <param name="CPORoaming">A eMIP CPO roaming object to be mapped to WWCP.</param>
-        /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
-        /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// 
-        /// <param name="DefaultOperator">An optional Charging Station Operator, which will be copied into the main OperatorID-section of the eMIP SOAP request.</param>
-        /// <param name="OperatorNameSelector">An optional delegate to select an Charging Station Operator name, which will be copied into the OperatorName-section of the eMIP SOAP request.</param>
+        /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
         /// 
+        /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
+        /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
+        /// <param name="WWCPChargeDetailRecord2eMIPChargeDetailRecord">A delegate to process a charge detail record, e.g. before pushing it to the roaming provider.</param>
+        /// 
+        /// <param name="SendHeartbeatsEvery">The heartbeat intervall.</param>
         /// <param name="ServiceCheckEvery">The service check intervall.</param>
         /// <param name="StatusCheckEvery">The status check intervall.</param>
+        /// <param name="CDRCheckEvery">The charge detail record intervall.</param>
         /// 
+        /// <param name="DisableSendHeartbeats">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushData">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushStatus">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
@@ -374,19 +356,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               Partner_Id                                         PartnerId,
                               CPORoaming                                         CPORoaming,
+
+                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
+                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
                               WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
-
-                              //EVSEDataRecord2XMLDelegate                         EVSEDataRecord2XML                              = null,
-                              //EVSEStatusRecord2XMLDelegate                       EVSEStatusRecord2XML                            = null,
-                              //ChargeDetailRecord2XMLDelegate                     ChargeDetailRecord2XML                          = null,
-
-                              //ChargingStationOperator                            DefaultOperator                                 = null,
-                              //WWCP.OperatorIdFormats                             DefaultOperatorIdFormat                         = WWCP.OperatorIdFormats.ISO_STAR,
-                              //ChargingStationOperatorNameSelectorDelegate        OperatorNameSelector                            = null,
-                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
-                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
 
                               TimeSpan?                                          SendHeartbeatsEvery                             = null,
                               TimeSpan?                                          ServiceCheckEvery                               = null,
@@ -435,15 +411,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             this.PartnerId                                        = PartnerId;
             this.CPORoaming                                       = CPORoaming;
-            //this._EVSE2EVSEDataRecord                             = EVSE2EVSEDataRecord;
-            //this._EVSEStatusUpdate2EVSEStatusRecord               = EVSEStatusUpdate2EVSEStatusRecord;
-            this._WWCPChargeDetailRecord2eMIPChargeDetailRecord   = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
-            //this._EVSEDataRecord2XML                              = EVSEDataRecord2XML;
-            //this._EVSEStatusRecord2XML                            = EVSEStatusRecord2XML;
-            //this._ChargeDetailRecord2XML                          = ChargeDetailRecord2XML;
 
             this._IncludeEVSEIds                                  = IncludeEVSEIds ?? (evseid => true);
             this._IncludeEVSEs                                    = IncludeEVSEs   ?? (evse   => true);
+
+            //this._EVSE2EVSEDataRecord                             = EVSE2EVSEDataRecord;
+            //this._EVSEStatusUpdate2EVSEStatusRecord               = EVSEStatusUpdate2EVSEStatusRecord;
+            this._WWCPChargeDetailRecord2eMIPChargeDetailRecord   = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
 
             this.EVSEsToAddQueue                                  = new HashSet<EVSE>();
             this.EVSEsToUpdateQueue                               = new HashSet<EVSE>();
@@ -452,11 +426,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.EVSEsToRemoveQueue                               = new HashSet<EVSE>();
             this.eMIP_ChargeDetailRecords_Queue                   = new List<ChargeDetailRecord>();
 
-            this._SendHeartbeatsEvery                             = (UInt32)(SendHeartbeatsEvery.HasValue
-                                                                        ? SendHeartbeatsEvery.Value.TotalMilliseconds
-                                                                        : DefaultSendHeartbeatsEvery.TotalMilliseconds);
-
-            this.SendHeartbeatTimer                               = new Timer(SendHeartbeat);
+            this.SendHeartbeatsEvery                              = SendHeartbeatsEvery ?? DefaultSendHeartbeatsEvery;
+            this.SendHeartbeatsTimer                              = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
 
             this.DisableSendHeartbeats                            = DisableSendHeartbeats;
 
@@ -473,20 +444,28 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Id">The unique identification of the roaming provider.</param>
         /// <param name="Name">The offical (multi-language) name of the roaming provider.</param>
+        /// <param name="Description">An optional (multi-language) description of the charging station operator roaming provider.</param>
         /// <param name="RoamingNetwork">A WWCP roaming network.</param>
         /// 
+        /// <param name="PartnerId">The unique identification of an eMIP communication partner.</param>
         /// <param name="CPOClient">An eMIP CPO client.</param>
         /// <param name="CPOServer">An eMIP CPO sever.</param>
         /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         /// 
+        /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
+        /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
+        /// <param name="WWCPChargeDetailRecord2eMIPChargeDetailRecord">A delegate to process a charge detail record, e.g. before pushing it to the roaming provider.</param>
         /// 
-        /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="SendHeartbeatsEvery">The heartbeat intervall.</param>
         /// <param name="ServiceCheckEvery">The service check intervall.</param>
         /// <param name="StatusCheckEvery">The status check intervall.</param>
+        /// <param name="CDRCheckEvery">The charge detail record intervall.</param>
         /// 
+        /// <param name="DisableSendHeartbeats">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushData">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushStatus">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
@@ -506,15 +485,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               String                                             ServerLoggingContext                            = CPOServerLogger.DefaultContext,
                               LogfileCreatorDelegate                             LogfileCreator                                  = null,
 
+                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
+                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
                               WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
-                              //EVSEDataRecord2XMLDelegate                         EVSEDataRecord2XML                              = null,
-                              //EVSEStatusRecord2XMLDelegate                       EVSEStatusRecord2XML                            = null,
-                              //ChargeDetailRecord2XMLDelegate                     ChargeDetailRecord2XML                          = null,
-
-                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
-                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
 
                               TimeSpan?                                          SendHeartbeatsEvery                             = null,
                               TimeSpan?                                          ServiceCheckEvery                               = null,
@@ -542,15 +518,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   ServerLoggingContext,
                                   LogfileCreator),
 
+                   IncludeEVSEIds,
+                   IncludeEVSEs,
+
                    //EVSE2EVSEDataRecord,
                    //EVSEStatusUpdate2EVSEStatusRecord,
                    WWCPChargeDetailRecord2eMIPChargeDetailRecord,
-                   //EVSEDataRecord2XML,
-                   //EVSEStatusRecord2XML,
-                   //ChargeDetailRecord2XML,
-
-                   IncludeEVSEIds,
-                   IncludeEVSEs,
 
                    SendHeartbeatsEvery,
                    ServiceCheckEvery,
@@ -581,11 +554,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Description">An optional (multi-language) description of the charging station operator roaming provider.</param>
         /// <param name="RoamingNetwork">A WWCP roaming network.</param>
         /// 
+        /// <param name="PartnerId">The unique identification of an eMIP communication partner.</param>
+        /// 
         /// <param name="RemoteHostname">The hostname of the remote eMIP service.</param>
         /// <param name="RemoteTCPPort">An optional TCP port of the remote eMIP service.</param>
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCert">The TLS client certificate to use.</param>
+        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="RemoteHTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
+        /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
@@ -602,13 +578,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         /// 
+        /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
+        /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
+        /// <param name="WWCPChargeDetailRecord2eMIPChargeDetailRecord">A delegate to process a charge detail record, e.g. before pushing it to the roaming provider.</param>
         /// 
-        /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="SendHeartbeatsEvery">The heartbeat intervall.</param>
         /// <param name="ServiceCheckEvery">The service check intervall.</param>
         /// <param name="StatusCheckEvery">The status check intervall.</param>
+        /// <param name="CDRCheckEvery">The charge detail record intervall.</param>
         /// 
+        /// <param name="DisableSendHeartbeats">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushData">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushStatus">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
@@ -627,12 +609,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               String                                             RemoteHostname,
                               IPPort                                             RemoteTCPPort                                   = null,
                               RemoteCertificateValidationCallback                RemoteCertificateValidator                      = null,
-                              LocalCertificateSelectionCallback                  LocalCertificateSelector                        = null,
-                              X509Certificate                                    ClientCert                                      = null,
+                              LocalCertificateSelectionCallback                  ClientCertificateSelector                       = null,
                               String                                             RemoteHTTPVirtualHost                           = null,
                               String                                             URIPrefix                                       = CPOClient.DefaultURIPrefix,
-                              String                                             PlatformURI                                     = CPOClient.DefaultPlatformURI,
-
                               String                                             HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
                               TimeSpan?                                          RequestTimeout                                  = null,
                               Byte?                                              MaxNumberOfRetries                              = CPOClient.DefaultMaxNumberOfRetries,
@@ -641,8 +620,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               String                                             ServiceId                                       = null,
                               IPPort                                             ServerTCPPort                                   = null,
                               String                                             ServerURIPrefix                                 = CPOServer.DefaultURIPrefix,
-                              String                                             ServerAuthorizationURI                          = CPOServer.DefaultAuthorizationURI,
-                              String                                             ServerReservationURI                            = CPOServer.DefaultReservationURI,
                               HTTPContentType                                    ServerContentType                               = null,
                               Boolean                                            ServerRegisterHTTPRootService                   = true,
                               Boolean                                            ServerAutoStart                                 = false,
@@ -651,15 +628,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               String                                             ServerLoggingContext                            = CPOServerLogger.DefaultContext,
                               LogfileCreatorDelegate                             LogfileCreator                                  = null,
 
+                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
+                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
                               WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
-                              //EVSEDataRecord2XMLDelegate                         EVSEDataRecord2XML                              = null,
-                              //EVSEStatusRecord2XMLDelegate                       EVSEStatusRecord2XML                            = null,
-                              //ChargeDetailRecord2XMLDelegate                     ChargeDetailRecord2XML                          = null,
-
-                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
-                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
 
                               TimeSpan?                                          SendHeartbeatsEvery                             = null,
                               TimeSpan?                                          ServiceCheckEvery                               = null,
@@ -686,11 +660,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   RemoteHostname,
                                   RemoteTCPPort,
                                   RemoteCertificateValidator,
-                                  LocalCertificateSelector,
-                                  ClientCert,
+                                  ClientCertificateSelector,
                                   RemoteHTTPVirtualHost,
                                   URIPrefix,
-                                  PlatformURI,
                                   HTTPUserAgent,
                                   RequestTimeout,
                                   MaxNumberOfRetries,
@@ -699,8 +671,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   ServiceId,
                                   ServerTCPPort,
                                   ServerURIPrefix,
-                                  ServerAuthorizationURI,
-                                  ServerReservationURI,
                                   ServerContentType,
                                   ServerRegisterHTTPRootService,
                                   false,
@@ -711,15 +681,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                   DNSClient),
 
+                   IncludeEVSEIds,
+                   IncludeEVSEs,
+
                    //EVSE2EVSEDataRecord,
                    //EVSEStatusUpdate2EVSEStatusRecord,
                    WWCPChargeDetailRecord2eMIPChargeDetailRecord,
-                   //EVSEDataRecord2XML,
-                   //EVSEStatusRecord2XML,
-                   //ChargeDetailRecord2XML,
-
-                   IncludeEVSEIds,
-                   IncludeEVSEs,
 
                    SendHeartbeatsEvery,
                    ServiceCheckEvery,
@@ -5798,7 +5765,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     SendHeartbeatStartedEvent?.Invoke(this,
                                                       StartTime,
                                                       TimeSpan.FromMilliseconds(_FlushEVSEFastStatusEvery),
-                                                      _SendHeartbeatRunId);
+                                                      _SendHeartbeatsRunId);
 
                     #endregion
 
@@ -5820,12 +5787,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                        StartTime,
                                                        EndTime,
                                                        EndTime - StartTime,
-                                                       TimeSpan.FromMilliseconds(_SendHeartbeatsEvery),
-                                                       _SendHeartbeatRunId);
+                                                       SendHeartbeatsEvery,
+                                                       _SendHeartbeatsRunId);
 
                     #endregion
 
-                    _SendHeartbeatRunId++;
+                    _SendHeartbeatsRunId++;
 
                 }
 

@@ -22,7 +22,6 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
@@ -48,36 +47,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String  DefaultHTTPUserAgent            = "GraphDefined eMIP " + Version.Number + " CPO Client";
+        public new const           String  DefaultHTTPUserAgent   = "GraphDefined eMIP " + Version.Number + " CPO Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort  DefaultRemotePort               = IPPort.Parse(443);
+        public new static readonly IPPort  DefaultRemotePort      = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public     const           String  DefaultURIPrefix                = "/services";
-
-        /// <summary>
-        /// The default HTTP/SOAP/XML URI for eMIP platform requests.
-        /// </summary>
-        public     const           String  DefaultPlatformURI              = "/platformV1";
+        public     const           String  DefaultURIPrefix       = "/api/emip/";
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The HTTP/SOAP/XML URI for eMIP platform requests.
-        /// </summary>
-        public String           PlatformURI             { get; }
-
-        /// <summary>
         /// The attached eMIP CPO client (HTTP/SOAP client) logger.
         /// </summary>
-        public CPOClientLogger  Logger                  { get; }
+        public CPOClientLogger  Logger   { get; }
 
         #endregion
 
@@ -177,10 +166,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
         /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="ClientCert">The TLS client certificate to use.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
         /// <param name="URIPrefix">An default URI prefix.</param>
-        /// <param name="PlatformURI">The HTTP/SOAP/XML URI for eMIP platform requests.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
@@ -192,10 +179,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          IPPort                               RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         X509Certificate                      ClientCert                   = null,
                          String                               HTTPVirtualHost              = null,
                          String                               URIPrefix                    = DefaultURIPrefix,
-                         String                               PlatformURI                  = DefaultPlatformURI,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -208,7 +193,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemotePort ?? DefaultRemotePort,
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
-                   ClientCert,
                    HTTPVirtualHost,
                    URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
                    null,
@@ -219,11 +203,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.PlatformURI  = PlatformURI.WhenNullOrEmpty(DefaultPlatformURI);
-
-            this.Logger       = new CPOClientLogger(this,
-                                                    LoggingContext,
-                                                    LogfileCreator);
+            this.Logger  = new CPOClientLogger(this,
+                                               LoggingContext,
+                                               LogfileCreator);
 
         }
 
@@ -240,10 +222,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
         /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="ClientCert">The TLS client certificate to use.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
         /// <param name="URIPrefix">An default URI prefix.</param>
-        /// <param name="PlatformURI">The HTTP/SOAP/XML URI for eMIP platform requests.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
@@ -254,10 +234,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          IPPort                               RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         X509Certificate                      ClientCert                   = null,
                          String                               HTTPVirtualHost              = null,
                          String                               URIPrefix                    = DefaultURIPrefix,
-                         String                               PlatformURI                  = DefaultPlatformURI,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -268,7 +246,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemotePort ?? DefaultRemotePort,
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
-                   ClientCert,
                    HTTPVirtualHost,
                    URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
                    null,
@@ -279,9 +256,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.PlatformURI  = PlatformURI.WhenNullOrEmpty(DefaultPlatformURI);
-
-            this.Logger       = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
+            this.Logger  = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
 
         }
 
@@ -354,17 +329,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         RemotePort,
                                                         HTTPVirtualHost,
-                                                        "/api/emip/",    //URIPrefix + PlatformURI,
+                                                        URIPrefix,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        ClientCert,
                                                         UserAgent,
                                                         RequestTimeout,
                                                         DNSClient))
                 {
 
                     result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
-                                                                                           SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
+                                                                                       SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
                                                      "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
                                                      ContentType:          new HTTPContentType("application/soap+xml",
                                                                                                "utf-8",

@@ -56,16 +56,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public new const           String           DefaultURIPrefix           = "";
 
         /// <summary>
-        /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
-        /// </summary>
-        public     const           String           DefaultAuthorizationURI    = "/Authorization";
-
-        /// <summary>
-        /// The default HTTP/SOAP/XML URI for eMIP reservation requests.
-        /// </summary>
-        public     const           String           DefaultReservationURI      = "/Reservation";
-
-        /// <summary>
         /// The default HTTP/SOAP/XML content type.
         /// </summary>
         public new static readonly HTTPContentType  DefaultContentType         = HTTPContentType.XMLTEXT_UTF8;
@@ -84,16 +74,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public String  ServiceId           { get; }
 
-        /// <summary>
-        /// The HTTP/SOAP/XML URI for eMIP authorization requests.
-        /// </summary>
-        public String  AuthorizationURI    { get; }
-
-        /// <summary>
-        /// The HTTP/SOAP/XML URI for eMIP reservation requests.
-        /// </summary>
-        public String  ReservationURI      { get; }
-
         #endregion
 
         #region Custom request/response mappers
@@ -108,7 +88,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
-        #region CPOServer(HTTPServerName, ServiceId = null, TCPPort = default, URIPrefix = default, AuthorizationURI = default, ReservationURI = default, ContentType = default, DNSClient = null, AutoStart = false)
+        #region CPOServer(HTTPServerName, ServiceId = null, TCPPort = default, URIPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
 
         /// <summary>
         /// Initialize an new HTTP server for the eMIP HTTP/SOAP/XML CPO API.
@@ -117,8 +97,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorizationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
-        /// <param name="ReservationURI">The HTTP/SOAP/XML URI for eMIP reservation requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
@@ -127,8 +105,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          String           ServiceId                 = null,
                          IPPort           TCPPort                   = null,
                          String           URIPrefix                 = DefaultURIPrefix,
-                         String           AuthorizationURI          = DefaultAuthorizationURI,
-                         String           ReservationURI            = DefaultReservationURI,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -144,9 +120,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
-            this.AuthorizationURI  = AuthorizationURI ?? DefaultAuthorizationURI;
-            this.ReservationURI    = ReservationURI   ?? DefaultReservationURI;
+            this.ServiceId  = ServiceId ?? nameof(CPOServer);
 
             RegisterURITemplates();
 
@@ -157,7 +131,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region CPOServer(SOAPServer, ServiceId = null, URIPrefix = default, AuthorizationURI = default, ReservationURI = default)
+        #region CPOServer(SOAPServer, ServiceId = null, URIPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML CPO API.
@@ -165,22 +139,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorizationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
-        /// <param name="ReservationURI">The HTTP/SOAP/XML URI for eMIP reservation requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
-                         String      ServiceId          = null,
-                         String      URIPrefix          = DefaultURIPrefix,
-                         String      AuthorizationURI   = DefaultAuthorizationURI,
-                         String      ReservationURI     = DefaultReservationURI)
+                         String      ServiceId   = null,
+                         String      URIPrefix   = DefaultURIPrefix)
 
             : base(SOAPServer,
                    URIPrefix ?? DefaultURIPrefix)
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
-            this.AuthorizationURI  = AuthorizationURI ?? DefaultAuthorizationURI;
-            this.ReservationURI    = ReservationURI   ?? DefaultReservationURI;
+            this.ServiceId  = ServiceId ?? nameof(CPOServer);
 
             RegisterURITemplates();
 

@@ -47,6 +47,8 @@
     <Compile Include="CPO\CPOExtentions.cs" />
     <Compile Include="CPO\WWCPCPOAdapter.cs" />
     <Compile Include="eMIPMapper.cs" />
+    <Compile Include="eMIPExceptions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

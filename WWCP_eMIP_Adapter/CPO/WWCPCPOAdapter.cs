@@ -64,16 +64,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         private static readonly  Regex                                                  pattern                      = new Regex(@"\s=\s");
 
-        private readonly        HashSet<EVSE>                                           EVSEsToAddQueue;
-        private readonly        HashSet<EVSE>                                           EVSEsToUpdateQueue;
-        private readonly        List<EVSEStatusUpdate>                                  EVSEStatusChangesFastQueue;
-        private readonly        List<EVSEStatusUpdate>                                  EVSEStatusChangesDelayedQueue;
-        private readonly        HashSet<EVSE>                                           EVSEsToRemoveQueue;
         private readonly        List<ChargeDetailRecord>                                eMIP_ChargeDetailRecords_Queue;
-
-        private                 IncludeEVSEIdDelegate                                   _IncludeEVSEIds;
-        private                 IncludeEVSEDelegate                                     _IncludeEVSEs;
-
 
         //protected readonly      SemaphoreSlim                                           FlusheMIPChargeDetailRecordsLock      = new SemaphoreSlim(1, 1);
 
@@ -330,6 +321,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -359,6 +351,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
@@ -383,6 +376,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    Name,
                    Description,
                    RoamingNetwork,
+
+                   IncludeEVSEIds,
+                   IncludeEVSEs,
+                   CustomEVSEIdMapper,
 
                    ServiceCheckEvery,
                    StatusCheckEvery,
@@ -412,23 +409,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.PartnerId                                        = PartnerId;
             this.CPORoaming                                       = CPORoaming;
 
-            this._IncludeEVSEIds                                  = IncludeEVSEIds ?? (evseid => true);
-            this._IncludeEVSEs                                    = IncludeEVSEs   ?? (evse   => true);
-
             //this._EVSE2EVSEDataRecord                             = EVSE2EVSEDataRecord;
             //this._EVSEStatusUpdate2EVSEStatusRecord               = EVSEStatusUpdate2EVSEStatusRecord;
             this._WWCPChargeDetailRecord2eMIPChargeDetailRecord   = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
 
-            this.EVSEsToAddQueue                                  = new HashSet<EVSE>();
-            this.EVSEsToUpdateQueue                               = new HashSet<EVSE>();
-            this.EVSEStatusChangesFastQueue                       = new List<EVSEStatusUpdate>();
-            this.EVSEStatusChangesDelayedQueue                    = new List<EVSEStatusUpdate>();
-            this.EVSEsToRemoveQueue                               = new HashSet<EVSE>();
             this.eMIP_ChargeDetailRecords_Queue                   = new List<ChargeDetailRecord>();
 
             this.SendHeartbeatsEvery                              = SendHeartbeatsEvery ?? DefaultSendHeartbeatsEvery;
             this.SendHeartbeatsTimer                              = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
-
             this.DisableSendHeartbeats                            = DisableSendHeartbeats;
 
             // Link incoming eMIP events...
@@ -455,6 +443,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -487,6 +476,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
@@ -520,6 +510,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   CustomEVSEIdMapper,
 
                    //EVSE2EVSEDataRecord,
                    //EVSEStatusUpdate2EVSEStatusRecord,
@@ -580,6 +571,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -630,6 +622,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
                               //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
@@ -683,6 +676,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   CustomEVSEIdMapper,
 
                    //EVSE2EVSEDataRecord,
                    //EVSEStatusUpdate2EVSEStatusRecord,
@@ -1057,97 +1051,102 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (private) PushEVSEStatus(EVSEStatusUpdates, ServerAction, ...)
+        #region (private) SetEVSEBusyStatus(EVSEStatusUpdates, ...)
 
         /// <summary>
         /// Upload the EVSE status of the given lookup of EVSE status types grouped by their Charging Station Operator.
         /// </summary>
         /// <param name="EVSEStatusUpdates">An enumeration of EVSE status updates.</param>
-        /// <param name="ServerAction">The server-side data management operation.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public async Task<PushStatusResult>
+        private async Task<PushStatusResult>
 
-            PushEVSEStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
-                    //       ActionTypes                    ServerAction,
+            SetEVSEBusyStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
 
-                           DateTime?                      Timestamp           = null,
-                           CancellationToken?             CancellationToken   = null,
-                           EventTracking_Id               EventTrackingId     = null,
-                           TimeSpan?                      RequestTimeout      = null)
+                              DateTime?                      Timestamp           = null,
+                              CancellationToken?             CancellationToken   = null,
+                              EventTracking_Id               EventTrackingId     = null,
+                              TimeSpan?                      RequestTimeout      = null)
 
         {
 
-            //#region Initial checks
+            #region Initial checks
 
-            //if (EVSEStatusUpdates == null)
-            //    throw new ArgumentNullException(nameof(EVSEStatusUpdates), "The given enumeration of EVSE status updates must not be null!");
+            if (EVSEStatusUpdates == null)
+                throw new ArgumentNullException(nameof(EVSEStatusUpdates), "The given enumeration of EVSE status updates must not be null!");
 
 
-            //if (!Timestamp.HasValue)
-            //    Timestamp = DateTime.UtcNow;
+            if (!Timestamp.HasValue)
+                Timestamp = DateTime.UtcNow;
 
-            //if (!CancellationToken.HasValue)
-            //    CancellationToken = new CancellationTokenSource().Token;
+            if (!CancellationToken.HasValue)
+                CancellationToken = new CancellationTokenSource().Token;
 
-            //if (EventTrackingId == null)
-            //    EventTrackingId = EventTracking_Id.New;
+            if (EventTrackingId == null)
+                EventTrackingId = EventTracking_Id.New;
 
-            //if (!RequestTimeout.HasValue)
-            //    RequestTimeout = CPOClient?.RequestTimeout;
+            if (!RequestTimeout.HasValue)
+                RequestTimeout = CPOClient?.RequestTimeout;
 
-            //#endregion
+            #endregion
 
-            //#region Get effective number of EVSEStatus/EVSEStatusRecords to upload
+            #region Get effective number of EVSEStatus/EVSEStatusRecords to upload
 
-            //var Warnings = new List<Warning>();
+            var Warnings = new List<Warning>();
 
-            //var _EVSEStatus = EVSEStatusUpdates.
-            //                      Where       (evsestatusupdate => _IncludeEVSEs  (evsestatusupdate.EVSE) &&
-            //                                                       _IncludeEVSEIds(evsestatusupdate.EVSE.Id)).
-            //                      ToLookup    (evsestatusupdate => evsestatusupdate.EVSE.Id,
-            //                                   evsestatusupdate => evsestatusupdate).
-            //                      ToDictionary(group            => group.Key,
-            //                                   group            => group.AsEnumerable().OrderByDescending(item => item.NewStatus.Timestamp)).
-            //                      Select      (evsestatusupdate => {
+            var _EVSEBusyStatus = EVSEStatusUpdates.
+                                  ToLookup    (evsestatusupdate => evsestatusupdate.EVSE.Id,
+                                               evsestatusupdate => evsestatusupdate).
+                                  ToDictionary(group            => group.Key,
+                                               group            => group.AsEnumerable().OrderByDescending(item => item.NewStatus.Timestamp)).
+                                  Select      (evsestatusupdate => {
 
-            //                          try
-            //                          {
+                                      try
+                                      {
 
-            //                              var _EVSEId = evsestatusupdate.Key.ToeMIP();
+                                          var _EVSEId = evsestatusupdate.Key.ToEMIP(CustomEVSEIdMapper);
 
-            //                              if (!_EVSEId.HasValue)
-            //                                  throw new InvalidEVSEIdentificationException(evsestatusupdate.Key.ToString());
+                                          if (!_EVSEId.HasValue)
+                                              throw new InvalidEVSEIdentificationException(evsestatusupdate.Key.ToString());
 
-            //                              // Only push the current status of the latest status update!
-            //                              return new EVSEStatusRecord(
-            //                                         evsestatusupdate.Key.ToeMIP().Value,
-            //                                         evsestatusupdate.Value.First().NewStatus.Value.AseMIPEVSEStatus()
-            //                                     );
+                                          // Only push the current status of the latest status update!
+                                          return new KeyValuePair<EVSEStatusUpdate, EVSEBusyStatus>?(
+                                                     new KeyValuePair<EVSEStatusUpdate, EVSEBusyStatus>(
+                                                         evsestatusupdate.Value.First(),
+                                                         new EVSEBusyStatus(
+                                                                  _EVSEId.Value,
+                                                                  evsestatusupdate.Value.First().NewStatus.Timestamp,
+                                                                  evsestatusupdate.Value.First().NewStatus.Value.ToEMIP()
+                                                                  // BusyStatusUntil
+                                                                  // BusyStatusComment
+                                                         )
+                                                     )
+                                                 );
 
-            //                          }
-            //                          catch (Exception e)
-            //                          {
-            //                              DebugX.  Log(e.Message);
-            //                              Warnings.Add(Warning.Create(e.Message, evsestatusupdate));
-            //                          }
+                                      }
+                                      catch (Exception e)
+                                      {
+                                          DebugX.  Log(e.Message);
+                                          Warnings.Add(Warning.Create(e.Message, evsestatusupdate));
+                                      }
 
-            //                          return null;
+                                      return null;
 
-            //                      }).
-            //                      Where(evsestatusrecord => evsestatusrecord != null).
-            //                      ToArray();
+                                  }).
+                                  Where(evsestatusrecord => evsestatusrecord != null).
+                                  ToArray();
 
-            //PushStatusResult result = null;
+            PushStatusResult result = null;
+            var results = new List<PushStatusResult>();
 
-            //#endregion
+            #endregion
 
-            //#region Send OnEVSEStatusPush event
+            #region Send OnEVSEStatusPush event
 
-            //var StartTime = DateTime.UtcNow;
+            var StartTime = DateTime.UtcNow;
 
             //try
             //{
@@ -1158,7 +1157,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             //                                        Id,
             //                                        EventTrackingId,
             //                                        RoamingNetwork.Id,
-            //                                        ServerAction,
+            //                                        ActionType.update,
             //                                        _EVSEStatus.ULongCount(),
             //                                        _EVSEStatus,
             //                                        Warnings.Where(warning => warning.IsNotNullOrEmpty()),
@@ -1170,61 +1169,69 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnPushEVSEStatusWWCPRequest));
             //}
 
-            //#endregion
+            #endregion
 
 
-            //var response = await CPORoaming.
-            //                         PushEVSEStatus(_EVSEStatus,
-            //                                        DefaultOperatorId,
-            //                                        DefaultOperatorName.IsNotNullOrEmpty() ? DefaultOperatorName : null,
-            //                                        ServerAction,
-            //                                        null,
+            foreach (var evseStatus in _EVSEBusyStatus)
+            {
 
-            //                                        Timestamp,
-            //                                        CancellationToken,
-            //                                        EventTrackingId,
-            //                                        RequestTimeout);
+                var response = await CPORoaming.
+                                         SetEVSEBusyStatus(PartnerId,
+                                                           evseStatus.Value.Value.EVSEId.OperatorId,
+                                                           evseStatus.Value.Value.EVSEId,
+                                                           evseStatus.Value.Value.StatusEventDate,
+                                                           evseStatus.Value.Value.BusyStatus,
+                                                           null, //Transaction_Id.Random(),
+                                                           null, //BusyStatusUntil
+                                                           null, //BusyStatusComment
 
-
-            //var Endtime = DateTime.UtcNow;
-            //var Runtime = Endtime - StartTime;
-
-            //if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-            //    response.Content        != null)
-            //{
-
-            //    if (response.Content.Result)
-            //        result = PushStatusResult.Success(Id,
-            //                                          this,
-            //                                          response.Content.StatusCode.Description,
-            //                                          response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
-            //                                              ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
-            //                                              : Warnings,
-            //                                          Runtime);
-
-            //    else
-            //        result = PushStatusResult.Error(Id,
-            //                                        this,
-            //                                        EVSEStatusUpdates,
-            //                                        response.Content.StatusCode.Description,
-            //                                        response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
-            //                                            ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
-            //                                            : Warnings,
-            //                                        Runtime);
-
-            //}
-            //else
-            //    result = PushStatusResult.Error(Id,
-            //                                    this,
-            //                                    EVSEStatusUpdates,
-            //                                    response.HTTPStatusCode.ToString(),
-            //                                    response.HTTPBody != null
-            //                                        ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
-            //                                        : Warnings.AddAndReturnList("No HTTP body received!"),
-            //                                    Runtime);
+                                                           Timestamp,
+                                                           CancellationToken,
+                                                           EventTrackingId,
+                                                           RequestTimeout);
 
 
-            //#region Send OnPushEVSEStatusResponse event
+                var Endtime = DateTime.UtcNow;
+                var Runtime = Endtime - StartTime;
+
+                if (response.HTTPStatusCode == HTTPStatusCode.OK &&
+                    response.Content        != null)
+                {
+
+                    if (response.Content.RequestStatus == RequestStatus.Ok)
+                        results.Add(PushStatusResult.Success(Id,
+                                                             this,
+                                                             //response.Content.StatusCode.Description,
+                                                             //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                             //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
+                                                             //    : Warnings,
+                                                             Runtime: Runtime));
+
+                    else
+                        results.Add(PushStatusResult.Error(Id,
+                                                           this,
+                                                           new EVSEStatusUpdate[] { evseStatus.Value.Key },
+                                                           //response.Content.StatusCode.Description,
+                                                           //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                           //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
+                                                           //    : Warnings,
+                                                           Runtime: Runtime));
+
+                }
+                else
+                    results.Add(PushStatusResult.Error(Id,
+                                                       this,
+                                                       new EVSEStatusUpdate[] { evseStatus.Value.Key },
+                                                       response.HTTPStatusCode.ToString(),
+                                                       response.HTTPBody != null
+                                                           ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
+                                                           : Warnings.AddAndReturnList("No HTTP body received!"),
+                                                       Runtime));
+
+            }
+
+
+            #region Send OnPushEVSEStatusResponse event
 
             //try
             //{
@@ -1248,7 +1255,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnPushEVSEStatusWWCPResponse));
             //}
 
-            //#endregion
+            #endregion
 
             return null;
 
@@ -2139,76 +2146,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TransmissionType == TransmissionTypes.Enqueue)
             {
 
-                #region Send OnEnqueueSendCDRRequest event
+                return await UpdateStatus(this,
+                                          StatusUpdates,
 
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    var FilteredUpdates = StatusUpdates.Where(statusupdate => _IncludeEVSEs  (statusupdate.EVSE) &&
-                                                                              _IncludeEVSEIds(statusupdate.EVSE.Id)).
-                                                        ToArray();
-
-                    if (FilteredUpdates.Length > 0)
-                    {
-
-                        foreach (var Update in FilteredUpdates)
-                        {
-
-                            // Delay the status update until the EVSE data had been uploaded!
-                            if (EVSEsToAddQueue.Any(evse => evse == Update.EVSE))
-                                EVSEStatusChangesDelayedQueue.Add(Update);
-
-                            else
-                                EVSEStatusChangesFastQueue.Add(Update);
-
-                        }
-
-                        FlushEVSEFastStatusTimer.Change(_FlushEVSEFastStatusEvery, Timeout.Infinite);
-
-                        return PushStatusResult.Enqueued(Id, this);
-
-                    }
-
-                    return PushStatusResult.NoOperation(Id, this);
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
+                                          Timestamp,
+                                          CancellationToken,
+                                          EventTrackingId,
+                                          RequestTimeout).
+                             ConfigureAwait(false);
 
             }
 
             #endregion
 
-            return await PushEVSEStatus(StatusUpdates,
-                                        // ActionTypes.update,
+            return await SetEVSEBusyStatus(StatusUpdates,
 
-                                        Timestamp,
-                                        CancellationToken,
-                                        EventTrackingId,
-                                        RequestTimeout);
+                                           Timestamp,
+                                           CancellationToken,
+                                           EventTrackingId,
+                                           RequestTimeout).
+                         ConfigureAwait(false);
 
         }
 
@@ -6074,7 +6031,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (EVSEStatusFastQueueCopy.Count > 0)
             {
 
-                var _PushEVSEStatus = await PushEVSEStatus(EVSEStatusFastQueueCopy,
+                var _PushEVSEStatus = await SetEVSEBusyStatus(EVSEStatusFastQueueCopy,
                                                            // ActionTypes.update,
                                                            EventTrackingId: EventTrackingId);
 

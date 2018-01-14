@@ -40,7 +40,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region SendHeartbeat(PartnerId, OperatorId, TransactionId = null, ...)
 
         /// <summary>
-        /// Upload the given EVSE status records.
+        /// Send a heartbeat.
         /// </summary>
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>
@@ -73,6 +73,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                  RequestTimeout ?? ICPOClient.RequestTimeout));
 
         #endregion
+
+
+        #region SetEVSEBusyStatus(PartnerId, OperatorId, EVSEId, StatusEventDate, BusyStatus, TransactionId = null, ...)
+
+        /// <summary>
+        /// Upload the given EVSE busy status.
+        /// </summary>
+        /// <param name="PartnerId">The partner identification.</param>
+        /// <param name="OperatorId">The operator identification.</param>
+        /// <param name="EVSEId">The EVSE identification.</param>
+        /// <param name="StatusEventDate">The timestamp of the status change.</param>
+        /// <param name="BusyStatus">The EVSE busy status.</param>
+        /// <param name="TransactionId">An optional transaction identification.</param>
+        /// <param name="BusyStatusUntil">An optional timestamp until which the given busy status is valid.</param>
+        /// <param name="BusyStatusComment">An optional comment about the busy status.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        public static Task<HTTPResponse<SetEVSEBusyStatusResponse>>
+
+            SetEVSEBusyStatus(this ICPOClient      ICPOClient,
+                              Partner_Id           PartnerId,
+                              Operator_Id          OperatorId,
+                              EVSE_Id              EVSEId,
+                              DateTime             StatusEventDate,
+                              EVSEBusyStatusTypes  BusyStatus,
+                              Transaction_Id?      TransactionId       = null,
+                              DateTime?            BusyStatusUntil     = null,
+                              String               BusyStatusComment   = null,
+
+                              DateTime?            Timestamp           = null,
+                              CancellationToken?   CancellationToken   = null,
+                              EventTracking_Id     EventTrackingId     = null,
+                              TimeSpan?            RequestTimeout      = null)
+
+
+                => ICPOClient.SetEVSEBusyStatus(new SetEVSEBusyStatusRequest(PartnerId,
+                                                                             OperatorId,
+                                                                             EVSEId,
+                                                                             StatusEventDate,
+                                                                             BusyStatus,
+                                                                             TransactionId,
+                                                                             BusyStatusUntil,
+                                                                             BusyStatusComment,
+
+                                                                             Timestamp,
+                                                                             CancellationToken,
+                                                                             EventTrackingId,
+                                                                             RequestTimeout ?? ICPOClient.RequestTimeout));
+
+        #endregion
+
 
     }
 

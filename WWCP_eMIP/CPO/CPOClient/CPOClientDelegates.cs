@@ -52,7 +52,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                          TimeSpan                                 RequestTimeout);
 
     /// <summary>
-    /// A delegate called whenever new heartbeat had been send upstream.
+    /// A delegate called whenever new heartbeat had been sent upstream.
     /// </summary>
     public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
@@ -68,5 +68,51 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
     #endregion
 
+
+    #region OnSetEVSEBusyStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever new EVSE busy status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetEVSEBusyStatusRequestDelegate (DateTime                                 LogTimestamp,
+                                                             DateTime                                 RequestTimestamp,
+                                                             ICPOClient                               Sender,
+                                                             String                                   SenderId,
+                                                             EventTracking_Id                         EventTrackingId,
+
+                                                             Partner_Id                               PartnerId,
+                                                             Operator_Id                              OperatorId,
+                                                             EVSE_Id                                  EVSEId,
+                                                             DateTime                                 StatusEventDate,
+                                                             EVSEBusyStatusTypes                      BusyStatus,
+                                                             Transaction_Id?                          TransactionId,
+                                                             DateTime?                                BusyStatusUntil,
+                                                             String                                   BusyStatusComment,
+
+                                                             TimeSpan                                 RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever new EVSE busy status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetEVSEBusyStatusResponseDelegate(DateTime                                 LogTimestamp,
+                                                             DateTime                                 RequestTimestamp,
+                                                             ICPOClient                               Sender,
+                                                             String                                   SenderId,
+                                                             EventTracking_Id                         EventTrackingId,
+
+                                                             Partner_Id                               PartnerId,
+                                                             Operator_Id                              OperatorId,
+                                                             EVSE_Id                                  EVSEId,
+                                                             DateTime                                 StatusEventDate,
+                                                             EVSEBusyStatusTypes                      BusyStatus,
+                                                             Transaction_Id?                          TransactionId,
+                                                             DateTime?                                BusyStatusUntil,
+                                                             String                                   BusyStatusComment,
+
+                                                             TimeSpan                                 RequestTimeout,
+                                                             SetEVSEBusyStatusResponse                Result,
+                                                             TimeSpan                                 Duration);
+
+    #endregion
 
 }

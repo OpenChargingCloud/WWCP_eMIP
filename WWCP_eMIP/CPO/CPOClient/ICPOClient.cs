@@ -45,17 +45,42 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a SOAP request sending a heartbeat will be send.
         /// </summary>
-        event ClientRequestLogHandler           OnSendHeartbeatSOAPRequest;
+        event ClientRequestLogHandler          OnSendHeartbeatSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a heartbeat SOAP request had been received.
         /// </summary>
-        event ClientResponseLogHandler          OnSendHeartbeatSOAPResponse;
+        event ClientResponseLogHandler         OnSendHeartbeatSOAPResponse;
 
         /// <summary>
         /// An event fired whenever EVSE status records had been sent upstream.
         /// </summary>
         event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
+
+        #endregion
+
+
+        #region OnSetEVSEBusyStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE busy status will be send.
+        /// </summary>
+        event OnSetEVSEBusyStatusRequestDelegate   OnSetEVSEBusyStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE busy status will be send.
+        /// </summary>
+        event ClientRequestLogHandler              OnSetEVSEBusyStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler             OnSetEVSEBusyStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status request had been received.
+        /// </summary>
+        event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
 
         #endregion
 
@@ -66,6 +91,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         Task<HTTPResponse<HeartbeatResponse>>
 
             SendHeartbeat(HeartbeatRequest Request);
+
+
+        Task<HTTPResponse<SetEVSEBusyStatusResponse>>
+
+            SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request);
 
 
     }

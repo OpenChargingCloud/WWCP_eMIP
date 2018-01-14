@@ -98,6 +98,7 @@
     <Compile Include="Messages\CPO\GetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\CPO\GetServiceAuthorisationResponse.cs" />
     <Compile Include="Messages\CPO\SetChargeDetailRecordResponse.cs" />
+    <Compile Include="DataTypes\Complex\EVSEBusyStatus.cs" />
     <Compile Include="Messages\CPO\SetEVSESyntheticStatusResponse.cs" />
     <Compile Include="Messages\CPO\SetEVSESyntheticStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetEVSEBusyStatusResponse.cs" />

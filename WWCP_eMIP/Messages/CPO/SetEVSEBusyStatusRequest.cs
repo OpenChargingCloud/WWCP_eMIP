@@ -163,7 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) Parse   (SetEVSEBusyStatusRequestXML,  ..., OnException = null)
 
         /// <summary>
-        /// Parse the given XML representation of an eMIP heartbeat request.
+        /// Parse the given XML representation of an eMIP SetEVSEBusyStatus request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
@@ -190,7 +190,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) Parse   (SetEVSEBusyStatusRequestText, ..., OnException = null)
 
         /// <summary>
-        /// Parse the given text representation of an eMIP heartbeat request.
+        /// Parse the given text representation of an eMIP SetEVSEBusyStatus request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
@@ -217,11 +217,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) TryParse(SetEVSEBusyStatusRequestXML,  ..., out SetEVSEBusyStatusRequest, OnException = null)
 
         /// <summary>
-        /// Try to parse the given XML representation of an eMIP heartbeat request.
+        /// Try to parse the given XML representation of an eMIP SetEVSEBusyStatus request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
-        /// <param name="SetEVSEBusyStatusRequest">The parsed heartbeat request.</param>
+        /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(XElement                                           SetEVSEBusyStatusRequestXML,
                                        CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
@@ -236,32 +236,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
 
-                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "partnerId",
-                                                                                              Partner_Id.Parse),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    ("partnerId",         Partner_Id.       Parse),
 
                                                //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-
-                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "operatorId",
-                                                                                              Operator_Id.Parse),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    ("operatorId",        Operator_Id.      Parse),
 
                                                //ToDo: What to do with: <EVSEIdType>eMI3</EVSEIdType>
+                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    ("EVSEId",            EVSE_Id.          Parse),
 
-                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "EVSEId",
-                                                                                              EVSE_Id.Parse),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    ("statusEventDate",   DateTime.         Parse),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    ("busyStatus",        ConversionMethods.AsEVSEBusyStatusTypes),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrNullable("transactionId",     Transaction_Id.   Parse),
+                                               SetEVSEBusyStatusRequestXML.MapValueOrNullable("busyStatusUntil",   DateTime.         Parse),
 
-                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "statusEventDate",
-                                                                                              DateTime.Parse),
-
-                                               SetEVSEBusyStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "busyStatus",
-                                                                                              ConversionMethods.AsEVSEBusyStatusTypes),
-
-                                               SetEVSEBusyStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "transactionId",
-                                                                                              Transaction_Id.Parse),
-
-                                               SetEVSEBusyStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "busyStatusUntil",
-                                                                                              DateTime.Parse),
-
-                                               SetEVSEBusyStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "busyStatusComment")
+                                               SetEVSEBusyStatusRequestXML.MapValueOrNull    ("busyStatusComment")
 
                                            );
 
@@ -290,11 +278,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (static) TryParse(SetEVSEBusyStatusRequestText, ..., out SetEVSEBusyStatusRequest, OnException = null)
 
         /// <summary>
-        /// Try to parse the given text representation of an eMIP heartbeat request.
+        /// Try to parse the given text representation of an eMIP SetEVSEBusyStatus request.
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
-        /// <param name="SetEVSEBusyStatusRequest">The parsed heartbeat request.</param>
+        /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                             SetEVSEBusyStatusRequestText,
                                        CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
@@ -338,27 +326,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetEVSEBusyStatusRequest",
 
                           TransactionId.HasValue
-                              ? new XElement(eMIPNS.EVCIDynamic + "transactionId",      TransactionId.        ToString())
+                              ? new XElement("transactionId",      TransactionId.        ToString())
                               : null,
 
-                          new XElement(eMIPNS.EVCIDynamic + "partnerIdType",            PartnerId.Format.     ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "partnerId",                PartnerId.            ToString()),
+                          new XElement("partnerIdType",            PartnerId.Format.     AsText()),
+                          new XElement("partnerId",                PartnerId.            ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "operatorIdType",           OperatorId.Format.    ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "operatorId",               OperatorId.           ToString()),
+                          new XElement("operatorIdType",           OperatorId.Format.    AsText()),
+                          new XElement("operatorId",               OperatorId.           ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "EVSEIdType",               EVSEId.Format.        ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "EVSEId",                   EVSEId.               ToString()),
+                          new XElement("EVSEIdType",               EVSEId.Format.        AsText()),
+                          new XElement("EVSEId",                   EVSEId.               ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "statusEventDate",          StatusEventDate.      ToIso8601(false)),
-                          new XElement(eMIPNS.EVCIDynamic + "busyStatus",               BusyStatus.           AsNumber()),
+                          new XElement("statusEventDate",          (StatusEventDate + TimeSpan.FromHours(1)).      ToIso8601(false).Replace("Z", "")),
+                          new XElement("busyStatus",               BusyStatus.           AsNumber()),
 
                           BusyStatusUntil.HasValue
-                              ? new XElement(eMIPNS.EVCIDynamic + "busyStatusUntil",    BusyStatusUntil.Value.ToIso8601(false))
+                              ? new XElement("busyStatusUntil",    BusyStatusUntil.Value.ToIso8601(false).Replace("Z", ""))
                               : null,
 
                           BusyStatusComment.IsNeitherNullNorEmpty()
-                              ? new XElement(eMIPNS.EVCIDynamic + "busyStatusComment",  BusyStatusComment)
+                              ? new XElement("busyStatusComment",  BusyStatusComment)
                               : null
 
                       );
@@ -378,10 +366,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Operator == (SetEVSEBusyStatusRequest1, SetEVSEBusyStatusRequest2)
 
         /// <summary>
-        /// Compares two heartbeat requests for equality.
+        /// Compares two SetEVSEBusyStatus requests for equality.
         /// </summary>
-        /// <param name="SetEVSEBusyStatusRequest1">A heartbeat request.</param>
-        /// <param name="SetEVSEBusyStatusRequest2">Another heartbeat request.</param>
+        /// <param name="SetEVSEBusyStatusRequest1">A SetEVSEBusyStatus request.</param>
+        /// <param name="SetEVSEBusyStatusRequest2">Another SetEVSEBusyStatus request.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public static Boolean operator == (SetEVSEBusyStatusRequest SetEVSEBusyStatusRequest1, SetEVSEBusyStatusRequest SetEVSEBusyStatusRequest2)
         {
@@ -403,10 +391,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Operator != (SetEVSEBusyStatusRequest1, SetEVSEBusyStatusRequest2)
 
         /// <summary>
-        /// Compares two heartbeat requests for inequality.
+        /// Compares two SetEVSEBusyStatus requests for inequality.
         /// </summary>
-        /// <param name="SetEVSEBusyStatusRequest1">A heartbeat request.</param>
-        /// <param name="SetEVSEBusyStatusRequest2">Another heartbeat request.</param>
+        /// <param name="SetEVSEBusyStatusRequest1">A SetEVSEBusyStatus request.</param>
+        /// <param name="SetEVSEBusyStatusRequest2">Another SetEVSEBusyStatus request.</param>
         /// <returns>False if both match; True otherwise.</returns>
         public static Boolean operator != (SetEVSEBusyStatusRequest SetEVSEBusyStatusRequest1, SetEVSEBusyStatusRequest SetEVSEBusyStatusRequest2)
 
@@ -444,9 +432,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Equals(SetEVSEBusyStatusRequest)
 
         /// <summary>
-        /// Compares two heartbeat requests for equality.
+        /// Compares two SetEVSEBusyStatus requests for equality.
         /// </summary>
-        /// <param name="SetEVSEBusyStatusRequest">A heartbeat request to compare with.</param>
+        /// <param name="SetEVSEBusyStatusRequest">A SetEVSEBusyStatus request to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public override Boolean Equals(SetEVSEBusyStatusRequest SetEVSEBusyStatusRequest)
         {

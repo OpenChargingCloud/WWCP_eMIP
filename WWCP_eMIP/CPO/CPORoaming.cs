@@ -158,6 +158,83 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetEVSEBusyStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE busy status will be send.
+        /// </summary>
+        public event OnSetEVSEBusyStatusRequestDelegate   OnSetEVSEBusyStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEBusyStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEBusyStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE busy status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler              OnSetEVSEBusyStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEBusyStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEBusyStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler             OnSetEVSEBusyStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEBusyStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEBusyStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status request had been received.
+        /// </summary>
+        public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEBusyStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEBusyStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+
         // CPOServer methods
 
         // Generic HTTP/SOAP server logging
@@ -422,6 +499,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             SendHeartbeat(HeartbeatRequest Request)
 
                 => CPOClient.SendHeartbeat(Request);
+
+        #endregion
+
+
+        #region SetEVSEBusyStatus(Request)
+
+        /// <summary>
+        /// Send the given EVSE busy status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEBusyStatus request.</param>
+        public Task<HTTPResponse<SetEVSEBusyStatusResponse>>
+
+            SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request)
+
+                => CPOClient.SetEVSEBusyStatus(Request);
 
         #endregion
 

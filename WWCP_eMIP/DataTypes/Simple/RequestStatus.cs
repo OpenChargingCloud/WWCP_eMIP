@@ -30,8 +30,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// An eMIP request status.
     /// </summary>
     public struct RequestStatus : IId,
-                                   IEquatable <RequestStatus>,
-                                   IComparable<RequestStatus>
+                                  IEquatable <RequestStatus>,
+                                  IComparable<RequestStatus>
 
     {
 

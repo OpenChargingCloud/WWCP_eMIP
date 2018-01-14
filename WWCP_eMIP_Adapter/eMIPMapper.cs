@@ -29,51 +29,104 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// Helper methods to map OICP data type values to
+    /// Helper methods to map eMIP data type values to
     /// WWCP data type values and vice versa.
     /// </summary>
-    public static class OICPMapper
+    public static class eMIPMapper
     {
 
-        public static EVSE_Id? ToEMIP(this WWCP.EVSE_Id EVSEId)
+        #region EVSEIds
+
+        /// <summary>
+        /// Convert a WWCP EVSE identification into an eMIP EVSE identification.
+        /// </summary>
+        /// <param name="EVSEId">A WWCP EVSE identification.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
+        public static EVSE_Id? ToEMIP(this WWCP.EVSE_Id           EVSEId,
+                                      CustomEVSEIdMapperDelegate  CustomEVSEIdMapper  = null)
         {
 
-            EVSE_Id OICPEVSEId;
-
-            if (EVSE_Id.TryParse(EVSEId.ToString(), out OICPEVSEId))
-                return OICPEVSEId;
+            if (EVSE_Id.TryParse(CustomEVSEIdMapper != null
+                                     ? CustomEVSEIdMapper(EVSEId.ToString())
+                                     : EVSEId.ToString(),
+                                 out EVSE_Id eMIPEVSEId))
+            {
+                return eMIPEVSEId;
+            }
 
             return null;
 
         }
 
+        /// <summary>
+        /// Convert an eMIP EVSE identification into a WWCP EVSE identification.
+        /// </summary>
+        /// <param name="EVSEId">An eMIP EVSE identification.</param>
         public static WWCP.EVSE_Id? ToWWCP(this EVSE_Id EVSEId)
         {
 
-            WWCP.EVSE_Id WWCPEVSEId;
-
-            if (WWCP.EVSE_Id.TryParse(EVSEId.ToString(), out WWCPEVSEId))
+            if (WWCP.EVSE_Id.TryParse(EVSEId.ToString(), out WWCP.EVSE_Id WWCPEVSEId))
                 return WWCPEVSEId;
 
             return null;
 
         }
 
+        /// <summary>
+        /// Convert an eMIP EVSE identification into a WWCP EVSE identification.
+        /// </summary>
+        /// <param name="EVSEId">An eMIP EVSE identification.</param>
         public static WWCP.EVSE_Id? ToWWCP(this EVSE_Id? EVSEId)
         {
 
             if (!EVSEId.HasValue)
                 return null;
 
-            WWCP.EVSE_Id WWCPEVSEId;
-
-            if (WWCP.EVSE_Id.TryParse(EVSEId.ToString(), out WWCPEVSEId))
+            if (WWCP.EVSE_Id.TryParse(EVSEId.ToString(), out WWCP.EVSE_Id WWCPEVSEId))
                 return WWCPEVSEId;
 
             return null;
 
         }
 
+        #endregion
+
+        #region EVSEStatus / EVSEBusyStatus
+
+        /// <summary>
+        /// Convert a WWCP EVSE status into an eMIP EVSE busy status.
+        /// </summary>
+        /// <param name="EVSEStatusType"></param>
+        /// <returns></returns>
+        public static EVSEBusyStatusTypes ToEMIP(this EVSEStatusTypes EVSEStatusType)
+        {
+
+            switch (EVSEStatusType)
+            {
+
+                case EVSEStatusTypes.Available:
+                    return EVSEBusyStatusTypes.Free;
+
+                case EVSEStatusTypes.Charging:
+                case EVSEStatusTypes.DoorNotClosed:
+                case EVSEStatusTypes.Faulted:
+                case EVSEStatusTypes.Offline:
+                case EVSEStatusTypes.OutOfService:
+                case EVSEStatusTypes.PluggedIn:
+                case EVSEStatusTypes.WaitingForPlugin:
+                    return EVSEBusyStatusTypes.Busy;
+
+                case EVSEStatusTypes.Reserved:
+                    return EVSEBusyStatusTypes.Reserved;
+
+                default:
+                    return EVSEBusyStatusTypes.Unspecified;
+
+            }
+
+        }
+
+        #endregion
 
 
 
@@ -120,26 +173,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region ToWWCP(this ChargeDetailRecord, ChargeDetailRecord2WWCPChargeDetailRecord = null)
 
         /// <summary>
-        /// Convert an OICP charge detail record into a corresponding WWCP charge detail record.
+        /// Convert an eMIP charge detail record into a corresponding WWCP charge detail record.
         /// </summary>
-        /// <param name="ChargeDetailRecord">An OICP charge detail record.</param>
-        /// <param name="ChargeDetailRecord2WWCPChargeDetailRecord">A delegate which allows you to modify the convertion from OICP charge detail records to WWCP charge detail records.</param>
+        /// <param name="ChargeDetailRecord">An eMIP charge detail record.</param>
+        /// <param name="ChargeDetailRecord2WWCPChargeDetailRecord">A delegate which allows you to modify the convertion from eMIP charge detail records to WWCP charge detail records.</param>
         public static WWCP.ChargeDetailRecord ToWWCP(this ChargeDetailRecord                                ChargeDetailRecord,
                                                      CPO.ChargeDetailRecord2WWCPChargeDetailRecordDelegate  ChargeDetailRecord2WWCPChargeDetailRecord = null)
         {
 
             //var CustomData = new Dictionary<String, Object>();
 
-            //CustomData.Add("OICP.CDR", ChargeDetailRecord);
+            //CustomData.Add("eMIP.CDR", ChargeDetailRecord);
 
             //if (ChargeDetailRecord.PartnerSessionId.HasValue)
-            //    CustomData.Add("OICP.PartnerSessionId",  ChargeDetailRecord.PartnerSessionId.ToString());
+            //    CustomData.Add("eMIP.PartnerSessionId",  ChargeDetailRecord.PartnerSessionId.ToString());
 
             //if (ChargeDetailRecord.HubOperatorId.HasValue)
-            //    CustomData.Add("OICP.HubOperatorId",     ChargeDetailRecord.HubOperatorId.   ToString());
+            //    CustomData.Add("eMIP.HubOperatorId",     ChargeDetailRecord.HubOperatorId.   ToString());
 
             //if (ChargeDetailRecord.HubProviderId.HasValue)
-            //    CustomData.Add("OICP.HubProviderId",     ChargeDetailRecord.HubProviderId.   ToString());
+            //    CustomData.Add("eMIP.HubProviderId",     ChargeDetailRecord.HubProviderId.   ToString());
 
 
             //var CDR = new  WWCP.ChargeDetailRecord(SessionId:             ChargeDetailRecord.SessionId.ToWWCP(),
@@ -193,10 +246,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region ToEMIP(this ChargeDetailRecord, WWCPChargeDetailRecord2ChargeDetailRecord = null)
 
         /// <summary>
-        /// Convert a WWCP charge detail record into a corresponding OICP charge detail record.
+        /// Convert a WWCP charge detail record into a corresponding eMIP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecord">A WWCP charge detail record.</param>
-        /// <param name="WWCPChargeDetailRecord2ChargeDetailRecord">A delegate which allows you to modify the convertion from WWCP charge detail records to OICP charge detail records.</param>
+        /// <param name="WWCPChargeDetailRecord2ChargeDetailRecord">A delegate which allows you to modify the convertion from WWCP charge detail records to eMIP charge detail records.</param>
         public static ChargeDetailRecord ToEMIP(this WWCP.ChargeDetailRecord                           ChargeDetailRecord,
                                                 CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2ChargeDetailRecord = null)
 
@@ -213,7 +266,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             //              ChargeDetailRecord.SessionTime.Value.EndTime.Value,
             //              ChargeDetailRecord.IdentificationStart.ToEMIP(),
             //              ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
-            //              ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("OICP.PartnerSessionId"),
+            //              ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
             //              ChargeDetailRecord.SessionTime.HasValue ? ChargeDetailRecord.SessionTime.Value.StartTime : new DateTime?(),
             //              ChargeDetailRecord.SessionTime.HasValue ? ChargeDetailRecord.SessionTime.Value.EndTime   : null,
             //              ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.First().Value : new Single?(),
@@ -221,8 +274,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             //              ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.Select((Timestamped<Single> v) => v.Value) : null,
             //              ChargeDetailRecord.ConsumedEnergy,
             //              ChargeDetailRecord.MeteringSignature,
-            //              ChargeDetailRecord.GetCustomDataAs<HubOperator_Id?>("OICP.HubOperatorId"),
-            //              ChargeDetailRecord.GetCustomDataAs<HubProvider_Id?>("OICP.HubProviderId"),
+            //              ChargeDetailRecord.GetCustomDataAs<HubOperator_Id?>("eMIP.HubOperatorId"),
+            //              ChargeDetailRecord.GetCustomDataAs<HubProvider_Id?>("eMIP.HubProviderId"),
             //              CustomData
             //          );
 

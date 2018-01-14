@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv1_4
+namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
@@ -75,6 +75,20 @@ namespace org.GraphDefined.WWCP.eMIPv1_4
 
         { }
 
+
+    }
+
+
+    public class InvalidEVSEIdentificationException : eMIPException
+    {
+
+        public String EVSEId { get; }
+
+        public InvalidEVSEIdentificationException(String EVSEId)
+            : base("Invalid EVSE identification '" + EVSEId + "'!")
+        {
+            this.EVSEId = EVSEId;
+        }
 
     }
 

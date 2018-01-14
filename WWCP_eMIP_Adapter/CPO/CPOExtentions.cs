@@ -78,6 +78,7 @@ namespace org.GraphDefined.WWCP
         /// 
         /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -137,6 +138,7 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                  = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                    = null,
+                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                              = null,
 
                                                 TimeSpan?                                                         SendHeartbeatsEvery                             = null,
                                                 TimeSpan?                                                         ServiceCheckEvery                               = null,
@@ -205,6 +207,7 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       CustomEVSEIdMapper,
 
                                                                        //EVSE2EVSEDataRecord,
                                                                        //EVSEStatusUpdate2EVSEStatusRecord,
@@ -267,6 +270,7 @@ namespace org.GraphDefined.WWCP
         /// 
         /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -320,6 +324,7 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                  = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                    = null,
+                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                              = null,
 
                                                 TimeSpan?                                                         SendHeartbeatsEvery                             = null,
                                                 TimeSpan?                                                         ServiceCheckEvery                               = null,
@@ -391,6 +396,7 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       CustomEVSEIdMapper,
 
                                                                        //EVSE2EVSEDataRecord,
                                                                        //EVSEStatusUpdate2EVSEStatusRecord,

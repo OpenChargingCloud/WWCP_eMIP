@@ -57,7 +57,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public     const           String  DefaultURIPrefix       = "/api/emip/";
+        public     const           String  DefaultURIPrefix       = "/api/emip";
 
         #endregion
 
@@ -122,7 +122,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<HeartbeatRequest> CustomHeartbeatRequestSerializer { get; set; }
+        public CustomXMLSerializerDelegate<HeartbeatRequest>          CustomHeartbeatRequestSerializer            { get; set; }
+
+
+        #region CustomSetEVSEBusyStatusRequestMapper
+
+        #region CustomSetEVSEBusyStatusRequestMapper
+
+        private Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> _CustomSetEVSEBusyStatusRequestMapper = _ => _;
+
+        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> CustomSetEVSEBusyStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSEBusyStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSEBusyStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSEBusyStatusSOAPRequestMapper
+
+        private Func<SetEVSEBusyStatusRequest, XElement, XElement> _CustomSetEVSEBusyStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetEVSEBusyStatusRequest, XElement, XElement> CustomSetEVSEBusyStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSEBusyStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSEBusyStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse> CustomSetEVSEBusyStatusParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>  CustomSetEVSEBusyStatusRequestSerializer    { get; set; }
 
         #endregion
 
@@ -149,6 +202,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
         public event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
+
+        #endregion
+
+
+        #region OnSetEVSEBusyStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE busy status will be send.
+        /// </summary>
+        public event OnSetEVSEBusyStatusRequestDelegate   OnSetEVSEBusyStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE busy status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler              OnSetEVSEBusyStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler             OnSetEVSEBusyStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE busy status request had been received.
+        /// </summary>
+        public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
 
         #endregion
 
@@ -340,11 +418,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
                                                                                        SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
                                                      "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
-                                                     ContentType:          new HTTPContentType("application/soap+xml",
-                                                                                               "utf-8",
-                                                                                               "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
-                                                                                               null),
-                                                     Namespace:            Vanaheimr.Hermod.SOAP.v1_2.NS.SOAPEnvelope,
                                                      RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
                                                      ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -501,6 +574,263 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             catch (Exception e)
             {
                 e.Log(nameof(CPOClient) + "." + nameof(OnSendHeartbeatResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+
+
+        #region SetEVSEBusyStatus(Request)
+
+        /// <summary>
+        /// Send the given EVSE busy status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEBusyStatus request.</param>
+        public async Task<HTTPResponse<SetEVSEBusyStatusResponse>>
+
+            SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetEVSEBusyStatus request must not be null!");
+
+            Request = _CustomSetEVSEBusyStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEBusyStatus request must not be null!");
+
+
+            Byte                                    TransmissionRetry  = 0;
+            HTTPResponse<SetEVSEBusyStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetEVSEBusyStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSEBusyStatusRequest != null)
+                    await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
+                                       Cast<OnSetEVSEBusyStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.StatusEventDate,
+                                                     Request.BusyStatus,
+                                                     Request.TransactionId,
+                                                     Request.BusyStatusUntil,
+                                                     Request.BusyStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        RemotePort,
+                                                        HTTPVirtualHost,
+                                                        URIPrefix,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
+                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSEBusyStatusRequestSerializer))),
+                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetEVSEBusyStatusV1/",
+                                                     RequestLogDelegate:   OnSetEVSEBusyStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetEVSEBusyStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetEVSEBusyStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetEVSEBusyStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetEVSEBusyStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSEBusyStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetEVSEBusyStatusResponse>(httpresponse,
+                                                                                                        new SetEVSEBusyStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetEVSEBusyStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSEBusyStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.ExceptionThrown(
+
+                                                                new SetEVSEBusyStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+                                 new SetEVSEBusyStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetEVSEBusyStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSEBusyStatusResponse != null)
+                    await Task.WhenAll(OnSetEVSEBusyStatusResponse.GetInvocationList().
+                                       Cast<OnSetEVSEBusyStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.StatusEventDate,
+                                                     Request.BusyStatus,
+                                                     Request.TransactionId,
+                                                     Request.BusyStatusUntil,
+                                                     Request.BusyStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusResponse));
             }
 
             #endregion

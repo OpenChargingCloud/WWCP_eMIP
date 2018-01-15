@@ -18,10 +18,8 @@
 #region Usings
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
@@ -74,6 +72,58 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
+        #region SetEVSEAvailabilityStatus(PartnerId, OperatorId, EVSEId, StatusEventDate, AvailabilityStatus, TransactionId = null, ...)
+
+        /// <summary>
+        /// Upload the given EVSE availability status.
+        /// </summary>
+        /// <param name="PartnerId">The partner identification.</param>
+        /// <param name="OperatorId">The operator identification.</param>
+        /// <param name="EVSEId">The EVSE identification.</param>
+        /// <param name="StatusEventDate">The timestamp of the status change.</param>
+        /// <param name="AvailabilityStatus">The EVSE availability status.</param>
+        /// <param name="TransactionId">An optional transaction identification.</param>
+        /// <param name="AvailabilityStatusUntil">An optional timestamp until which the given availability status is valid.</param>
+        /// <param name="AvailabilityStatusComment">An optional comment about the availability status.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        public static Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
+
+            SetEVSEAvailabilityStatus(this ICPOClient              ICPOClient,
+                                      Partner_Id                   PartnerId,
+                                      Operator_Id                  OperatorId,
+                                      EVSE_Id                      EVSEId,
+                                      DateTime                     StatusEventDate,
+                                      EVSEAvailabilityStatusTypes  AvailabilityStatus,
+                                      Transaction_Id?              TransactionId               = null,
+                                      DateTime?                    AvailabilityStatusUntil     = null,
+                                      String                       AvailabilityStatusComment   = null,
+
+                                      DateTime?                    Timestamp                   = null,
+                                      CancellationToken?           CancellationToken           = null,
+                                      EventTracking_Id             EventTrackingId             = null,
+                                      TimeSpan?                    RequestTimeout              = null)
+
+
+                => ICPOClient.SetEVSEAvailabilityStatus(new SetEVSEAvailabilityStatusRequest(PartnerId,
+                                                                                             OperatorId,
+                                                                                             EVSEId,
+                                                                                             StatusEventDate,
+                                                                                             AvailabilityStatus,
+                                                                                             TransactionId,
+                                                                                             AvailabilityStatusUntil,
+                                                                                             AvailabilityStatusComment,
+
+                                                                                             Timestamp,
+                                                                                             CancellationToken,
+                                                                                             EventTrackingId,
+                                                                                             RequestTimeout ?? ICPOClient.RequestTimeout));
+
+        #endregion
 
         #region SetEVSEBusyStatus(PartnerId, OperatorId, EVSEId, StatusEventDate, BusyStatus, TransactionId = null, ...)
 

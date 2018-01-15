@@ -338,7 +338,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           new XElement("EVSEIdType",               EVSEId.Format.        AsText()),
                           new XElement("EVSEId",                   EVSEId.               ToString()),
 
-                          new XElement("statusEventDate",          (StatusEventDate + TimeSpan.FromHours(1)).      ToIso8601(false).Replace("Z", "")),
+                          new XElement("statusEventDate",          StatusEventDate.      ToIso8601(false).Replace("Z", "")),
                           new XElement("busyStatus",               BusyStatus.           AsNumber()),
 
                           BusyStatusUntil.HasValue

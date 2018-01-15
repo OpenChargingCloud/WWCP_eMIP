@@ -18,6 +18,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
@@ -32,37 +33,94 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     public struct RequestStatus : IId,
                                   IEquatable <RequestStatus>,
                                   IComparable<RequestStatus>
-
     {
 
         #region Data
 
-        /// <summary>
-        /// The internal identification.
-        /// </summary>
-        private readonly Int32 InternalId;
+        private static readonly Dictionary<Int32, RequestStatus> Lookup = new Dictionary<Int32, RequestStatus>();
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The length of the request status.
+        /// The internal identification.
         /// </summary>
-        public UInt64 Length
-            => (UInt64) InternalId.ToString().Length;
+        public Int32   Code          { get; }
+
+        /// <summary>
+        /// The description of the result status.
+        /// </summary>
+        public String  Description   { get; }
 
         #endregion
 
         #region Constructor(s)
 
-        /// <summary>
-        /// Create a new eMIP request status.
-        /// </summary>
-        private RequestStatus(Int32 Value)
+        #region (static)  RequestStatus() <- Does reflection!
+
+        static RequestStatus()
         {
-            InternalId = Value;
+
+            RequestStatus requeststatus;
+
+            foreach (var _MethodInfo in typeof(RequestStatus).GetMethods())
+            {
+                if (_MethodInfo.IsStatic &&
+                    _MethodInfo.GetParameters().Length == 0)
+                {
+
+                    requeststatus = (RequestStatus) _MethodInfo.Invoke(Activator.CreateInstance(typeof(RequestStatus)), null);
+
+                    if (!Lookup.ContainsKey(requeststatus.Code))
+                        Lookup.Add(requeststatus.Code, requeststatus);
+
+                }
+            }
+
         }
+
+        #endregion
+
+        #region (private) RequestStatus(Code, Description = null)
+
+        /// <summary>
+        /// Create a new request status.
+        /// </summary>
+        /// <param name="Code">The numeric code of the status.</param>
+        /// <param name="Description">The description of the result status.</param>
+        private RequestStatus(Int32   Code,
+                              String  Description = null)
+        {
+
+            this.Code         = Code;
+            this.Description  = Description;
+
+            lock (Lookup)
+            {
+                if (!Lookup.ContainsKey(Code))
+                    Lookup.Add(Code, this);
+            }
+
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region Register(Code, Description = null)
+
+        /// <summary>
+        /// Parse the given string as a request status.
+        /// </summary>
+        /// <param name="Code">The numeric code of the status.</param>
+        /// <param name="Description">The description of the result status.</param>
+        public static RequestStatus Register(Int32   Code,
+                                             String  Description = null)
+
+            => new RequestStatus(Code,
+                                 Description);
 
         #endregion
 
@@ -86,7 +144,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new RequestStatus(Int32.Parse(Text));
+            return Parse(Int32.Parse(Text));
+
+        }
+
+        #endregion
+
+        #region Parse   (Code)
+
+        /// <summary>
+        /// Parse the given number as a request status.
+        /// </summary>
+        /// <param name="Code">A numeric representation of a request status.</param>
+        public static RequestStatus Parse(Int32 Code)
+        {
+
+            if (Lookup.TryGetValue(Code, out RequestStatus Status))
+                return Status;
+
+            return new RequestStatus(Code);
 
         }
 
@@ -101,13 +177,35 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static RequestStatus? TryParse(String Text)
         {
 
+            #region Initial checks
+
             if (Text != null)
                 Text = Text.Trim();
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Value))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Code))
                 return new RequestStatus?();
 
-            return new RequestStatus(Value);
+            #endregion
+
+            return TryParse(Code);
+
+        }
+
+        #endregion
+
+        #region TryParse(Code)
+
+        /// <summary>
+        /// Try to parse the given number as a request status.
+        /// </summary>
+        /// <param name="Code">A numeric representation of a request status.</param>
+        public static RequestStatus? TryParse(Int32 Code)
+        {
+
+            if (Lookup.TryGetValue(Code, out RequestStatus Status))
+                return Status;
+
+            return new RequestStatus(Code);
 
         }
 
@@ -143,31 +241,79 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
+        #region TryParse(Code, out RequestStatus)
+
+        /// <summary>
+        /// Try to parse the given number as a request status.
+        /// </summary>
+        /// <param name="Code">A numeric representation of a request status.</param>
+        /// <param name="RequestStatus">The parsed request status.</param>
+        public static Boolean TryParse(Int32 Code, out RequestStatus RequestStatus)
+        {
+
+            if (Lookup.TryGetValue(Code, out RequestStatus))
+                return true;
+
+            RequestStatus = new RequestStatus(Code);
+            return true;
+
+        }
+
+        #endregion
+
         #region Clone
 
         /// <summary>
         /// Clone this request status.
         /// </summary>
         public RequestStatus Clone
-            => new RequestStatus(InternalId);
+            => new RequestStatus(Code);
 
         #endregion
 
 
+        #region Static definitions
+
+        // Source: GIREVE eMIPv0.7.4-RequestStatus&ExceptionCodes-values_V12_Diff
+        // All those will be reflected and added to the lookup within the static constructor!
+
+        /// <summary>
+        /// Ok!
+        /// </summary>
         public static RequestStatus Ok
-            => new RequestStatus(0);
+            => new RequestStatus(1,         "Ok!");
 
+        /// <summary>
+        /// The charging pool/station/point/connector is unknown!
+        /// </summary>
+        public static RequestStatus UnknownEntity
+            => new RequestStatus(10601,     "The charging pool/station/point/connector is unknown!");
+
+        /// <summary>
+        /// System error!
+        /// </summary>
         public static RequestStatus SystemError
-            => new RequestStatus(-9999990);
+            => new RequestStatus(-9999990,  "System error!");
 
+        /// <summary>
+        /// HTTP error!
+        /// </summary>
         public static RequestStatus HTTPError
-            => new RequestStatus(-9999991);
+            => new RequestStatus(-9999991,  "HTTP error!");
 
+        /// <summary>
+        /// Service not available!
+        /// </summary>
         public static RequestStatus ServiceNotAvailable
-            => new RequestStatus(-9999992);
+            => new RequestStatus(-9999992,  "Service not available!");
 
+        /// <summary>
+        /// Data error!
+        /// </summary>
         public static RequestStatus DataError
-            => new RequestStatus(-9999993);
+            => new RequestStatus(-9999993,  "Data error!");
+
+        #endregion
 
 
         #region Operator overloading
@@ -314,7 +460,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) RequestStatus == null)
                 throw new ArgumentNullException(nameof(RequestStatus),  "The given request status must not be null!");
 
-            return InternalId.CompareTo(RequestStatus.InternalId);
+            return Code.CompareTo(RequestStatus.Code);
 
         }
 
@@ -359,7 +505,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) RequestStatus == null)
                 return false;
 
-            return InternalId.Equals(RequestStatus.InternalId);
+            return Code.Equals(RequestStatus.Code);
 
         }
 
@@ -374,7 +520,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+            => Code.GetHashCode();
 
         #endregion
 
@@ -384,7 +530,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Return a string representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId.ToString();
+
+            => String.Concat(Code,
+                             Description.IsNotNullOrEmpty() ? ": " + Description : "");
 
         #endregion
 

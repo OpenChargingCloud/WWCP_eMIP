@@ -69,6 +69,52 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #endregion
 
 
+    #region OnSetEVSEAvailabilityStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever new EVSE availability status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                                 LogTimestamp,
+                                                                     DateTime                                 RequestTimestamp,
+                                                                     ICPOClient                               Sender,
+                                                                     String                                   SenderId,
+                                                                     EventTracking_Id                         EventTrackingId,
+
+                                                                     Partner_Id                               PartnerId,
+                                                                     Operator_Id                              OperatorId,
+                                                                     EVSE_Id                                  EVSEId,
+                                                                     DateTime                                 StatusEventDate,
+                                                                     EVSEAvailabilityStatusTypes              AvailabilityStatus,
+                                                                     Transaction_Id?                          TransactionId,
+                                                                     DateTime?                                AvailabilityStatusUntil,
+                                                                     String                                   AvailabilityStatusComment,
+
+                                                                     TimeSpan                                 RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever new EVSE availability status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                                 LogTimestamp,
+                                                                     DateTime                                 RequestTimestamp,
+                                                                     ICPOClient                               Sender,
+                                                                     String                                   SenderId,
+                                                                     EventTracking_Id                         EventTrackingId,
+
+                                                                     Partner_Id                               PartnerId,
+                                                                     Operator_Id                              OperatorId,
+                                                                     EVSE_Id                                  EVSEId,
+                                                                     DateTime                                 StatusEventDate,
+                                                                     EVSEAvailabilityStatusTypes              AvailabilityStatus,
+                                                                     Transaction_Id?                          TransactionId,
+                                                                     DateTime?                                AvailabilityStatusUntil,
+                                                                     String                                   AvailabilityStatusComment,
+
+                                                                     TimeSpan                                 RequestTimeout,
+                                                                     SetEVSEAvailabilityStatusResponse        Result,
+                                                                     TimeSpan                                 Duration);
+
+    #endregion
+
     #region OnSetEVSEBusyStatusRequest/-Response
 
     /// <summary>

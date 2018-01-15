@@ -60,6 +60,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetEVSEAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE availability status will be send.
+        /// </summary>
+        event OnSetEVSEAvailabilityStatusRequestDelegate   OnSetEVSEAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE availability status will be send.
+        /// </summary>
+        event ClientRequestLogHandler                      OnSetEVSEAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                     OnSetEVSEAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status request had been received.
+        /// </summary>
+        event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse;
+
+        #endregion
+
         #region OnSetEVSEBusyStatusRequest/-Response
 
         /// <summary>
@@ -89,12 +113,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
         Task<HTTPResponse<HeartbeatResponse>>
-
             SendHeartbeat(HeartbeatRequest Request);
 
 
-        Task<HTTPResponse<SetEVSEBusyStatusResponse>>
+        Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
+            SetEVSEAvailabilityStatus(SetEVSEAvailabilityStatusRequest Request);
 
+        Task<HTTPResponse<SetEVSEBusyStatusResponse>>
             SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request);
 
 

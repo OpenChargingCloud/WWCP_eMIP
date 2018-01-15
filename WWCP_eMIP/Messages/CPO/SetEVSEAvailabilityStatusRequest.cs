@@ -235,33 +235,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 SetEVSEAvailabilityStatusRequest = new SetEVSEAvailabilityStatusRequest(
 
                                                        //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "partnerId",
-                                                                                                              Partner_Id.Parse),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("partnerId",                Partner_Id.Parse),
 
                                                        //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "operatorId",
-                                                                                                              Operator_Id.Parse),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("operatorId",               Operator_Id.Parse),
 
                                                        //ToDo: What to do with: <EVSEIdType>eMI3</EVSEIdType>
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("EVSEId",                   EVSE_Id.Parse),
 
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "EVSEId",
-                                                                                                              EVSE_Id.Parse),
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "statusEventDate",
-                                                                                                              DateTime.Parse),
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    (eMIPNS.EVCIDynamic + "availabilityStatus",
-                                                                                                              ConversionMethods.AsEVSEAvailabilityStatusTypes),
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "transactionId",
-                                                                                                              Transaction_Id.Parse),
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "availabilityStatusUntil",
-                                                                                                              DateTime.Parse),
-
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "availabilityStatusComment")
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("statusEventDate",          DateTime.Parse),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("availabilityStatus",       ConversionMethods.AsEVSEAvailabilityStatusTypes),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.Parse),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable("availabilityStatusUntil",  DateTime.Parse),
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNull    ("availabilityStatusComment")
 
                                                    );
 
@@ -338,27 +324,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetEVSEAvailabilityStatusRequest",
 
                           TransactionId.HasValue
-                              ? new XElement(eMIPNS.EVCIDynamic + "transactionId",              TransactionId.                ToString())
+                              ? new XElement("transactionId",              TransactionId.                ToString())
                               : null,
 
-                          new XElement(eMIPNS.EVCIDynamic + "partnerIdType",                    PartnerId.Format.             ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "partnerId",                        PartnerId.                    ToString()),
+                          new XElement("partnerIdType",                    PartnerId.Format.             AsText()),
+                          new XElement("partnerId",                        PartnerId.                    ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "operatorIdType",                   OperatorId.Format.            ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "operatorId",                       OperatorId.                   ToString()),
+                          new XElement("operatorIdType",                   OperatorId.Format.            AsText()),
+                          new XElement("operatorId",                       OperatorId.                   ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "EVSEIdType",                       EVSEId.Format.                ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "EVSEId",                           EVSEId.                       ToString()),
+                          new XElement("EVSEIdType",                       EVSEId.Format.                AsText()),
+                          new XElement("EVSEId",                           EVSEId.                       ToString()),
 
-                          new XElement(eMIPNS.EVCIDynamic + "statusEventDate",                  StatusEventDate.              ToIso8601(false)),
-                          new XElement(eMIPNS.EVCIDynamic + "availabilityStatus",               AvailabilityStatus.           AsNumber()),
+                          new XElement("statusEventDate",                  StatusEventDate.              ToIso8601(false).Replace("Z", "")),
+                          new XElement("availabilityStatus",               AvailabilityStatus.           AsNumber()),
 
                           AvailabilityStatusUntil.HasValue
-                              ? new XElement(eMIPNS.EVCIDynamic + "availabilityStatusUntil",    AvailabilityStatusUntil.Value.ToIso8601(false))
+                              ? new XElement("availabilityStatusUntil",    AvailabilityStatusUntil.Value.ToIso8601(false).Replace("Z", ""))
                               : null,
 
                           AvailabilityStatusComment.IsNeitherNullNorEmpty()
-                              ? new XElement(eMIPNS.EVCIDynamic + "availabilityStatusComment",  AvailabilityStatusComment)
+                              ? new XElement("availabilityStatusComment",  AvailabilityStatusComment)
                               : null
 
                       );

@@ -122,7 +122,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<HeartbeatRequest>          CustomHeartbeatRequestSerializer            { get; set; }
+        public CustomXMLSerializerDelegate<HeartbeatRequest>                  CustomHeartbeatRequestSerializer                    { get; set; }
+
+
+        #region CustomSetEVSEAvailabilityStatusRequestMapper
+
+        #region CustomSetEVSEAvailabilityStatusRequestMapper
+
+        private Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> _CustomSetEVSEAvailabilityStatusRequestMapper = _ => _;
+
+        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> CustomSetEVSEAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSEAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSEAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+
+        private Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> _CustomSetEVSEAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSEAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSEAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse> CustomSetEVSEAvailabilityStatusParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetEVSEAvailabilityStatusRequest>  CustomSetEVSEAvailabilityStatusRequestSerializer    { get; set; }
 
 
         #region CustomSetEVSEBusyStatusRequestMapper
@@ -175,7 +228,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>  CustomSetEVSEBusyStatusRequestSerializer    { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>          CustomSetEVSEBusyStatusRequestSerializer            { get; set; }
 
         #endregion
 
@@ -205,6 +258,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
+        #region OnSetEVSEAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE availability status will be send.
+        /// </summary>
+        public event OnSetEVSEAvailabilityStatusRequestDelegate   OnSetEVSEAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                      OnSetEVSEAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                     OnSetEVSEAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status request had been received.
+        /// </summary>
+        public event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse;
+
+        #endregion
 
         #region OnSetEVSEBusyStatusRequest/-Response
 
@@ -585,6 +662,261 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+
+        #region SetEVSEAvailabilityStatus(Request)
+
+        /// <summary>
+        /// Send the given EVSE busy status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
+        public async Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
+
+            SetEVSEAvailabilityStatus(SetEVSEAvailabilityStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetEVSEAvailabilityStatus request must not be null!");
+
+            Request = _CustomSetEVSEAvailabilityStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEAvailabilityStatus request must not be null!");
+
+
+            Byte                                    TransmissionRetry  = 0;
+            HTTPResponse<SetEVSEAvailabilityStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetEVSEAvailabilityStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSEAvailabilityStatusRequest != null)
+                    await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
+                                       Cast<OnSetEVSEAvailabilityStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        RemotePort,
+                                                        HTTPVirtualHost,
+                                                        URIPrefix,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
+                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
+                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
+                                                     RequestLogDelegate:   OnSetEVSEAvailabilityStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetEVSEAvailabilityStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetEVSEAvailabilityStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetEVSEAvailabilityStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSEAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(httpresponse,
+                                                                                                        new SetEVSEAvailabilityStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSEAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.ExceptionThrown(
+
+                                                                new SetEVSEAvailabilityStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+                                 new SetEVSEAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetEVSEAvailabilityStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSEAvailabilityStatusResponse != null)
+                    await Task.WhenAll(OnSetEVSEAvailabilityStatusResponse.GetInvocationList().
+                                       Cast<OnSetEVSEAvailabilityStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
 
         #region SetEVSEBusyStatus(Request)
 

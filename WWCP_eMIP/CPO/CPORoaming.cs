@@ -21,7 +21,6 @@ using System;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
 
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
@@ -158,12 +157,88 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetEVSEAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE availability status will be send.
+        /// </summary>
+        public event OnSetEVSEAvailabilityStatusRequestDelegate   OnSetEVSEAvailabilityStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler              OnSetEVSEAvailabilityStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler             OnSetEVSEAvailabilityStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE availability status request had been received.
+        /// </summary>
+        public event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSEAvailabilityStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
         #region OnSetEVSEBusyStatusRequest/-Response
 
         /// <summary>
         /// An event fired whenever a request sending an EVSE busy status will be send.
         /// </summary>
-        public event OnSetEVSEBusyStatusRequestDelegate   OnSetEVSEBusyStatusRequest
+        public event OnSetEVSEBusyStatusRequestDelegate OnSetEVSEBusyStatusRequest
         {
 
             add
@@ -181,7 +256,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a SOAP request sending an EVSE busy status will be send.
         /// </summary>
-        public event ClientRequestLogHandler              OnSetEVSEBusyStatusSOAPRequest
+        public event ClientRequestLogHandler OnSetEVSEBusyStatusSOAPRequest
         {
 
             add
@@ -199,7 +274,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to an EVSE busy status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler             OnSetEVSEBusyStatusSOAPResponse
+        public event ClientResponseLogHandler OnSetEVSEBusyStatusSOAPResponse
         {
 
             add
@@ -217,7 +292,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to an EVSE busy status request had been received.
         /// </summary>
-        public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse
+        public event OnSetEVSEBusyStatusResponseDelegate OnSetEVSEBusyStatusResponse
         {
 
             add
@@ -234,8 +309,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-
         // CPOServer methods
+
 
         // Generic HTTP/SOAP server logging
 
@@ -502,6 +577,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
+        #region SetEVSEAvailabilityStatus(Request)
+
+        /// <summary>
+        /// Send the given EVSE Availability status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
+        public Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
+
+            SetEVSEAvailabilityStatus(SetEVSEAvailabilityStatusRequest Request)
+
+                => CPOClient.SetEVSEAvailabilityStatus(Request);
+
+        #endregion
 
         #region SetEVSEBusyStatus(Request)
 

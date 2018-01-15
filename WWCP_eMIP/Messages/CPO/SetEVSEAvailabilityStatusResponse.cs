@@ -160,15 +160,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 SetEVSEAvailabilityStatusResponse = new SetEVSEAvailabilityStatusResponse(
-
                                                         Request,
-
-                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail(eMIPNS.EVCIDynamic + "transactionId",
-                                                                                                            Transaction_Id.Parse),
-
-                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail(eMIPNS.EVCIDynamic + "requestStatus",
-                                                                                                            RequestStatus.Parse)
-
+                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail("transactionId",  Transaction_Id.Parse),
+                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail("requestStatus",  RequestStatus.Parse)
                                                     );
 
 
@@ -246,8 +240,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetEVSEAvailabilityStatusResponse",
 
-                          new XElement(eMIPNS.EVCIDynamic + "transactionId",  TransactionId.ToString()),
-                          new XElement(eMIPNS.EVCIDynamic + "requestStatus",  RequestStatus.ToString())
+                          new XElement("transactionId",  TransactionId.ToString()),
+                          new XElement("requestStatus",  RequestStatus.ToString())
 
                       );
 

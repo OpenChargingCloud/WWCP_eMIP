@@ -326,48 +326,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 ChargeDetailRecord = new ChargeDetailRecord(
 
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "CDRNature",
-                                                                                   ConversionMethods.AsCDRNature),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("CDRNature",              ConversionMethods.AsCDRNature),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("serviceSessionId",       ServiceSession_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("requestedServiceId",     Service_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("EVSEId",                 EVSE_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("userContractIdAlias",    Contract_Id.Parse),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "serviceSessionId",
-                                                                                   ServiceSession_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("userId", s => User_Id.Parse(s,
+                                             ChargeDetailRecordXML.MapValueOrFail("userIdType", ConversionMethods.AsUserIdFormat))),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "requestedServiceId",
-                                                                                   Service_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("startTime",              DateTime.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("endTime",                DateTime.Parse),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "EVSEId",
-                                                                                   EVSE_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("execPartnerSessionId",   ServiceSession_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("execPartnerOperatorId",  Operator_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("salePartnerSessionId",   ServiceSession_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("salePartnerOperatorId",  Provider_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("partnerProductId",       PartnerProduct_Id.Parse),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "userContractIdAlias",
-                                                                                   Contract_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "userId",
-                                                                                   User_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "startTime",
-                                                                                   DateTime.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrFail     (eMIPNS.Authorisation + "endTime",
-                                                                                   DateTime.Parse),
-
-
-                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "execPartnerSessionId",
-                                                                                   ServiceSession_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "execPartnerOperatorId",
-                                                                                   Operator_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "salePartnerSessionId",
-                                                                                   ServiceSession_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "salePartnerOperatorId",
-                                                                                   Provider_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapValueOrNullable (eMIPNS.Authorisation + "partnerProductId",
-                                                                                   PartnerProduct_Id.Parse),
-
-                                         ChargeDetailRecordXML.MapElements        (eMIPNS.Authorisation + "meterReportList",
-                                                                                   eMIPNS.Authorisation + "meterReport",
+                                         ChargeDetailRecordXML.MapElements        ("meterReportList",
+                                                                                   "meterReport",
                                                                                    (s, e) => MeterReport.Parse(s, CustomMeterReportParser, e),
                                                                                    OnException)
 
@@ -450,53 +428,53 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             var XML = new XElement(XName ?? eMIPNS.Authorisation + "chargeDetailRecord",
 
-                          new XElement(eMIPNS.Authorisation + "CDRNature",                          CDRNature.                           AsText()),
-                          new XElement(eMIPNS.Authorisation + "serviceSessionId",                   ServiceSessionId.                  ToString()),
+                          new XElement("CDRNature",                          CDRNature.                           AsText()),
+                          new XElement("serviceSessionId",                   ServiceSessionId.                  ToString()),
 
                           ExecPartnerSessionId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
+                              ? new XElement("execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
                               : null,
 
                           ExecPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
+                              ? new XElement("execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           ExecPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
+                              ? new XElement("execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
                               : null,
 
 
                           SalesPartnerSessionId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
+                              ? new XElement("execPartnerSessionId",         ExecPartnerSessionId.        Value.ToString())
                               : null,
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
+                              ? new XElement("execPartnerOperatorIdType",    ExecPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
+                              ? new XElement("execPartnerOperatorId",        ExecPartnerOperatorId.       Value.ToString())
                               : null,
 
 
-                          new XElement(eMIPNS.Authorisation + "requestedServiceId",                 RequestedServiceId.                ToString()),
+                          new XElement("requestedServiceId",                 RequestedServiceId.                ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "EVSEIdType",                         EVSEId.Format.                     ToString()),
-                          new XElement(eMIPNS.Authorisation + "EVSEId",                             EVSEId.                            ToString()),
+                          new XElement("EVSEIdType",                         EVSEId.Format.                     AsText()),
+                          new XElement("EVSEId",                             EVSEId.                            ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "userContractIdAlias",                UserContractIdAlias.               ToString()),
+                          new XElement("userContractIdAlias",                UserContractIdAlias.               ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "userIdType",                         UserId.Format.                     ToString()),
-                          new XElement(eMIPNS.Authorisation + "userId",                             UserId.                            ToString()),
+                          new XElement("userIdType",                         UserId.Format.                     AsText()),
+                          new XElement("userId",                             UserId.                            ToString()),
 
                           PartnerProductId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "partnerProductId",             PartnerProductId.            Value.ToString())
+                              ? new XElement("partnerProductId",             PartnerProductId.            Value.ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "startTime",                          StartTime.                         ToString()),
-                          new XElement(eMIPNS.Authorisation + "endTime",                            EndTime.                           ToString()),
+                          new XElement("startTime",                          StartTime.                         ToString()),
+                          new XElement("endTime",                            EndTime.                           ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "meterReportList",
+                          new XElement("meterReportList",
                               MeterReports.Any()
                                   ? MeterReports.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer))
                                   : null

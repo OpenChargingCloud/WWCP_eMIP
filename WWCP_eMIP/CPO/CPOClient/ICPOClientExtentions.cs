@@ -178,6 +178,96 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region GetServiceAuthorisation(PartnerId, OperatorId, EVSEId, UserId, RequestedServiceId, ...)
+
+        /// <summary>
+        /// Request an service authorisation.
+        /// </summary>
+        /// <param name="PartnerId">The partner identification.</param>
+        /// <param name="OperatorId">The operator identification.</param>
+        /// <param name="EVSEId">The EVSE identification.</param>
+        /// <param name="UserId">The user identification.</param>
+        /// <param name="RequestedServiceId">The service identification for which an authorisation is requested.</param>
+        /// <param name="TransactionId">An optional transaction identification.</param>
+        /// <param name="PartnerServiceSessionId">An optional partner session identification.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        public static Task<HTTPResponse<GetServiceAuthorisationResponse>>
+
+            GetServiceAuthorisation(this ICPOClient            ICPOClient,
+                                    Partner_Id                 PartnerId,
+                                    Operator_Id                OperatorId,
+                                    EVSE_Id                    EVSEId,
+                                    User_Id                    UserId,
+                                    Service_Id                 RequestedServiceId,
+                                    Transaction_Id?            TransactionId             = null,
+                                    PartnerServiceSession_Id?  PartnerServiceSessionId   = null,
+
+                                    DateTime?                  Timestamp                 = null,
+                                    CancellationToken?         CancellationToken         = null,
+                                    EventTracking_Id           EventTrackingId           = null,
+                                    TimeSpan?                  RequestTimeout            = null)
+
+
+                => ICPOClient.GetServiceAuthorisation(new GetServiceAuthorisationRequest(PartnerId,
+                                                                                         OperatorId,
+                                                                                         EVSEId,
+                                                                                         UserId,
+                                                                                         RequestedServiceId,
+                                                                                         TransactionId,
+                                                                                         PartnerServiceSessionId,
+
+                                                                                         Timestamp,
+                                                                                         CancellationToken,
+                                                                                         EventTrackingId,
+                                                                                         RequestTimeout ?? ICPOClient.RequestTimeout));
+
+        #endregion
+
+        #region SetChargeDetailRecord(PartnerId, OperatorId, ChargeDetailRecord, ...)
+
+        /// <summary>
+        /// Upload the given charge detail record.
+        /// </summary>
+        /// <param name="PartnerId">The partner identification.</param>
+        /// <param name="OperatorId">The operator identification.</param>
+        /// <param name="ChargeDetailRecord">The charge detail record.</param>
+        /// <param name="TransactionId">An optional transaction identification.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        public static Task<HTTPResponse<SetChargeDetailRecordResponse>>
+
+            SetChargeDetailRecord(this ICPOClient     ICPOClient,
+                                  Partner_Id          PartnerId,
+                                  Operator_Id         OperatorId,
+                                  ChargeDetailRecord  ChargeDetailRecord,
+                                  Transaction_Id?     TransactionId       = null,
+
+                                  DateTime?           Timestamp           = null,
+                                  CancellationToken?  CancellationToken   = null,
+                                  EventTracking_Id    EventTrackingId     = null,
+                                  TimeSpan?           RequestTimeout      = null)
+
+
+                => ICPOClient.SetChargeDetailRecord(new SetChargeDetailRecordRequest(PartnerId,
+                                                                                     OperatorId,
+                                                                                     ChargeDetailRecord,
+                                                                                     TransactionId,
+
+                                                                                     Timestamp,
+                                                                                     CancellationToken,
+                                                                                     EventTrackingId,
+                                                                                     RequestTimeout ?? ICPOClient.RequestTimeout));
+
+        #endregion
+
+
     }
 
 }

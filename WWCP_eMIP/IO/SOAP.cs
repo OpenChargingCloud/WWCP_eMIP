@@ -61,6 +61,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     new XAttribute(XNamespace.Xmlns + "SOAP",  SOAPNS.v1_2.NS.SOAPEnvelope.NamespaceName),
                     new XAttribute(XNamespace.Xmlns + "eMIP",  eMIPNS.Default.             NamespaceName),
                     new XAttribute(XNamespace.Xmlns + "dyn",   eMIPNS.EVCIDynamic.         NamespaceName),
+                    new XAttribute(XNamespace.Xmlns + "auth",  eMIPNS.Authorisation.       NamespaceName),
 
                     new XElement(SOAPNS.v1_2.NS.SOAPEnvelope + "Header"),
                     new XElement(SOAPNS.v1_2.NS.SOAPEnvelope + "Body",  SOAPBody)

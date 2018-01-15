@@ -53,6 +53,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
+        #region SetChargeDetailRecordResponse(Request, TransactionId, RequestStatus, ...)
+
+        /// <summary>
+        /// Create a new SetChargeDetailRecord response.
+        /// </summary>
+        /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest         Request,
+                                             Transaction_Id                       TransactionId,
+                                             RequestStatus                        RequestStatus,
+                                             IReadOnlyDictionary<String, Object>  CustomData               = null)
+
+            : this(Request,
+                   TransactionId,
+                   ServiceSession_Id.Zero,
+                   RequestStatus,
+                   null,
+                   CustomData)
+
+        { }
+
+        #endregion
+
+        #region SetChargeDetailRecordResponse(Request, TransactionId, ServiceSessionId, RequestStatus, ...)
+
         /// <summary>
         /// Create a new SetChargeDetailRecord response.
         /// </summary>
@@ -80,6 +107,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.SalesPartnerOperatorId  = SalesPartnerOperatorId;
 
         }
+
+        #endregion
 
         #endregion
 
@@ -196,19 +225,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                         Request,
 
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "transactionId",
-                                                                                                            Transaction_Id.Parse),
-
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "serviceSessionId",
-                                                                                                            ServiceSession_Id.Parse),
-
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "requestStatus",
-                                                                                                            RequestStatus.Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("transactionId",          Transaction_Id.Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("serviceSessionId",       ServiceSession_Id.Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("requestStatus",          RequestStatus.Parse),
 
                                                         //ToDo: What to do with: <salePartnerOperatorIdType>eMI3</salePartnerOperatorIdType>?
-
-                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable(eMIPNS.Authorisation + "salePartnerOperatorId",
-                                                                                                            Operator_Id.Parse)
+                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable("salePartnerOperatorId",  Operator_Id.Parse)
 
                                                     );
 
@@ -287,18 +309,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetChargeDetailRecordResponse",
 
-                          new XElement(eMIPNS.Authorisation + "transactionId",                    TransactionId.                      ToString()),
+                          new XElement("transactionId",                    TransactionId.                      ToString()),
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorIdType",  SalesPartnerOperatorId.Value.Format.AsText())
+                              ? new XElement("salePartnerOperatorIdType",  SalesPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorId",      SalesPartnerOperatorId.Value.       ToString())
+                              ? new XElement("salePartnerOperatorId",      SalesPartnerOperatorId.Value.       ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "serviceSessionId",                 ServiceSessionId.                   ToString()),
-                          new XElement(eMIPNS.Authorisation + "requestStatus",                    RequestStatus.                      ToString())
+                          new XElement("serviceSessionId",                 ServiceSessionId.                   ToString()),
+                          new XElement("requestStatus",                    RequestStatus.                      ToString())
 
                       );
 

@@ -230,6 +230,115 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>          CustomSetEVSEBusyStatusRequestSerializer            { get; set; }
 
+
+        #region CustomGetServiceAuthorisationRequestMapper
+
+        #region CustomGetServiceAuthorisationRequestMapper
+
+        private Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> _CustomGetServiceAuthorisationRequestMapper = _ => _;
+
+        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> CustomGetServiceAuthorisationRequestMapper
+        {
+
+            get
+            {
+                return _CustomGetServiceAuthorisationRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomGetServiceAuthorisationRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomGetServiceAuthorisationSOAPRequestMapper
+
+        private Func<GetServiceAuthorisationRequest, XElement, XElement> _CustomGetServiceAuthorisationSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<GetServiceAuthorisationRequest, XElement, XElement> CustomGetServiceAuthorisationSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomGetServiceAuthorisationSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomGetServiceAuthorisationSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationParser { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>    CustomGetServiceAuthorisationRequestSerializer      { get; set; }
+
+
+        #region CustomSetChargeDetailRecordRequestMapper
+
+        #region CustomSetChargeDetailRecordRequestMapper
+
+        private Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> _CustomSetChargeDetailRecordRequestMapper = _ => _;
+
+        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargeDetailRecordRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargeDetailRecordRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargeDetailRecordSOAPRequestMapper
+
+        private Func<SetChargeDetailRecordRequest, XElement, XElement> _CustomSetChargeDetailRecordSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetChargeDetailRecordRequest, XElement, XElement> CustomSetChargeDetailRecordSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargeDetailRecordSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargeDetailRecordSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargeDetailRecordResponse> CustomSetChargeDetailRecordParser { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>      CustomSetChargeDetailRecordRequestSerializer        { get; set; }
+
+
+        public CustomXMLParserDelegate<MeterReport> CustomMeterReportParser { get; set; }
+
         #endregion
 
         #region Events
@@ -304,6 +413,55 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// An event fired whenever a response to an EVSE busy status request had been received.
         /// </summary>
         public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
+
+        #endregion
+
+
+        #region OnGetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a service authorisation request will be send.
+        /// </summary>
+        public event OnGetServiceAuthorisationRequestDelegate   OnGetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP service authorisation request will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                    OnGetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                   OnGetServiceAuthorisationSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation request had been received.
+        /// </summary>
+        public event OnGetServiceAuthorisationResponseDelegate  OnGetServiceAuthorisationResponse;
+
+        #endregion
+
+        #region OnSetChargeDetailRecordRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a charge detail record will be send.
+        /// </summary>
+        public event OnSetChargeDetailRecordRequestDelegate   OnSetChargeDetailRecordRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP charge detail record will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                  OnSetChargeDetailRecordSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SOAP charge detail record had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                 OnSetChargeDetailRecordSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charge detail record had been received.
+        /// </summary>
+        public event OnSetChargeDetailRecordResponseDelegate  OnSetChargeDetailRecordResponse;
 
         #endregion
 
@@ -1163,6 +1321,508 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             catch (Exception e)
             {
                 e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+
+        #region GetServiceAuthorisation(Request)
+
+        /// <summary>
+        /// Request an service authorisation.
+        /// </summary>
+        /// <param name="Request">A GetServiceAuthorisation request.</param>
+        public async Task<HTTPResponse<GetServiceAuthorisationResponse>>
+
+            GetServiceAuthorisation(GetServiceAuthorisationRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given GetServiceAuthorisation request must not be null!");
+
+            Request = _CustomGetServiceAuthorisationRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped GetServiceAuthorisation request must not be null!");
+
+
+            Byte                                          TransmissionRetry  = 0;
+            HTTPResponse<GetServiceAuthorisationResponse> result             = null;
+
+            #endregion
+
+            #region Send OnGetServiceAuthorisationRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnGetServiceAuthorisationRequest != null)
+                    await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
+                                       Cast<OnGetServiceAuthorisationRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.UserId,
+                                                     Request.RequestedServiceId,
+                                                     Request.TransactionId,
+                                                     Request.PartnerServiceSessionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        RemotePort,
+                                                        HTTPVirtualHost,
+                                                        URIPrefix,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomGetServiceAuthorisationSOAPRequestMapper(Request,
+                                                                                                     SOAP.Encapsulation(Request.ToXML(CustomGetServiceAuthorisationRequestSerializer))),
+                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_GetServiceAuthorisationV1/",
+                                                     RequestLogDelegate:   OnGetServiceAuthorisationSOAPRequest,
+                                                     ResponseLogDelegate:  OnGetServiceAuthorisationSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              GetServiceAuthorisationResponse.Parse(request,
+                                                                                                                                                    xml,
+                                                                                                                                                    CustomGetServiceAuthorisationParser,
+                                                                                                                                                    CustomMeterReportParser,
+                                                                                                                                                    onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<GetServiceAuthorisationResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new GetServiceAuthorisationResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<GetServiceAuthorisationResponse>(httpresponse,
+                                                                                                        new GetServiceAuthorisationResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<GetServiceAuthorisationResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new GetServiceAuthorisationResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<GetServiceAuthorisationResponse>.ExceptionThrown(
+
+                                                                new GetServiceAuthorisationResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
+                                 new GetServiceAuthorisationResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendGetServiceAuthorisationResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnGetServiceAuthorisationResponse != null)
+                    await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
+                                       Cast<OnGetServiceAuthorisationResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.UserId,
+                                                     Request.RequestedServiceId,
+                                                     Request.TransactionId,
+                                                     Request.PartnerServiceSessionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region SetChargeDetailRecord(Request)
+
+        /// <summary>
+        /// Upload the given charge detail record.
+        /// </summary>
+        /// <param name="Request">A SetChargeDetailRecord request.</param>
+        public async Task<HTTPResponse<SetChargeDetailRecordResponse>>
+
+            SetChargeDetailRecord(SetChargeDetailRecordRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetChargeDetailRecord request must not be null!");
+
+            Request = _CustomSetChargeDetailRecordRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetChargeDetailRecord request must not be null!");
+
+
+            Byte                                        TransmissionRetry  = 0;
+            HTTPResponse<SetChargeDetailRecordResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetChargeDetailRecordRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargeDetailRecordRequest != null)
+                    await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
+                                       Cast<OnSetChargeDetailRecordRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargeDetailRecord,
+                                                     Request.TransactionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        RemotePort,
+                                                        HTTPVirtualHost,
+                                                        URIPrefix,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
+                                                                                                     SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer))),
+                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetChargeDetailRecordV1/",
+                                                     RequestLogDelegate:   OnSetChargeDetailRecordSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetChargeDetailRecordSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetChargeDetailRecordResponse.Parse(request,
+                                                                                                                                                  xml,
+                                                                                                                                                  CustomSetChargeDetailRecordParser,
+                                                                                                                                                  onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetChargeDetailRecordResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargeDetailRecordResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetChargeDetailRecordResponse>(httpresponse,
+                                                                                                        new SetChargeDetailRecordResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetChargeDetailRecordResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargeDetailRecordResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetChargeDetailRecordResponse>.ExceptionThrown(
+
+                                                                new SetChargeDetailRecordResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
+                                 new SetChargeDetailRecordResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetChargeDetailRecordResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargeDetailRecordResponse != null)
+                    await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().
+                                       Cast<OnSetChargeDetailRecordResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargeDetailRecord,
+                                                     Request.TransactionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordResponse));
             }
 
             #endregion

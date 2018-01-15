@@ -210,21 +210,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 SetChargeDetailRecordRequest = new SetChargeDetailRecordRequest(
 
-                                                   SetChargeDetailRecordRequestXML.MapValueOrFail    (eMIPNS.Default + "partnerId",
-                                                                                                      Partner_Id.Parse),
+                                                   SetChargeDetailRecordRequestXML.MapValueOrFail    ("partnerId",      Partner_Id.Parse),
+                                                   SetChargeDetailRecordRequestXML.MapValueOrFail    ("operatorId",     Operator_Id.Parse),
 
-                                                   SetChargeDetailRecordRequestXML.MapValueOrFail    (eMIPNS.Default + "operatorId",
-                                                                                                      Operator_Id.Parse),
-
-                                                   SetChargeDetailRecordRequestXML.MapElementOrFail  (eMIPNS.Default + "operatorId",
+                                                   SetChargeDetailRecordRequestXML.MapElementOrFail  ("chargeDetailRecord",
                                                                                                       (s, e) => ChargeDetailRecord.Parse(s,
                                                                                                                                          CustomChargeDetailRecordParser,
                                                                                                                                          CustomMeterReportParser,
                                                                                                                                          e),
                                                                                                       OnException),
 
-                                                   SetChargeDetailRecordRequestXML.MapValueOrNullable(eMIPNS.Default + "transactionId",
-                                                                                                      Transaction_Id.Parse)
+                                                   SetChargeDetailRecordRequestXML.MapValueOrNullable("transactionId",  Transaction_Id.Parse)
 
                                                );
 
@@ -309,16 +305,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetChargeDetailRecordRequest",
 
                           TransactionId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "transactionId",  TransactionId.ToString())
+                              ? new XElement("transactionId",  TransactionId.ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "partnerIdType",        PartnerId. Format.AsText()),
-                          new XElement(eMIPNS.Authorisation + "partnerId",            PartnerId.        ToString()),
+                          new XElement("partnerIdType",        PartnerId. Format.AsText()),
+                          new XElement("partnerId",            PartnerId.        ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "operatorIdType",       OperatorId.Format.AsText()),
-                          new XElement(eMIPNS.Authorisation + "operatorId",           OperatorId.       ToString()),
+                          new XElement("operatorIdType",       OperatorId.Format.AsText()),
+                          new XElement("operatorId",           OperatorId.       ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "chargeDetailRecord",   ChargeDetailRecord.ToXML(CustomChargeDetailRecordSerializer: CustomChargeDetailRecordSerializer))
+                          new XElement("chargeDetailRecord",   ChargeDetailRecord.ToXML(CustomChargeDetailRecordSerializer: CustomChargeDetailRecordSerializer))
 
                       );
 

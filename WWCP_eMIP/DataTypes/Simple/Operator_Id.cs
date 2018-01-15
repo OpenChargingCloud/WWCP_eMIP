@@ -46,8 +46,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             {
 
                 case OperatorIdFormats.eMI3:
-                    return "eMI3";
-
                 case OperatorIdFormats.eMI3_STAR:
                     return "eMI3";
 

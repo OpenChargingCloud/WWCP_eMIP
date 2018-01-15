@@ -108,20 +108,94 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
+        #region OnGetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a service authorisation request will be send.
+        /// </summary>
+        event OnGetServiceAuthorisationRequestDelegate   OnGetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP service authorisation request will be send.
+        /// </summary>
+        event ClientRequestLogHandler                    OnGetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                   OnGetServiceAuthorisationSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation request had been received.
+        /// </summary>
+        event OnGetServiceAuthorisationResponseDelegate  OnGetServiceAuthorisationResponse;
+
+        #endregion
+
+        #region OnSetChargeDetailRecordRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a charge detail record will be send.
+        /// </summary>
+        event OnSetChargeDetailRecordRequestDelegate   OnSetChargeDetailRecordRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP charge detail record will be send.
+        /// </summary>
+        event ClientRequestLogHandler                  OnSetChargeDetailRecordSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SOAP charge detail record had been received.
+        /// </summary>
+        event ClientResponseLogHandler                 OnSetChargeDetailRecordSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charge detail record had been received.
+        /// </summary>
+        event OnSetChargeDetailRecordResponseDelegate  OnSetChargeDetailRecordResponse;
+
+        #endregion
+
         #endregion
 
 
-
+        /// <summary>
+        /// Send the given heartbeat.
+        /// </summary>
+        /// <param name="Request">A SendHeartbeat request.</param>
         Task<HTTPResponse<HeartbeatResponse>>
             SendHeartbeat(HeartbeatRequest Request);
 
 
+        /// <summary>
+        /// Send the given EVSE Availability status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
         Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
             SetEVSEAvailabilityStatus(SetEVSEAvailabilityStatusRequest Request);
 
+        /// <summary>
+        /// Send the given EVSE busy status.
+        /// </summary>
+        /// <param name="Request">A SetEVSEBusyStatus request.</param>
         Task<HTTPResponse<SetEVSEBusyStatusResponse>>
             SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request);
 
+
+        /// <summary>
+        /// Request an service authorisation.
+        /// </summary>
+        /// <param name="Request">A GetServiceAuthorisation request.</param>
+        Task<HTTPResponse<GetServiceAuthorisationResponse>>
+            GetServiceAuthorisation(GetServiceAuthorisationRequest Request);
+
+        /// <summary>
+        /// Upload the given charge detail record.
+        /// </summary>
+        /// <param name="Request">A SetChargeDetailRecord request.</param>
+        Task<HTTPResponse<SetChargeDetailRecordResponse>>
+            SetChargeDetailRecord(SetChargeDetailRecordRequest Request);
 
     }
 

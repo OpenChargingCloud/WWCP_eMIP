@@ -209,12 +209,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 MeterReport = new MeterReport(
 
-                                  MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterTypeId"),
-
-                                  MeterReportXML.ElementValueOrFail (eMIPNS.Authorisation + "meterValue"),
-
-                                  MeterReportXML.MapEnumValuesOrFail(eMIPNS.Authorisation + "meterUnit",
-                                                                     ConversionMethods.AsMeterTypeId)
+                                  MeterReportXML.ElementValueOrFail ("meterTypeId"),
+                                  MeterReportXML.ElementValueOrFail ("meterValue"),
+                                  MeterReportXML.MapEnumValuesOrFail("meterUnit", ConversionMethods.AsMeterTypeId)
 
                               );
 
@@ -287,11 +284,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               CustomXMLSerializerDelegate<MeterReport>  CustomMeterReportSerializer   = null)
         {
 
-            var XML = new XElement(XName ?? eMIPNS.Authorisation + "meterReport",
+            var XML = new XElement(XName ?? "meterReport",
 
-                          new XElement(eMIPNS.Authorisation + "meterTypeId",  Type.AsNumber()),
-                          new XElement(eMIPNS.Authorisation + "meterValue",   Value),
-                          new XElement(eMIPNS.Authorisation + "meterUnit",    Unit)
+                          new XElement("meterTypeId",  Type.AsNumber()),
+                          new XElement("meterValue",   Value),
+                          new XElement("meterUnit",    Unit)
 
                       );
 

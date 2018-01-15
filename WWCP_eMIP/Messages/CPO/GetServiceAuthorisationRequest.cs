@@ -226,33 +226,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 GetServiceAuthorisationRequest = new GetServiceAuthorisationRequest(
 
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    (eMIPNS.Authorisation + "partnerId",
-                                                                                                          Partner_Id.Parse),
+                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    ("partnerId",                Partner_Id.Parse),
 
                                                      //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    (eMIPNS.Authorisation + "operatorId",
-                                                                                                          Operator_Id.Parse),
+                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    ("operatorId",               Operator_Id.Parse),
 
                                                      //ToDo: What to do with: <EVSEIdType>eMI3</EVSEIdType>
+                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    ("EVSEId",                   EVSE_Id.Parse),
 
-                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    (eMIPNS.Authorisation + "EVSEId",
-                                                                                                          EVSE_Id.Parse),
+                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    ("userId",                   s => User_Id.Parse(s,
+                                                         GetServiceAuthorisationRequestXML.MapValueOrFail("userIdType", ConversionMethods.AsUserIdFormat))),
 
-                                                     //ToDo: What to do with: <userIdType>RFID-UID</userIdType>
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    (eMIPNS.Authorisation + "userId",
-                                                                                                          User_Id.Parse),
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    (eMIPNS.Authorisation + "requestedServiceId",
-                                                                                                          Service_Id.Parse),
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrNullable(eMIPNS.Authorisation + "transactionId",
-                                                                                                          Transaction_Id.Parse),
-
-                                                     GetServiceAuthorisationRequestXML.MapValueOrNullable(eMIPNS.Authorisation + "partnerServiceSessionId",
-                                                                                                          PartnerServiceSession_Id.Parse)
+                                                     GetServiceAuthorisationRequestXML.MapValueOrFail    ("requestedServiceId",       Service_Id.Parse),
+                                                     GetServiceAuthorisationRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.Parse),
+                                                     GetServiceAuthorisationRequestXML.MapValueOrNullable("partnerServiceSessionId",  PartnerServiceSession_Id.Parse)
 
                                                  );
 
@@ -329,25 +316,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_GetServiceAuthorisationRequest",
 
                           TransactionId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "transactionId",            TransactionId.                ToString())
+                              ? new XElement("transactionId",            TransactionId.                ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "partnerIdType",                  PartnerId.Format.             ToString()),
-                          new XElement(eMIPNS.Authorisation + "partnerId",                      PartnerId.                    ToString()),
+                          new XElement("partnerIdType",                  PartnerId.Format.             AsText()),
+                          new XElement("partnerId",                      PartnerId.                    ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "operatorIdType",                 OperatorId.Format.            ToString()),
-                          new XElement(eMIPNS.Authorisation + "operatorId",                     OperatorId.                   ToString()),
+                          new XElement("operatorIdType",                 OperatorId.Format.            AsText()),
+                          new XElement("operatorId",                     OperatorId.                   ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "EVSEIdType",                     EVSEId.Format.                ToString()),
-                          new XElement(eMIPNS.Authorisation + "EVSEId",                         EVSEId.                       ToString()),
+                          new XElement("EVSEIdType",                     EVSEId.Format.                AsText()),
+                          new XElement("EVSEId",                         EVSEId.                       ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "userIdType",                     UserId.Format.                ToString()),
-                          new XElement(eMIPNS.Authorisation + "userId",                         UserId.                       ToString()),
+                          new XElement("userIdType",                     UserId.Format.                AsText()),
+                          new XElement("userId",                         UserId.                       ToString()),
 
-                          new XElement(eMIPNS.Authorisation + "requestedServiceId",             RequestedServiceId.           ToString()),
+                          new XElement("requestedServiceId",             RequestedServiceId.           ToString()),
 
                           PartnerServiceSessionId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "partnerServiceSessionId",  PartnerServiceSessionId.Value.ToString())
+                              ? new XElement("partnerServiceSessionId",  PartnerServiceSessionId.Value.ToString())
                               : null
 
                       );

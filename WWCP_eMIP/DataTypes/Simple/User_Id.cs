@@ -28,25 +28,109 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
+    /// eMIP data conversion methods.
+    /// </summary>
+    public static partial class ConversionMethods
+    {
+
+        #region AsText        (this UserIdFormat)
+
+        /// <summary>
+        /// Return a text representation of the given user identification format.
+        /// </summary>
+        /// <param name="UserIdFormat">A user identification format.</param>
+        public static String AsText(this UserIdFormats UserIdFormat)
+        {
+
+            switch (UserIdFormat)
+            {
+
+                case UserIdFormats.RFID_UID:
+                    return "RFID-UID";
+
+                case UserIdFormats.eMI3:
+                    return "eMI3";
+
+                case UserIdFormats.eMA:
+                    return "eMA";
+
+                case UserIdFormats.EVCO:
+                    return "EVCO";
+
+                default:
+                    return "EMP-SPEC";
+
+            }
+
+        }
+
+        #endregion
+
+        #region AsUserIdFormat(this Text)
+
+        /// <summary>
+        /// Parse the given text representation of an user identification format.
+        /// </summary>
+        /// <param name="Text">A text-representation of an user identification format.</param>
+        public static UserIdFormats AsUserIdFormat(String Text)
+        {
+
+            switch (Text)
+            {
+
+                case "RFID-UID":
+                    return UserIdFormats.RFID_UID;
+
+                case "eMI3":
+                    return UserIdFormats.eMI3;
+
+                case "eMA":
+                    return UserIdFormats.eMA;
+
+                case "EVCO":
+                    return UserIdFormats.EVCO;
+
+                default:
+                    return UserIdFormats.EMP_SPEC;
+
+            }
+
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
     /// The different formats of user identifications.
     /// </summary>
     public enum UserIdFormats
     {
 
         /// <summary>
-        /// The RFID UID format.
+        /// The unique identification of a RFID card/tag.
         /// </summary>
         RFID_UID,
 
         /// <summary>
-        /// The eMI3 format with a '*' as separator.
+        /// An eMI3 token.
         /// </summary>
-        eMI3_STAR,
+        eMI3,
 
         /// <summary>
-        /// Proprietary Gireve format.
+        /// An eMI3 e-mobility account identification.
         /// </summary>
-        Gireve
+        eMA,
+
+        /// <summary>
+        /// A electric vehicle contract identification (see also ISO/IEC 15118).
+        /// </summary>
+        EVCO,
+
+        /// <summary>
+        /// An EMP-specific identification.
+        /// </summary>
+        EMP_SPEC
 
     }
 
@@ -63,15 +147,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Data
 
         /// <summary>
-        /// The identificator suffix.
+        /// The identificator.
         /// </summary>
-        private String InternalId;
-
-        /// <summary>
-        /// The regular expression for parsing an eMIP user identification.
-        /// </summary>
-        public static readonly Regex  UserId_RegEx  = new Regex(@"^([A-Z]{2})(\*?)([A-Z0-9]{3})$",
-                                                                    RegexOptions.IgnorePatternWhitespace);
+        private readonly String InternalId;
 
         #endregion
 
@@ -122,13 +200,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse(Text)
+        #region Parse   (Text, Format = RFID_UID)
 
         /// <summary>
         /// Parse the given text representation of an user identification.
         /// </summary>
         /// <param name="Text">A text representation of an user identification.</param>
-        public static User_Id Parse(String Text)
+        /// <param name="Format">The format of the user identification.</param>
+        public static User_Id Parse(String         Text,
+                                    UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
             #region Initial checks
@@ -141,22 +221,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new User_Id(Text);
+            return new User_Id(Text,
+                               Format);
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region TryParse(Text, Format = RFID_UID)
 
         /// <summary>
         /// Try to parse the given text representation of an user identification.
         /// </summary>
         /// <param name="Text">A text representation of an user identification.</param>
-        public static User_Id? TryParse(String Text)
+        /// <param name="Format">The format of the user identification.</param>
+        public static User_Id? TryParse(String         Text,
+                                        UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
-            if (TryParse(Text, out User_Id UserId))
+            if (TryParse(Text, out User_Id UserId, Format))
                 return UserId;
 
             return new User_Id?();
@@ -165,15 +248,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out UserId)
+        #region TryParse(Text, out UserId, Format = RFID_UID)
 
         /// <summary>
         /// Try to parse the given text representation of an user identification.
         /// </summary>
         /// <param name="Text">A text representation of an user identification.</param>
         /// <param name="UserId">The parsed user identification.</param>
-        public static Boolean TryParse(String       Text,
-                                       out User_Id  UserId)
+        /// <param name="Format">The format of the user identification.</param>
+        public static Boolean TryParse(String         Text,
+                                       out User_Id    UserId,
+                                       UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
             #region Initial checks
@@ -192,7 +277,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                UserId = new User_Id(Text);
+                UserId = new User_Id(Text,
+                                     Format);
 
                 return true;
 
@@ -214,7 +300,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         public User_Id Clone
 
-            => new User_Id(new string(InternalId.ToCharArray()),
+            => new User_Id(new String(InternalId.ToCharArray()),
                            Format);
 
         #endregion

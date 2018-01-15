@@ -39,7 +39,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #region OnHeartbeatRequest/-Response
 
     /// <summary>
-    /// A delegate called whenever new heartbeat will be send upstream.
+    /// A delegate called whenever a heartbeat will be send upstream.
     /// </summary>
     public delegate Task OnSendHeartbeatRequestDelegate (DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
@@ -52,7 +52,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                          TimeSpan                                 RequestTimeout);
 
     /// <summary>
-    /// A delegate called whenever new heartbeat had been sent upstream.
+    /// A delegate called whenever a heartbeat had been sent upstream.
     /// </summary>
     public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
@@ -72,7 +72,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #region OnSetEVSEAvailabilityStatusRequest/-Response
 
     /// <summary>
-    /// A delegate called whenever new EVSE availability status will be send upstream.
+    /// A delegate called whenever an EVSE availability status will be send upstream.
     /// </summary>
     public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                                 LogTimestamp,
                                                                      DateTime                                 RequestTimestamp,
@@ -92,7 +92,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                      TimeSpan                                 RequestTimeout);
 
     /// <summary>
-    /// A delegate called whenever new EVSE availability status had been sent upstream.
+    /// A delegate called whenever an EVSE availability status had been sent upstream.
     /// </summary>
     public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                                 LogTimestamp,
                                                                      DateTime                                 RequestTimestamp,
@@ -118,7 +118,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #region OnSetEVSEBusyStatusRequest/-Response
 
     /// <summary>
-    /// A delegate called whenever new EVSE busy status will be send upstream.
+    /// A delegate called whenever an EVSE busy status will be send upstream.
     /// </summary>
     public delegate Task OnSetEVSEBusyStatusRequestDelegate (DateTime                                 LogTimestamp,
                                                              DateTime                                 RequestTimestamp,
@@ -138,7 +138,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              TimeSpan                                 RequestTimeout);
 
     /// <summary>
-    /// A delegate called whenever new EVSE busy status had been sent upstream.
+    /// A delegate called whenever an EVSE busy status had been sent upstream.
     /// </summary>
     public delegate Task OnSetEVSEBusyStatusResponseDelegate(DateTime                                 LogTimestamp,
                                                              DateTime                                 RequestTimestamp,
@@ -158,6 +158,89 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              TimeSpan                                 RequestTimeout,
                                                              SetEVSEBusyStatusResponse                Result,
                                                              TimeSpan                                 Duration);
+
+    #endregion
+
+
+    #region OnGetServiceAuthorisationRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a service authorisation request will be send upstream.
+    /// </summary>
+    public delegate Task OnGetServiceAuthorisationRequestDelegate (DateTime                                 LogTimestamp,
+                                                                   DateTime                                 RequestTimestamp,
+                                                                   ICPOClient                               Sender,
+                                                                   String                                   SenderId,
+                                                                   EventTracking_Id                         EventTrackingId,
+
+                                                                   Partner_Id                               PartnerId,
+                                                                   Operator_Id                              OperatorId,
+                                                                   EVSE_Id                                  EVSEId,
+                                                                   User_Id                                  UserId,
+                                                                   Service_Id                               RequestedServiceId,
+                                                                   Transaction_Id?                          TransactionId,
+                                                                   PartnerServiceSession_Id?                PartnerServiceSessionId,
+
+                                                                   TimeSpan                                 RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a service authorisation request had been sent upstream.
+    /// </summary>
+    public delegate Task OnGetServiceAuthorisationResponseDelegate(DateTime                                 LogTimestamp,
+                                                                   DateTime                                 RequestTimestamp,
+                                                                   ICPOClient                               Sender,
+                                                                   String                                   SenderId,
+                                                                   EventTracking_Id                         EventTrackingId,
+
+                                                                   Partner_Id                               PartnerId,
+                                                                   Operator_Id                              OperatorId,
+                                                                   EVSE_Id                                  EVSEId,
+                                                                   User_Id                                  UserId,
+                                                                   Service_Id                               RequestedServiceId,
+                                                                   Transaction_Id?                          TransactionId,
+                                                                   PartnerServiceSession_Id?                PartnerServiceSessionId,
+
+                                                                   TimeSpan                                 RequestTimeout,
+                                                                   GetServiceAuthorisationResponse          Result,
+                                                                   TimeSpan                                 Duration);
+
+    #endregion
+
+    #region OnSetChargeDetailRecordRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever new charge detail record will be send upstream.
+    /// </summary>
+    public delegate Task OnSetChargeDetailRecordRequestDelegate (DateTime                                 LogTimestamp,
+                                                                 DateTime                                 RequestTimestamp,
+                                                                 ICPOClient                               Sender,
+                                                                 String                                   SenderId,
+                                                                 EventTracking_Id                         EventTrackingId,
+
+                                                                 Partner_Id                               PartnerId,
+                                                                 Operator_Id                              OperatorId,
+                                                                 ChargeDetailRecord                       ChargeDetailRecord,
+                                                                 Transaction_Id?                          TransactionId,
+
+                                                                 TimeSpan                                 RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a charge detail record had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetChargeDetailRecordResponseDelegate(DateTime                                 LogTimestamp,
+                                                                 DateTime                                 RequestTimestamp,
+                                                                 ICPOClient                               Sender,
+                                                                 String                                   SenderId,
+                                                                 EventTracking_Id                         EventTrackingId,
+
+                                                                 Partner_Id                               PartnerId,
+                                                                 Operator_Id                              OperatorId,
+                                                                 ChargeDetailRecord                       ChargeDetailRecord,
+                                                                 Transaction_Id?                          TransactionId,
+
+                                                                 TimeSpan                                 RequestTimeout,
+                                                                 SetChargeDetailRecordResponse            Result,
+                                                                 TimeSpan                                 Duration);
 
     #endregion
 

@@ -81,6 +81,40 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
+        #region GetServiceAuthorisationResponse(Request, TransactionId, RequestStatus, CustomData = null)
+
+        /// <summary>
+        /// Create a new GetServiceAuthorisation response.
+        /// </summary>
+        /// <param name="Request">The GetServiceAuthorisation request leading to this response.</param>
+        /// <param name="TransactionId">A transaction identification.</param>
+        /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="CustomData">Optional additional customer-specific data.</param>
+        public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
+                                               Transaction_Id                       TransactionId,
+                                               RequestStatus                        RequestStatus,
+
+                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
+
+            : this(Request,
+                   TransactionId,
+                   AuthorisationValues.KO,
+                   ServiceSession_Id.Zero,
+                   false,
+                   RequestStatus,
+                   null,
+                   null,
+                   null,
+                   null,
+                   CustomData)
+
+        { }
+
+        #endregion
+
+        #region GetServiceAuthorisationResponse(Request, TransactionId, ...,           CustomData = null)
+
         /// <summary>
         /// Create a new GetServiceAuthorisation response.
         /// </summary>
@@ -126,6 +160,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.Parameter                 = Parameter;
 
         }
+
+        #endregion
 
         #endregion
 
@@ -271,34 +307,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                       Request,
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "transactionId",
-                                                                                                            Transaction_Id.Parse),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",             Transaction_Id.Parse),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    ("authorisationValue",        ConversionMethods.AsAuthorisationValue),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    ("serviceSessionId",          ServiceSession_Id.Parse),
+                                                      GetServiceAuthorisationResponseXML.MapBooleanOrFail  ("intermediateCDRRequested"),
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "authorisationValue",
-                                                                                                            ConversionMethods.AsAuthorisationValue),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",             RequestStatus.Parse),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNullable("salePartnerOperatorId",     s => Provider_Id.Parse(s.Replace("*", "-"))),
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNullable("userContractIdAlias",       Contract_Id.Parse),
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "serviceSessionId",
-                                                                                                            ServiceSession_Id.Parse),
-
-                                                      GetServiceAuthorisationResponseXML.MapBooleanOrFail  (eMIPNS.Authorisation + "intermediateCDRRequested"),
-
-
-                                                      GetServiceAuthorisationResponseXML.MapValueOrFail    (eMIPNS.Authorisation + "requestStatus",
-                                                                                                            RequestStatus.Parse),
-
-                                                      GetServiceAuthorisationResponseXML.MapValueOrNullable(eMIPNS.Authorisation + "salePartnerOperatorId",
-                                                                                                            Provider_Id.Parse),
-
-                                                      GetServiceAuthorisationResponseXML.MapValueOrNullable(eMIPNS.Authorisation + "userContractIdAlias",
-                                                                                                            Contract_Id.Parse),
-
-                                                      GetServiceAuthorisationResponseXML.MapElements       (eMIPNS.Authorisation + "meterLimitList",
-                                                                                                            eMIPNS.Authorisation + "meterReport",
+                                                      GetServiceAuthorisationResponseXML.MapElements       ("meterLimitList",
+                                                                                                            "meterReport",
                                                                                                             s => MeterReport.Parse(s,
                                                                                                                                    CustomMeterReportParser,
                                                                                                                                    OnException)),
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    (eMIPNS.Authorisation + "parameter")
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    ("parameter")
 
                                                   );
 
@@ -382,33 +406,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_GetServiceAuthorisationResponse",
 
-                          new XElement(eMIPNS.Authorisation + "transactionId",                      TransactionId.                      ToString()),
+                          new XElement("transactionId",                      TransactionId.                      ToString()),
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorIdType",    SalesPartnerOperatorId.Value.Format.AsText())
+                              ? new XElement("salePartnerOperatorIdType",    SalesPartnerOperatorId.Value.Format.AsText())
                               : null,
 
                           SalesPartnerOperatorId.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "salePartnerOperatorId",        SalesPartnerOperatorId.       Value.ToString())
+                              ? new XElement("salePartnerOperatorId",        SalesPartnerOperatorId.       Value.ToString())
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "authorisationValue",                 AuthorisationValue.                 AsNumber()),
-                          new XElement(eMIPNS.Authorisation + "serviceSessionId",                   ServiceSessionId.                   ToString()),
-                          new XElement(eMIPNS.Authorisation + "intermediateCDRRequested",           IntermediateCDRRequested ? "1" : "0"),
+                          new XElement("authorisationValue",                 AuthorisationValue.                 AsNumber()),
+                          new XElement("serviceSessionId",                   ServiceSessionId.                   ToString()),
+                          new XElement("intermediateCDRRequested",           IntermediateCDRRequested ? "1" : "0"),
 
                           UserContractIdAlias.HasValue
-                              ? new XElement(eMIPNS.Authorisation + "userContractIdAlias",          UserContractIdAlias.          Value.ToString())
+                              ? new XElement("userContractIdAlias",          UserContractIdAlias.          Value.ToString())
                               : null,
 
                           MeterLimits.Any()
-                              ? new XElement(eMIPNS.Authorisation + "meterLimitList",
+                              ? new XElement("meterLimitList",
                                     MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer))
                                 )
                               : null,
 
-                          new XElement(eMIPNS.Authorisation + "parameter",                          Parameter),
+                          new XElement("parameter",                          Parameter),
 
-                          new XElement(eMIPNS.Authorisation + "requestStatus",                      RequestStatus.ToString())
+                          new XElement("requestStatus",                      RequestStatus.ToString())
 
                       );
 

@@ -33,9 +33,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region AsAuthorisationValue(Number)
 
         /// <summary>
-        /// Parse the given numeric representation of an authorisation result.
+        /// Parse the given numeric representation of an authorisation value.
         /// </summary>
-        /// <param name="Number">A numeric-representation of an authorisation result</param>
+        /// <param name="Number">A numeric-representation of an authorisation value</param>
         public static AuthorisationValues AsAuthorisationValue(Byte Number)
         {
 
@@ -46,7 +46,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return AuthorisationValues.OK;
 
                 case 2:
-                    return AuthorisationValues.OK;
+                    return AuthorisationValues.KO;
 
                 default:
                     return AuthorisationValues.Undefined;
@@ -60,18 +60,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region AsAuthorisationValue(Text)
 
         /// <summary>
-        /// Parse the given text representation of an authorisation result.
+        /// Parse the given text representation of an authorisation value.
         /// </summary>
-        /// <param name="Text">A text representation of an authorisation result</param>
+        /// <param name="Text">A text representation of an authorisation value</param>
         public static AuthorisationValues AsAuthorisationValue(String Text)
         {
 
             switch (Text)
             {
 
+                case "1":
                 case "OK":
                     return AuthorisationValues.OK;
 
+                case "2":
                 case "KO":
                     return AuthorisationValues.KO;
 
@@ -85,23 +87,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region AsText  (this AvailabilityStatus)
+        #region AsText  (this AuthorisationValue)
 
         /// <summary>
-        /// Return a text representation of the given authorisation result.
+        /// Return a text representation of the given authorisation value.
         /// </summary>
-        /// <param name="AvailabilityStatus">An authorisation result.</param>
-        public static String AsText(this AuthorisationValues AvailabilityStatus)
+        /// <param name="AuthorisationValue">An authorisation value.</param>
+        public static String AsText(this AuthorisationValues AuthorisationValue)
         {
 
-            switch (AvailabilityStatus)
+            switch (AuthorisationValue)
             {
 
                 case AuthorisationValues.OK:
-                    return "OK";
+                    return "1";
 
                 case AuthorisationValues.KO:
-                    return "KO";
+                    return "2";
 
                 default:
                     return "undefined";
@@ -112,16 +114,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region AsNumber(this AvailabilityStatus)
+        #region AsNumber(this AuthorisationValue)
 
         /// <summary>
-        /// Return a numeric representation of the given authorisation result.
+        /// Return a numeric representation of the given authorisation value.
         /// </summary>
-        /// <param name="AvailabilityStatus">An authorisation result.</param>
-        public static Byte AsNumber(this AuthorisationValues AvailabilityStatus)
+        /// <param name="AuthorisationValue">An authorisation value.</param>
+        public static Byte AsNumber(this AuthorisationValues AuthorisationValue)
         {
 
-            switch (AvailabilityStatus)
+            switch (AuthorisationValue)
             {
 
                 case AuthorisationValues.OK:

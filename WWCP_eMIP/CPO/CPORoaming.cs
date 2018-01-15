@@ -85,7 +85,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending a heartbeat will be send.
         /// </summary>
-        public event OnSendHeartbeatRequestDelegate   OnSendHeartbeatRequest
+        public event OnSendHeartbeatRequestDelegate OnSendHeartbeatRequest
         {
 
             add
@@ -103,7 +103,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a SOAP request sending a heartbeat will be send.
         /// </summary>
-        public event ClientRequestLogHandler          OnSendHeartbeatSOAPRequest
+        public event ClientRequestLogHandler OnSendHeartbeatSOAPRequest
         {
 
             add
@@ -121,7 +121,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to a heartbeat SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler         OnSendHeartbeatSOAPResponse
+        public event ClientResponseLogHandler OnSendHeartbeatSOAPResponse
         {
 
             add
@@ -139,7 +139,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
-        public event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse
+        public event OnSendHeartbeatResponseDelegate OnSendHeartbeatResponse
         {
 
             add
@@ -162,7 +162,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending an EVSE availability status will be send.
         /// </summary>
-        public event OnSetEVSEAvailabilityStatusRequestDelegate   OnSetEVSEAvailabilityStatusRequest
+        public event OnSetEVSEAvailabilityStatusRequestDelegate OnSetEVSEAvailabilityStatusRequest
         {
 
             add
@@ -180,7 +180,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a SOAP request sending an EVSE availability status will be send.
         /// </summary>
-        public event ClientRequestLogHandler              OnSetEVSEAvailabilityStatusSOAPRequest
+        public event ClientRequestLogHandler OnSetEVSEAvailabilityStatusSOAPRequest
         {
 
             add
@@ -198,7 +198,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to an EVSE availability status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler             OnSetEVSEAvailabilityStatusSOAPResponse
+        public event ClientResponseLogHandler OnSetEVSEAvailabilityStatusSOAPResponse
         {
 
             add
@@ -216,7 +216,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a response to an EVSE availability status request had been received.
         /// </summary>
-        public event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse
+        public event OnSetEVSEAvailabilityStatusResponseDelegate OnSetEVSEAvailabilityStatusResponse
         {
 
             add
@@ -308,6 +308,160 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         #endregion
+
+
+        #region OnGetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a service authorisation request will be send.
+        /// </summary>
+        public event OnGetServiceAuthorisationRequestDelegate OnGetServiceAuthorisationRequest
+        {
+
+            add
+            {
+                CPOClient.OnGetServiceAuthorisationRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnGetServiceAuthorisationRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP service authorisation request will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnGetServiceAuthorisationSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnGetServiceAuthorisationSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnGetServiceAuthorisationSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnGetServiceAuthorisationSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnGetServiceAuthorisationSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnGetServiceAuthorisationSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a service authorisation request had been received.
+        /// </summary>
+        public event OnGetServiceAuthorisationResponseDelegate OnGetServiceAuthorisationResponse
+        {
+
+            add
+            {
+                CPOClient.OnGetServiceAuthorisationResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnGetServiceAuthorisationResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetChargeDetailRecordRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a charge detail record will be send.
+        /// </summary>
+        public event OnSetChargeDetailRecordRequestDelegate OnSetChargeDetailRecordRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargeDetailRecordRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargeDetailRecordRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP charge detail record will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetChargeDetailRecordSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargeDetailRecordSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargeDetailRecordSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SOAP charge detail record had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetChargeDetailRecordSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargeDetailRecordSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargeDetailRecordSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charge detail record had been received.
+        /// </summary>
+        public event OnSetChargeDetailRecordResponseDelegate OnSetChargeDetailRecordResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargeDetailRecordResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargeDetailRecordResponse -= value;
+            }
+
+        }
+
+        #endregion
+
 
         // CPOServer methods
 
@@ -605,6 +759,36 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 => CPOClient.SetEVSEBusyStatus(Request);
 
         #endregion
+
+
+        #region GetServiceAuthorisation(Request)
+
+        /// <summary>
+        /// Request an service authorisation.
+        /// </summary>
+        /// <param name="Request">A GetServiceAuthorisation request.</param>
+        public Task<HTTPResponse<GetServiceAuthorisationResponse>>
+
+            GetServiceAuthorisation(GetServiceAuthorisationRequest Request)
+
+                => CPOClient.GetServiceAuthorisation(Request);
+
+        #endregion
+
+        #region SetChargeDetailRecord(Request)
+
+        /// <summary>
+        /// Upload the given charge detail record.
+        /// </summary>
+        /// <param name="Request">A SetChargeDetailRecord request.</param>
+        public Task<HTTPResponse<SetChargeDetailRecordResponse>>
+
+            SetChargeDetailRecord(SetChargeDetailRecordRequest Request)
+
+                => CPOClient.SetChargeDetailRecord(Request);
+
+        #endregion
+
 
 
         #region Start()

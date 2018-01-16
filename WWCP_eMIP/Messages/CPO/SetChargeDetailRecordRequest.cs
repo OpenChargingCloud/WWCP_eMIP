@@ -298,8 +298,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="CustomSetChargeDetailRecordRequestSerializer">A delegate to serialize custom SetChargeDetailRecord request XML elements.</param>
         /// <param name="CustomChargeDetailRecordSerializer">A delegate to serialize custom ChargeDetailRecord XML elements.</param>
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
         public XElement ToXML(CustomXMLSerializerDelegate<SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestSerializer  = null,
-                              CustomXMLSerializerDelegate<ChargeDetailRecord>           CustomChargeDetailRecordSerializer            = null)
+                              CustomXMLSerializerDelegate<ChargeDetailRecord>           CustomChargeDetailRecordSerializer            = null,
+                              CustomXMLSerializerDelegate<MeterReport>                  CustomMeterReportSerializer                   = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetChargeDetailRecordRequest",
@@ -314,7 +316,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           new XElement("operatorIdType",       OperatorId.Format.AsText()),
                           new XElement("operatorId",           OperatorId.       ToString()),
 
-                          new XElement("chargeDetailRecord",   ChargeDetailRecord.ToXML(CustomChargeDetailRecordSerializer: CustomChargeDetailRecordSerializer))
+                          ChargeDetailRecord.ToXML(CustomChargeDetailRecordSerializer: CustomChargeDetailRecordSerializer,
+                                                   CustomMeterReportSerializer:        CustomMeterReportSerializer)
 
                       );
 

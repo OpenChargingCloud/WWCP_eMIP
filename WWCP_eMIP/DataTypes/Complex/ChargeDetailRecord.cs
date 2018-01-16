@@ -426,7 +426,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               CustomXMLSerializerDelegate<MeterReport>         CustomMeterReportSerializer          = null)
         {
 
-            var XML = new XElement(XName ?? eMIPNS.Authorisation + "chargeDetailRecord",
+            var XML = new XElement(XName ?? "chargeDetailRecord",
 
                           new XElement("CDRNature",                          CDRNature.                           AsText()),
                           new XElement("serviceSessionId",                   ServiceSessionId.                  ToString()),
@@ -471,8 +471,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               ? new XElement("partnerProductId",             PartnerProductId.            Value.ToString())
                               : null,
 
-                          new XElement("startTime",                          StartTime.                         ToString()),
-                          new XElement("endTime",                            EndTime.                           ToString()),
+                          new XElement("startTime",                          StartTime.                         ToIso8601(false)),
+                          new XElement("endTime",                            EndTime.                           ToIso8601(false)),
 
                           new XElement("meterReportList",
                               MeterReports.Any()

@@ -18,6 +18,7 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -138,6 +139,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// The unique identification of an user.
     /// </summary>
+    [DebuggerDisplay("{InternalId} ({Format})")]
     public struct User_Id : IId,
                             IEquatable<User_Id>,
                             IComparable<User_Id>
@@ -528,6 +530,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         public override String ToString()
         {
+
+            return InternalId;
 
             switch (Format)
             {

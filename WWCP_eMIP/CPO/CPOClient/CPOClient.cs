@@ -337,7 +337,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>      CustomSetChargeDetailRecordRequestSerializer        { get; set; }
 
 
-        public CustomXMLParserDelegate<MeterReport> CustomMeterReportParser { get; set; }
+
+        public CustomXMLSerializerDelegate<ChargeDetailRecord>                CustomChargeDetailRecordSerializer                  { get; set; }
+        public CustomXMLParserDelegate<ChargeDetailRecord>                    CustomChargeDetailRecordParser                      { get; set; }
+
+        public CustomXMLSerializerDelegate<MeterReport>                       CustomMeterReportSerializer                         { get; set; }
+        public CustomXMLParserDelegate<MeterReport>                           CustomMeterReportParser                             { get; set; }
 
         #endregion
 
@@ -820,7 +825,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-
         #region SetEVSEAvailabilityStatus(Request)
 
         /// <summary>
@@ -1076,7 +1080,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetEVSEBusyStatus(Request)
+        #region SetEVSEBusyStatus        (Request)
 
         /// <summary>
         /// Send the given EVSE busy status.
@@ -1586,7 +1590,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetChargeDetailRecord(Request)
+        #region SetChargeDetailRecord  (Request)
 
         /// <summary>
         /// Upload the given charge detail record.
@@ -1662,7 +1666,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     result = await _eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
-                                                                                                     SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer))),
+                                                                                                   SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer,
+                                                                                                                                    CustomChargeDetailRecordSerializer,
+                                                                                                                                    CustomMeterReportSerializer))),
                                                      "https://api-iop.gireve.com/services/eMIP_ToIOP_SetChargeDetailRecordV1/",
                                                      RequestLogDelegate:   OnSetChargeDetailRecordSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargeDetailRecordSOAPResponse,

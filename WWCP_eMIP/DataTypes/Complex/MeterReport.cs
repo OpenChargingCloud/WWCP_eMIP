@@ -43,17 +43,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The meter value.
         /// </summary>
-        public String        Value    { get; }
+        public String      Value    { get; }
 
         /// <summary>
         /// The unit of the meter value.
         /// </summary>
-        public String        Unit     { get; }
+        public String      Unit     { get; }
 
         /// <summary>
-        /// The type of the meter value.
+        /// The type of the meter value (energy, duration, ...).
         /// </summary>
-        public MeterTypeIds  Type     { get; }
+        public MeterTypes  Type     { get; }
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
         public MeterReport(String                               Value,
                            String                               Unit,
-                           MeterTypeIds                         Type,
+                           MeterTypes                           Type,
                            IReadOnlyDictionary<String, Object>  CustomData    = null)
 
             : base(CustomData)
@@ -101,11 +101,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Value">The meter value.</param>
         /// <param name="Unit">The unit of the meter value.</param>
-        /// <param name="Type">The type of the meter value.</param>
+        /// <param name="Type">The type of the meter value (energy, duration, ...).</param>
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
         public static MeterReport Create(String                               Value,
                                          String                               Unit,
-                                         MeterTypeIds                         Type,
+                                         MeterTypes                           Type,
                                          IReadOnlyDictionary<String, Object>  CustomData    = null)
 
             => new MeterReport(Value,
@@ -211,7 +211,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                                   MeterReportXML.ElementValueOrFail ("meterTypeId"),
                                   MeterReportXML.ElementValueOrFail ("meterValue"),
-                                  MeterReportXML.MapEnumValuesOrFail("meterUnit", ConversionMethods.AsMeterTypeId)
+                                  MeterReportXML.MapEnumValuesOrFail("meterUnit",  MeterTypes.Parse)
 
                               );
 
@@ -286,7 +286,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             var XML = new XElement(XName ?? "meterReport",
 
-                          new XElement("meterTypeId",  Type.AsNumber()),
+                          new XElement("meterTypeId",  Type.Code),
                           new XElement("meterValue",   Value),
                           new XElement("meterUnit",    Unit)
 
@@ -533,13 +533,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (override) ToString()
 
         /// <summary>
-        /// Return a string representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 
             => String.Concat(Value, " ",
                              Unit, " (",
-                             Type.AsText(), ")");
+                             Type, ")");
 
         #endregion
 

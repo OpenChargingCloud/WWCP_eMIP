@@ -267,7 +267,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Clone this request status.
         /// </summary>
         public RequestStatus Clone
-            => new RequestStatus(Code);
+
+            => new RequestStatus(Code,
+                                 new String(Description.ToCharArray()));
 
         #endregion
 
@@ -527,7 +529,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (override) ToString()
 
         /// <summary>
-        /// Return a string representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 

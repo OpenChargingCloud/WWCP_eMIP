@@ -69,9 +69,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (Text)
             {
 
+                case "1":
                 case "final":
                     return CDRNatures.Final;
 
+                case "2":
                 case "intermediate":
                     return CDRNatures.Intermediate;
 
@@ -98,13 +100,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             {
 
                 case CDRNatures.Final:
-                    return "final";
+                    return "1";
 
                 case CDRNatures.Intermediate:
-                    return "intermediate";
+                    return "2";
 
                 default:
-                    return "undefined";
+                    return "0";
 
             }
 

@@ -123,14 +123,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //    <soap:Body>
         //       <eMIP:eMIP_ToIOP_SetChargeDetailRecordResponse>
         //
-        //          <transactionId>TRANSACTION_46151</transactionId>
+        //          <transactionId>IOP-TID-GIR-V-IOPPPFT02-8531144d-fb53-43ef-9daa-671bb9447a9d</transactionId>
         //
         //          <!--Optional:-->
         //          <salePartnerOperatorIdType>?</salePartnerOperatorIdType>
         //          <!--Optional:-->
         //          <salePartnerOperatorId>?</salePartnerOperatorId>
         //
-        //          <serviceSessionId>?</serviceSessionId>
+        //          <serviceSessionId>123</serviceSessionId>
         //
         //          <requestStatus>1</requestStatus>
         //
@@ -454,7 +454,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (override) ToString()
 
         /// <summary>
-        /// Return a string representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 

@@ -58,7 +58,7 @@
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
-    <Compile Include="DataTypes\Enums\MeterTypeIds.cs" />
+    <Compile Include="DataTypes\Simple\MeterTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingPoolAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingStationAvailabilityStatusTypes.cs" />

@@ -481,7 +481,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (override) ToString()
 
         /// <summary>
-        /// Return a string representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 

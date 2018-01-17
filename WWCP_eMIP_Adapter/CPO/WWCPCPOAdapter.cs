@@ -719,7 +719,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Upload the EVSE data of the given enumeration of EVSEs.
         /// </summary>
         /// <param name="EVSEs">An enumeration of EVSEs.</param>
-        /// <param name="ServerAction">The server-side data management operation.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -728,7 +727,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         private async Task<PushEVSEDataResult>
 
             PushEVSEData(IEnumerable<EVSE>    EVSEs,
-                      //   ActionTypes          ServerAction,
 
                          DateTime?            Timestamp          = null,
                          CancellationToken?   CancellationToken  = null,
@@ -737,24 +735,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            //#region Initial checks
+            #region Initial checks
 
-            //if (!Timestamp.HasValue)
-            //    Timestamp = DateTime.UtcNow;
-
-            //if (!CancellationToken.HasValue)
-            //    CancellationToken = new CancellationTokenSource().Token;
-
-            //if (EventTrackingId == null)
-            //    EventTrackingId = EventTracking_Id.New;
-
-            //if (!RequestTimeout.HasValue)
-            //    RequestTimeout = CPOClient?.RequestTimeout;
+            if (EVSEs == null || !EVSEs.Any())
+                return PushEVSEDataResult.NoOperation(Id, this);
 
 
-            //PushEVSEDataResult result;
+            if (!Timestamp.HasValue)
+                Timestamp = DateTime.UtcNow;
 
-            //#endregion
+            if (!CancellationToken.HasValue)
+                CancellationToken = new CancellationTokenSource().Token;
+
+            if (EventTrackingId == null)
+                EventTrackingId = EventTracking_Id.New;
+
+            if (!RequestTimeout.HasValue)
+                RequestTimeout = CPOClient?.RequestTimeout;
+
+
+            PushEVSEDataResult result;
+
+            #endregion
+
+            // Not implemented within the Gireve API!
+            return PushEVSEDataResult.NoOperation(Id, this);
 
             //#region Get effective number of EVSEs/EVSEDataRecords to upload
 
@@ -1051,6 +1056,224 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+        #region (private) SetEVSEAvailabilityStatus(EVSEAdminStatusUpdates, ...)
+
+        /// <summary>
+        /// Upload the EVSE status of the given lookup of EVSE status types grouped by their Charging Station Operator.
+        /// </summary>
+        /// <param name="EVSEAdminStatusUpdates">An enumeration of EVSE status updates.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        private async Task<PushEVSEAdminStatusResult>
+
+            SetEVSEAvailabilityStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
+
+                                      DateTime?                           Timestamp           = null,
+                                      CancellationToken?                  CancellationToken   = null,
+                                      EventTracking_Id                    EventTrackingId     = null,
+                                      TimeSpan?                           RequestTimeout      = null)
+
+        {
+
+            #region Initial checks
+
+            if (EVSEAdminStatusUpdates == null || !EVSEAdminStatusUpdates.Any())
+                return PushEVSEAdminStatusResult.NoOperation(Id, this);
+
+
+            if (!Timestamp.HasValue)
+                Timestamp = DateTime.UtcNow;
+
+            if (!CancellationToken.HasValue)
+                CancellationToken = new CancellationTokenSource().Token;
+
+            if (EventTrackingId == null)
+                EventTrackingId = EventTracking_Id.New;
+
+            if (!RequestTimeout.HasValue)
+                RequestTimeout = CPOClient?.RequestTimeout;
+
+            #endregion
+
+            #region Get effective number of EVSEAdminStatus/EVSEAdminStatusRecords to upload
+
+            var Warnings = new List<Warning>();
+
+            var _EVSEAvailabilityAdminStatus = EVSEAdminStatusUpdates.
+                                  ToLookup    (evsestatusupdate => evsestatusupdate.EVSE.Id,
+                                               evsestatusupdate => evsestatusupdate).
+                                  ToDictionary(group            => group.Key,
+                                               group            => group.AsEnumerable().OrderByDescending(item => item.NewStatus.Timestamp)).
+                                  Select      (evsestatusupdate => {
+
+                                      try
+                                      {
+
+                                          var _EVSEId = evsestatusupdate.Key.ToEMIP(CustomEVSEIdMapper);
+
+                                          if (!_EVSEId.HasValue)
+                                              throw new InvalidEVSEIdentificationException(evsestatusupdate.Key.ToString());
+
+                                          // Only push the current status of the latest status update!
+                                          return new KeyValuePair<EVSEAdminStatusUpdate, EVSEAvailabilityStatus>?(
+                                                     new KeyValuePair<EVSEAdminStatusUpdate, EVSEAvailabilityStatus>(
+                                                         evsestatusupdate.Value.First(),
+                                                         new EVSEAvailabilityStatus(
+                                                             _EVSEId.Value,
+                                                             evsestatusupdate.Value.First().NewStatus.Timestamp,
+                                                             evsestatusupdate.Value.First().NewStatus.Value.ToEMIP()
+                                                             // AvailabilityAdminStatusUntil
+                                                             // AvailabilityAdminStatusComment
+                                                         )
+                                                     )
+                                                 );
+
+                                      }
+                                      catch (Exception e)
+                                      {
+                                          DebugX.  Log(e.Message);
+                                          Warnings.Add(Warning.Create(e.Message, evsestatusupdate));
+                                      }
+
+                                      return null;
+
+                                  }).
+                                  Where(evsestatusrecord => evsestatusrecord != null).
+                                  ToArray();
+
+            PushEVSEAdminStatusResult result = null;
+            var results = new List<PushEVSEAdminStatusResult>();
+
+            #endregion
+
+            #region Send OnEVSEAdminStatusPush event
+
+            var StartTime = DateTime.UtcNow;
+
+            //try
+            //{
+
+            //    OnPushEVSEAdminStatusWWCPRequest?.Invoke(StartTime,
+            //                                        Timestamp.Value,
+            //                                        this,
+            //                                        Id,
+            //                                        EventTrackingId,
+            //                                        RoamingNetwork.Id,
+            //                                        ActionType.update,
+            //                                        _EVSEAdminStatus.ULongCount(),
+            //                                        _EVSEAdminStatus,
+            //                                        Warnings.Where(warning => warning.IsNotNullOrEmpty()),
+            //                                        RequestTimeout);
+
+            //}
+            //catch (Exception e)
+            //{
+            //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnPushEVSEAdminStatusWWCPRequest));
+            //}
+
+            #endregion
+
+
+            //ToDo: Not clear if the Gireve API supports concurrent requests!
+            foreach (var evseAdminStatus in _EVSEAvailabilityAdminStatus)
+            {
+
+                var response = await CPORoaming.
+                                         SetEVSEAvailabilityStatus(PartnerId,
+                                                                   evseAdminStatus.Value.Value.EVSEId.OperatorId,
+                                                                   evseAdminStatus.Value.Value.EVSEId,
+                                                                   evseAdminStatus.Value.Value.StatusEventDate,
+                                                                   evseAdminStatus.Value.Value.AvailabilityStatus,
+                                                                   null, //Transaction_Id.Random(),
+                                                                   null, //AvailabilityAdminStatusUntil
+                                                                   null, //AvailabilityAdminStatusComment
+
+                                                                   Timestamp,
+                                                                   CancellationToken,
+                                                                   EventTrackingId,
+                                                                   RequestTimeout).
+
+                                         ConfigureAwait(false);
+
+
+                var Endtime = DateTime.UtcNow;
+                var Runtime = Endtime - StartTime;
+
+                if (response.HTTPStatusCode == HTTPStatusCode.OK &&
+                    response.Content        != null)
+                {
+
+                    if (response.Content.RequestStatus == RequestStatus.Ok)
+                        results.Add(PushEVSEAdminStatusResult.Success(Id,
+                                                                 this,
+                                                                 //response.Content.AdminStatusCode.Description,
+                                                                 //response.Content.AdminStatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                                 //    ? Warnings.AddAndReturnList(response.Content.AdminStatusCode.AdditionalInfo)
+                                                                 //    : Warnings,
+                                                                 Runtime: Runtime));
+
+                    else
+                        results.Add(PushEVSEAdminStatusResult.Error(Id,
+                                                               this,
+                                                               new EVSEAdminStatusUpdate[] { evseAdminStatus.Value.Key },
+                                                               //response.Content.AdminStatusCode.Description,
+                                                               //response.Content.AdminStatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                               //    ? Warnings.AddAndReturnList(response.Content.AdminStatusCode.AdditionalInfo)
+                                                               //    : Warnings,
+                                                               Runtime: Runtime));
+
+                }
+                else
+                    results.Add(PushEVSEAdminStatusResult.Error(Id,
+                                                           this,
+                                                           new EVSEAdminStatusUpdate[] { evseAdminStatus.Value.Key },
+                                                           response.HTTPStatusCode.ToString(),
+                                                           response.HTTPBody != null
+                                                               ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
+                                                               : Warnings.AddAndReturnList("No HTTP body received!"),
+                                                           Runtime));
+
+            }
+
+
+            #region Send OnPushEVSEAdminStatusResponse event
+
+            //try
+            //{
+
+            //    OnPushEVSEAdminStatusWWCPResponse?.Invoke(Endtime,
+            //                                         Timestamp.Value,
+            //                                         this,
+            //                                         Id,
+            //                                         EventTrackingId,
+            //                                         RoamingNetwork.Id,
+            //                                         ServerAction,
+            //                                         _EVSEAdminStatus.ULongCount(),
+            //                                         _EVSEAdminStatus,
+            //                                         RequestTimeout,
+            //                                         result,
+            //                                         Runtime);
+
+            //}
+            //catch (Exception e)
+            //{
+            //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnPushEVSEAdminStatusWWCPResponse));
+            //}
+
+            #endregion
+
+            return PushEVSEAdminStatusResult.Flatten(Id,
+                                                     this,
+                                                     results,
+                                                     DateTime.UtcNow - StartTime);
+
+        }
+
+        #endregion
+
         #region (private) SetEVSEBusyStatus(EVSEStatusUpdates, ...)
 
         /// <summary>
@@ -1062,7 +1285,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        private async Task<PushStatusResult>
+        private async Task<PushEVSEStatusResult>
 
             SetEVSEBusyStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
 
@@ -1075,8 +1298,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (EVSEStatusUpdates == null)
-                throw new ArgumentNullException(nameof(EVSEStatusUpdates), "The given enumeration of EVSE status updates must not be null!");
+            if (EVSEStatusUpdates == null || !EVSEStatusUpdates.Any())
+                return PushEVSEStatusResult.NoOperation(Id, this);
 
 
             if (!Timestamp.HasValue)
@@ -1117,11 +1340,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      new KeyValuePair<EVSEStatusUpdate, EVSEBusyStatus>(
                                                          evsestatusupdate.Value.First(),
                                                          new EVSEBusyStatus(
-                                                                  _EVSEId.Value,
-                                                                  evsestatusupdate.Value.First().NewStatus.Timestamp,
-                                                                  evsestatusupdate.Value.First().NewStatus.Value.ToEMIP()
-                                                                  // BusyStatusUntil
-                                                                  // BusyStatusComment
+                                                             _EVSEId.Value,
+                                                             evsestatusupdate.Value.First().NewStatus.Timestamp,
+                                                             evsestatusupdate.Value.First().NewStatus.Value.ToEMIP()
+                                                             // BusyStatusUntil
+                                                             // BusyStatusComment
                                                          )
                                                      )
                                                  );
@@ -1139,8 +1362,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   Where(evsestatusrecord => evsestatusrecord != null).
                                   ToArray();
 
-            PushStatusResult result = null;
-            var results = new List<PushStatusResult>();
+            PushEVSEStatusResult result = null;
+            var results = new List<PushEVSEStatusResult>();
 
             #endregion
 
@@ -1172,6 +1395,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+            //ToDo: Not clear if the Gireve API supports concurrent requests!
             foreach (var evseStatus in _EVSEBusyStatus)
             {
 
@@ -1188,7 +1412,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            Timestamp,
                                                            CancellationToken,
                                                            EventTrackingId,
-                                                           RequestTimeout);
+                                                           RequestTimeout).
+
+                                         ConfigureAwait(false);
 
 
                 var Endtime = DateTime.UtcNow;
@@ -1199,34 +1425,34 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     if (response.Content.RequestStatus == RequestStatus.Ok)
-                        results.Add(PushStatusResult.Success(Id,
-                                                             this,
-                                                             //response.Content.StatusCode.Description,
-                                                             //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
-                                                             //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
-                                                             //    : Warnings,
-                                                             Runtime: Runtime));
+                        results.Add(PushEVSEStatusResult.Success(Id,
+                                                                 this,
+                                                                 //response.Content.StatusCode.Description,
+                                                                 //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                                 //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
+                                                                 //    : Warnings,
+                                                                 Runtime: Runtime));
 
                     else
-                        results.Add(PushStatusResult.Error(Id,
-                                                           this,
-                                                           new EVSEStatusUpdate[] { evseStatus.Value.Key },
-                                                           //response.Content.StatusCode.Description,
-                                                           //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
-                                                           //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
-                                                           //    : Warnings,
-                                                           Runtime: Runtime));
+                        results.Add(PushEVSEStatusResult.Error(Id,
+                                                               this,
+                                                               new EVSEStatusUpdate[] { evseStatus.Value.Key },
+                                                               //response.Content.StatusCode.Description,
+                                                               //response.Content.StatusCode.AdditionalInfo.IsNotNullOrEmpty()
+                                                               //    ? Warnings.AddAndReturnList(response.Content.StatusCode.AdditionalInfo)
+                                                               //    : Warnings,
+                                                               Runtime: Runtime));
 
                 }
                 else
-                    results.Add(PushStatusResult.Error(Id,
-                                                       this,
-                                                       new EVSEStatusUpdate[] { evseStatus.Value.Key },
-                                                       response.HTTPStatusCode.ToString(),
-                                                       response.HTTPBody != null
-                                                           ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
-                                                           : Warnings.AddAndReturnList("No HTTP body received!"),
-                                                       Runtime));
+                    results.Add(PushEVSEStatusResult.Error(Id,
+                                                           this,
+                                                           new EVSEStatusUpdate[] { evseStatus.Value.Key },
+                                                           response.HTTPStatusCode.ToString(),
+                                                           response.HTTPBody != null
+                                                               ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
+                                                               : Warnings.AddAndReturnList("No HTTP body received!"),
+                                                           Runtime));
 
             }
 
@@ -1257,7 +1483,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            return null;
+            return PushEVSEStatusResult.Flatten(Id,
+                                                this,
+                                                results,
+                                                DateTime.UtcNow - StartTime);
 
         }
 
@@ -1293,7 +1522,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (EVSE == null)
-                throw new ArgumentNullException(nameof(EVSE), "The given EVSE must not be null!");
+                return PushEVSEDataResult.NoOperation(Id,
+                                                      this);
+
+            if (DisablePushData)
+                return PushEVSEDataResult.AdminDown(Id,
+                                                    this,
+                                                    new EVSE[] { EVSE });
 
             #endregion
 
@@ -1302,49 +1537,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TransmissionType == TransmissionTypes.Enqueue)
             {
 
-                #region Send OnEnqueueSendCDRRequest event
+                return await SetStaticData(this,
+                                           EVSE,
 
-                //try
-                //{
+                                           Timestamp,
+                                           CancellationToken,
+                                           EventTrackingId,
+                                           RequestTimeout).
 
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    if (_IncludeEVSEs == null ||
-                       (_IncludeEVSEs != null && _IncludeEVSEs(EVSE)))
-                    {
-
-                        EVSEsToAddQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(_FlushEVSEDataAndStatusEvery, Timeout.Infinite);
-
-                    }
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this);
+                              ConfigureAwait(false);
 
             }
 
@@ -1389,7 +1590,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (EVSE == null)
-                throw new ArgumentNullException(nameof(EVSE), "The given EVSE must not be null!");
+                return PushEVSEDataResult.NoOperation(Id,
+                                                      this);
+
+            if (DisablePushData)
+                return PushEVSEDataResult.AdminDown(Id,
+                                                    this,
+                                                    new EVSE[] { EVSE });
 
             #endregion
 
@@ -1398,49 +1605,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TransmissionType == TransmissionTypes.Enqueue)
             {
 
-                #region Send OnEnqueueSendCDRRequest event
+                return await AddStaticData(this,
+                                           EVSE,
 
-                //try
-                //{
+                                           Timestamp,
+                                           CancellationToken,
+                                           EventTrackingId,
+                                           RequestTimeout).
 
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    if (_IncludeEVSEs == null ||
-                       (_IncludeEVSEs != null && _IncludeEVSEs(EVSE)))
-                    {
-
-                        EVSEsToAddQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(_FlushEVSEDataAndStatusEvery, Timeout.Infinite);
-
-                    }
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this);
+                              ConfigureAwait(false);
 
             }
 
@@ -2095,7 +2268,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushAdminStatusResult>
+        async Task<PushEVSEAdminStatusResult>
 
             ISendAdminStatus.UpdateAdminStatus(IEnumerable<EVSEAdminStatusUpdate>  AdminStatusUpdates,
                                                TransmissionTypes                   TransmissionType,
@@ -2105,8 +2278,50 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                EventTracking_Id                    EventTrackingId,
                                                TimeSpan?                           RequestTimeout)
 
+        {
 
-                => Task.FromResult(PushAdminStatusResult.NoOperation(Id, this));
+            #region Initial checks
+
+            if (AdminStatusUpdates == null || !AdminStatusUpdates.Any())
+                return PushEVSEAdminStatusResult.NoOperation(Id,
+                                                         this);
+
+            if (DisablePushStatus)
+                return PushEVSEAdminStatusResult.AdminDown(Id,
+                                                           this,
+                                                           AdminStatusUpdates);
+
+            #endregion
+
+            #region Enqueue, if requested...
+
+            if (TransmissionType == TransmissionTypes.Enqueue)
+            {
+
+                return await UpdateStatus(this,
+                                          AdminStatusUpdates,
+
+                                          Timestamp,
+                                          CancellationToken,
+                                          EventTrackingId,
+                                          RequestTimeout).
+
+                             ConfigureAwait(false);
+
+            }
+
+            #endregion
+
+            return await SetEVSEAvailabilityStatus(AdminStatusUpdates,
+
+                                                   Timestamp,
+                                                   CancellationToken,
+                                                   EventTrackingId,
+                                                   RequestTimeout).
+
+                         ConfigureAwait(false);
+
+        }
 
         #endregion
 
@@ -2122,7 +2337,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushStatusResult>
+        async Task<PushEVSEStatusResult>
 
             ISendStatus.UpdateStatus(IEnumerable<EVSEStatusUpdate>  StatusUpdates,
                                      TransmissionTypes              TransmissionType,
@@ -2137,7 +2352,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (StatusUpdates == null || !StatusUpdates.Any())
-                return PushStatusResult.NoOperation(Id, this);
+                return PushEVSEStatusResult.NoOperation(Id,
+                                                        this);
+
+            if (DisablePushStatus)
+                return PushEVSEStatusResult.AdminDown(Id,
+                                                      this,
+                                                      StatusUpdates);
 
             #endregion
 
@@ -2153,6 +2374,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                           CancellationToken,
                                           EventTrackingId,
                                           RequestTimeout).
+
                              ConfigureAwait(false);
 
             }
@@ -2165,6 +2387,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                            CancellationToken,
                                            EventTrackingId,
                                            RequestTimeout).
+
                          ConfigureAwait(false);
 
         }
@@ -2716,7 +2939,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushAdminStatusResult>
+        Task<PushChargingStationAdminStatusResult>
 
             ISendAdminStatus.UpdateAdminStatus(IEnumerable<ChargingStationAdminStatusUpdate>  AdminStatusUpdates,
                                                TransmissionTypes                              TransmissionType,
@@ -2727,7 +2950,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                TimeSpan?                                      RequestTimeout)
 
 
-                => Task.FromResult(PushAdminStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingStationAdminStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -2743,7 +2966,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushStatusResult>
+        Task<PushChargingStationStatusResult>
 
             ISendStatus.UpdateStatus(IEnumerable<ChargingStationStatusUpdate>  StatusUpdates,
                                      TransmissionTypes                         TransmissionType,
@@ -2754,7 +2977,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                      TimeSpan?                                 RequestTimeout)
 
 
-                => Task.FromResult(PushStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingStationStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3302,7 +3525,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushAdminStatusResult>
+        Task<PushChargingPoolAdminStatusResult>
 
             ISendAdminStatus.UpdateAdminStatus(IEnumerable<ChargingPoolAdminStatusUpdate>  AdminStatusUpdates,
                                                TransmissionTypes                           TransmissionType,
@@ -3313,7 +3536,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                TimeSpan?                                   RequestTimeout)
 
 
-                => Task.FromResult(PushAdminStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingPoolAdminStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3329,7 +3552,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushStatusResult>
+        Task<PushChargingPoolStatusResult>
 
             ISendStatus.UpdateStatus(IEnumerable<ChargingPoolStatusUpdate>  StatusUpdates,
                                      TransmissionTypes                      TransmissionType,
@@ -3340,7 +3563,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                      TimeSpan?                              RequestTimeout)
 
 
-                => Task.FromResult(PushStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingPoolStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3690,7 +3913,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushAdminStatusResult>
+        Task<PushChargingStationOperatorAdminStatusResult>
 
             ISendAdminStatus.UpdateAdminStatus(IEnumerable<ChargingStationOperatorAdminStatusUpdate>  AdminStatusUpdates,
                                                TransmissionTypes                                      TransmissionType,
@@ -3701,7 +3924,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                TimeSpan?                                              RequestTimeout)
 
 
-                => Task.FromResult(PushAdminStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingStationOperatorAdminStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3717,7 +3940,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushStatusResult>
+        Task<PushChargingStationOperatorStatusResult>
 
             ISendStatus.UpdateStatus(IEnumerable<ChargingStationOperatorStatusUpdate>  StatusUpdates,
                                      TransmissionTypes                                 TransmissionType,
@@ -3728,7 +3951,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                      TimeSpan?                                         RequestTimeout)
 
 
-                => Task.FromResult(PushStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushChargingStationOperatorStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3913,7 +4136,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushAdminStatusResult>
+        Task<PushRoamingNetworkAdminStatusResult>
 
             ISendAdminStatus.UpdateAdminStatus(IEnumerable<RoamingNetworkAdminStatusUpdate>  AdminStatusUpdates,
                                                TransmissionTypes                             TransmissionType,
@@ -3924,7 +4147,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                TimeSpan?                                     RequestTimeout)
 
 
-                => Task.FromResult(PushAdminStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushRoamingNetworkAdminStatusResult.NoOperation(Id, this));
 
         #endregion
 
@@ -3940,7 +4163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushStatusResult>
+        Task<PushRoamingNetworkStatusResult>
 
             ISendStatus.UpdateStatus(IEnumerable<RoamingNetworkStatusUpdate>  StatusUpdates,
                                      TransmissionTypes                        TransmissionType,
@@ -3951,7 +4174,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                      TimeSpan?                                RequestTimeout)
 
 
-                => Task.FromResult(PushStatusResult.NoOperation(Id, this));
+                => Task.FromResult(PushRoamingNetworkStatusResult.NoOperation(Id, this));
 
         #endregion
 

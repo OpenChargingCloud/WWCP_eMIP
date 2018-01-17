@@ -91,7 +91,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region EVSEStatus / EVSEBusyStatus
+        #region EVSEStatusTypes / EVSEBusyStatusTypes
 
         /// <summary>
         /// Convert a WWCP EVSE status into an eMIP EVSE busy status.
@@ -121,6 +121,43 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 default:
                     return EVSEBusyStatusTypes.Unspecified;
+
+            }
+
+        }
+
+        #endregion
+
+        #region EVSEAdminStatusTypes / EVSEAvailabilityStatusTypes
+
+        /// <summary>
+        /// Convert a WWCP EVSE status into an eMIP EVSE availability status.
+        /// </summary>
+        /// <param name="EVSEAdminStatusType"></param>
+        /// <returns></returns>
+        public static EVSEAvailabilityStatusTypes ToEMIP(this EVSEAdminStatusTypes EVSEAdminStatusType)
+        {
+
+            switch (EVSEAdminStatusType)
+            {
+
+                case EVSEAdminStatusTypes.OutOfService:
+                case EVSEAdminStatusTypes.Blocked:
+                case EVSEAdminStatusTypes.InternalUse:
+                    return EVSEAvailabilityStatusTypes.OutOfOrder;
+
+                case EVSEAdminStatusTypes.Operational:
+                    return EVSEAvailabilityStatusTypes.InService;
+
+                case EVSEAdminStatusTypes.Planned:
+                case EVSEAdminStatusTypes.InDeployment:
+                    return EVSEAvailabilityStatusTypes.Future;
+
+                case EVSEAdminStatusTypes.Deleted:
+                    return EVSEAvailabilityStatusTypes.Deleted;
+
+                default:
+                    return EVSEAvailabilityStatusTypes.Unspecified;
 
             }
 

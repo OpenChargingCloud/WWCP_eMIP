@@ -55,6 +55,7 @@
     <Compile Include="DataTypes\ACustomData.cs" />
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
+    <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />

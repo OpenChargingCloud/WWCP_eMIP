@@ -173,6 +173,69 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     RegisterDefaultConsoleLogTarget(this).
                     RegisterDefaultDiscLogTarget(this);
 
+
+
+                RegisterEvent("SetEVSEBusyStatusRequest",
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest -= handler,
+                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetEVSEBusyStatusResponse",
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse -= handler,
+                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+                RegisterEvent("SetEVSEAvailabilityStatusRequest",
+                              handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest -= handler,
+                              "SetEVSEAvailabilityStatus", "SetEVSEStatus", "EVSE", "AvailabilityStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetEVSEAvailabilityStatusResponse",
+                              handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse -= handler,
+                              "SetEVSEAvailabilityStatus", "SetEVSEStatus", "EVSE", "AvailabilityStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+
+                RegisterEvent("GetServiceAuthorisationRequest",
+                              handler => CPOClient.OnGetServiceAuthorisationSOAPRequest += handler,
+                              handler => CPOClient.OnGetServiceAuthorisationSOAPRequest -= handler,
+                              "GetServiceAuthorisation", "Authorisation", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("GetServiceAuthorisationResponse",
+                              handler => CPOClient.OnGetServiceAuthorisationSOAPResponse += handler,
+                              handler => CPOClient.OnGetServiceAuthorisationSOAPResponse -= handler,
+                              "GetServiceAuthorisation", "Authorisation", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+
+                RegisterEvent("SetChargeDetailRecordRequest",
+                              handler => CPOClient.OnSetChargeDetailRecordSOAPRequest += handler,
+                              handler => CPOClient.OnSetChargeDetailRecordSOAPRequest -= handler,
+                              "SetChargeDetailRecord", "ChargeDetailRecord", "CDR", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetChargeDetailRecordResponse",
+                              handler => CPOClient.OnSetChargeDetailRecordSOAPResponse += handler,
+                              handler => CPOClient.OnSetChargeDetailRecordSOAPResponse -= handler,
+                              "SetChargeDetailRecord", "ChargeDetailRecord", "CDR", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
                 #endregion
 
             }

@@ -6217,14 +6217,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region (timer) FlushEVSEFastStatus()
 
         protected override Boolean SkipFlushEVSEFastStatusQueues()
-            => EVSEStatusChangesFastQueue.Count == 0;
+            => EVSEAdminStatusChangesFastQueue.Count == 0 &&
+               EVSEStatusChangesFastQueue.     Count == 0;
 
         protected override async Task FlushEVSEFastStatusQueues()
         {
 
             #region Get a copy of all current EVSE data and delayed status
 
-            var EVSEStatusFastQueueCopy = new List<EVSEStatusUpdate>();
+            var EVSEAdminStatusFastQueueCopy  = new List<EVSEAdminStatusUpdate>();
+            var EVSEStatusFastQueueCopy       = new List<EVSEStatusUpdate>();
 
             await DataAndStatusLock.WaitAsync();
 
@@ -6232,15 +6234,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 // Copy 'EVSE status changes', remove originals...
-                EVSEStatusFastQueueCopy = new List<EVSEStatusUpdate>(EVSEStatusChangesFastQueue.Where(evsestatuschange => !EVSEsToAddQueue.Any(evse => evse == evsestatuschange.EVSE)));
+                EVSEAdminStatusFastQueueCopy  = new List<EVSEAdminStatusUpdate>(EVSEAdminStatusChangesFastQueue.Where(statuschange => !EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)));
+                EVSEStatusFastQueueCopy       = new List<EVSEStatusUpdate>     (EVSEStatusChangesFastQueue.     Where(statuschange => !EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)));
 
-                // Add all evse status changes of EVSE *NOT YET UPLOADED* into the delayed queue...
-                var EVSEStatusChangesDelayed = EVSEStatusChangesFastQueue.Where(evsestatuschange => EVSEsToAddQueue.Any(evse => evse == evsestatuschange.EVSE)).ToArray();
+                // Add all evse status changes of EVSEs *NOT YET UPLOADED* into the delayed queue...
+                var EVSEAdminStatusChangesDelayed = EVSEAdminStatusChangesFastQueue.Where(statuschange => EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)).ToArray();
+                var EVSEStatusChangesDelayed      = EVSEStatusChangesFastQueue.     Where(statuschange => EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)).ToArray();
 
-                if (EVSEStatusChangesDelayed.Length > 0)
-                    EVSEStatusChangesDelayedQueue.AddRange(EVSEStatusChangesDelayed);
+                if (EVSEAdminStatusChangesDelayed.Length > 0)
+                    EVSEAdminStatusChangesDelayedQueue.AddRange(EVSEAdminStatusChangesDelayed);
 
-                EVSEStatusChangesFastQueue.Clear();
+                if (EVSEStatusChangesDelayed.     Length > 0)
+                    EVSEStatusChangesDelayedQueue.     AddRange(EVSEStatusChangesDelayed);
+
+                EVSEAdminStatusChangesFastQueue.Clear();
+                EVSEStatusChangesFastQueue.     Clear();
+
 
                 // Stop the timer. Will be rescheduled by next EVSE status change...
                 FlushEVSEFastStatusTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -6258,12 +6267,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Send changed EVSE status
 
+            if (EVSEAdminStatusFastQueueCopy.Count > 0)
+            {
+
+                var _PushEVSEAdminStatus = await SetEVSEAvailabilityStatus(EVSEAdminStatusFastQueueCopy,
+                                                                           EventTrackingId: EventTrackingId).
+                                                     ConfigureAwait(false);
+
+                if (_PushEVSEAdminStatus.Warnings.Any())
+                {
+
+                    SendOnWarnings(DateTime.UtcNow,
+                                   nameof(WWCPCPOAdapter) + Id,
+                                   "PushEVSEAdminFastStatus",
+                                   _PushEVSEAdminStatus.Warnings);
+
+                }
+
+            }
+
             if (EVSEStatusFastQueueCopy.Count > 0)
             {
 
                 var _PushEVSEStatus = await SetEVSEBusyStatus(EVSEStatusFastQueueCopy,
-                                                           // ActionTypes.update,
-                                                           EventTrackingId: EventTrackingId);
+                                                              EventTrackingId: EventTrackingId).
+                                                ConfigureAwait(false);
 
                 if (_PushEVSEStatus.Warnings.Any())
                 {

@@ -47,17 +47,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String  DefaultHTTPUserAgent   = "GraphDefined eMIP " + Version.Number + " CPO Client";
+        public new const           String   DefaultHTTPUserAgent   = "GraphDefined eMIP " + Version.Number + " CPO Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort  DefaultRemotePort      = IPPort.Parse(443);
+        public new static readonly IPPort   DefaultRemotePort      = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public     const           String  DefaultURIPrefix       = "/api/emip";
+        public     static readonly HTTPURI  DefaultURIPrefix       = HTTPURI.Parse("/api/emip");
 
         #endregion
 
@@ -494,11 +494,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOClient(String                               ClientId,
                          String                               Hostname,
-                         IPPort                               RemotePort                   = null,
+                         IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          String                               HTTPVirtualHost              = null,
-                         String                               URIPrefix                    = DefaultURIPrefix,
+                         HTTPURI?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -512,7 +512,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    HTTPVirtualHost,
-                   URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
+                   URIPrefix ?? DefaultURIPrefix,
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
@@ -549,11 +549,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOClient(String                               ClientId,
                          CPOClientLogger                      Logger,
                          String                               Hostname,
-                         IPPort                               RemotePort                   = null,
+                         IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          String                               HTTPVirtualHost              = null,
-                         String                               URIPrefix                    = DefaultURIPrefix,
+                         HTTPURI?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -565,7 +565,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    HTTPVirtualHost,
-                   URIPrefix.WhenNullOrEmpty(DefaultURIPrefix),
+                   URIPrefix ?? DefaultURIPrefix,
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
@@ -645,9 +645,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        RemotePort,
                                                         HTTPVirtualHost,
                                                         URIPrefix,
+                                                        HTTPPort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -894,9 +894,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        RemotePort,
                                                         HTTPVirtualHost,
                                                         URIPrefix,
+                                                        HTTPPort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1149,9 +1149,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        RemotePort,
                                                         HTTPVirtualHost,
                                                         URIPrefix,
+                                                        HTTPPort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1404,9 +1404,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        RemotePort,
                                                         HTTPVirtualHost,
                                                         URIPrefix,
+                                                        HTTPPort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1655,9 +1655,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        RemotePort,
                                                         HTTPVirtualHost,
                                                         URIPrefix,
+                                                        HTTPPort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,

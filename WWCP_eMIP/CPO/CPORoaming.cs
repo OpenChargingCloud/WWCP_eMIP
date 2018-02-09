@@ -46,8 +46,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public CPOClient        CPOClient         { get; }
 
-        public IPPort RemotePort
-            => CPOClient?.RemotePort;
+        public IPPort HTTPPort
+            => CPOClient.HTTPPort;
 
         public RemoteCertificateValidationCallback RemoteCertificateValidator
             => CPOClient?.RemoteCertificateValidator;
@@ -656,19 +656,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public CPORoaming(String                               ClientId,
                           String                               RemoteHostname,
-                          IPPort                               RemoteTCPPort                   = null,
+                          IPPort?                              RemoteTCPPort                   = null,
                           RemoteCertificateValidationCallback  RemoteCertificateValidator      = null,
                           LocalCertificateSelectionCallback    ClientCertificateSelector       = null,
                           String                               RemoteHTTPVirtualHost           = null,
-                          String                               URIPrefix                       = CPOClient.DefaultURIPrefix,
+                          HTTPURI?                             URIPrefix                       = null,
                           String                               HTTPUserAgent                   = CPOClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
                           Byte?                                MaxNumberOfRetries              = CPOClient.DefaultMaxNumberOfRetries,
 
                           String                               ServerName                      = CPOServer.DefaultHTTPServerName,
                           String                               ServiceId                       = null,
-                          IPPort                               ServerTCPPort                   = null,
-                          String                               ServerURIPrefix                 = CPOServer.DefaultURIPrefix,
+                          IPPort?                              ServerTCPPort                   = null,
+                          HTTPURI?                             ServerURIPrefix                 = null,
                           HTTPContentType                      ServerContentType               = null,
                           Boolean                              ServerRegisterHTTPRootService   = true,
                           Boolean                              ServerAutoStart                 = false,
@@ -685,7 +685,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                  RemoteCertificateValidator,
                                  ClientCertificateSelector,
                                  RemoteHTTPVirtualHost,
-                                 URIPrefix,
+                                 URIPrefix ?? CPOClient.DefaultURIPrefix,
                                  HTTPUserAgent,
                                  RequestTimeout,
                                  MaxNumberOfRetries,
@@ -696,7 +696,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    new CPOServer(ServerName,
                                  ServiceId,
                                  ServerTCPPort,
-                                 ServerURIPrefix,
+                                 ServerURIPrefix ?? CPOServer.DefaultURIPrefix,
                                  ServerContentType,
                                  ServerRegisterHTTPRootService,
                                  DNSClient,

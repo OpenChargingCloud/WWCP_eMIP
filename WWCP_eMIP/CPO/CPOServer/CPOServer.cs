@@ -48,12 +48,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server TCP port.
         /// </summary>
-        public new static readonly IPPort           DefaultHTTPServerPort      = new IPPort(2002);
+        public new static readonly IPPort           DefaultHTTPServerPort      = IPPort.Parse(2002);
 
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new const           String           DefaultURIPrefix           = "";
+        public new static readonly HTTPURI          DefaultURIPrefix           = HTTPURI.Parse("/");
 
         /// <summary>
         /// The default HTTP/SOAP/XML content type.
@@ -103,8 +103,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="AutoStart">Start the server immediately.</param>
         public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
                          String           ServiceId                 = null,
-                         IPPort           TCPPort                   = null,
-                         String           URIPrefix                 = DefaultURIPrefix,
+                         IPPort?          TCPPort                   = null,
+                         HTTPURI?         URIPrefix                 = null,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -141,7 +141,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
         public CPOServer(SOAPServer  SOAPServer,
                          String      ServiceId   = null,
-                         String      URIPrefix   = DefaultURIPrefix)
+                         HTTPURI?    URIPrefix   = null)
 
             : base(SOAPServer,
                    URIPrefix ?? DefaultURIPrefix)

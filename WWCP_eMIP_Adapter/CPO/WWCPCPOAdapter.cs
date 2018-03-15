@@ -140,6 +140,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         public TimeSpan    SendHeartbeatsEvery               { get; }
 
+
+        protected readonly CustomEVSEIdMapperDelegate CustomEVSEIdMapper;
+
         #endregion
 
         #region Events
@@ -379,7 +382,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
-                   CustomEVSEIdMapper,
+                   //CustomEVSEIdMapper,
 
                    ServiceCheckEvery,
                    StatusCheckEvery,
@@ -418,6 +421,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.SendHeartbeatsEvery                              = SendHeartbeatsEvery ?? DefaultSendHeartbeatsEvery;
             this.SendHeartbeatsTimer                              = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
             this.DisableSendHeartbeats                            = DisableSendHeartbeats;
+
+            this.CustomEVSEIdMapper                               = CustomEVSEIdMapper;
 
             // Link incoming eMIP events...
 

@@ -56,6 +56,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public new static readonly HTTPURI          DefaultURIPrefix           = HTTPURI.Parse("/");
 
         /// <summary>
+        /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
+        /// </summary>
+        public     const           String           DefaultAuthorisationURI    = "/Authorisation";
+
+        /// <summary>
         /// The default HTTP/SOAP/XML content type.
         /// </summary>
         public new static readonly HTTPContentType  DefaultContentType         = HTTPContentType.XMLTEXT_UTF8;
@@ -74,15 +79,53 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public String  ServiceId           { get; }
 
+        /// <summary>
+        /// The HTTP/SOAP/XML URI for eMIP authorization requests.
+        /// </summary>
+        public String  AuthorisationURI    { get; }
+
         #endregion
 
         #region Custom request/response mappers
 
-        public OnExceptionDelegate                                                                       OnException                                                      { get; set; }
+        public CustomXMLParserDelegate<SetServiceAuthorisationRequest>       CustomSetServiceAuthorisationRequestParser        { get; set; }
+
+        public CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>  CustomSetServiceAuthorisationResponseSerializer   { get; set; }
+
+        public OnExceptionDelegate  OnException   { get; set; }
 
         #endregion
 
         #region Events
+
+        #region OnSetServiceAuthorisation
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                           OnSetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationRequestDelegate    OnSetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationDelegate           OnSetServiceAuthorisation;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set service authorisation' request was sent.
+        /// </summary>
+        public event OnSetServiceAuthorisationResponseDelegate   OnSetServiceAuthorisationResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set service authorisation' SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                            OnSetServiceAuthorisationSOAPResponse;
+
+        #endregion
 
         #endregion
 
@@ -97,6 +140,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
@@ -105,6 +149,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          String           ServiceId                 = null,
                          IPPort?          TCPPort                   = null,
                          HTTPURI?         URIPrefix                 = null,
+                         String           AuthorisationURI          = DefaultAuthorisationURI,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -120,7 +165,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.ServiceId  = ServiceId ?? nameof(CPOServer);
+            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
 
             RegisterURITemplates();
 
@@ -139,16 +185,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
-                         String      ServiceId   = null,
-                         HTTPURI?    URIPrefix   = null)
+                         String      ServiceId         = null,
+                         HTTPURI?    URIPrefix         = null,
+                         String      AuthorisationURI  = DefaultAuthorisationURI)
 
             : base(SOAPServer,
                    URIPrefix ?? DefaultURIPrefix)
 
         {
 
-            this.ServiceId  = ServiceId ?? nameof(CPOServer);
+            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
 
             RegisterURITemplates();
 
@@ -167,6 +216,207 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected void RegisterURITemplates()
         {
 
+            #region /Authorisation - SetServiceAuthorisation
+
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix + AuthorisationURI,
+                                            "SetServiceAuthorisationRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
+                                            async (HTTPRequest, SetServiceAuthorisationXML) => {
+
+
+                SetServiceAuthorisationResponse Response  = null;
+
+                #region Send OnSetServiceAuthorisationSOAPRequest event
+
+                var StartTime = DateTime.Now;
+
+                try
+                {
+
+                    if (OnSetServiceAuthorisationSOAPRequest != null)
+                        await Task.WhenAll(OnSetServiceAuthorisationSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPRequest));
+                }
+
+                #endregion
+
+
+                if (SetServiceAuthorisationRequest.TryParse(SetServiceAuthorisationXML,
+                                                            CustomSetServiceAuthorisationRequestParser,
+                                                            out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
+                                                            OnException,
+
+                                                            HTTPRequest.Timestamp,
+                                                            HTTPRequest.CancellationToken,
+                                                            HTTPRequest.EventTrackingId,
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
+
+                    #region Send OnSetServiceAuthorisationRequest event
+
+                    try
+                    {
+
+                        if (OnSetServiceAuthorisationRequest != null)
+                            await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
+                                               Cast<OnSetServiceAuthorisationRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                              _SetServiceAuthorisationRequest.Timestamp.Value,
+                                                              this,
+                                                              ServiceId,
+                                                              _SetServiceAuthorisationRequest.EventTrackingId,
+                                                              _SetServiceAuthorisationRequest.PartnerId,
+                                                              _SetServiceAuthorisationRequest.OperatorId,
+                                                              _SetServiceAuthorisationRequest.TargetOperatorId,
+                                                              _SetServiceAuthorisationRequest.EVSEId,
+                                                              _SetServiceAuthorisationRequest.UserId,
+                                                              _SetServiceAuthorisationRequest.RequestedServiceId,
+                                                              _SetServiceAuthorisationRequest.ServiceSessionId,
+                                                              _SetServiceAuthorisationRequest.RemoteStartStopValue,
+                                                              _SetServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                              _SetServiceAuthorisationRequest.TransactionId,
+                                                              _SetServiceAuthorisationRequest.UserContractIdAlias,
+                                                              _SetServiceAuthorisationRequest.MeterLimits,
+                                                              _SetServiceAuthorisationRequest.Parameter,
+                                                              _SetServiceAuthorisationRequest.BookingId,
+                                                              _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationRequest));
+                    }
+
+                    #endregion
+
+                    #region Call async subscribers
+
+                    if (OnSetServiceAuthorisation != null)
+                    {
+
+                        var results = await Task.WhenAll(OnSetServiceAuthorisation.GetInvocationList().
+                                                             Cast<OnSetServiceAuthorisationDelegate>().
+                                                             Select(e => e(DateTime.Now,
+                                                                           this,
+                                                                           _SetServiceAuthorisationRequest))).
+                                                             ConfigureAwait(false);
+
+                        Response = results.FirstOrDefault();
+
+                    }
+
+                    //if (Response == null)
+                    //    Response = Response<EMP.SetServiceAuthorisationRequest>.SystemError(
+                    //                         _SetServiceAuthorisationRequest,
+                    //                         "Could not process the incoming SetServiceAuthorisation request!",
+                    //                         null,
+                    //                         _SetServiceAuthorisationRequest.SessionId,
+                    //                         _SetServiceAuthorisationRequest.PartnerSessionId
+                    //                     );
+
+                    #endregion
+
+                    #region Send OnSetServiceAuthorisationResponse event
+
+                    var EndTime = DateTime.Now;
+
+                    try
+                    {
+
+                        if (OnSetServiceAuthorisationResponse != null)
+                            await Task.WhenAll(OnSetServiceAuthorisationResponse.GetInvocationList().
+                                               Cast<OnSetServiceAuthorisationResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetServiceAuthorisationRequest.EventTrackingId,
+                                                             _SetServiceAuthorisationRequest.PartnerId,
+                                                             _SetServiceAuthorisationRequest.OperatorId,
+                                                             _SetServiceAuthorisationRequest.TargetOperatorId,
+                                                             _SetServiceAuthorisationRequest.EVSEId,
+                                                             _SetServiceAuthorisationRequest.UserId,
+                                                             _SetServiceAuthorisationRequest.RequestedServiceId,
+                                                             _SetServiceAuthorisationRequest.ServiceSessionId,
+                                                             _SetServiceAuthorisationRequest.RemoteStartStopValue,
+                                                             _SetServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                             _SetServiceAuthorisationRequest.TransactionId,
+                                                             _SetServiceAuthorisationRequest.UserContractIdAlias,
+                                                             _SetServiceAuthorisationRequest.MeterLimits,
+                                                             _SetServiceAuthorisationRequest.Parameter,
+                                                             _SetServiceAuthorisationRequest.BookingId,
+                                                             _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationResponse));
+                    }
+
+                    #endregion
+
+                }
+
+                //else
+                //    Response = Response<EMP.SetServiceAuthorisationRequest>.DataError(
+                //                          _SetServiceAuthorisationRequest,
+                //                          "Could not process the incoming SetServiceAuthorisation request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                var HTTPResponse = new HTTPResponseBuilder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.DefaultServerName,
+                    Date            = DateTime.Now,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
+
+                #endregion
+
+                #region Send OnSetServiceAuthorisationSOAPResponse event
+
+                try
+                {
+
+                    if (OnSetServiceAuthorisationSOAPResponse != null)
+                        await Task.WhenAll(OnSetServiceAuthorisationSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPResponse));
+                }
+
+                #endregion
+
+                return HTTPResponse;
+
+            });
+
+            #endregion
 
         }
 

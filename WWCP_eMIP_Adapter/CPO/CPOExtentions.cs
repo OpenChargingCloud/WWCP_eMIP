@@ -68,6 +68,7 @@ namespace org.GraphDefined.WWCP
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="ServerURIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="ServerAuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ServerContentType">An optional HTTP content type to use.</param>
         /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
@@ -124,6 +125,7 @@ namespace org.GraphDefined.WWCP
                                                 String                                                            ServiceId                                       = null,
                                                 IPPort?                                                           ServerTCPPort                                   = null,
                                                 HTTPURI?                                                          ServerURIPrefix                                 = null,
+                                                String                                                            ServerAuthorisationURI                          = eMIPv0_7_4.CPO.CPOServer.DefaultAuthorisationURI,
                                                 HTTPContentType                                                   ServerContentType                               = null,
                                                 Boolean                                                           ServerRegisterHTTPRootService                   = true,
                                                 Boolean                                                           ServerAutoStart                                 = false,
@@ -196,7 +198,8 @@ namespace org.GraphDefined.WWCP
                                                                        ServerName,
                                                                        ServiceId,
                                                                        ServerTCPPort,
-                                                                       ServerURIPrefix ?? eMIPv0_7_4.CPO.CPOServer.DefaultURIPrefix,
+                                                                       ServerURIPrefix        ?? eMIPv0_7_4.CPO.CPOServer.DefaultURIPrefix,
+                                                                       ServerAuthorisationURI ?? eMIPv0_7_4.CPO.CPOServer.DefaultAuthorisationURI,
                                                                        ServerContentType,
                                                                        ServerRegisterHTTPRootService,
                                                                        ServerAutoStart,

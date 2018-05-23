@@ -66,7 +66,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         private readonly        List<ChargeDetailRecord>                                eMIP_ChargeDetailRecords_Queue;
 
-        //protected readonly      SemaphoreSlim                                           FlusheMIPChargeDetailRecordsLock      = new SemaphoreSlim(1, 1);
+        protected readonly      SemaphoreSlim                                           FlusheMIPChargeDetailRecordsLock      = new SemaphoreSlim(1, 1);
 
         public readonly static  TimeSpan                                                DefaultRequestTimeout       = TimeSpan.FromSeconds(30);
 
@@ -566,6 +566,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="ServerURIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="ServerAuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ServerContentType">An optional HTTP content type to use.</param>
         /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
@@ -617,6 +618,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               String                                             ServiceId                                       = null,
                               IPPort?                                            ServerTCPPort                                   = null,
                               HTTPURI?                                           ServerURIPrefix                                 = null,
+                              String                                             ServerAuthorisationURI                          = CPOServer.DefaultAuthorisationURI,
                               HTTPContentType                                    ServerContentType                               = null,
                               Boolean                                            ServerRegisterHTTPRootService                   = true,
                               Boolean                                            ServerAutoStart                                 = false,
@@ -668,7 +670,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   ServerName,
                                   ServiceId,
                                   ServerTCPPort,
-                                  ServerURIPrefix ?? CPOServer.DefaultURIPrefix,
+                                  ServerURIPrefix        ?? CPOServer.DefaultURIPrefix,
+                                  ServerAuthorisationURI ?? CPOServer.DefaultAuthorisationURI,
                                   ServerContentType,
                                   ServerRegisterHTTPRootService,
                                   false,
@@ -4304,7 +4307,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStartResult.Authorized(
@@ -4450,8 +4453,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             TimeSpan             Runtime;
             AuthStartEVSEResult  result;
 
-            //if (DisableAuthentication)
-            //{
+            if (DisableAuthentication)
+            {
 
                 Endtime  = DateTime.UtcNow;
                 Runtime  = Endtime - StartTime;
@@ -4460,60 +4463,67 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                          SessionId,
                                                          Runtime);
 
-            //}
+            }
 
-            //else
-            //{
+            else
+            {
 
-            //    var response  = await CPORoaming.
-            //                              AuthorizeStart(OperatorId.HasValue
-            //                                                ? OperatorId.Value.ToeMIP(DefaultOperatorIdFormat)
-            //                                                : DefaultOperatorId,
-            //                                             AuthIdentification. ToeMIP().RFIDId.Value,
-            //                                             EVSEId.             ToeMIP(),
-            //                                             ChargingProduct?.Id.ToeMIP(),
-            //                                             SessionId.          ToeMIP(),
-            //                                             null,
+                var response  = await CPORoaming.
+                                          GetServiceAuthorisation(PartnerId:                this.PartnerId,
+                                                                  OperatorId:               Operator_Id.Parse("DE*BDO"),
+                                                                  EVSEId:                   EVSEId.ToEMIP().Value,
+                                                                  UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
+                                                                  RequestedServiceId:       Service_Id. Parse("1"),
+                                                                  TransactionId:            Transaction_Id.Random(),
+                                                                  PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
+                    //(OperatorId.HasValue
+                    //                                        ? OperatorId.Value.ToeMIP(DefaultOperatorIdFormat)
+                    //                                        : DefaultOperatorId,
+                    //                                     AuthIdentification. ToeMIP().RFIDId.Value,
+                    //                                     EVSEId.             ToeMIP(),
+                    //                                     ChargingProduct?.Id.ToeMIP(),
+                    //                                     SessionId.          ToeMIP(),
+                    //                                     null,
 
-            //                                             Timestamp,
-            //                                             CancellationToken,
-            //                                             EventTrackingId,
-            //                                             RequestTimeout);
+                                                         Timestamp:           Timestamp,
+                                                         CancellationToken:   CancellationToken,
+                                                         EventTrackingId:     EventTrackingId,
+                                                         RequestTimeout:      RequestTimeout);
 
 
-            //    Endtime  = DateTime.UtcNow;
-            //    Runtime  = Endtime - StartTime;
+                Endtime  = DateTime.UtcNow;
+                Runtime  = Endtime - StartTime;
 
-            //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
-            //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
-            //    {
+                if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
+                    response.Content                     != null              &&
+                    response.Content.AuthorisationValue == AuthorisationValues.OK)
+                {
 
-            //        result = AuthStartEVSEResult.Authorized(
-            //                     Id,
-            //                     this,
-            //                     response.Content.SessionId.ToWWCP().Value,
-            //                     ProviderId:      response.Content.ProviderId.ToWWCP(),
-            //                     Description:     response.Content.StatusCode.Description,
-            //                     AdditionalInfo:  response.Content.StatusCode.AdditionalInfo,
-            //                     NumberOfRetries: response.NumberOfRetries,
-            //                     Runtime:         Runtime
-            //                 );
+                    result = AuthStartEVSEResult.Authorized(
+                                 Id,
+                                 this,
+                                 ChargingSession_Id.Parse(response.Content.ServiceSessionId.ToString()),
+                                 ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                 //Description:      response.Content.StatusCode.Description,
+                                 //AdditionalInfo:   response.Content.StatusCode.AdditionalInfo,
+                                 NumberOfRetries:  response.NumberOfRetries,
+                                 Runtime:          Runtime
+                             );
 
-            //    }
+                }
 
-            //    else
-            //        result = AuthStartEVSEResult.NotAuthorized(
-            //                     Id,
-            //                     this,
-            //                     SessionId,
-            //                     response.Content.ProviderId.ToWWCP(),
-            //                     response.Content.StatusCode.Description,
-            //                     response.Content.StatusCode.AdditionalInfo,
-            //                     Runtime
-            //                 );
+                else
+                    result = AuthStartEVSEResult.NotAuthorized(
+                                 Id,
+                                 this,
+                                 SessionId,
+                                 ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                 //response.Content.StatusCode.Description,
+                                 //response.Content.StatusCode.AdditionalInfo,
+                                 Runtime:          Runtime
+                             );
 
-            //}
+            }
 
 
             #region Send OnAuthorizeEVSEStartResponse event
@@ -4670,7 +4680,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStartChargingStationResult.Authorized(
@@ -4852,7 +4862,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStartChargingPoolResult.Authorized(
@@ -5030,7 +5040,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStopResult.Authorized(
@@ -5209,7 +5219,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStopEVSEResult.Authorized(
@@ -5390,7 +5400,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStopChargingStationResult.Authorized(
@@ -5571,7 +5581,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
             //        response.Content                     != null              &&
-            //        response.Content.AuthorizationStatus == AuthorizationStatusTypes.Authorized)
+            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
             //    {
 
             //        result = AuthStopChargingPoolResult.Authorized(
@@ -5709,191 +5719,194 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            //#region if disabled => 'AdminDown'...
+            #region if disabled => 'AdminDown'...
 
             DateTime        Endtime;
             TimeSpan        Runtime;
             SendCDRsResult  result;
 
-            //if (DisableSendChargeDetailRecords)
-            //{
+            if (DisableSendChargeDetailRecords)
+            {
 
-                Endtime  = DateTime.UtcNow;
-                Runtime  = Endtime - StartTime;
-                result   = SendCDRsResult.AdminDown(Id,
-                                                    this,
-                                                    ChargeDetailRecords,
-                                                    Runtime: Runtime);
+              Endtime  = DateTime.UtcNow;
+              Runtime  = Endtime - StartTime;
+              result   = SendCDRsResult.AdminDown(Id,
+                                                  this,
+                                                  ChargeDetailRecords,
+                                                  Runtime: Runtime);
 
-            //}
+            }
 
-            //#endregion
+            #endregion
 
-            //else
-            //{
+            else
+            {
 
-            //    var LockTaken = await FlusheMIPChargeDetailRecordsLock.WaitAsync(TimeSpan.FromSeconds(60));
+                var LockTaken = await FlusheMIPChargeDetailRecordsLock.WaitAsync(TimeSpan.FromSeconds(60));
 
-            //    try
-            //    {
+                try
+                {
 
-            //        if (LockTaken)
-            //        {
+                    if (LockTaken)
+                    {
 
-            //            var SendCDRsResults = new List<SendCDRResult>();
+                        var SendCDRsResults = new List<SendCDRResult>();
 
-            //            #region if enqueuing is requested...
+                        #region if enqueuing is requested...
 
-            //            if (TransmissionType == TransmissionTypes.Enqueue)
-            //            {
+                        if (TransmissionType == TransmissionTypes.Enqueue)
+                        {
 
-            //                #region Send OnEnqueueSendCDRRequest event
+                            #region Send OnEnqueueSendCDRRequest event
 
-            //                try
-            //                {
+                            try
+                            {
 
-            //                    OnEnqueueSendCDRsRequest?.Invoke(DateTime.UtcNow,
-            //                                                     Timestamp.Value,
-            //                                                     this,
-            //                                                     Id.ToString(),
-            //                                                     EventTrackingId,
-            //                                                     RoamingNetwork.Id,
-            //                                                     ChargeDetailRecords,
-            //                                                     RequestTimeout);
+                                OnEnqueueSendCDRsRequest?.Invoke(DateTime.UtcNow,
+                                                                 Timestamp.Value,
+                                                                 this,
+                                                                 Id.ToString(),
+                                                                 EventTrackingId,
+                                                                 RoamingNetwork.Id,
+                                                                 ChargeDetailRecords,
+                                                                 RequestTimeout);
 
-            //                }
-            //                catch (Exception e)
-            //                {
-            //                    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRsRequest));
-            //                }
+                            }
+                            catch (Exception e)
+                            {
+                                e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRsRequest));
+                            }
 
-            //                #endregion
+                            #endregion
 
-            //                foreach (var ChargeDetailRecord in ChargeDetailRecords)
-            //                {
+                            foreach (var ChargeDetailRecord in ChargeDetailRecords)
+                            {
 
-            //                    try
-            //                    {
+                                try
+                                {
 
-            //                        eMIP_ChargeDetailRecords_Queue.Add(ChargeDetailRecord.ToeMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
-            //                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-            //                                                              SendCDRResultTypes.Enqueued));
+                                    eMIP_ChargeDetailRecords_Queue.Add(ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
+                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
+                                                                          SendCDRResultTypes.Enqueued));
 
-            //                    }
-            //                    catch (Exception e)
-            //                    {
-            //                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-            //                                                              SendCDRResultTypes.CouldNotConvertCDRFormat,
-            //                                                              e.Message));
-            //                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
+                                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
+                                                                          e.Message));
+                                }
 
-            //                }
+                            }
 
-            //                Endtime  = DateTime.UtcNow;
-            //                Runtime  = Endtime - StartTime;
-            //                result   = SendCDRsResult.Enqueued(Id,
-            //                                                   this,
-            //                                                   "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!",
-            //                                                   SendCDRsResults.SafeWhere(cdrresult => cdrresult.Result != SendCDRResultTypes.Enqueued),
-            //                                                   Runtime: Runtime);
+                            Endtime  = DateTime.UtcNow;
+                            Runtime  = Endtime - StartTime;
+                            result   = SendCDRsResult.Enqueued(Id,
+                                                               this,
+                                                               "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!",
+                                                               SendCDRsResults.SafeWhere(cdrresult => cdrresult.Result != SendCDRResultTypes.Enqueued),
+                                                               Runtime: Runtime);
 
-            //                FlushChargeDetailRecordsTimer.Change(_FlushChargeDetailRecordsEvery, TimeSpan.FromMilliseconds(-1));
+                            FlushChargeDetailRecordsTimer.Change(FlushChargeDetailRecordsEvery, TimeSpan.FromMilliseconds(-1));
 
-            //            }
+                        }
 
-            //            #endregion
+                        #endregion
 
-            //            #region ...or send at once!
+                        #region ...or send at once!
 
-            //            else
-            //            {
+                        else
+                        {
 
-            //                HTTPResponse<Acknowledgement<SendChargeDetailRecordRequest>> response;
+                            HTTPResponse<SetChargeDetailRecordResponse> response;
 
-            //                foreach (var ChargeDetailRecord in ChargeDetailRecords)
-            //                {
+                            foreach (var ChargeDetailRecord in ChargeDetailRecords)
+                            {
 
-            //                    try
-            //                    {
+                                try
+                                {
 
-            //                        response = await CPORoaming.SendChargeDetailRecord(ChargeDetailRecord.ToeMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                    response = await CPORoaming.SetChargeDetailRecord(PartnerId,
+                                                                                      ChargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(),
+                                                                                      ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                                                                      Transaction_Id.Random(),
 
-            //                                                                           Timestamp,
-            //                                                                           CancellationToken,
-            //                                                                           EventTrackingId,
-            //                                                                           RequestTimeout);
+                                                                                      Timestamp,
+                                                                                      CancellationToken,
+                                                                                      EventTrackingId,
+                                                                                      RequestTimeout);
 
-            //                        if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-            //                            response.Content        != null              &&
-            //                            response.Content.Result)
-            //                        {
-            //                            SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-            //                                                                  SendCDRResultTypes.Success));
-            //                        }
+                                    if (response.HTTPStatusCode == HTTPStatusCode.OK &&
+                                        response.Content        != null              &&
+                                        response.Content.RequestStatus == RequestStatus.Ok)
+                                    {
+                                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
+                                                                              SendCDRResultTypes.Success));
+                                    }
 
-            //                        else
-            //                            SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-            //                                                                  SendCDRResultTypes.Error,
-            //                                                                  response.HTTPBodyAsUTF8String));
+                                    else
+                                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
+                                                                              SendCDRResultTypes.Error,
+                                                                              response.HTTPBodyAsUTF8String));
 
-            //                    }
-            //                    catch (Exception e)
-            //                    {
-            //                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-            //                                                              SendCDRResultTypes.CouldNotConvertCDRFormat,
-            //                                                              e.Message));
-            //                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
+                                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
+                                                                          e.Message));
+                                }
 
-            //                }
+                            }
 
-            //                Endtime  = DateTime.UtcNow;
-            //                Runtime  = Endtime - StartTime;
+                            Endtime  = DateTime.UtcNow;
+                            Runtime  = Endtime - StartTime;
 
-            //                if      (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
-            //                    result = SendCDRsResult.Success(Id,
-            //                                                    this,
-            //                                                    Runtime: Runtime);
+                            if      (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
+                                result = SendCDRsResult.Success(Id,
+                                                                this,
+                                                                Runtime: Runtime);
 
-            //                else
-            //                    result = SendCDRsResult.Error(Id,
-            //                                                  this,
-            //                                                  SendCDRsResults.
-            //                                                      Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
-            //                                                      Select(cdrresult => cdrresult.ChargeDetailRecord),
-            //                                                  Runtime: Runtime);
+                            else
+                                result = SendCDRsResult.Error(Id,
+                                                              this,
+                                                              SendCDRsResults.
+                                                                  Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
+                                                                  Select(cdrresult => cdrresult.ChargeDetailRecord),
+                                                              Runtime: Runtime);
 
 
-            //            }
+                        }
 
-            //            #endregion
+                        #endregion
 
-            //        }
+                    }
 
-            //        #region Could not get the lock for toooo long!
+                    #region Could not get the lock for toooo long!
 
-            //        else
-            //        {
+                    else
+                    {
 
-            //            Endtime  = DateTime.UtcNow;
-            //            Runtime  = Endtime - StartTime;
-            //            result   = SendCDRsResult.Timeout(Id,
-            //                                              this,
-            //                                              "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!",
-            //                                              ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
-            //                                              Runtime: Runtime);
+                        Endtime  = DateTime.UtcNow;
+                        Runtime  = Endtime - StartTime;
+                        result   = SendCDRsResult.Timeout(Id,
+                                                          this,
+                                                          "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!",
+                                                          ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
+                                                          Runtime: Runtime);
 
-            //        }
+                    }
 
-            //        #endregion
+                    #endregion
 
-            //    }
-            //    finally
-            //    {
-            //        if (LockTaken)
-            //            FlusheMIPChargeDetailRecordsLock.Release();
-            //    }
+                }
+                finally
+                {
+                    if (LockTaken)
+                        FlusheMIPChargeDetailRecordsLock.Release();
+                }
 
-            //}
+            }
 
 
             #region Send OnSendCDRsResponse event

@@ -61,6 +61,7 @@
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
     <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
+    <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />
@@ -113,6 +114,8 @@
     <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatResponse.cs" />
+    <Compile Include="Messages\IOP\SetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\IOP\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\IRequest.cs" />
     <Compile Include="Messages\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

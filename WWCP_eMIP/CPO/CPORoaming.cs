@@ -645,6 +645,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="ServerURIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="ServerAuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ServerContentType">An optional HTTP content type to use.</param>
         /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
@@ -669,6 +670,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           String                               ServiceId                       = null,
                           IPPort?                              ServerTCPPort                   = null,
                           HTTPURI?                             ServerURIPrefix                 = null,
+                          String                               ServerAuthorisationURI          = CPOServer.DefaultAuthorisationURI,
                           HTTPContentType                      ServerContentType               = null,
                           Boolean                              ServerRegisterHTTPRootService   = true,
                           Boolean                              ServerAutoStart                 = false,
@@ -696,7 +698,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    new CPOServer(ServerName,
                                  ServiceId,
                                  ServerTCPPort,
-                                 ServerURIPrefix ?? CPOServer.DefaultURIPrefix,
+                                 ServerURIPrefix        ?? CPOServer.DefaultURIPrefix,
+                                 ServerAuthorisationURI ?? CPOServer.DefaultAuthorisationURI,
                                  ServerContentType,
                                  ServerRegisterHTTPRootService,
                                  DNSClient,

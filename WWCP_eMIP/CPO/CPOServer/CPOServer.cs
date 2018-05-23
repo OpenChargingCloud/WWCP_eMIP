@@ -48,7 +48,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server TCP port.
         /// </summary>
-        public new static readonly IPPort           DefaultHTTPServerPort      = IPPort.Parse(2002);
+        public new static readonly IPPort           DefaultHTTPServerPort      = IPPort.Parse(3009);
 
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.

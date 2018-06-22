@@ -4471,24 +4471,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 var response  = await CPORoaming.
                                           GetServiceAuthorisation(PartnerId:                this.PartnerId,
                                                                   OperatorId:               Operator_Id.Parse("DE*BDO"),
-                                                                  EVSEId:                   EVSEId.ToEMIP().Value,
+                                                                  EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
                                                                   RequestedServiceId:       Service_Id. Parse("1"),
                                                                   TransactionId:            Transaction_Id.Random(),
                                                                   PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
-                    //(OperatorId.HasValue
-                    //                                        ? OperatorId.Value.ToeMIP(DefaultOperatorIdFormat)
-                    //                                        : DefaultOperatorId,
-                    //                                     AuthIdentification. ToeMIP().RFIDId.Value,
-                    //                                     EVSEId.             ToeMIP(),
-                    //                                     ChargingProduct?.Id.ToeMIP(),
-                    //                                     SessionId.          ToeMIP(),
-                    //                                     null,
 
-                                                         Timestamp:           Timestamp,
-                                                         CancellationToken:   CancellationToken,
-                                                         EventTrackingId:     EventTrackingId,
-                                                         RequestTimeout:      RequestTimeout);
+                                                                  Timestamp:                Timestamp,
+                                                                  CancellationToken:        CancellationToken,
+                                                                  EventTrackingId:          EventTrackingId,
+                                                                  RequestTimeout:           RequestTimeout);
 
 
                 Endtime  = DateTime.UtcNow;

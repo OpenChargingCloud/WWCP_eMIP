@@ -326,7 +326,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
                 CDR = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, CDR);
 
-            return null;
+            return CDR;
 
         }
 

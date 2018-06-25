@@ -6332,65 +6332,69 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected override async Task FlushChargeDetailRecordsQueues()
         {
 
-            //#region Make a thread local copy of all data
+            #region Make a thread local copy of all data
 
-            //var LockTaken                    = await FlusheMIPChargeDetailRecordsLock.WaitAsync(TimeSpan.FromSeconds(30));
-            //var ChargeDetailRecordQueueCopy  = new List<ChargeDetailRecord>();
+            var LockTaken                    = await FlusheMIPChargeDetailRecordsLock.WaitAsync(TimeSpan.FromSeconds(30));
+            var ChargeDetailRecordQueueCopy  = new List<ChargeDetailRecord>();
 
-            //try
-            //{
+            try
+            {
 
-            //    if (LockTaken)
-            //    {
+                if (LockTaken)
+                {
 
-            //        // Copy CDRs, empty original queue...
-            //        ChargeDetailRecordQueueCopy.AddRange(eMIP_ChargeDetailRecords_Queue);
-            //        eMIP_ChargeDetailRecords_Queue.Clear();
+                    // Copy CDRs, empty original queue...
+                    ChargeDetailRecordQueueCopy.AddRange(eMIP_ChargeDetailRecords_Queue);
+                    eMIP_ChargeDetailRecords_Queue.Clear();
 
-            //        //// Stop the timer. Will be rescheduled by the next CDR...
-            //        //FlushChargeDetailRecordsTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    //// Stop the timer. Will be rescheduled by the next CDR...
+                    //FlushChargeDetailRecordsTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
 
-            //    }
+                }
 
-            //}
-            //catch (Exception e)
-            //{
+            }
+            catch (Exception e)
+            {
 
-            //    while (e.InnerException != null)
-            //        e = e.InnerException;
+                while (e.InnerException != null)
+                    e = e.InnerException;
 
-            //    DebugX.LogT(nameof(WWCPCPOAdapter) + " '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
+                DebugX.LogT(nameof(WWCPCPOAdapter) + " '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
 
-            //}
+            }
 
-            //finally
-            //{
-            //    if (LockTaken)
-            //        FlusheMIPChargeDetailRecordsLock.Release();
-            //}
+            finally
+            {
+                if (LockTaken)
+                    FlusheMIPChargeDetailRecordsLock.Release();
+            }
 
-            //#endregion
+            #endregion
 
             // Use the events to evaluate if something went wrong!
 
             #region Send charge detail records
 
-            //if (ChargeDetailRecordQueueCopy.Count > 0)
-            //{
+            if (ChargeDetailRecordQueueCopy.Count > 0)
+            {
 
-            //    var EventTrackingId  = EventTracking_Id.New;
-                //var results          = new List<HTTPResponse<Acknowledgement<SendChargeDetailRecordRequest>>>();
+                var EventTrackingId  = EventTracking_Id.New;
+                var results          = new List<HTTPResponse<SetChargeDetailRecordResponse>>();
 
-                //foreach (var chargedetailrecord in ChargeDetailRecordQueueCopy)
-                //    results.Add(await CPORoaming.SendChargeDetailRecord(chargedetailrecord,
-                //                                                        DateTime.UtcNow,
-                //                                                        new CancellationTokenSource().Token,
-                //                                                        EventTrackingId,
-                //                                                        DefaultRequestTimeout));
+                foreach (var chargedetailrecord in ChargeDetailRecordQueueCopy)
+                    results.Add(await CPORoaming.SetChargeDetailRecord(PartnerId,
+                                                                       Operator_Id.Parse("DE*BDO"),
+                                                                       chargedetailrecord,
+                                                                       Transaction_Id.Random(),
+
+                                                                       DateTime.UtcNow,
+                                                                       new CancellationTokenSource().Token,
+                                                                       EventTracking_Id.New,
+                                                                       DefaultRequestTimeout));
 
                 //var Warnings         = results.Where(result => result.Content
 
-            //}
+            }
 
             #endregion
 

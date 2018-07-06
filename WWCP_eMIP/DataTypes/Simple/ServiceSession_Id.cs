@@ -172,7 +172,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
         public static ServiceSession_Id Random(Byte Length = 20)
-            => new ServiceSession_Id(_Random.GetString(Length));
+            => new ServiceSession_Id(_Random.RandomString(Length));
 
         public static ServiceSession_Id Zero
             => new ServiceSession_Id("0");

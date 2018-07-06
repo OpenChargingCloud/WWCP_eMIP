@@ -172,7 +172,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
         public static Transaction_Id Random(Byte Length = 20)
-            => new Transaction_Id(_Random.GetString(Length));
+            => new Transaction_Id(_Random.RandomString(Length));
 
         public static Transaction_Id Zero
             => new Transaction_Id("0");

@@ -120,7 +120,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return EVSEBusyStatusTypes.Reserved;
 
                 default:
-                    return EVSEBusyStatusTypes.Unspecified;
+                    return EVSEBusyStatusTypes.OutOfService;
 
             }
 
@@ -157,7 +157,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return EVSEAvailabilityStatusTypes.Deleted;
 
                 default:
-                    return EVSEAvailabilityStatusTypes.Unspecified;
+                    return EVSEAvailabilityStatusTypes.OutOfOrder;
 
             }
 

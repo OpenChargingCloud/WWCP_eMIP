@@ -107,20 +107,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case EVSEStatusTypes.Available:
                     return EVSEBusyStatusTypes.Free;
 
-                case EVSEStatusTypes.Charging:
-                case EVSEStatusTypes.DoorNotClosed:
-                case EVSEStatusTypes.Faulted:
-                case EVSEStatusTypes.Offline:
-                case EVSEStatusTypes.OutOfService:
-                case EVSEStatusTypes.PluggedIn:
-                case EVSEStatusTypes.WaitingForPlugin:
-                    return EVSEBusyStatusTypes.Busy;
-
                 case EVSEStatusTypes.Reserved:
                     return EVSEBusyStatusTypes.Reserved;
 
+                // case EVSEStatusTypes.Charging:
+                // case EVSEStatusTypes.DoorNotClosed:
+                // case EVSEStatusTypes.Faulted:
+                // case EVSEStatusTypes.Offline:
+                // case EVSEStatusTypes.OutOfService:
+                // case EVSEStatusTypes.PluggedIn:
+                // case EVSEStatusTypes.WaitingForPlugin:
+
                 default:
-                    return EVSEBusyStatusTypes.OutOfService;
+                    return EVSEBusyStatusTypes.Busy;
 
             }
 

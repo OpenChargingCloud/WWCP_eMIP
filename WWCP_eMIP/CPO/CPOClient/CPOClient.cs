@@ -896,6 +896,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+                                 new SetEVSEAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
             do
             {
 
@@ -911,7 +924,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     result = await _eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
+                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetEVSEAvailabilityStatusSOAPResponse,
@@ -1150,6 +1163,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
+
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+                                 new SetEVSEBusyStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
 
             do
             {

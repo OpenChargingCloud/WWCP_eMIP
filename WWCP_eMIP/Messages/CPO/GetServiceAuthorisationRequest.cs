@@ -139,6 +139,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <userIdType>RFID-UID</userIdType>
         //       <userId>?</userId>
         //
+        //       <!-- 1: charge -->
         //       <requestedServiceId>?</requestedServiceId>
         //
         //       <!--Optional:-->

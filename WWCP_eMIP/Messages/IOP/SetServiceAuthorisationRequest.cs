@@ -18,12 +18,13 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
-using System.Collections.Generic;
 
 #endregion
 
@@ -71,7 +72,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// Whether to start or stop the charging process.
         /// </summary>
-        public RemoteStartStopValues      RemoteStartStopValue        { get; }
+        public RemoteStartStopValues      AuthorisationValue          { get; }
 
         /// <summary>
         /// Whether the eMSP wishes to receive intermediate charging session records.
@@ -90,12 +91,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public IEnumerable<MeterReport>   MeterLimits                 { get; }
 
         /// <summary>
-        /// Optional information from the CPO to the eMSP.
+        /// eMSP parameter string (reserved for future use).
         /// </summary>
         public String                     Parameter                   { get; }
 
         /// <summary>
-        /// Optional information from the CPO to the eMSP.
+        /// The booking identification.
         /// </summary>
         public String                     BookingId                   { get; }
 
@@ -113,10 +114,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="UserId">The user identification.</param>
         /// <param name="RequestedServiceId">The service identification for which an authorisation is requested.</param>
         /// <param name="ServiceSessionId">The service session identification.</param>
-        /// <param name="RemoteStartStopValue">Whether to start or stop the charging process.</param>
+        /// <param name="AuthorisationValue">Whether to start or stop the charging process.</param>
         /// <param name="IntermediateCDRRequested">Whether the eMSP wishes to receive intermediate charging session records.</param>
+        /// 
         /// <param name="TransactionId">An optional transaction identification.</param>
         /// <param name="UserContractIdAlias">Anonymized alias of the contract id between the end-user and the eMSP.</param>
+        /// <param name="MeterLimits">Meter limits for this authorisation: The eMSP can authorise the charge but for less than x Wh or y minutes, or z euros.</param>
+        /// <param name="Parameter">eMSP parameter string (reserved for future use).</param>
+        /// <param name="BookingId"></param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -129,8 +134,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                               User_Id                    UserId,
                                               Service_Id                 RequestedServiceId,
                                               ServiceSession_Id          ServiceSessionId,
-                                              RemoteStartStopValues      RemoteStartStopValue,
+                                              RemoteStartStopValues      AuthorisationValue,
                                               Boolean                    IntermediateCDRRequested,
+
                                               Transaction_Id?            TransactionId             = null,
                                               Contract_Id?               UserContractIdAlias       = null,
                                               IEnumerable<MeterReport>   MeterLimits               = null,
@@ -157,7 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.UserId                    = UserId;
             this.RequestedServiceId        = RequestedServiceId;
             this.ServiceSessionId          = ServiceSessionId;
-            this.RemoteStartStopValue      = RemoteStartStopValue;
+            this.AuthorisationValue        = AuthorisationValue;
             this.IntermediateCDRRequested  = IntermediateCDRRequested;
 
             this.UserContractIdAlias       = UserContractIdAlias;
@@ -192,6 +198,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <EVSEId>?</EVSEId>
         //          <userIdType>?</userIdType>
         //          <userId>?</userId>
+        //
         //          <requestedServiceId>?</requestedServiceId>
         //          <serviceSessionId>?</serviceSessionId>
         //          <authorisationValue>?</authorisationValue>
@@ -211,7 +218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          </meterLimitList>
         //
         //          <!--Optional:-->
-        //          <parameter>?</parameter>
+        //          <parameter>IOP={specific data for IOP}CPO={comment}</parameter>
         //
         //          <!--Optional:-->
         //          <bookingId>?</bookingId>
@@ -229,14 +236,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetServiceAuthorisationRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationRequest Parse(XElement                                                 SetServiceAuthorisationRequestXML,
                                                            CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
+                                                           CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                                            OnExceptionDelegate                                      OnException = null)
         {
 
             if (TryParse(SetServiceAuthorisationRequestXML,
                          CustomSendSetServiceAuthorisationRequestParser,
+                         CustomMeterReportParser,
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                          OnException))
             {
@@ -256,14 +266,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetServiceAuthorisationRequestText">The text to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationRequest Parse(String                                                   SetServiceAuthorisationRequestText,
                                                            CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
+                                                           CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                                            OnExceptionDelegate                                      OnException = null)
         {
 
             if (TryParse(SetServiceAuthorisationRequestText,
                          CustomSendSetServiceAuthorisationRequestParser,
+                         CustomMeterReportParser,
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                          OnException))
             {
@@ -283,6 +296,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetServiceAuthorisationRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
@@ -292,6 +306,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                                 SetServiceAuthorisationRequestXML,
                                        CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
+                                       CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                        out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
                                        OnExceptionDelegate                                      OnException        = null,
 
@@ -306,49 +321,35 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 SetServiceAuthorisationRequest = new SetServiceAuthorisationRequest(
 
-                    // PartnerId,
-                    // OperatorId,
-                    // TargetOperatorId,
-                    // EVSEId,
-                    // UserId,
-                    // RequestedServiceId,
-                    // ServiceSessionId,
-                    // AuthorisationValue,
-                    // IntermediateCDRRequested,
-
-                    // TransactionId
-                    // UserContractIdAlias
-                    // MeterLimitList
-                    // Parameter
-                    // BookingId
-
-
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("partnerId",                Partner_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("partnerId",                Partner_Id.Parse),
 
                                                      //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("operatorId",               Operator_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("operatorId",               Operator_Id.Parse),
 
                                                      //ToDo: What to do with: <targetOperatorIdType>eMI3</targetOperatorIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("targetOperatorId",         Operator_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.Parse),
 
                                                      //ToDo: What to do with: <EVSEIdType>eMI3</EVSEIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("EVSEId",                   EVSE_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("EVSEId",                   EVSE_Id.Parse),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("userId",                   s => User_Id.Parse(s,
-                                                         SetServiceAuthorisationRequestXML.MapValueOrFail("userIdType", ConversionMethods.AsUserIdFormat))),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("userId",                   s => User_Id.Parse(s,
+                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType", ConversionMethods.AsUserIdFormat))),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("requestedServiceId",       Service_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("serviceSessionId",         ServiceSession_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail    ("authorisationValue",       ConversionMethods.AsRemoteStartStopValue),
-                                                     SetServiceAuthorisationRequestXML.MapBooleanOrFail  ("intermediateCDRRequested"),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("requestedServiceId",       Service_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("authorisationValue",       ConversionMethods.AsRemoteStartStopValue),
+                                                     SetServiceAuthorisationRequestXML.MapBooleanOrFail     ("intermediateCDRRequested"),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable("userContractIdAlias",      Contract_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("transactionId",            Transaction_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("userContractIdAlias",      Contract_Id.Parse),
 
-                                                     null,
-                                                     null,
-                                                     null,
+                                                     SetServiceAuthorisationRequestXML.MapElements          ("meterLimitList",
+                                                                                                             "meterReport",              xml => MeterReport.Parse(xml,
+                                                                                                                                                                  CustomMeterReportParser,
+                                                                                                                                                                  OnException)),
+                                                     SetServiceAuthorisationRequestXML.ElementValueOrDefault("userContractIdAlias"),
+                                                     SetServiceAuthorisationRequestXML.ElementValueOrDefault("bookingId"),
 
                                                      Timestamp,
                                                      CancellationToken,
@@ -386,10 +387,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetServiceAuthorisationRequestText">The text to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
+        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                                   SetServiceAuthorisationRequestText,
                                        CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
+                                       CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                        out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
                                        OnExceptionDelegate                                      OnException  = null)
         {
@@ -399,6 +402,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(XDocument.Parse(SetServiceAuthorisationRequestText).Root,
                              CustomSendSetServiceAuthorisationRequestParser,
+                             CustomMeterReportParser,
                              out SetServiceAuthorisationRequest,
                              OnException))
                 {
@@ -424,7 +428,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetServiceAuthorisationRequestSerializer">A delegate to serialize custom set EVSE busy status request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationRequest> CustomSetServiceAuthorisationRequestSerializer = null)
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
+        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationRequest>  CustomSetServiceAuthorisationRequestSerializer  = null,
+                              CustomXMLSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                     = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetServiceAuthorisationRequest",
@@ -439,17 +445,35 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           new XElement("operatorIdType",                 OperatorId.Format.            AsText()),
                           new XElement("operatorId",                     OperatorId.                   ToString()),
 
+                          new XElement("targetOperatorIdType",           TargetOperatorId.Format.      AsText()),
+                          new XElement("targetOperatorId",               TargetOperatorId.             ToString()),
+
                           new XElement("EVSEIdType",                     EVSEId.Format.                AsText()),
                           new XElement("EVSEId",                         EVSEId.                       ToString()),
 
                           new XElement("userIdType",                     UserId.Format.                AsText()),
                           new XElement("userId",                         UserId.                       ToString()),
 
-                          new XElement("requestedServiceId",             RequestedServiceId.           ToString())
+                          new XElement("requestedServiceId",             RequestedServiceId.           ToString()),
+                          new XElement("serviceSessionId",               ServiceSessionId.             ToString()),
+                          new XElement("authorisationValue",             AuthorisationValue.           ToString()),
+                          new XElement("intermediateCDRRequested",       IntermediateCDRRequested ? "1" : "0"),
 
-                          //PartnerServiceSessionId.HasValue
-                          //    ? new XElement("partnerServiceSessionId",  PartnerServiceSessionId.Value.ToString())
-                          //    : null
+                          UserContractIdAlias.HasValue
+                              ? new XElement("userContractIdAlias",      UserContractIdAlias.          ToString())
+                              : null,
+
+                          MeterLimits.Any()
+                              ? new XElement("meterLimitList",           MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer)))
+                              : null,
+
+                          Parameter.IsNotNullOrEmpty()
+                              ? new XElement("parameter",                Parameter)
+                              : null,
+
+                          BookingId.IsNotNullOrEmpty()
+                              ? new XElement("bookingId",                BookingId)
+                              : null
 
                       );
 

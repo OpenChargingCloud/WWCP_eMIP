@@ -118,6 +118,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Documentation
 
+        // MeteridType
+        //
+        // Code  Signification                                              Unit
+        // 1     Total Duration (total duration for the charge session)     "min"   (for Minutes)
+        // 2     Total Energy (total energy for the charge session)         "Wh"    (for Watt x hours)
+        // 3     B2B Service Cost        Local Currency ("EUR" for Euro)
+        // 10xx  Charging duration at a given level of power ("x" value)    "min"   (for Minutes)
+        //       Example: 1012 means "Charging duration at 12 kW"
+        // 21    Average power, per step of 1 minutes                       "W"     (for Watts)
+        //       (Repetitive meter)
+        // 25    Average power, per step of 5 minutes                       "W"     (for Watts)
+        //       (Repetitive meter)
+        // 31    Maximum consumed power reached, per step of 1 minutes      "W"     (for Watts)
+        //       (Repetitive meter)
+        // 35    Maximum consumed power reached, per step of 5 minutes      "W"     (for Watts)
+        //       (Repetitive meter)
+        // 41    Delivered energy, per step of 1 minutes                    "Wh"    (for Watt x hours)
+        //       (Repetitive meter)
+        // 45    Delivered energy, per step of 5 minutes                    "Wh"    (for Watt x hours)
+        //       (Repetitive meter)
+        //
+        // Meter value is a string coded decimal (XML). The decimal separator is "."
+
         // <soap:Envelope xmlns:soap = "http://www.w3.org/2003/05/soap-envelope"
         //                xmlns:eMIP = "https://api-iop.gireve.com/schemas/AuthorisationV1/">
         //

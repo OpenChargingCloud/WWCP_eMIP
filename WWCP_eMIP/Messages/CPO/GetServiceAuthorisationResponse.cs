@@ -204,8 +204,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          </meterLimitList>
         //
         //          <!--Optional:-->
+        //          <!-- IOP={specific data for IOP}CPO={comment} -->
         //          <parameter>?</parameter>
         //
+        //          <!--       1: OK-Normal -->
+        //          <!--     202: OK-Warning: There is no roaming contract between the CPO and the eMSP for the requested service! -->
+        //          <!--     203: OK-Warning: The eMSP of the end-user cannot be identified! -->
+        //          <!--   10210: Ko-Error:   The eMSP did not respond correctly to the request! -->
+        //          <!--  <10000: OK:         Reserved for future use! -->
+        //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>1</requestStatus>
         //
         //       </eMIP:eMIP_ToIOP_GetServiceAuthorisationResponse>

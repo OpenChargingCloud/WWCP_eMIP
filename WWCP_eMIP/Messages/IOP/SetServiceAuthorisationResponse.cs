@@ -89,6 +89,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <!--Optional:-->
         //          <partnerServiceSessionId>?</partnerServiceSessionId>
         //
+        //          <!--       1: OK-Normal:  Normal successful completion! -->
+        //          <!--     205: OK-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE! -->
+        //          <!--     206: OK-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)! -->
+        //          <!--   10201: Ko-Error:   The autorisation request is rejected: Unknown error! -->
+        //          <!--  <10000: OK:         Reserved for future use! -->
+        //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>?</requestStatus>
         //
         //       </aut:eMIP_FromIOP_SetServiceAuthorisationResponse>
@@ -181,9 +187,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                       Request,
 
-                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",     Transaction_Id.   Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",     RequestStatus.    Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("serviceSessionId",  ServiceSession_Id.Parse)
+                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",            Transaction_Id.   Parse),
+                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",            RequestStatus.    Parse),
+                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("partnerServiceSessionId",  ServiceSession_Id.Parse)
 
                                                   );
 
@@ -262,13 +268,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetServiceAuthorisationResponse",
 
-                          new XElement("transactionId",           TransactionId.          ToString()),
+                          new XElement("transactionId",                   TransactionId.          ToString()),
+                          new XElement("requestStatus",                   RequestStatus.Code.     ToString()),
 
                           PartnerServiceSessionId.HasValue
-                              ? new XElement("serviceSessionId",  PartnerServiceSessionId.ToString())
-                              : null,
-
-                          new XElement("requestStatus",           RequestStatus.          ToString())
+                              ? new XElement("partnerServiceSessionId",   PartnerServiceSessionId.ToString())
+                              : null
 
                       );
 
@@ -480,13 +485,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (SetServiceAuthorisationResponse != null)
                 {
-
                     this.TransactionId            = SetServiceAuthorisationResponse.TransactionId;
                     this.RequestStatus            = SetServiceAuthorisationResponse.RequestStatus;
                     this.PartnerServiceSessionId  = SetServiceAuthorisationResponse.PartnerServiceSessionId;
-
-                    this.RequestStatus            = SetServiceAuthorisationResponse.RequestStatus;
-
                 }
 
             }

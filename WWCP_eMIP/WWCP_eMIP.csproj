@@ -60,11 +60,15 @@
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
     <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
+    <Compile Include="DataTypes\Complex\SessionEvent.cs" />
+    <Compile Include="DataTypes\Complex\SessionAction.cs" />
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
     <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />
+    <Compile Include="DataTypes\Simple\SessionEventNatures.cs" />
+    <Compile Include="DataTypes\Simple\SessionActionNatures.cs" />
     <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingPoolAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingStationAvailabilityStatusTypes.cs" />

@@ -28,16 +28,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// Meter types.
+    /// Session event natures.
     /// </summary>
-    public struct MeterTypes : IId,
-                               IEquatable <MeterTypes>,
-                               IComparable<MeterTypes>
+    public struct SessionEventNatures : IId,
+                                        IEquatable <SessionEventNatures>,
+                                        IComparable<SessionEventNatures>
     {
 
         #region Data
 
-        private static readonly Dictionary<Int32, MeterTypes> Lookup = new Dictionary<Int32, MeterTypes>();
+        private static readonly Dictionary<Int32, SessionEventNatures> Lookup = new Dictionary<Int32, SessionEventNatures>();
 
         #endregion
 
@@ -57,23 +57,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Constructor(s)
 
-        #region (static)  MeterTypes() <- Does reflection!
+        #region (static)  SessionEventNatures() <- Does reflection!
 
-        static MeterTypes()
+        static SessionEventNatures()
         {
 
-            MeterTypes meterType;
+            SessionEventNatures sessionEventNature;
 
-            foreach (var _MethodInfo in typeof(MeterTypes).GetMethods())
+            foreach (var _MethodInfo in typeof(SessionEventNatures).GetMethods())
             {
                 if (_MethodInfo.IsStatic &&
                     _MethodInfo.GetParameters().Length == 0)
                 {
 
-                    meterType = (MeterTypes) _MethodInfo.Invoke(Activator.CreateInstance(typeof(MeterTypes)), null);
+                    sessionEventNature = (SessionEventNatures) _MethodInfo.Invoke(Activator.CreateInstance(typeof(SessionEventNatures)), null);
 
-                    if (!Lookup.ContainsKey(meterType.Code))
-                        Lookup.Add(meterType.Code, meterType);
+                    if (!Lookup.ContainsKey(sessionEventNature.Code))
+                        Lookup.Add(sessionEventNature.Code, sessionEventNature);
 
                 }
             }
@@ -82,15 +82,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region (private) MeterTypes(Code, Description = null)
+        #region (private) SessionEventNatures(Code, Description = null)
 
         /// <summary>
         /// Create a new meter type.
         /// </summary>
         /// <param name="Code">The numeric code of the status.</param>
         /// <param name="Description">The description of the meter type.</param>
-        private MeterTypes(Int32   Code,
-                           String  Description = null)
+        private SessionEventNatures(Int32   Code,
+                                     String  Description = null)
         {
 
             this.Code         = Code;
@@ -116,10 +116,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Code">The numeric code of the meter type.</param>
         /// <param name="Description">The description of the meter type.</param>
-        public static MeterTypes Register(Int32   Code,
+        public static SessionEventNatures Register(Int32   Code,
                                           String  Description = null)
 
-            => new MeterTypes(Code,
+            => new SessionEventNatures(Code,
                               Description);
 
         #endregion
@@ -131,7 +131,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Parse the given string as a meter type.
         /// </summary>
         /// <param name="Text">A text representation of a meter type.</param>
-        public static MeterTypes Parse(String Text)
+        public static SessionEventNatures Parse(String Text)
         {
 
             #region Initial checks
@@ -156,13 +156,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Parse the given number as a meter type.
         /// </summary>
         /// <param name="Code">A numeric representation of a meter type.</param>
-        public static MeterTypes Parse(Int32 Code)
+        public static SessionEventNatures Parse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out MeterTypes Status))
+            if (Lookup.TryGetValue(Code, out SessionEventNatures Status))
                 return Status;
 
-            return new MeterTypes(Code);
+            return new SessionEventNatures(Code);
 
         }
 
@@ -174,7 +174,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Try to parse the given string as a meter type.
         /// </summary>
         /// <param name="Text">A text representation of a meter type.</param>
-        public static MeterTypes? TryParse(String Text)
+        public static SessionEventNatures? TryParse(String Text)
         {
 
             #region Initial checks
@@ -183,7 +183,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 Text = Text.Trim();
 
             if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Code))
-                return new MeterTypes?();
+                return new SessionEventNatures?();
 
             #endregion
 
@@ -199,26 +199,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Try to parse the given number as a meter type.
         /// </summary>
         /// <param name="Code">A numeric representation of a meter type.</param>
-        public static MeterTypes? TryParse(Int32 Code)
+        public static SessionEventNatures? TryParse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out MeterTypes Status))
+            if (Lookup.TryGetValue(Code, out SessionEventNatures Status))
                 return Status;
 
-            return new MeterTypes(Code);
+            return new SessionEventNatures(Code);
 
         }
 
         #endregion
 
-        #region TryParse(Text, out MeterTypes)
+        #region TryParse(Text, out SessionEventNatures)
 
         /// <summary>
         /// Try to parse the given string as a meter type.
         /// </summary>
         /// <param name="Text">A text representation of a meter type.</param>
-        /// <param name="MeterTypes">The parsed meter type.</param>
-        public static Boolean TryParse(String Text, out MeterTypes MeterTypes)
+        /// <param name="SessionEventNatures">The parsed meter type.</param>
+        public static Boolean TryParse(String Text, out SessionEventNatures SessionEventNatures)
         {
 
             #region Initial checks
@@ -230,31 +230,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Value))
             {
-                MeterTypes = default(MeterTypes);
+                SessionEventNatures = default(SessionEventNatures);
                 return false;
             }
 
-            MeterTypes = new MeterTypes(Value);
+            SessionEventNatures = new SessionEventNatures(Value);
             return true;
 
         }
 
         #endregion
 
-        #region TryParse(Code, out MeterTypes)
+        #region TryParse(Code, out SessionEventNatures)
 
         /// <summary>
         /// Try to parse the given number as a meter type.
         /// </summary>
         /// <param name="Code">A numeric representation of a meter type.</param>
-        /// <param name="MeterTypes">The parsed meter type.</param>
-        public static Boolean TryParse(Int32 Code, out MeterTypes MeterTypes)
+        /// <param name="SessionEventNatures">The parsed meter type.</param>
+        public static Boolean TryParse(Int32 Code, out SessionEventNatures SessionEventNatures)
         {
 
-            if (Lookup.TryGetValue(Code, out MeterTypes))
+            if (Lookup.TryGetValue(Code, out SessionEventNatures))
                 return true;
 
-            MeterTypes = new MeterTypes(Code);
+            SessionEventNatures = new SessionEventNatures(Code);
             return true;
 
         }
@@ -266,9 +266,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Clone this meter type.
         /// </summary>
-        public MeterTypes Clone
+        public SessionEventNatures Clone
 
-            => new MeterTypes(Code,
+            => new SessionEventNatures(Code,
                               new String(Description.ToCharArray()));
 
         #endregion
@@ -276,139 +276,145 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Static definitions
 
-        // Source: GIREVE eMIPv0.7.4-WebServices-Description V27-Diff
+        // Source: GIREVE Gireve_Tech_eMIP-V0.7.4_ProtocolDescription_1.0.6-en.pdf
         // All those will be reflected and added to the lookup within the static constructor!
 
         /// <summary>
-        /// Total duration (e.g. in minutes).
+        /// Emergency Stop.
         /// </summary>
-        public static MeterTypes TotalDuration
-            => new MeterTypes(1,  "Total duration (e.g. in minutes)");
+        public static SessionEventNatures EmergencyStop
+            => new SessionEventNatures(0, "Emergency Stop");
 
         /// <summary>
-        /// Total energy (e.g. in Wh).
+        /// Operation terminated.
         /// </summary>
-        public static MeterTypes TotalEnergy
-            => new MeterTypes(2,  "Total energy (e.g. in Wh)");
+        public static SessionEventNatures Terminated
+            => new SessionEventNatures(1, "Operation terminated");
 
         /// <summary>
-        /// B2B Service Costs.
+        /// Operation suspendedn.
         /// </summary>
-        public static MeterTypes SystemError
-            => new MeterTypes(3,  "B2B Service Costs");
+        public static SessionEventNatures Suspended
+            => new SessionEventNatures(2, "Operation suspended");
+
+        /// <summary>
+        /// Operation started.
+        /// </summary>
+        public static SessionEventNatures Started
+            => new SessionEventNatures(3, "Operation started");
 
         #endregion
 
 
         #region Operator overloading
 
-        #region Operator == (MeterType1, MeterType2)
+        #region Operator == (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (MeterTypes MeterType1, MeterTypes MeterType2)
+        public static Boolean operator == (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(MeterType1, MeterType2))
+            if (Object.ReferenceEquals(SessionEventNature1, SessionEventNature2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) MeterType1 == null) || ((Object) MeterType2 == null))
+            if (((Object) SessionEventNature1 == null) || ((Object) SessionEventNature2 == null))
                 return false;
 
-            return MeterType1.Equals(MeterType2);
+            return SessionEventNature1.Equals(SessionEventNature2);
 
         }
 
         #endregion
 
-        #region Operator != (MeterType1, MeterType2)
+        #region Operator != (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 == MeterType2);
+        public static Boolean operator != (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
+            => !(SessionEventNature1 == SessionEventNature2);
 
         #endregion
 
-        #region Operator <  (MeterType1, MeterType2)
+        #region Operator <  (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (MeterTypes MeterType1, MeterTypes MeterType2)
+        public static Boolean operator < (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
         {
 
-            if ((Object) MeterType1 == null)
-                throw new ArgumentNullException(nameof(MeterType1), "The given MeterType1 must not be null!");
+            if ((Object) SessionEventNature1 == null)
+                throw new ArgumentNullException(nameof(SessionEventNature1), "The given SessionEventNature1 must not be null!");
 
-            return MeterType1.CompareTo(MeterType2) < 0;
+            return SessionEventNature1.CompareTo(SessionEventNature2) < 0;
 
         }
 
         #endregion
 
-        #region Operator <= (MeterType1, MeterType2)
+        #region Operator <= (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 > MeterType2);
+        public static Boolean operator <= (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
+            => !(SessionEventNature1 > SessionEventNature2);
 
         #endregion
 
-        #region Operator >  (MeterType1, MeterType2)
+        #region Operator >  (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (MeterTypes MeterType1, MeterTypes MeterType2)
+        public static Boolean operator > (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
         {
 
-            if ((Object) MeterType1 == null)
-                throw new ArgumentNullException(nameof(MeterType1), "The given MeterType1 must not be null!");
+            if ((Object) SessionEventNature1 == null)
+                throw new ArgumentNullException(nameof(SessionEventNature1), "The given SessionEventNature1 must not be null!");
 
-            return MeterType1.CompareTo(MeterType2) > 0;
+            return SessionEventNature1.CompareTo(SessionEventNature2) > 0;
 
         }
 
         #endregion
 
-        #region Operator >= (MeterType1, MeterType2)
+        #region Operator >= (SessionEventNature1, SessionEventNature2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterType1">A meter type.</param>
-        /// <param name="MeterType2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A meter type.</param>
+        /// <param name="SessionEventNature2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 < MeterType2);
+        public static Boolean operator >= (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
+            => !(SessionEventNature1 < SessionEventNature2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<MeterTypes> Members
+        #region IComparable<SessionEventNatures> Members
 
         #region CompareTo(Object)
 
@@ -422,29 +428,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is MeterTypes))
+            if (!(Object is SessionEventNatures))
                 throw new ArgumentException("The given object is not a meter type!",
                                             nameof(Object));
 
-            return CompareTo((MeterTypes) Object);
+            return CompareTo((SessionEventNatures) Object);
 
         }
 
         #endregion
 
-        #region CompareTo(MeterTypes)
+        #region CompareTo(SessionEventNatures)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="MeterTypes">An object to compare with.</param>
-        public Int32 CompareTo(MeterTypes MeterTypes)
+        /// <param name="SessionEventNatures">An object to compare with.</param>
+        public Int32 CompareTo(SessionEventNatures SessionEventNatures)
         {
 
-            if ((Object) MeterTypes == null)
-                throw new ArgumentNullException(nameof(MeterTypes),  "The given meter type must not be null!");
+            if ((Object) SessionEventNatures == null)
+                throw new ArgumentNullException(nameof(SessionEventNatures),  "The given meter type must not be null!");
 
-            return Code.CompareTo(MeterTypes.Code);
+            return Code.CompareTo(SessionEventNatures.Code);
 
         }
 
@@ -452,7 +458,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<MeterTypes> Members
+        #region IEquatable<SessionEventNatures> Members
 
         #region Equals(Object)
 
@@ -467,29 +473,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is MeterTypes))
+            if (!(Object is SessionEventNatures))
                 return false;
 
-            return Equals((MeterTypes) Object);
+            return Equals((SessionEventNatures) Object);
 
         }
 
         #endregion
 
-        #region Equals(MeterTypes)
+        #region Equals(SessionEventNatures)
 
         /// <summary>
-        /// Compares two MeterTypess for equality.
+        /// Compares two SessionEventNaturess for equality.
         /// </summary>
-        /// <param name="MeterTypes">A meter type to compare with.</param>
+        /// <param name="SessionEventNatures">A meter type to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(MeterTypes MeterTypes)
+        public Boolean Equals(SessionEventNatures SessionEventNatures)
         {
 
-            if ((Object) MeterTypes == null)
+            if ((Object) SessionEventNatures == null)
                 return false;
 
-            return Code.Equals(MeterTypes.Code);
+            return Code.Equals(SessionEventNatures.Code);
 
         }
 

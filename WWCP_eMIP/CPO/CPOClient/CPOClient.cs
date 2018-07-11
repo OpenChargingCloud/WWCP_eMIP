@@ -589,7 +589,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SendHeartbeat(Request)
+        #region SendHeartbeat            (Request)
 
         /// <summary>
         /// Send the given heartbeat.
@@ -897,7 +897,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
                     result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
                                  new SetEVSEAvailabilityStatusResponse(
                                      Request,
@@ -1164,7 +1165,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
                     result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
                                  new SetEVSEBusyStatusResponse(
                                      Request,
@@ -1367,7 +1369,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region GetServiceAuthorisation(Request)
+        #region GetServiceAuthorisation  (Request)
 
         /// <summary>
         /// Request an service authorisation.
@@ -1431,7 +1433,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
                     result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
                                  new GetServiceAuthorisationResponse(
                                      Request,
@@ -1633,7 +1636,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetChargeDetailRecord  (Request)
+        #region SetChargeDetailRecord    (Request)
 
         /// <summary>
         /// Upload the given charge detail record.
@@ -1694,7 +1697,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*E666181358*"))
+            if (!Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
                     result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
                                  new SetChargeDetailRecordResponse(
                                      Request,

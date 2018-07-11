@@ -42,7 +42,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The GIREVE partner session id for this service session.
         /// </summary>
-        public ServiceSession_Id?  PartnerServiceSessionId    { get; }
+        public PartnerServiceSession_Id?  PartnerServiceSessionId    { get; }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public SetServiceAuthorisationResponse(SetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
                                                RequestStatus                        RequestStatus,
-                                               ServiceSession_Id?                   PartnerServiceSessionId  = null,
+                                               PartnerServiceSession_Id?            PartnerServiceSessionId  = null,
                                                IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
@@ -187,9 +187,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                       Request,
 
-                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",            Transaction_Id.   Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",            RequestStatus.    Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("partnerServiceSessionId",  ServiceSession_Id.Parse)
+                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",            Transaction_Id.          Parse),
+                                                      SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",            RequestStatus.           Parse),
+                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("partnerServiceSessionId",  PartnerServiceSession_Id.Parse)
 
                                                   );
 
@@ -441,7 +441,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <summary>
             /// The GIREVE partner session id for this service session.
             /// </summary>
-            public ServiceSession_Id?  PartnerServiceSessionId    { get; set; }
+            public PartnerServiceSession_Id?  PartnerServiceSessionId    { get; set; }
 
             #endregion
 

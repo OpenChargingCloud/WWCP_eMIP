@@ -20,7 +20,6 @@
 using System;
 using System.Xml.Linq;
 using System.Threading;
-using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
@@ -41,25 +40,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The operator identification.
         /// </summary>
-        public Operator_Id                OperatorId                  { get; }
+        public Operator_Id               OperatorId                { get; }
 
         /// <summary>
         /// The target operator identification.
         /// </summary>
-        public Operator_Id                TargetOperatorId            { get; }
+        public Operator_Id               TargetOperatorId          { get; }
 
         /// <summary>
         /// The service session identification.
         /// </summary>
-        public ServiceSession_Id          ServiceSessionId            { get; }
+        public ServiceSession_Id         ServiceSessionId          { get; }
 
-        public ServiceSession_Id          ExecPartnerSessionId        { get; }
-        public String                     SessionActionNature         { get; }
-        public String                     SessionActionDateTime       { get; }
+        public PartnerServiceSession_Id  ExecPartnerSessionId      { get; }
+        public String                    SessionActionNature       { get; }
+        public String                    SessionActionDateTime     { get; }
 
-        public String                     SessionActionId             { get; }
-        public String                     SessionActionParameter      { get; }
-        public String                     RelatedSessionEventId       { get; }
+        public String                    SessionActionId           { get; }
+        public String                    SessionActionParameter    { get; }
+        public String                    RelatedSessionEventId     { get; }
 
         #endregion
 
@@ -83,7 +82,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Operator_Id                OperatorId,
                                        Operator_Id                TargetOperatorId,
                                        ServiceSession_Id          ServiceSessionId,
-                                       ServiceSession_Id          ExecPartnerSessionId,
+                                       PartnerServiceSession_Id   ExecPartnerSessionId,
                                        String                     SessionActionNature,
                                        String                     SessionActionDateTime,
 
@@ -163,7 +162,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //
         //          </sessionAction>
         //
-        //       </aut:eMIP_FromIOP_SetSessionActionRequestRequest>        //    </soap:Body>
+        //       </aut:eMIP_FromIOP_SetSessionActionRequestRequest>
+        //    </soap:Body>
         // </soap:Envelope>
 
         #endregion
@@ -256,21 +256,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 SetSessionActionRequest = new SetSessionActionRequest(
 
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("partnerId",                Partner_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("partnerId",                Partner_Id.              Parse),
 
                                                      //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("operatorId",               Operator_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("operatorId",               Operator_Id.             Parse),
 
                                                      //ToDo: What to do with: <targetOperatorIdType>eMI3</targetOperatorIdType>
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.             Parse),
 
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.Parse),
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("execPartnerSessionId",     ServiceSession_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.       Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
 
                                                      SessionActionXML.          ElementValueOrFail   ("sessionActionNature"),
                                                      SessionActionXML.          ElementValueOrFail   ("sessionActionDateTime"),
 
-                                                     SetSessionActionRequestXML.MapValueOrNullable   ("transactionId",            Transaction_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrNullable   ("transactionId",            Transaction_Id.          Parse),
                                                      SessionActionXML.          ElementValueOrDefault("sessionActionId"),
                                                      SessionActionXML.          ElementValueOrDefault("sessionActionParameter"),
                                                      SessionActionXML.          ElementValueOrDefault("relatedSessionEventId"),

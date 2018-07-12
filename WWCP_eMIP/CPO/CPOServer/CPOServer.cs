@@ -417,7 +417,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Create SOAPResponse
 
-                var HTTPResponse = new HTTPResponseBuilder(HTTPRequest) {
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
                     Date            = DateTime.Now,
@@ -619,7 +619,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Create SOAPResponse
 
-                var HTTPResponse = new HTTPResponseBuilder(HTTPRequest) {
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
                     Date            = DateTime.Now,

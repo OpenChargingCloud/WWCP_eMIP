@@ -111,9 +111,9 @@ namespace org.GraphDefined.WWCP
 
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
 
-                                                String                                                            RemoteHostname,
+                                                HTTPHostname                                                      RemoteHostname,
                                                 IPPort?                                                           RemoteTCPPort                                   = null,
-                                                String                                                            RemoteHTTPVirtualHost                           = null,
+                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
                                                 RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
                                                 LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
                                                 HTTPURI?                                                          URIPrefix                                       = null,
@@ -306,11 +306,11 @@ namespace org.GraphDefined.WWCP
 
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
 
-                                                String                                                            RemoteHostname,
+                                                HTTPHostname                                                      RemoteHostname,
                                                 IPPort?                                                           RemoteTCPPort                                   = null,
                                                 RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
                                                 LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
-                                                String                                                            RemoteHTTPVirtualHost                           = null,
+                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
                                                 HTTPURI?                                                          URIPrefix                                       = null,
                                                 String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
                                                 TimeSpan?                                                         RequestTimeout                                  = null,

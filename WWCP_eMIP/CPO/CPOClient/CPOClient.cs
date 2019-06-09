@@ -499,11 +499,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="LoggingContext">An optional context for logging client methods.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOClient(String                               ClientId,
-                         String                               Hostname,
+                         HTTPHostname                         Hostname,
                          IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         String                               HTTPVirtualHost              = null,
+                         HTTPHostname?                        HTTPVirtualHost              = null,
                          HTTPURI?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
@@ -554,11 +554,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public CPOClient(String                               ClientId,
                          CPOClientLogger                      Logger,
-                         String                               Hostname,
+                         HTTPHostname                         Hostname,
                          IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         String                               HTTPVirtualHost              = null,
+                         HTTPHostname?                        HTTPVirtualHost              = null,
                          HTTPURI?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
@@ -651,8 +651,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
+                                                        VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
@@ -914,8 +914,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
+                                                        VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
@@ -1182,8 +1182,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
+                                                        VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
@@ -1450,8 +1450,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
+                                                        VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
@@ -1714,8 +1714,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
+                                                        VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,

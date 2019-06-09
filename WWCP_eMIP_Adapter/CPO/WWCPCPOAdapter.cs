@@ -604,11 +604,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               Partner_Id                                         PartnerId,
 
-                              String                                             RemoteHostname,
+                              HTTPHostname                                       RemoteHostname,
                               IPPort?                                            RemoteTCPPort                                   = null,
                               RemoteCertificateValidationCallback                RemoteCertificateValidator                      = null,
                               LocalCertificateSelectionCallback                  ClientCertificateSelector                       = null,
-                              String                                             RemoteHTTPVirtualHost                           = null,
+                              HTTPHostname?                                      RemoteHTTPVirtualHost                           = null,
                               HTTPURI?                                           URIPrefix                                       = null,
                               String                                             HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
                               TimeSpan?                                          RequestTimeout                                  = null,

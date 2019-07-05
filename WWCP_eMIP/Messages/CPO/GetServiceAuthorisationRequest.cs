@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -139,6 +139,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //       <userIdType>RFID-UID</userIdType>
         //       <userId>?</userId>
         //
+        //       <!-- 1: charge -->
         //       <requestedServiceId>?</requestedServiceId>
         //
         //       <!--Optional:-->

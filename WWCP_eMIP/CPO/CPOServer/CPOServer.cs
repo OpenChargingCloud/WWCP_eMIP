@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new static readonly HTTPURI          DefaultURIPrefix           = HTTPURI.Parse("/");
+        public new static readonly HTTPPath         DefaultURIPrefix           = HTTPPath.Parse("/");
+
+        /// <summary>
+        /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
+        /// </summary>
+        public     const           String           DefaultAuthorisationURI    = "";
 
         /// <summary>
         /// The default HTTP/SOAP/XML content type.
@@ -74,15 +79,90 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public String  ServiceId           { get; }
 
+        /// <summary>
+        /// The HTTP/SOAP/XML URI for eMIP authorization requests.
+        /// </summary>
+        public String  AuthorisationURI    { get; }
+
         #endregion
 
         #region Custom request/response mappers
 
-        public OnExceptionDelegate                                                                       OnException                                                      { get; set; }
+        public CustomXMLParserDelegate<SetServiceAuthorisationRequest>       CustomSetServiceAuthorisationRequestParser        { get; set; }
+
+        public CustomXMLParserDelegate<MeterReport>                          CustomMeterReportParser                           { get; set; }
+
+        public CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>  CustomSetServiceAuthorisationResponseSerializer   { get; set; }
+
+
+        public CustomXMLParserDelegate<SetSessionActionRequest>              CustomSetSessionActionRequestParser               { get; set; }
+
+        public CustomXMLSerializerDelegate<SetSessionActionResponse>         CustomSetSessionActionResponseSerializer          { get; set; }
+
+
+        public OnExceptionDelegate                                           OnException                                       { get; set; }
 
         #endregion
 
         #region Events
+
+        #region OnSetServiceAuthorisation
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                           OnSetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationRequestDelegate    OnSetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set service authorisation' request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationDelegate           OnSetServiceAuthorisation;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set service authorisation' request was sent.
+        /// </summary>
+        public event OnSetServiceAuthorisationResponseDelegate   OnSetServiceAuthorisationResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set service authorisation' SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                            OnSetServiceAuthorisationSOAPResponse;
+
+        #endregion
+
+        #region OnSetSessionAction
+
+        /// <summary>
+        /// An event sent whenever a 'set session' SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                    OnSetSessionActionSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set session' request was received.
+        /// </summary>
+        public event OnSetSessionActionRequestDelegate    OnSetSessionActionRequest;
+
+        /// <summary>
+        /// An event sent whenever a 'set session' request was received.
+        /// </summary>
+        public event OnSetSessionActionDelegate           OnSetSessionAction;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set session' request was sent.
+        /// </summary>
+        public event OnSetSessionActionResponseDelegate   OnSetSessionActionResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a 'set session' SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                     OnSetSessionActionSOAPResponse;
+
+        #endregion
 
         #endregion
 
@@ -97,6 +177,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
@@ -104,7 +185,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
                          String           ServiceId                 = null,
                          IPPort?          TCPPort                   = null,
-                         HTTPURI?         URIPrefix                 = null,
+                         HTTPPath?        URIPrefix                 = null,
+                         String           AuthorisationURI          = DefaultAuthorisationURI,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -120,7 +202,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.ServiceId  = ServiceId ?? nameof(CPOServer);
+            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
 
             RegisterURITemplates();
 
@@ -139,16 +222,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
-                         String      ServiceId   = null,
-                         HTTPURI?    URIPrefix   = null)
+                         String      ServiceId         = null,
+                         HTTPPath?   URIPrefix         = null,
+                         String      AuthorisationURI  = DefaultAuthorisationURI)
 
             : base(SOAPServer,
                    URIPrefix ?? DefaultURIPrefix)
 
         {
 
-            this.ServiceId  = ServiceId ?? nameof(CPOServer);
+            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
 
             RegisterURITemplates();
 
@@ -167,239 +253,406 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected void RegisterURITemplates()
         {
 
-            #region /Authorization - AuthorizeRemoteStart
+            #region ~/ - SetServiceAuthorisation
 
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix,// + AuthorizationURI,
-                                            "AuthorizeRemoteStart",
-                                            XML => XML.Descendants(eMIPNS.Authorisation + "eRoamingAuthorizeRemoteStart").FirstOrDefault(),
-                                            async (HTTPRequest, AuthorizeRemoteStartXML) => {
+                                            URIPrefix + AuthorisationURI,
+                                            "SetServiceAuthorisationRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
+                                            async (HTTPRequest, SetServiceAuthorisationXML) => {
 
 
-// <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:aut="https://api-iop.gireve.com/schemas/AuthorisationV1/">
-//   <soap:Header/>
-//   <soap:Body>
-//      <aut:eMIP_FromIOP_SetServiceAuthorisationRequest>
-//
-//         <!--Optional:-->
-//         <transactionId>?</transactionId>
-//
-//         <partnerIdType>?</partnerIdType>
-//         <partnerId>?</partnerId>
-//         <operatorIdType>?</operatorIdType>
-//         <operatorId>?</operatorId>
-//         <targetOperatorIdType>?</targetOperatorIdType>
-//         <targetOperatorId>?</targetOperatorId>
-//         <EVSEIdType>?</EVSEIdType>
-//         <EVSEId>?</EVSEId>
-//         <userIdType>?</userIdType>
-//         <userId>?</userId>
-//         <requestedServiceId>?</requestedServiceId>
-//         <serviceSessionId>?</serviceSessionId>
-//         <authorisationValue>?</authorisationValue>
-//         <intermediateCDRRequested>?</intermediateCDRRequested>
-//
-//         <!--Optional:-->
-//         <userContractIdAlias>?</userContractIdAlias>
-//
-//         <!--Optional:-->
-//         <meterLimitList>
-//
-//            <!--Zero or more repetitions:-->
-//            <meterReport>
-//               <meterTypeId>?</meterTypeId>
-//               <meterValue>?</meterValue>
-//               <meterUnit>?</meterUnit>
-//            </meterReport>
-//
-//         </meterLimitList>
-//
-//         <!--Optional:-->
-//         <parameter>?</parameter>
-//
-//         <!--Optional:-->
-//         <bookingId>?</bookingId>
-//
-//      </aut:eMIP_FromIOP_SetServiceAuthorisationRequest>
-//   </soap:Body>
-// </soap:Envelope>
+                SetServiceAuthorisationResponse Response  = null;
 
+                #region Send OnSetServiceAuthorisationSOAPRequest event
 
-             //   Acknowledgement<EMP.AuthorizeRemoteStartRequest> Acknowledgement  = null;
+                var StartTime = DateTime.Now;
 
-                #region Send OnAuthorizeRemoteStartSOAPRequest event
+                try
+                {
 
-                //var StartTime = DateTime.Now;
+                    if (OnSetServiceAuthorisationSOAPRequest != null)
+                        await Task.WhenAll(OnSetServiceAuthorisationSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
 
-                //try
-                //{
-
-                //    if (OnAuthorizeRemoteStartSOAPRequest != null)
-                //        await Task.WhenAll(OnAuthorizeRemoteStartSOAPRequest.GetInvocationList().
-                //                           Cast<RequestLogHandler>().
-                //                           Select(e => e(StartTime,
-                //                                         SOAPServer,
-                //                                         HTTPRequest))).
-                //                           ConfigureAwait(false);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartSOAPRequest));
-                //}
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPRequest));
+                }
 
                 #endregion
 
 
-                //if (EMP.AuthorizeRemoteStartRequest.TryParse(AuthorizeRemoteStartXML,
-                //                                             out EMP.AuthorizeRemoteStartRequest AuthorizeRemoteStartRequest,
-                //                                             CustomAuthorizeRemoteStartRequestParser,
-                //                                             CustomIdentificationParser,
-                //                                             OnException,
+                if (SetServiceAuthorisationRequest.TryParse(SetServiceAuthorisationXML,
+                                                            CustomSetServiceAuthorisationRequestParser,
+                                                            CustomMeterReportParser,
+                                                            out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
+                                                            OnException,
 
-                //                                             HTTPRequest.Timestamp,
-                //                                             HTTPRequest.CancellationToken,
-                //                                             HTTPRequest.EventTrackingId,
-                //                                             HTTPRequest.Timeout ?? DefaultRequestTimeout))
-                //{
+                                                            HTTPRequest.Timestamp,
+                                                            HTTPRequest.CancellationToken,
+                                                            HTTPRequest.EventTrackingId,
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
 
-                //    #region Send OnAuthorizeRemoteStartRequest event
+                    #region Send OnSetServiceAuthorisationRequest event
 
-                //    try
-                //    {
+                    try
+                    {
 
-                //        if (OnAuthorizeRemoteStartRequest != null)
-                //            await Task.WhenAll(OnAuthorizeRemoteStartRequest.GetInvocationList().
-                //                               Cast<OnAuthorizeRemoteStartRequestDelegate>().
-                //                               Select(e => e(StartTime,
-                //                                              AuthorizeRemoteStartRequest.Timestamp.Value,
-                //                                              this,
-                //                                              ServiceId,
-                //                                              AuthorizeRemoteStartRequest.EventTrackingId,
-                //                                              AuthorizeRemoteStartRequest.EVSEId,
-                //                                              AuthorizeRemoteStartRequest.PartnerProductId,
-                //                                              AuthorizeRemoteStartRequest.SessionId,
-                //                                              AuthorizeRemoteStartRequest.PartnerSessionId,
-                //                                              AuthorizeRemoteStartRequest.ProviderId,
-                //                                              AuthorizeRemoteStartRequest.EVCOId,
-                //                                              AuthorizeRemoteStartRequest.RequestTimeout ?? DefaultRequestTimeout))).
-                //                               ConfigureAwait(false);
+                        if (OnSetServiceAuthorisationRequest != null)
+                            await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
+                                               Cast<OnSetServiceAuthorisationRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                              _SetServiceAuthorisationRequest.Timestamp.Value,
+                                                              this,
+                                                              ServiceId,
+                                                              _SetServiceAuthorisationRequest.EventTrackingId,
+                                                              _SetServiceAuthorisationRequest.PartnerId,
+                                                              _SetServiceAuthorisationRequest.OperatorId,
+                                                              _SetServiceAuthorisationRequest.TargetOperatorId,
+                                                              _SetServiceAuthorisationRequest.EVSEId,
+                                                              _SetServiceAuthorisationRequest.UserId,
+                                                              _SetServiceAuthorisationRequest.RequestedServiceId,
+                                                              _SetServiceAuthorisationRequest.ServiceSessionId,
+                                                              _SetServiceAuthorisationRequest.AuthorisationValue,
+                                                              _SetServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                              _SetServiceAuthorisationRequest.TransactionId,
+                                                              _SetServiceAuthorisationRequest.UserContractIdAlias,
+                                                              _SetServiceAuthorisationRequest.MeterLimits,
+                                                              _SetServiceAuthorisationRequest.Parameter,
+                                                              _SetServiceAuthorisationRequest.BookingId,
+                                                              _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
 
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartRequest));
-                //    }
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationRequest));
+                    }
 
-                //    #endregion
+                    #endregion
 
-                //    #region Call async subscribers
+                    #region Call async subscribers
 
-                //    if (OnAuthorizeRemoteStart != null)
-                //    {
+                    if (OnSetServiceAuthorisation != null)
+                    {
 
-                //        var results = await Task.WhenAll(OnAuthorizeRemoteStart.GetInvocationList().
-                //                                             Cast<OnAuthorizeRemoteStartDelegate>().
-                //                                             Select(e => e(DateTime.Now,
-                //                                                           this,
-                //                                                           AuthorizeRemoteStartRequest))).
-                //                                             ConfigureAwait(false);
+                        var results = await Task.WhenAll(OnSetServiceAuthorisation.GetInvocationList().
+                                                             Cast<OnSetServiceAuthorisationDelegate>().
+                                                             Select(e => e(DateTime.Now,
+                                                                           this,
+                                                                           _SetServiceAuthorisationRequest))).
+                                                             ConfigureAwait(false);
 
-                //        Acknowledgement = results.FirstOrDefault();
+                        Response = results.FirstOrDefault();
 
-                //    }
+                    }
 
-                //    if (Acknowledgement == null)
-                //        Acknowledgement = Acknowledgement<EMP.AuthorizeRemoteStartRequest>.SystemError(
-                //                             AuthorizeRemoteStartRequest,
-                //                             "Could not process the incoming AuthorizeRemoteStart request!",
-                //                             null,
-                //                             AuthorizeRemoteStartRequest.SessionId,
-                //                             AuthorizeRemoteStartRequest.PartnerSessionId
-                //                         );
+                    //if (Response == null)
+                    //    Response = Response<EMP.SetServiceAuthorisationRequest>.SystemError(
+                    //                         _SetServiceAuthorisationRequest,
+                    //                         "Could not process the incoming SetServiceAuthorisation request!",
+                    //                         null,
+                    //                         _SetServiceAuthorisationRequest.SessionId,
+                    //                         _SetServiceAuthorisationRequest.PartnerSessionId
+                    //                     );
 
-                //    #endregion
+                    #endregion
 
-                //    #region Send OnAuthorizeRemoteStartResponse event
+                    #region Send OnSetServiceAuthorisationResponse event
 
-                //    var EndTime = DateTime.Now;
+                    var EndTime = DateTime.Now;
 
-                //    try
-                //    {
+                    try
+                    {
 
-                //        if (OnAuthorizeRemoteStartResponse != null)
-                //            await Task.WhenAll(OnAuthorizeRemoteStartResponse.GetInvocationList().
-                //                               Cast<OnAuthorizeRemoteStartResponseDelegate>().
-                //                               Select(e => e(EndTime,
-                //                                             this,
-                //                                             ServiceId,
-                //                                             AuthorizeRemoteStartRequest.EventTrackingId,
-                //                                             AuthorizeRemoteStartRequest.EVSEId,
-                //                                             AuthorizeRemoteStartRequest.PartnerProductId,
-                //                                             AuthorizeRemoteStartRequest.SessionId,
-                //                                             AuthorizeRemoteStartRequest.PartnerSessionId,
-                //                                             AuthorizeRemoteStartRequest.ProviderId,
-                //                                             AuthorizeRemoteStartRequest.EVCOId,
-                //                                             AuthorizeRemoteStartRequest.RequestTimeout ?? DefaultRequestTimeout,
-                //                                             Acknowledgement,
-                //                                             EndTime - StartTime))).
-                //                               ConfigureAwait(false);
+                        if (OnSetServiceAuthorisationResponse != null)
+                            await Task.WhenAll(OnSetServiceAuthorisationResponse.GetInvocationList().
+                                               Cast<OnSetServiceAuthorisationResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetServiceAuthorisationRequest.EventTrackingId,
+                                                             _SetServiceAuthorisationRequest.PartnerId,
+                                                             _SetServiceAuthorisationRequest.OperatorId,
+                                                             _SetServiceAuthorisationRequest.TargetOperatorId,
+                                                             _SetServiceAuthorisationRequest.EVSEId,
+                                                             _SetServiceAuthorisationRequest.UserId,
+                                                             _SetServiceAuthorisationRequest.RequestedServiceId,
+                                                             _SetServiceAuthorisationRequest.ServiceSessionId,
+                                                             _SetServiceAuthorisationRequest.AuthorisationValue,
+                                                             _SetServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                             _SetServiceAuthorisationRequest.TransactionId,
+                                                             _SetServiceAuthorisationRequest.UserContractIdAlias,
+                                                             _SetServiceAuthorisationRequest.MeterLimits,
+                                                             _SetServiceAuthorisationRequest.Parameter,
+                                                             _SetServiceAuthorisationRequest.BookingId,
+                                                             _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
 
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartResponse));
-                //    }
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationResponse));
+                    }
 
-                //    #endregion
+                    #endregion
 
-                //}
+                }
 
                 //else
-                //    Acknowledgement = Acknowledgement<EMP.AuthorizeRemoteStartRequest>.DataError(
-                //                          AuthorizeRemoteStartRequest,
-                //                          "Could not process the incoming AuthorizeRemoteStart request!"
+                //    Response = Response<EMP.SetServiceAuthorisationRequest>.DataError(
+                //                          _SetServiceAuthorisationRequest,
+                //                          "Could not process the incoming SetServiceAuthorisation request!"
                 //                      );
 
 
                 #region Create SOAPResponse
 
-                //var HTTPResponse = new HTTPResponseBuilder(HTTPRequest) {
-                //    HTTPStatusCode  = HTTPStatusCode.OK,
-                //    Server          = SOAPServer.DefaultServerName,
-                //    Date            = DateTime.Now,
-                //    ContentType     = HTTPContentType.XMLTEXT_UTF8,
-                //    Content         = SOAP.Encapsulation(Acknowledgement.ToXML(CustomAuthorizeRemoteStartAcknowledgementSerializer,
-                //                                                               CustomStatusCodeSerializer)).ToUTF8Bytes(),
-                //    Connection      = "close"
-                //};
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Date            = DateTime.Now,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
 
                 #endregion
 
-                #region Send OnAuthorizeRemoteStartSOAPResponse event
+                #region Send OnSetServiceAuthorisationSOAPResponse event
 
-                //try
-                //{
+                try
+                {
 
-                //    if (OnAuthorizeRemoteStartSOAPResponse != null)
-                //        await Task.WhenAll(OnAuthorizeRemoteStartSOAPResponse.GetInvocationList().
-                //                           Cast<AccessLogHandler>().
-                //                           Select(e => e(HTTPResponse.Timestamp,
-                //                                         SOAPServer,
-                //                                         HTTPRequest,
-                //                                         HTTPResponse))).
-                //                           ConfigureAwait(false);
+                    if (OnSetServiceAuthorisationSOAPResponse != null)
+                        await Task.WhenAll(OnSetServiceAuthorisationSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
 
-                //}
-                //catch (Exception e)
-                //{
-                //    e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartSOAPResponse));
-                //}
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPResponse));
+                }
 
                 #endregion
 
-                //return HTTPResponse;
-                return null;
+                return HTTPResponse;
+
+            });
+
+            #endregion
+
+            #region ~/ - SetSessionAction
+
+            // ActionNature
+            //  0  Emergency Stop                        (mandatory)
+            //  1  Stop and terminate current operation  (mandatory)
+            //  2  Suspend current operation
+            //  3  Restart current operation
+
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix + AuthorisationURI,
+                                            "SetSessionActionRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequest").FirstOrDefault(),
+                                            async (HTTPRequest, SetSessionActionXML) => {
+
+
+                SetSessionActionResponse Response  = null;
+
+                #region Send OnSetSessionActionSOAPRequest event
+
+                var StartTime = DateTime.Now;
+
+                try
+                {
+
+                    if (OnSetSessionActionSOAPRequest != null)
+                        await Task.WhenAll(OnSetSessionActionSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPRequest));
+                }
+
+                #endregion
+
+
+                if (SetSessionActionRequest.TryParse(SetSessionActionXML,
+                                                     CustomSetSessionActionRequestParser,
+                                                     out SetSessionActionRequest _SetSessionActionRequest,
+                                                     OnException,
+
+                                                     HTTPRequest.Timestamp,
+                                                     HTTPRequest.CancellationToken,
+                                                     HTTPRequest.EventTrackingId,
+                                                     HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
+
+                    #region Send OnSetSessionActionRequest event
+
+                    try
+                    {
+
+                        if (OnSetSessionActionRequest != null)
+                            await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
+                                               Cast<OnSetSessionActionRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                             _SetSessionActionRequest.Timestamp.Value,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetSessionActionRequest.EventTrackingId,
+                                                             _SetSessionActionRequest.PartnerId,
+                                                             _SetSessionActionRequest.OperatorId,
+                                                             _SetSessionActionRequest.TargetOperatorId,
+                                                             _SetSessionActionRequest.ServiceSessionId,
+                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+                                                             _SetSessionActionRequest.SessionActionNature,
+                                                             _SetSessionActionRequest.SessionActionDateTime,
+                                                             _SetSessionActionRequest.TransactionId,
+                                                             _SetSessionActionRequest.SessionActionId,
+                                                             _SetSessionActionRequest.SessionActionParameter,
+                                                             _SetSessionActionRequest.RelatedSessionEventId,
+                                                             _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionRequest));
+                    }
+
+                    #endregion
+
+                    #region Call async subscribers
+
+                    if (OnSetSessionAction != null)
+                    {
+
+                        var results = await Task.WhenAll(OnSetSessionAction.GetInvocationList().
+                                                             Cast<OnSetSessionActionDelegate>().
+                                                             Select(e => e(DateTime.Now,
+                                                                           this,
+                                                                           _SetSessionActionRequest))).
+                                                             ConfigureAwait(false);
+
+                        Response = results.FirstOrDefault();
+
+                    }
+
+                    //if (Response == null)
+                    //    Response = Response<EMP.SetSessionActionRequest>.SystemError(
+                    //                         _SetSessionActionRequest,
+                    //                         "Could not process the incoming SetSessionAction request!",
+                    //                         null,
+                    //                         _SetSessionActionRequest.SessionId,
+                    //                         _SetSessionActionRequest.PartnerSessionId
+                    //                     );
+
+                    #endregion
+
+                    #region Send OnSetSessionActionResponse event
+
+                    var EndTime = DateTime.Now;
+
+                    try
+                    {
+
+                        if (OnSetSessionActionResponse != null)
+                            await Task.WhenAll(OnSetSessionActionResponse.GetInvocationList().
+                                               Cast<OnSetSessionActionResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetSessionActionRequest.EventTrackingId,
+                                                             _SetSessionActionRequest.PartnerId,
+                                                             _SetSessionActionRequest.OperatorId,
+                                                             _SetSessionActionRequest.TargetOperatorId,
+                                                             _SetSessionActionRequest.ServiceSessionId,
+                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+                                                             _SetSessionActionRequest.SessionActionNature,
+                                                             _SetSessionActionRequest.SessionActionDateTime,
+                                                             _SetSessionActionRequest.TransactionId,
+                                                             _SetSessionActionRequest.SessionActionId,
+                                                             _SetSessionActionRequest.SessionActionParameter,
+                                                             _SetSessionActionRequest.RelatedSessionEventId,
+                                                             _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionResponse));
+                    }
+
+                    #endregion
+
+                }
+
+                //else
+                //    Response = Response<EMP.SetSessionActionRequest>.DataError(
+                //                          _SetSessionActionRequest,
+                //                          "Could not process the incoming SetSessionAction request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Date            = DateTime.Now,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
+
+                #endregion
+
+                #region Send OnSetSessionActionSOAPResponse event
+
+                try
+                {
+
+                    if (OnSetSessionActionSOAPResponse != null)
+                        await Task.WhenAll(OnSetSessionActionSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPResponse));
+                }
+
+                #endregion
+
+                return HTTPResponse;
 
             });
 

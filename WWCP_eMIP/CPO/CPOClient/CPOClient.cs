@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,17 +47,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String   DefaultHTTPUserAgent   = "GraphDefined eMIP " + Version.Number + " CPO Client";
+        public new const           String   DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " CPO Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort   DefaultRemotePort      = IPPort.Parse(443);
+        public new static readonly IPPort   DefaultRemotePort           = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public     static readonly HTTPURI  DefaultURIPrefix       = HTTPURI.Parse("/api/emip");
+        public     static readonly HTTPPath  DefaultURIPrefix            = HTTPPath.Parse("/api/emip");
+
+
+        /// <summary>
+        /// The default SOAP action prefix.
+        /// </summary>
+        public     const           String   DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
 
         #endregion
 
@@ -493,12 +499,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="LoggingContext">An optional context for logging client methods.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOClient(String                               ClientId,
-                         String                               Hostname,
+                         HTTPHostname                         Hostname,
                          IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         String                               HTTPVirtualHost              = null,
-                         HTTPURI?                             URIPrefix                    = null,
+                         HTTPHostname?                        HTTPVirtualHost              = null,
+                         HTTPPath?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -548,12 +554,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public CPOClient(String                               ClientId,
                          CPOClientLogger                      Logger,
-                         String                               Hostname,
+                         HTTPHostname                         Hostname,
                          IPPort?                              RemotePort                   = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         String                               HTTPVirtualHost              = null,
-                         HTTPURI?                             URIPrefix                    = null,
+                         HTTPHostname?                        HTTPVirtualHost              = null,
+                         HTTPPath?                             URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
@@ -583,7 +589,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SendHeartbeat(Request)
+        #region SendHeartbeat            (Request)
 
         /// <summary>
         /// Send the given heartbeat.
@@ -645,9 +651,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
-                                                        HTTPPort,
+                                                        VirtualHostname,
+                                                        RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -657,7 +663,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
                                                                                        SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
-                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_HeartBeatV1/",
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
                                                      RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
                                                      ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -890,13 +896,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+                                 new SetEVSEAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
             do
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
-                                                        HTTPPort,
+                                                        VirtualHostname,
+                                                        RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -905,8 +925,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     result = await _eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
-                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
+                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetEVSEAvailabilityStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -1145,13 +1165,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+                                 new SetEVSEBusyStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
             do
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
-                                                        HTTPPort,
+                                                        VirtualHostname,
+                                                        RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1161,7 +1194,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     result = await _eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
                                                                                                SOAP.Encapsulation(Request.ToXML(CustomSetEVSEBusyStatusRequestSerializer))),
-                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetEVSEBusyStatusV1/",
+                                                     "eMIP_ToIOP_SetEVSEBusyStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEBusyStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetEVSEBusyStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -1336,7 +1369,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region GetServiceAuthorisation(Request)
+        #region GetServiceAuthorisation  (Request)
 
         /// <summary>
         /// Request an service authorisation.
@@ -1400,13 +1433,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+                    result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
+                                 new GetServiceAuthorisationResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
             do
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
-                                                        HTTPPort,
+                                                        VirtualHostname,
+                                                        RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1416,7 +1462,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     result = await _eMIPClient.Query(_CustomGetServiceAuthorisationSOAPRequestMapper(Request,
                                                                                                      SOAP.Encapsulation(Request.ToXML(CustomGetServiceAuthorisationRequestSerializer))),
-                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_GetServiceAuthorisationV1/",
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_GetServiceAuthorisationV1/",
                                                      RequestLogDelegate:   OnGetServiceAuthorisationSOAPRequest,
                                                      ResponseLogDelegate:  OnGetServiceAuthorisationSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
@@ -1590,7 +1636,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetChargeDetailRecord  (Request)
+        #region SetChargeDetailRecord    (Request)
 
         /// <summary>
         /// Upload the given charge detail record.
@@ -1651,13 +1697,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+            if (!Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+                    result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
+                                 new SetChargeDetailRecordResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
             do
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        HTTPVirtualHost,
                                                         URIPrefix,
-                                                        HTTPPort,
+                                                        VirtualHostname,
+                                                        RemotePort,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
@@ -1669,7 +1728,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                    SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer,
                                                                                                                                     CustomChargeDetailRecordSerializer,
                                                                                                                                     CustomMeterReportSerializer))),
-                                                     "https://api-iop.gireve.com/services/eMIP_ToIOP_SetChargeDetailRecordV1/",
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargeDetailRecordV1/",
                                                      RequestLogDelegate:   OnSetChargeDetailRecordSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargeDetailRecordSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,

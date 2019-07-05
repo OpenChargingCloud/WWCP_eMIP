@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,8 +46,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         public CPOClient        CPOClient         { get; }
 
-        public IPPort HTTPPort
-            => CPOClient.HTTPPort;
+        public HTTPHostname Hostname
+            => CPOClient.Hostname;
+
+        public HTTPHostname? VirtualHostname
+            => CPOClient.VirtualHostname;
+
+        public IPPort RemotePort
+            => CPOClient.RemotePort;
 
         public RemoteCertificateValidationCallback RemoteCertificateValidator
             => CPOClient?.RemoteCertificateValidator;
@@ -466,71 +472,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         // CPOServer methods
 
 
-        // Generic HTTP/SOAP server logging
-
-        #region RequestLog
+        #region Generic HTTP/SOAP server logging
 
         /// <summary>
-        /// An event called whenever a request came in.
+        /// An event called whenever a HTTP request came in.
         /// </summary>
-        public event RequestLogHandler RequestLog
-        {
-
-            add
-            {
-                CPOServer.RequestLog += value;
-            }
-
-            remove
-            {
-                CPOServer.RequestLog -= value;
-            }
-
-        }
-
-        #endregion
-
-        #region AccessLog
+        public HTTPRequestLogEvent   RequestLog    = new HTTPRequestLogEvent();
 
         /// <summary>
-        /// An event called whenever a request could successfully be processed.
+        /// An event called whenever a HTTP request could successfully be processed.
         /// </summary>
-        public event AccessLogHandler AccessLog
-        {
-
-            add
-            {
-                CPOServer.AccessLog += value;
-            }
-
-            remove
-            {
-                CPOServer.AccessLog -= value;
-            }
-
-        }
-
-        #endregion
-
-        #region ErrorLog
+        public HTTPResponseLogEvent  ResponseLog   = new HTTPResponseLogEvent();
 
         /// <summary>
-        /// An event called whenever a request resulted in an error.
+        /// An event called whenever a HTTP request resulted in an error.
         /// </summary>
-        public event ErrorLogHandler ErrorLog
-        {
-
-            add
-            {
-                CPOServer.ErrorLog += value;
-            }
-
-            remove
-            {
-                CPOServer.ErrorLog -= value;
-            }
-
-        }
+        public HTTPErrorLogEvent     ErrorLog      = new HTTPErrorLogEvent();
 
         #endregion
 
@@ -621,6 +578,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         ServerLoggingContext,
                                                         LogfileCreator);
 
+            // Link HTTP events...
+            CPOServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
+            CPOServer.ResponseLog  += (HTTPProcessor, ServerTimestamp, Request, Response)                       => ResponseLog.WhenAll(HTTPProcessor, ServerTimestamp, Request, Response);
+            CPOServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
+
         }
 
         #endregion
@@ -645,6 +607,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="ServerURIPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="ServerAuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ServerContentType">An optional HTTP content type to use.</param>
         /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
@@ -655,12 +618,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public CPORoaming(String                               ClientId,
-                          String                               RemoteHostname,
+                          HTTPHostname                         RemoteHostname,
                           IPPort?                              RemoteTCPPort                   = null,
                           RemoteCertificateValidationCallback  RemoteCertificateValidator      = null,
                           LocalCertificateSelectionCallback    ClientCertificateSelector       = null,
-                          String                               RemoteHTTPVirtualHost           = null,
-                          HTTPURI?                             URIPrefix                       = null,
+                          HTTPHostname?                        RemoteHTTPVirtualHost           = null,
+                          HTTPPath?                            URIPrefix                       = null,
                           String                               HTTPUserAgent                   = CPOClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
                           Byte?                                MaxNumberOfRetries              = CPOClient.DefaultMaxNumberOfRetries,
@@ -668,7 +631,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           String                               ServerName                      = CPOServer.DefaultHTTPServerName,
                           String                               ServiceId                       = null,
                           IPPort?                              ServerTCPPort                   = null,
-                          HTTPURI?                             ServerURIPrefix                 = null,
+                          HTTPPath?                            ServerURIPrefix                 = null,
+                          String                               ServerAuthorisationURI          = CPOServer.DefaultAuthorisationURI,
                           HTTPContentType                      ServerContentType               = null,
                           Boolean                              ServerRegisterHTTPRootService   = true,
                           Boolean                              ServerAutoStart                 = false,
@@ -696,7 +660,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    new CPOServer(ServerName,
                                  ServiceId,
                                  ServerTCPPort,
-                                 ServerURIPrefix ?? CPOServer.DefaultURIPrefix,
+                                 ServerURIPrefix        ?? CPOServer.DefaultURIPrefix,
+                                 ServerAuthorisationURI ?? CPOServer.DefaultAuthorisationURI,
                                  ServerContentType,
                                  ServerRegisterHTTPRootService,
                                  DNSClient,

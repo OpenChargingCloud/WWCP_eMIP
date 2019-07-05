@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The linked eMIP CPO server.
         /// </summary>
-        public CPOServer CPOServer { get; }
+        public CPOServer  CPOServer   { get; }
 
         #endregion
 
@@ -122,7 +122,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                LogfileCreatorDelegate      LogfileCreator              = null)
 
-            : base(CPOServer.SOAPServer,
+            : base(CPOServer.SOAPServer.HTTPServer,
                    Context.IsNotNullOrEmpty() ? Context : DefaultContext,
 
                    LogHTTPRequest_toConsole,
@@ -144,73 +144,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            #region Initial checks
-
-            if (CPOServer == null)
-                throw new ArgumentNullException(nameof(CPOServer), "The given CPO server must not be null!");
-
-            #endregion
-
-            this.CPOServer = CPOServer;
+            this.CPOServer = CPOServer ?? throw new ArgumentNullException(nameof(CPOServer), "The given CPO server must not be null!");
 
             #region Register remote start/stop log events
 
-            //RegisterEvent("RemoteReservationStart",
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStartSOAPRequest   += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStartSOAPRequest   -= handler,
-            //              "Reservation", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
+            RegisterEvent("SetServiceAuthorisation",
+                          handler => CPOServer.OnSetServiceAuthorisationSOAPRequest += handler,
+                          handler => CPOServer.OnSetServiceAuthorisationSOAPRequest -= handler,
+                          "RemoteStart", "All").
+                RegisterDefaultConsoleLogTarget(this).
+                RegisterDefaultDiscLogTarget(this);
 
-            //RegisterEvent("RemoteReservationStarted",
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStartSOAPResponse += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStartSOAPResponse -= handler,
-            //              "Reservation", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-            //RegisterEvent("RemoteReservationStop",
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStopSOAPRequest    += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStopSOAPRequest    -= handler,
-            //              "Reservation", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-            //RegisterEvent("RemoteReservationStopped",
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStopSOAPResponse += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteReservationStopSOAPResponse -= handler,
-            //              "Reservation", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-
-            //RegisterEvent("RemoteStart",
-            //              handler => CPOServer.OnAuthorizeRemoteStartSOAPResponse   += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteStartSOAPResponse   -= handler,
-            //              "Remote", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-            //RegisterEvent("RemoteStarted",
-            //              handler => CPOServer.OnAuthorizeRemoteStartSOAPResponse += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteStartSOAPResponse -= handler,
-            //              "Remote", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-            //RegisterEvent("RemoteStop",
-            //              handler => CPOServer.OnAuthorizeRemoteStopSOAPResponse    += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteStopSOAPResponse    -= handler,
-            //              "Remote", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
-
-            //RegisterEvent("RemoteStopped",
-            //              handler => CPOServer.OnAuthorizeRemoteStopSOAPResponse += handler,
-            //              handler => CPOServer.OnAuthorizeRemoteStopSOAPResponse -= handler,
-            //              "Remote", "All").
-            //    RegisterDefaultConsoleLogTarget(this).
-            //    RegisterDefaultDiscLogTarget(this);
+            RegisterEvent("SetSessionAction",
+                          handler => CPOServer.OnSetSessionActionSOAPResponse += handler,
+                          handler => CPOServer.OnSetSessionActionSOAPResponse -= handler,
+                          "RemoteStop", "All").
+                RegisterDefaultConsoleLogTarget(this).
+                RegisterDefaultDiscLogTarget(this);
 
             #endregion
 

@@ -107,20 +107,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 case EVSEStatusTypes.Available:
                     return EVSEBusyStatusTypes.Free;
 
-                case EVSEStatusTypes.Charging:
-                case EVSEStatusTypes.DoorNotClosed:
-                case EVSEStatusTypes.Faulted:
-                case EVSEStatusTypes.Offline:
-                case EVSEStatusTypes.OutOfService:
-                case EVSEStatusTypes.PluggedIn:
-                case EVSEStatusTypes.WaitingForPlugin:
-                    return EVSEBusyStatusTypes.Busy;
-
                 case EVSEStatusTypes.Reserved:
                     return EVSEBusyStatusTypes.Reserved;
 
+                // case EVSEStatusTypes.Charging:
+                // case EVSEStatusTypes.DoorNotClosed:
+                // case EVSEStatusTypes.Faulted:
+                // case EVSEStatusTypes.Offline:
+                // case EVSEStatusTypes.OutOfService:
+                // case EVSEStatusTypes.PluggedIn:
+                // case EVSEStatusTypes.WaitingForPlugin:
+
                 default:
-                    return EVSEBusyStatusTypes.Unspecified;
+                    return EVSEBusyStatusTypes.Busy;
 
             }
 
@@ -157,7 +156,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                     return EVSEAvailabilityStatusTypes.Deleted;
 
                 default:
-                    return EVSEAvailabilityStatusTypes.Unspecified;
+                    return EVSEAvailabilityStatusTypes.OutOfOrder;
 
             }
 
@@ -292,34 +291,41 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         {
 
-            //var CustomData = new Dictionary<String, Object>();
+            var CustomData = new Dictionary<String, Object>();
 
-            //CustomData.Add("WWCP.CDR", ChargeDetailRecord);
+            CustomData.Add("eMIP.CDR", ChargeDetailRecord);
 
-            //var CDR = new ChargeDetailRecord(
-            //              ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
-            //              ChargeDetailRecord.SessionId.ToEMIP(),
-            //              ChargeDetailRecord.SessionTime.Value.StartTime,
-            //              ChargeDetailRecord.SessionTime.Value.EndTime.Value,
-            //              ChargeDetailRecord.IdentificationStart.ToEMIP(),
-            //              ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
-            //              ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
-            //              ChargeDetailRecord.SessionTime.HasValue ? ChargeDetailRecord.SessionTime.Value.StartTime : new DateTime?(),
-            //              ChargeDetailRecord.SessionTime.HasValue ? ChargeDetailRecord.SessionTime.Value.EndTime   : null,
-            //              ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.First().Value : new Single?(),
-            //              ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.Last(). Value : new Single?(),
-            //              ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.Select((Timestamped<Single> v) => v.Value) : null,
-            //              ChargeDetailRecord.ConsumedEnergy,
-            //              ChargeDetailRecord.MeteringSignature,
-            //              ChargeDetailRecord.GetCustomDataAs<HubOperator_Id?>("eMIP.HubOperatorId"),
-            //              ChargeDetailRecord.GetCustomDataAs<HubProvider_Id?>("eMIP.HubProviderId"),
-            //              CustomData
-            //          );
+            var CDR = new ChargeDetailRecord(
+                          CDRNatures.Final,
+                          ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
+                          Service_Id.Parse("1"),
+                          ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
+                          Contract_Id.Parse("test"),
+                          User_Id.Parse(ChargeDetailRecord.IdentificationStart.ToString()),
+                          ChargeDetailRecord.SessionTime.Value.StartTime,
+                          ChargeDetailRecord.SessionTime.Value.EndTime.Value
 
-            //if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
-            //    CDR = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, CDR);
+                      //ChargeDetailRecord.SessionId.ToEMIP(),
+                      //ChargeDetailRecord.SessionTime.Value.StartTime,
+                      //ChargeDetailRecord.SessionTime.Value.EndTime.Value,
 
-            return null;
+                      //ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
+                      //ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
+
+                      //ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.First().Value : new Single?(),
+                      //ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.Last(). Value : new Single?(),
+                      //ChargeDetailRecord.EnergyMeteringValues?.Any() == true ? ChargeDetailRecord.EnergyMeteringValues.Select((Timestamped<Single> v) => v.Value) : null,
+                      //ChargeDetailRecord.ConsumedEnergy,
+                      //ChargeDetailRecord.MeteringSignature,
+                      //ChargeDetailRecord.GetCustomDataAs<HubOperator_Id?>("eMIP.HubOperatorId"),
+                      //ChargeDetailRecord.GetCustomDataAs<HubProvider_Id?>("eMIP.HubProviderId"),
+                      //CustomData
+                      );
+
+            if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
+                CDR = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, CDR);
+
+            return CDR;
 
         }
 

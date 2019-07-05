@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2014-2019 GraphDefined GmbH
  * This file is part of WWCP Gireve <https://github.com/OpenChargingCloud/WWCP_Gireve>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

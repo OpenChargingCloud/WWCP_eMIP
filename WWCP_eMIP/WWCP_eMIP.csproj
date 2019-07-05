@@ -61,10 +61,15 @@
     <Compile Include="DataTypes\ACustomDataBuilder.cs" />
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
     <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
+    <Compile Include="DataTypes\Complex\SessionEvent.cs" />
+    <Compile Include="DataTypes\Complex\SessionAction.cs" />
     <Compile Include="DataTypes\Complex\MeterReport.cs" />
+    <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />
+    <Compile Include="DataTypes\Simple\SessionEventNatures.cs" />
+    <Compile Include="DataTypes\Simple\SessionActionNatures.cs" />
     <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingPoolAvailabilityStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\ChargingStationAvailabilityStatusTypes.cs" />
@@ -95,6 +100,7 @@
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />
+    <Compile Include="Messages\CPO\SetSessionEventReportRequest.cs" />
     <Compile Include="Messages\CPO\SetChargeDetailRecordRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />
@@ -114,6 +120,10 @@
     <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatResponse.cs" />
+    <Compile Include="Messages\IOP\SetSessionActionRequest.cs" />
+    <Compile Include="Messages\IOP\SetSessionActionResponse.cs" />
+    <Compile Include="Messages\IOP\SetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\IOP\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\IRequest.cs" />
     <Compile Include="Messages\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

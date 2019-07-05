@@ -30,26 +30,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     public static partial class ConversionMethods
     {
 
-        #region AsAuthorisationValue(Number)
+        #region AsRemoteStartStopValue(Number)
 
         /// <summary>
-        /// Parse the given numeric representation of an authorisation value.
+        /// Parse the given numeric representation of a remote start/stop request.
         /// </summary>
-        /// <param name="Number">A numeric-representation of an authorisation value.</param>
-        public static AuthorisationValues AsAuthorisationValue(Byte Number)
+        /// <param name="Number">A numeric-representation of a remote start/stop request.</param>
+        public static RemoteStartStopValues AsRemoteStartStopValue(Byte Number)
         {
 
             switch (Number)
             {
 
                 case 1:
-                    return AuthorisationValues.OK;
+                    return RemoteStartStopValues.Start;
 
                 case 2:
-                    return AuthorisationValues.KO;
+                    return RemoteStartStopValues.Stop;
 
                 default:
-                    return AuthorisationValues.Undefined;
+                    return RemoteStartStopValues.Undefined;
 
             }
 
@@ -57,13 +57,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region AsAuthorisationValue(Text)
+        #region AsRemoteStartStopValue(Text)
 
         /// <summary>
-        /// Parse the given text representation of an authorisation value.
+        /// Parse the given text representation of a remote start/stop request.
         /// </summary>
-        /// <param name="Text">A text representation of an authorisation value.</param>
-        public static AuthorisationValues AsAuthorisationValue(String Text)
+        /// <param name="Text">A text representation of a remote start/stop request.</param>
+        public static RemoteStartStopValues AsRemoteStartStopValue(String Text)
         {
 
             switch (Text)
@@ -71,14 +71,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 case "1":
                 case "OK":
-                    return AuthorisationValues.OK;
+                    return RemoteStartStopValues.Start;
 
                 case "2":
                 case "KO":
-                    return AuthorisationValues.KO;
+                    return RemoteStartStopValues.Stop;
 
                 default:
-                    return AuthorisationValues.Undefined;
+                    return RemoteStartStopValues.Undefined;
 
             }
 
@@ -87,22 +87,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region AsText  (this AuthorisationValue)
+        #region AsText  (this RemoteStartStopValue)
 
         /// <summary>
-        /// Return a text representation of the given authorisation value.
+        /// Return a text representation of the given remote start/stop value.
         /// </summary>
-        /// <param name="AuthorisationValue">An authorisation value.</param>
-        public static String AsText(this AuthorisationValues AuthorisationValue)
+        /// <param name="RemoteStartStopValue">An remote start/stop value.</param>
+        public static String AsText(this RemoteStartStopValues RemoteStartStopValue)
         {
 
-            switch (AuthorisationValue)
+            switch (RemoteStartStopValue)
             {
 
-                case AuthorisationValues.OK:
+                case RemoteStartStopValues.Start:
                     return "1";
 
-                case AuthorisationValues.KO:
+                case RemoteStartStopValues.Stop:
                     return "2";
 
                 default:
@@ -114,22 +114,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region AsNumber(this AuthorisationValue)
+        #region AsNumber(this RemoteStartStopValue)
 
         /// <summary>
-        /// Return a numeric representation of the given authorisation value.
+        /// Return a numeric representation of the given remote start/stop value.
         /// </summary>
-        /// <param name="AuthorisationValue">An authorisation value.</param>
-        public static Byte AsNumber(this AuthorisationValues AuthorisationValue)
+        /// <param name="RemoteStartStopValue">An remote start/stop value.</param>
+        public static Byte AsNumber(this RemoteStartStopValues RemoteStartStopValue)
         {
 
-            switch (AuthorisationValue)
+            switch (RemoteStartStopValue)
             {
 
-                case AuthorisationValues.OK:
+                case RemoteStartStopValues.Start:
                     return 1;
 
-                case AuthorisationValues.KO:
+                case RemoteStartStopValues.Stop:
                     return 2;
 
                 default:
@@ -144,9 +144,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     }
 
     /// <summary>
-    /// The result of an authorisation request.
+    /// The commands of a remote start/stop request.
     /// </summary>
-    public enum AuthorisationValues
+    public enum RemoteStartStopValues
     {
 
         /// <summary>
@@ -155,14 +155,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         Undefined,
 
         /// <summary>
-        /// An eMSP has authorised the service or request a service.
+        /// Start a charging process.
         /// </summary>
-        OK,
+        Start,
 
         /// <summary>
-        /// An eMSP has forbidden the service.
+        /// Stop a charging process.
         /// </summary>
-        KO
+        Stop
 
     }
 

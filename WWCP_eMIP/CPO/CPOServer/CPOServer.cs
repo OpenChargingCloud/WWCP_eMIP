@@ -167,6 +167,243 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected void RegisterURITemplates()
         {
 
+            #region /Authorization - AuthorizeRemoteStart
+
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix,// + AuthorizationURI,
+                                            "AuthorizeRemoteStart",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eRoamingAuthorizeRemoteStart").FirstOrDefault(),
+                                            async (HTTPRequest, AuthorizeRemoteStartXML) => {
+
+
+// <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:aut="https://api-iop.gireve.com/schemas/AuthorisationV1/">
+//   <soap:Header/>
+//   <soap:Body>
+//      <aut:eMIP_FromIOP_SetServiceAuthorisationRequest>
+//
+//         <!--Optional:-->
+//         <transactionId>?</transactionId>
+//
+//         <partnerIdType>?</partnerIdType>
+//         <partnerId>?</partnerId>
+//         <operatorIdType>?</operatorIdType>
+//         <operatorId>?</operatorId>
+//         <targetOperatorIdType>?</targetOperatorIdType>
+//         <targetOperatorId>?</targetOperatorId>
+//         <EVSEIdType>?</EVSEIdType>
+//         <EVSEId>?</EVSEId>
+//         <userIdType>?</userIdType>
+//         <userId>?</userId>
+//         <requestedServiceId>?</requestedServiceId>
+//         <serviceSessionId>?</serviceSessionId>
+//         <authorisationValue>?</authorisationValue>
+//         <intermediateCDRRequested>?</intermediateCDRRequested>
+//
+//         <!--Optional:-->
+//         <userContractIdAlias>?</userContractIdAlias>
+//
+//         <!--Optional:-->
+//         <meterLimitList>
+//
+//            <!--Zero or more repetitions:-->
+//            <meterReport>
+//               <meterTypeId>?</meterTypeId>
+//               <meterValue>?</meterValue>
+//               <meterUnit>?</meterUnit>
+//            </meterReport>
+//
+//         </meterLimitList>
+//
+//         <!--Optional:-->
+//         <parameter>?</parameter>
+//
+//         <!--Optional:-->
+//         <bookingId>?</bookingId>
+//
+//      </aut:eMIP_FromIOP_SetServiceAuthorisationRequest>
+//   </soap:Body>
+// </soap:Envelope>
+
+
+             //   Acknowledgement<EMP.AuthorizeRemoteStartRequest> Acknowledgement  = null;
+
+                #region Send OnAuthorizeRemoteStartSOAPRequest event
+
+                //var StartTime = DateTime.Now;
+
+                //try
+                //{
+
+                //    if (OnAuthorizeRemoteStartSOAPRequest != null)
+                //        await Task.WhenAll(OnAuthorizeRemoteStartSOAPRequest.GetInvocationList().
+                //                           Cast<RequestLogHandler>().
+                //                           Select(e => e(StartTime,
+                //                                         SOAPServer,
+                //                                         HTTPRequest))).
+                //                           ConfigureAwait(false);
+
+                //}
+                //catch (Exception e)
+                //{
+                //    e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartSOAPRequest));
+                //}
+
+                #endregion
+
+
+                //if (EMP.AuthorizeRemoteStartRequest.TryParse(AuthorizeRemoteStartXML,
+                //                                             out EMP.AuthorizeRemoteStartRequest AuthorizeRemoteStartRequest,
+                //                                             CustomAuthorizeRemoteStartRequestParser,
+                //                                             CustomIdentificationParser,
+                //                                             OnException,
+
+                //                                             HTTPRequest.Timestamp,
+                //                                             HTTPRequest.CancellationToken,
+                //                                             HTTPRequest.EventTrackingId,
+                //                                             HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                //{
+
+                //    #region Send OnAuthorizeRemoteStartRequest event
+
+                //    try
+                //    {
+
+                //        if (OnAuthorizeRemoteStartRequest != null)
+                //            await Task.WhenAll(OnAuthorizeRemoteStartRequest.GetInvocationList().
+                //                               Cast<OnAuthorizeRemoteStartRequestDelegate>().
+                //                               Select(e => e(StartTime,
+                //                                              AuthorizeRemoteStartRequest.Timestamp.Value,
+                //                                              this,
+                //                                              ServiceId,
+                //                                              AuthorizeRemoteStartRequest.EventTrackingId,
+                //                                              AuthorizeRemoteStartRequest.EVSEId,
+                //                                              AuthorizeRemoteStartRequest.PartnerProductId,
+                //                                              AuthorizeRemoteStartRequest.SessionId,
+                //                                              AuthorizeRemoteStartRequest.PartnerSessionId,
+                //                                              AuthorizeRemoteStartRequest.ProviderId,
+                //                                              AuthorizeRemoteStartRequest.EVCOId,
+                //                                              AuthorizeRemoteStartRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                //                               ConfigureAwait(false);
+
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartRequest));
+                //    }
+
+                //    #endregion
+
+                //    #region Call async subscribers
+
+                //    if (OnAuthorizeRemoteStart != null)
+                //    {
+
+                //        var results = await Task.WhenAll(OnAuthorizeRemoteStart.GetInvocationList().
+                //                                             Cast<OnAuthorizeRemoteStartDelegate>().
+                //                                             Select(e => e(DateTime.Now,
+                //                                                           this,
+                //                                                           AuthorizeRemoteStartRequest))).
+                //                                             ConfigureAwait(false);
+
+                //        Acknowledgement = results.FirstOrDefault();
+
+                //    }
+
+                //    if (Acknowledgement == null)
+                //        Acknowledgement = Acknowledgement<EMP.AuthorizeRemoteStartRequest>.SystemError(
+                //                             AuthorizeRemoteStartRequest,
+                //                             "Could not process the incoming AuthorizeRemoteStart request!",
+                //                             null,
+                //                             AuthorizeRemoteStartRequest.SessionId,
+                //                             AuthorizeRemoteStartRequest.PartnerSessionId
+                //                         );
+
+                //    #endregion
+
+                //    #region Send OnAuthorizeRemoteStartResponse event
+
+                //    var EndTime = DateTime.Now;
+
+                //    try
+                //    {
+
+                //        if (OnAuthorizeRemoteStartResponse != null)
+                //            await Task.WhenAll(OnAuthorizeRemoteStartResponse.GetInvocationList().
+                //                               Cast<OnAuthorizeRemoteStartResponseDelegate>().
+                //                               Select(e => e(EndTime,
+                //                                             this,
+                //                                             ServiceId,
+                //                                             AuthorizeRemoteStartRequest.EventTrackingId,
+                //                                             AuthorizeRemoteStartRequest.EVSEId,
+                //                                             AuthorizeRemoteStartRequest.PartnerProductId,
+                //                                             AuthorizeRemoteStartRequest.SessionId,
+                //                                             AuthorizeRemoteStartRequest.PartnerSessionId,
+                //                                             AuthorizeRemoteStartRequest.ProviderId,
+                //                                             AuthorizeRemoteStartRequest.EVCOId,
+                //                                             AuthorizeRemoteStartRequest.RequestTimeout ?? DefaultRequestTimeout,
+                //                                             Acknowledgement,
+                //                                             EndTime - StartTime))).
+                //                               ConfigureAwait(false);
+
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartResponse));
+                //    }
+
+                //    #endregion
+
+                //}
+
+                //else
+                //    Acknowledgement = Acknowledgement<EMP.AuthorizeRemoteStartRequest>.DataError(
+                //                          AuthorizeRemoteStartRequest,
+                //                          "Could not process the incoming AuthorizeRemoteStart request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                //var HTTPResponse = new HTTPResponseBuilder(HTTPRequest) {
+                //    HTTPStatusCode  = HTTPStatusCode.OK,
+                //    Server          = SOAPServer.DefaultServerName,
+                //    Date            = DateTime.Now,
+                //    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                //    Content         = SOAP.Encapsulation(Acknowledgement.ToXML(CustomAuthorizeRemoteStartAcknowledgementSerializer,
+                //                                                               CustomStatusCodeSerializer)).ToUTF8Bytes(),
+                //    Connection      = "close"
+                //};
+
+                #endregion
+
+                #region Send OnAuthorizeRemoteStartSOAPResponse event
+
+                //try
+                //{
+
+                //    if (OnAuthorizeRemoteStartSOAPResponse != null)
+                //        await Task.WhenAll(OnAuthorizeRemoteStartSOAPResponse.GetInvocationList().
+                //                           Cast<AccessLogHandler>().
+                //                           Select(e => e(HTTPResponse.Timestamp,
+                //                                         SOAPServer,
+                //                                         HTTPRequest,
+                //                                         HTTPResponse))).
+                //                           ConfigureAwait(false);
+
+                //}
+                //catch (Exception e)
+                //{
+                //    e.Log(nameof(CPOServer) + "." + nameof(OnAuthorizeRemoteStartSOAPResponse));
+                //}
+
+                #endregion
+
+                //return HTTPResponse;
+                return null;
+
+            });
+
+            #endregion
 
         }
 

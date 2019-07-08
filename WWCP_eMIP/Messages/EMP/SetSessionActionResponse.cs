@@ -27,7 +27,7 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetSessionActionResponse(SetSessionActionRequest              Request,
+        public SetSessionActionResponse(SetSessionActionRequest       Request,
                                         Transaction_Id                       TransactionId,
                                         RequestStatus                        RequestStatus,
                                         IReadOnlyDictionary<String, Object>  CustomData  = null)
@@ -67,7 +67,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //                xmlns:aut  = "https://api-iop.gireve.com/schemas/AuthorisationV1/">
         //    <soap:Header/>
         //    <soap:Body>
-        //       <aut:eMIP_FromIOP_SetSessionActionResponse>
+        //       <aut:eMIP_ToIOP_SetSessionActionResponse>
         //
         //          <transactionId>?</transactionId>
         //
@@ -79,7 +79,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>?</requestStatus>
         //
-        //       </aut:eMIP_FromIOP_SetSessionActionResponse>
+        //       </aut:eMIP_ToIOP_SetSessionActionResponse>
         //    </soap:Body>
         // </soap:Envelope>
 

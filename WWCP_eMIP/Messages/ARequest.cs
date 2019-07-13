@@ -111,11 +111,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             this.PartnerId                = PartnerId;
             this.TransactionId            = TransactionId;
 
-            this.Timestamp                = Timestamp         ?? DateTime.UtcNow;
-            this.CancellationTokenSource  = CancellationToken == null ? new CancellationTokenSource() : null;
-            this.CancellationToken        = CancellationToken ?? CancellationTokenSource.Token;
-            this.EventTrackingId          = EventTrackingId   ?? EventTracking_Id.New;
-            this.RequestTimeout           = RequestTimeout    ?? DefaultRequestTimeout;
+            this.Timestamp                = Timestamp                 ?? DateTime.UtcNow;
+            this.CancellationTokenSource  = CancellationToken == null  ? new CancellationTokenSource() : null;
+            this.CancellationToken        = CancellationToken         ?? CancellationTokenSource.Token;
+            this.EventTrackingId          = EventTrackingId           ?? EventTracking_Id.New;
+            this.RequestTimeout           = RequestTimeout            ?? DefaultRequestTimeout;
 
         }
 

@@ -465,7 +465,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-
         #region ToBuilder
 
         /// <summary>
@@ -606,7 +605,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         #endregion
-
 
     }
 

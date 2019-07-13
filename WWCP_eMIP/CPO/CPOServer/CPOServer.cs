@@ -97,6 +97,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         public CustomXMLParserDelegate<SetSessionActionRequest>              CustomSetSessionActionRequestParser               { get; set; }
 
+        public CustomXMLParserDelegate<SessionAction>                        CustomSessionActionParser                         { get; set; }
+
         public CustomXMLSerializerDelegate<SetSessionActionResponse>         CustomSetSessionActionResponseSerializer          { get; set; }
 
 
@@ -109,27 +111,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region OnSetServiceAuthorisation
 
         /// <summary>
-        /// An event sent whenever a 'set service authorisation' SOAP request was received.
+        /// An event sent whenever a SetServiceAuthorisation SOAP request was received.
         /// </summary>
         public event RequestLogHandler                           OnSetServiceAuthorisationSOAPRequest;
 
         /// <summary>
-        /// An event sent whenever a 'set service authorisation' request was received.
+        /// An event sent whenever a SetServiceAuthorisation request was received.
         /// </summary>
         public event OnSetServiceAuthorisationRequestDelegate    OnSetServiceAuthorisationRequest;
 
         /// <summary>
-        /// An event sent whenever a 'set service authorisation' request was received.
+        /// An event sent whenever a SetServiceAuthorisation request was received.
         /// </summary>
         public event OnSetServiceAuthorisationDelegate           OnSetServiceAuthorisation;
 
         /// <summary>
-        /// An event sent whenever a response to a 'set service authorisation' request was sent.
+        /// An event sent whenever a response to a SetServiceAuthorisation request was sent.
         /// </summary>
         public event OnSetServiceAuthorisationResponseDelegate   OnSetServiceAuthorisationResponse;
 
         /// <summary>
-        /// An event sent whenever a response to a 'set service authorisation' SOAP request was sent.
+        /// An event sent whenever a response to a SetServiceAuthorisation SOAP request was sent.
         /// </summary>
         public event AccessLogHandler                            OnSetServiceAuthorisationSOAPResponse;
 
@@ -138,27 +140,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region OnSetSessionAction
 
         /// <summary>
-        /// An event sent whenever a 'set session' SOAP request was received.
+        /// An event sent whenever a SetSessionAction SOAP request was received.
         /// </summary>
         public event RequestLogHandler                    OnSetSessionActionSOAPRequest;
 
         /// <summary>
-        /// An event sent whenever a 'set session' request was received.
+        /// An event sent whenever a SetSessionAction request was received.
         /// </summary>
         public event OnSetSessionActionRequestDelegate    OnSetSessionActionRequest;
 
         /// <summary>
-        /// An event sent whenever a 'set session' request was received.
+        /// An event sent whenever a SetSessionAction request was received.
         /// </summary>
         public event OnSetSessionActionDelegate           OnSetSessionAction;
 
         /// <summary>
-        /// An event sent whenever a response to a 'set session' request was sent.
+        /// An event sent whenever a response to a SetSessionAction request was sent.
         /// </summary>
         public event OnSetSessionActionResponseDelegate   OnSetSessionActionResponse;
 
         /// <summary>
-        /// An event sent whenever a response to a 'set session' SOAP request was sent.
+        /// An event sent whenever a response to a SetSessionAction SOAP request was sent.
         /// </summary>
         public event AccessLogHandler                     OnSetSessionActionSOAPResponse;
 
@@ -266,7 +268,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Send OnSetServiceAuthorisationSOAPRequest event
 
-                var StartTime = DateTime.Now;
+                var StartTime = DateTime.UtcNow;
 
                 try
                 {
@@ -345,7 +347,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                         var results = await Task.WhenAll(OnSetServiceAuthorisation.GetInvocationList().
                                                              Cast<OnSetServiceAuthorisationDelegate>().
-                                                             Select(e => e(DateTime.Now,
+                                                             Select(e => e(DateTime.UtcNow,
                                                                            this,
                                                                            _SetServiceAuthorisationRequest))).
                                                              ConfigureAwait(false);
@@ -367,7 +369,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     #region Send OnSetServiceAuthorisationResponse event
 
-                    var EndTime = DateTime.Now;
+                    var EndTime = DateTime.UtcNow;
 
                     try
                     {
@@ -420,7 +422,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.Now,
+                    Date            = DateTime.UtcNow,
                     ContentType     = HTTPContentType.XMLTEXT_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
@@ -475,7 +477,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Send OnSetSessionActionSOAPRequest event
 
-                var StartTime = DateTime.Now;
+                var StartTime = DateTime.UtcNow;
 
                 try
                 {
@@ -499,6 +501,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (SetSessionActionRequest.TryParse(SetSessionActionXML,
                                                      CustomSetSessionActionRequestParser,
+                                                     CustomSessionActionParser,
                                                      out SetSessionActionRequest _SetSessionActionRequest,
                                                      OnException,
 
@@ -521,17 +524,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              this,
                                                              ServiceId,
                                                              _SetSessionActionRequest.EventTrackingId,
+
                                                              _SetSessionActionRequest.PartnerId,
                                                              _SetSessionActionRequest.OperatorId,
                                                              _SetSessionActionRequest.TargetOperatorId,
                                                              _SetSessionActionRequest.ServiceSessionId,
-                                                             _SetSessionActionRequest.ExecPartnerSessionId,
-                                                             _SetSessionActionRequest.SessionActionNature,
-                                                             _SetSessionActionRequest.SessionActionDateTime,
+                                                             _SetSessionActionRequest.SessionAction,
                                                              _SetSessionActionRequest.TransactionId,
-                                                             _SetSessionActionRequest.SessionActionId,
-                                                             _SetSessionActionRequest.SessionActionParameter,
-                                                             _SetSessionActionRequest.RelatedSessionEventId,
+                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+
                                                              _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout))).
                                                ConfigureAwait(false);
 
@@ -550,7 +551,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                         var results = await Task.WhenAll(OnSetSessionAction.GetInvocationList().
                                                              Cast<OnSetSessionActionDelegate>().
-                                                             Select(e => e(DateTime.Now,
+                                                             Select(e => e(DateTime.UtcNow,
                                                                            this,
                                                                            _SetSessionActionRequest))).
                                                              ConfigureAwait(false);
@@ -572,7 +573,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     #region Send OnSetSessionActionResponse event
 
-                    var EndTime = DateTime.Now;
+                    var EndTime = DateTime.UtcNow;
 
                     try
                     {
@@ -584,17 +585,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              this,
                                                              ServiceId,
                                                              _SetSessionActionRequest.EventTrackingId,
+
                                                              _SetSessionActionRequest.PartnerId,
                                                              _SetSessionActionRequest.OperatorId,
                                                              _SetSessionActionRequest.TargetOperatorId,
                                                              _SetSessionActionRequest.ServiceSessionId,
-                                                             _SetSessionActionRequest.ExecPartnerSessionId,
-                                                             _SetSessionActionRequest.SessionActionNature,
-                                                             _SetSessionActionRequest.SessionActionDateTime,
+                                                             _SetSessionActionRequest.SessionAction,
                                                              _SetSessionActionRequest.TransactionId,
-                                                             _SetSessionActionRequest.SessionActionId,
-                                                             _SetSessionActionRequest.SessionActionParameter,
-                                                             _SetSessionActionRequest.RelatedSessionEventId,
+                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+
                                                              _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout,
                                                              Response,
                                                              EndTime - StartTime))).
@@ -622,7 +621,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.Now,
+                    Date            = DateTime.UtcNow,
                     ContentType     = HTTPContentType.XMLTEXT_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"

@@ -27,7 +27,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A SetEVSEBusyStatus request.
+    /// A EVSE busy status.
     /// </summary>
     public class EVSEBusyStatus
     {

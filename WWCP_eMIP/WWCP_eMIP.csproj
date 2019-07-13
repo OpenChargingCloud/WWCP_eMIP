@@ -67,7 +67,9 @@
     <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
+    <Compile Include="DataTypes\Simple\SessionAction_Id.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />
+    <Compile Include="DataTypes\Simple\Booking_Id.cs" />
     <Compile Include="DataTypes\Simple\SessionEventNatures.cs" />
     <Compile Include="DataTypes\Simple\SessionActionNatures.cs" />
     <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
@@ -131,12 +133,16 @@
     <Compile Include="Messages\CPO\HeartbeatResponse.cs" />
     <Compile Include="Messages\EMP\HeartbeatRequest.cs" />
     <Compile Include="Messages\EMP\HeartbeatResponse.cs" />
+    <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationRequest.cs" />
+    <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\EMP\SetServiceAuthorisationRequest.cs" />
+    <Compile Include="Messages\EMP\SetServiceAuthorisationResponse.cs" />
     <Compile Include="Messages\EMP\SetSessionActionRequest.cs" />
     <Compile Include="Messages\EMP\SetSessionActionResponse.cs" />
-    <Compile Include="Messages\IOP\SetSessionActionRequest.cs" />
-    <Compile Include="Messages\IOP\SetSessionActionResponse.cs" />
-    <Compile Include="Messages\IOP\SetServiceAuthorisationResponse.cs" />
-    <Compile Include="Messages\IOP\SetServiceAuthorisationRequest.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequest.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetSessionActionResponse.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\IRequest.cs" />
     <Compile Include="Messages\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,6 +165,8 @@
   <ItemGroup>
     <None Include="README.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Messages\IOP\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

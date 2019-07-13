@@ -37,6 +37,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                       SetSessionActionResponse>
     {
 
+        #region Properties
+
+        /// <summary>
+        /// The service session identification.
+        /// </summary>
+        public ServiceSession_Id  ServiceSessionId    { get; }
+
+        /// <summary>
+        /// The unique identification of the session action.
+        /// </summary>
+        public SessionAction_Id   SessionActionId     { get; }
+
+        #endregion
+
         #region Constructor(s)
 
         /// <summary>
@@ -45,10 +59,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// <param name="ServiceSessionId">The service session identification.</param>
+        /// <param name="SessionActionId">The unique identification of the session action.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetSessionActionResponse(SetSessionActionRequest       Request,
+        public SetSessionActionResponse(SetSessionActionRequest              Request,
                                         Transaction_Id                       TransactionId,
                                         RequestStatus                        RequestStatus,
+                                        ServiceSession_Id                    ServiceSessionId,
+                                        SessionAction_Id                     SessionActionId,
                                         IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             : base(Request,
@@ -56,7 +74,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                    RequestStatus,
                    CustomData)
 
-        { }
+        {
+
+            this.ServiceSessionId  = ServiceSessionId;
+            this.SessionActionId   = SessionActionId;
+
+        }
 
         #endregion
 
@@ -70,6 +93,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         //       <aut:eMIP_ToIOP_SetSessionActionResponse>
         //
         //          <transactionId>?</transactionId>
+        //
+        //          <serviceSessionId>IOP-SID-GIR-V-IOPFT01-0dc6fc3...153e</serviceSessionId>
+        //          <sessionActionId>00969e30-78a0-435e-a368-ea50ef20e878</sessionActionId>
         //
         //          <!--       1: OK-Normal:  Normal successful completion! -->
         //          <!--     205: OK-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE! -->
@@ -94,7 +120,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                     Request,
+        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      XElement                                           SetSessionActionResponseXML,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
                                                      OnExceptionDelegate                                OnException                               = null)
@@ -124,7 +150,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                     Request,
+        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      String                                             SetSessionActionResponseText,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
                                                      OnExceptionDelegate                                OnException                               = null)
@@ -167,12 +193,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                 SetSessionActionResponse = new SetSessionActionResponse(
 
-                                                      Request,
+                                               Request,
 
-                                                      SetSessionActionResponseXML.MapValueOrFail    ("transactionId",     Transaction_Id.   Parse),
-                                                      SetSessionActionResponseXML.MapValueOrFail    ("requestStatus",     RequestStatus.    Parse)
+                                               SetSessionActionResponseXML.MapValueOrFail("transactionId",     Transaction_Id.   Parse),
 
-                                                  );
+                                               SetSessionActionResponseXML.MapValueOrFail("requestStatus",     RequestStatus.    Parse),
+
+                                               SetSessionActionResponseXML.MapValueOrFail("serviceSessionId",  ServiceSession_Id.Parse),
+
+                                               SetSessionActionResponseXML.MapValueOrFail("sessionActionId",   SessionAction_Id. Parse)
+
+                                           );
 
 
                 if (CustomSendSetSessionActionResponseParser != null)
@@ -249,8 +280,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetSessionActionResponse",
 
-                          new XElement("transactionId",  TransactionId.ToString()),
-                          new XElement("requestStatus",  RequestStatus.ToString())
+                          new XElement("transactionId",     TransactionId.   ToString()),
+                          new XElement("requestStatus",     RequestStatus.   ToString()),
+                          new XElement("serviceSessionId",  ServiceSessionId.ToString()),
+                          new XElement("sessionActionId",   SessionActionId. ToString())
 
                       );
 
@@ -282,7 +315,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetSessionActionResponse1 == null) || ((Object) SetSessionActionResponse2 == null))
+            if ((SetSessionActionResponse1 is null) || (SetSessionActionResponse2 is null))
                 return false;
 
             return SetSessionActionResponse1.Equals(SetSessionActionResponse2);
@@ -318,11 +351,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            var SetSessionActionResponse = Object as SetSessionActionResponse;
-            if ((Object) SetSessionActionResponse == null)
+            if (!(Object is SetSessionActionResponse SetSessionActionResponse))
                 return false;
 
             return Equals(SetSessionActionResponse);
@@ -341,11 +373,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public override Boolean Equals(SetSessionActionResponse SetSessionActionResponse)
         {
 
-            if ((Object) SetSessionActionResponse == null)
+            if (SetSessionActionResponse is null)
                 return false;
 
-            return TransactionId.Equals(SetSessionActionResponse.TransactionId) &&
-                   RequestStatus.Equals(SetSessionActionResponse.RequestStatus);
+            return TransactionId.   Equals(SetSessionActionResponse.TransactionId)    &&
+                   RequestStatus.   Equals(SetSessionActionResponse.RequestStatus)    &&
+                   ServiceSessionId.Equals(SetSessionActionResponse.ServiceSessionId) &&
+                   SessionActionId. Equals(SetSessionActionResponse.SessionActionId);
 
         }
 
@@ -364,8 +398,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             unchecked
             {
 
-                return TransactionId.GetHashCode() * 3 ^
-                       RequestStatus.GetHashCode();
+                return TransactionId.   GetHashCode() * 7 ^
+                       RequestStatus.   GetHashCode() * 5 ^
+                       ServiceSessionId.GetHashCode() * 3 ^
+                       SessionActionId. GetHashCode();
 
             }
         }
@@ -379,12 +415,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         public override String ToString()
 
-            => String.Concat(TransactionId,
-                             " -> ",
-                             RequestStatus);
+            => String.Concat(TransactionId,    " -> ",
+                             RequestStatus,    ", ",
+                             ServiceSessionId, ", ",
+                             SessionActionId);
 
         #endregion
-
 
 
         #region ToBuilder
@@ -406,6 +442,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                 SetSessionActionResponse>
         {
 
+            #region Properties
+
+            /// <summary>
+            /// The service session identification.
+            /// </summary>
+            public ServiceSession_Id  ServiceSessionId    { get; set; }
+
+            /// <summary>
+            /// The unique identification of the session action.
+            /// </summary>
+            public SessionAction_Id   SessionActionId     { get; set; }
+
+            #endregion
+
             #region Constructor(s)
 
             #region Builder(Request,                         CustomData = null)
@@ -415,7 +465,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="Request">A SetSessionAction request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionRequest       Request,
+            public Builder(SetSessionActionRequest              Request,
                            IReadOnlyDictionary<String, Object>  CustomData  = null)
 
                 : base(Request,
@@ -432,8 +482,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionResponse      SetSessionActionResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                       = null)
+            public Builder(SetSessionActionResponse             SetSessionActionResponse  = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                = null)
 
                 : base(SetSessionActionResponse?.Request,
                        SetSessionActionResponse.HasCustomData
@@ -446,8 +496,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                 if (SetSessionActionResponse != null)
                 {
-                    this.TransactionId  = SetSessionActionResponse.TransactionId;
-                    this.RequestStatus  = SetSessionActionResponse.RequestStatus;
+                    this.TransactionId     = SetSessionActionResponse.TransactionId;
+                    this.RequestStatus     = SetSessionActionResponse.RequestStatus;
+                    this.ServiceSessionId  = SetSessionActionResponse.ServiceSessionId;
+                    this.SessionActionId   = SetSessionActionResponse.SessionActionId;
                 }
 
             }
@@ -467,11 +519,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             public override Boolean Equals(SetSessionActionResponse SetSessionActionResponse)
             {
 
-                if ((Object) SetSessionActionResponse == null)
+                if (SetSessionActionResponse is null)
                     return false;
 
-                return TransactionId.Equals(SetSessionActionResponse.TransactionId) &&
-                       RequestStatus.Equals(SetSessionActionResponse.RequestStatus);
+                return TransactionId.   Equals(SetSessionActionResponse.TransactionId)    &&
+                       RequestStatus.   Equals(SetSessionActionResponse.RequestStatus)    &&
+                       ServiceSessionId.Equals(SetSessionActionResponse.ServiceSessionId) &&
+                       SessionActionId. Equals(SetSessionActionResponse.SessionActionId);
 
             }
 
@@ -486,14 +540,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                 => new SetSessionActionResponse(Request,
                                                 TransactionId,
-                                                RequestStatus);
+                                                RequestStatus,
+                                                ServiceSessionId,
+                                                SessionActionId);
 
             #endregion
 
         }
 
         #endregion
-
 
     }
 

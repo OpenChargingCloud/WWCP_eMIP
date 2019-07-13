@@ -47,12 +47,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String   DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " EMP Client";
+        public new const           String    DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " EMP Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort   DefaultRemotePort           = IPPort.Parse(443);
+        public new static readonly IPPort    DefaultRemotePort           = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
@@ -63,7 +63,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The default SOAP action prefix.
         /// </summary>
-        public     const           String   DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
+        public     const           String    DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
 
         #endregion
 
@@ -130,6 +130,59 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         public CustomXMLSerializerDelegate<HeartbeatRequest>                  CustomHeartbeatRequestSerializer                    { get; set; }
 
+
+        #region CustomSetServiceAuthorisationRequestMapper
+
+        #region CustomSetServiceAuthorisationRequestMapper
+
+        private Func<SetServiceAuthorisationRequest, SetServiceAuthorisationRequest> _CustomSetServiceAuthorisationRequestMapper = _ => _;
+
+        public Func<SetServiceAuthorisationRequest, SetServiceAuthorisationRequest> CustomSetServiceAuthorisationRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetServiceAuthorisationRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetServiceAuthorisationRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetServiceAuthorisationSOAPRequestMapper
+
+        private Func<SetServiceAuthorisationRequest, XElement, XElement> _CustomSetServiceAuthorisationSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetServiceAuthorisationRequest, XElement, XElement> CustomSetServiceAuthorisationSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetServiceAuthorisationSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetServiceAuthorisationSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetServiceAuthorisationResponse> CustomSetServiceAuthorisationParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetServiceAuthorisationRequest>    CustomSetServiceAuthorisationRequestSerializer      { get; set; }
+
         #endregion
 
         #region Events
@@ -155,6 +208,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
         public event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
+
+        #endregion
+
+
+        #region OnSetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        public event OnSetServiceAuthorisationRequestDelegate   OnSetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                    OnSetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                   OnSetServiceAuthorisationSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation request had been received.
+        /// </summary>
+        public event OnSetServiceAuthorisationResponseDelegate  OnSetServiceAuthorisationResponse;
 
         #endregion
 
@@ -277,7 +355,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         #endregion
 
 
-        #region SendHeartbeat            (Request)
+        #region SendHeartbeat              (Request)
 
         /// <summary>
         /// Send the given heartbeat.
@@ -518,6 +596,284 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #endregion
 
+
+        #region SetServiceAuthorisation    (Request)
+
+        /// <summary>
+        /// Send the given SetServiceAuthorisation request.
+        /// </summary>
+        /// <param name="Request">A SetServiceAuthorisation request.</param>
+        public async Task<HTTPResponse<SetServiceAuthorisationResponse>>
+
+            SetServiceAuthorisation(SetServiceAuthorisationRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetServiceAuthorisation request must not be null!");
+
+            Request = _CustomSetServiceAuthorisationRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetServiceAuthorisation request must not be null!");
+
+
+            Byte                            TransmissionRetry  = 0;
+            HTTPResponse<SetServiceAuthorisationResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetServiceAuthorisationRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetServiceAuthorisationRequest != null)
+                    await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
+                                       Cast<OnSetServiceAuthorisationRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.UserId,
+                                                     Request.RequestedServiceId,
+                                                     Request.AuthorisationValue,
+                                                     Request.IntermediateCDRRequested,
+
+                                                     Request.TransactionId,
+                                                     Request.PartnerServiceSessionId,
+                                                     Request.UserContractIdAlias,
+                                                     Request.MeterLimits,
+                                                     Request.Parameter,
+                                                     Request.BookingId,
+                                                     Request.SalePartnerBookingId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetServiceAuthorisationSOAPRequestMapper(Request,
+                                                                                                     SOAP.Encapsulation(Request.ToXML(CustomSetServiceAuthorisationRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetServiceAuthorisationV1/",
+                                                     RequestLogDelegate:   OnSetServiceAuthorisationSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetServiceAuthorisationSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetServiceAuthorisationResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetServiceAuthorisationParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetServiceAuthorisationResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetServiceAuthorisationResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError,
+                                                                        ServiceSession_Id.Zero
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetServiceAuthorisationResponse>(httpresponse,
+                                                                                                        new SetServiceAuthorisationResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            ServiceSession_Id.Zero
+                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetServiceAuthorisationResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetServiceAuthorisationResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError,
+                                                                        ServiceSession_Id.Zero
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetServiceAuthorisationResponse>.ExceptionThrown(
+
+                                                                new SetServiceAuthorisationResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable,
+                                                                    ServiceSession_Id.Zero
+                                                                //httpresponse.HTTPStatusCode.ToString(),
+                                                                //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetServiceAuthorisationResponse>.OK(
+                                 new SetServiceAuthorisationResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError,
+                                     ServiceSession_Id.Zero
+                                 //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSetServiceAuthorisationResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetServiceAuthorisationResponse != null)
+                    await Task.WhenAll(OnSetServiceAuthorisationResponse.GetInvocationList().
+                                       Cast<OnSetServiceAuthorisationResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.UserId,
+                                                     Request.RequestedServiceId,
+                                                     Request.AuthorisationValue,
+                                                     Request.IntermediateCDRRequested,
+
+                                                     Request.TransactionId,
+                                                     Request.PartnerServiceSessionId,
+                                                     Request.UserContractIdAlias,
+                                                     Request.MeterLimits,
+                                                     Request.Parameter,
+                                                     Request.BookingId,
+                                                     Request.SalePartnerBookingId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+        // ToIOP_SetAuthenticationData
+
+        // ToIOP_SetSessionActionRequest
 
     }
 

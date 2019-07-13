@@ -3039,6 +3039,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+        // eMIP_ToIOP_GetAuthenticationDataRequest
+
+
+
         #region SetChargeDetailRecord                 (Request)
 
         /// <summary>

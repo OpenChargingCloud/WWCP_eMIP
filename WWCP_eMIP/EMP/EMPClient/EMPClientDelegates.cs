@@ -61,4 +61,65 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
     #endregion
 
+
+    #region OnSetServiceAuthorisationRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a SetServiceAuthorisation will be send upstream.
+    /// </summary>
+    public delegate Task OnSetServiceAuthorisationRequestDelegate (DateTime                          LogTimestamp,
+                                                                   DateTime                          RequestTimestamp,
+                                                                   IEMPClient                        Sender,
+                                                                   String                            SenderId,
+                                                                   EventTracking_Id                  EventTrackingId,
+
+                                                                   Partner_Id                        PartnerId,
+                                                                   Operator_Id                       OperatorId,
+                                                                   EVSE_Id                           EVSEId,
+                                                                   User_Id                           UserId,
+                                                                   Service_Id                        RequestedServiceId,
+                                                                   RemoteStartStopValues             AuthorisationValue,
+                                                                   Boolean                           IntermediateCDRRequested,
+
+                                                                   Transaction_Id?                   TransactionId,
+                                                                   PartnerServiceSession_Id?         PartnerServiceSessionId,
+                                                                   Contract_Id?                      UserContractIdAlias,
+                                                                   IEnumerable<MeterReport>          MeterLimits,
+                                                                   String                            Parameter,
+                                                                   Booking_Id?                       BookingId,
+                                                                   Booking_Id?                       SalePartnerBookingId,
+
+                                                                   TimeSpan                          RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a SetServiceAuthorisation had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetServiceAuthorisationResponseDelegate(DateTime                          LogTimestamp,
+                                                                   DateTime                          RequestTimestamp,
+                                                                   IEMPClient                        Sender,
+                                                                   String                            SenderId,
+                                                                   EventTracking_Id                  EventTrackingId,
+
+                                                                   Partner_Id                        PartnerId,
+                                                                   Operator_Id                       OperatorId,
+                                                                   EVSE_Id                           EVSEId,
+                                                                   User_Id                           UserId,
+                                                                   Service_Id                        RequestedServiceId,
+                                                                   RemoteStartStopValues             AuthorisationValue,
+                                                                   Boolean                           IntermediateCDRRequested,
+
+                                                                   Transaction_Id?                   TransactionId,
+                                                                   PartnerServiceSession_Id?         PartnerServiceSessionId,
+                                                                   Contract_Id?                      UserContractIdAlias,
+                                                                   IEnumerable<MeterReport>          MeterLimits,
+                                                                   String                            Parameter,
+                                                                   Booking_Id?                       BookingId,
+                                                                   Booking_Id?                       SalePartnerBookingId,
+
+                                                                   TimeSpan                          RequestTimeout,
+                                                                   SetServiceAuthorisationResponse   Result,
+                                                                   TimeSpan                          Duration);
+
+    #endregion
+
 }

@@ -174,6 +174,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static PartnerServiceSession_Id Random(Byte Length = 20)
             => new PartnerServiceSession_Id(_Random.RandomString(Length));
 
+        public static PartnerServiceSession_Id Zero
+            => new PartnerServiceSession_Id("0");
+
 
         #region Operator overloading
 

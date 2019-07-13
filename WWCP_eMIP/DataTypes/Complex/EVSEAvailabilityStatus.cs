@@ -27,7 +27,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A SetEVSEAvailabilityStatus request.
+    /// A EVSE availability status.
     /// </summary>
     public class EVSEAvailabilityStatus
     {

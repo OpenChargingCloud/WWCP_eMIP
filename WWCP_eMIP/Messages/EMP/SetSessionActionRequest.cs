@@ -40,25 +40,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The operator identification.
         /// </summary>
-        public Operator_Id               OperatorId                { get; }
-
-        /// <summary>
-        /// The target operator identification.
-        /// </summary>
-        public Operator_Id               TargetOperatorId          { get; }
+        public Operator_Id                OperatorId              { get; }
 
         /// <summary>
         /// The service session identification.
         /// </summary>
-        public ServiceSession_Id         ServiceSessionId          { get; }
+        public ServiceSession_Id          ServiceSessionId        { get; }
 
-        public PartnerServiceSession_Id  ExecPartnerSessionId      { get; }
-        public String                    SessionActionNature       { get; }
-        public String                    SessionActionDateTime     { get; }
+        /// <summary>
+        /// An optional partner service session identification.
+        /// </summary>
+        public PartnerServiceSession_Id?  SalePartnerSessionId    { get; }
 
-        public String                    SessionActionId           { get; }
-        public String                    SessionActionParameter    { get; }
-        public String                    RelatedSessionEventId     { get; }
+        /// <summary>
+        /// The session action.
+        /// </summary>
+        public SessionAction              SessionAction           { get; }
 
         #endregion
 
@@ -69,10 +66,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>
-        /// <param name="TargetOperatorId">The target operator identification.</param>
         /// <param name="ServiceSessionId">The service session identification.</param>
+        /// <param name="SessionAction">The session action.</param>
         /// 
         /// <param name="TransactionId">An optional transaction identification.</param>
+        /// <param name="SalePartnerSessionId">An optional partner service session identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -80,16 +78,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public SetSessionActionRequest(Partner_Id                 PartnerId,
                                        Operator_Id                OperatorId,
-                                       Operator_Id                TargetOperatorId,
                                        ServiceSession_Id          ServiceSessionId,
-                                       PartnerServiceSession_Id   ExecPartnerSessionId,
-                                       String                     SessionActionNature,
-                                       String                     SessionActionDateTime,
+                                       SessionAction              SessionAction,
 
                                        Transaction_Id?            TransactionId            = null,
-                                       String                     SessionActionId          = null,
-                                       String                     SessionActionParameter   = null,
-                                       String                     RelatedSessionEventId    = null,
+                                       PartnerServiceSession_Id?  SalePartnerSessionId     = null,
 
                                        DateTime?                  Timestamp                = null,
                                        CancellationToken?         CancellationToken        = null,
@@ -105,16 +98,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         {
 
-            this.OperatorId               = OperatorId;
-            this.TargetOperatorId         = TargetOperatorId;
-            this.ServiceSessionId         = ServiceSessionId;
-            this.ExecPartnerSessionId     = ExecPartnerSessionId;
-            this.SessionActionNature      = SessionActionNature;
-            this.SessionActionDateTime    = SessionActionDateTime;
-
-            this.SessionActionId          = SessionActionId;
-            this.SessionActionParameter   = SessionActionParameter;
-            this.RelatedSessionEventId    = RelatedSessionEventId;
+            this.OperatorId            = OperatorId;
+            this.ServiceSessionId      = ServiceSessionId;
+            this.SessionAction         = SessionAction;
+            this.SalePartnerSessionId  = SalePartnerSessionId;
 
         }
 
@@ -139,11 +126,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         //          <operatorIdType>?</operatorIdType>
         //          <operatorId>?</operatorId>
         //
-        //          <targetOperatorIdType>?</targetOperatorIdType>
-        //          <targetOperatorId>?</targetOperatorId>
-        //
         //          <serviceSessionId>?</serviceSessionId>
-        //          <salePartnerSessionId>?</salePartnerSessionId>
+        //
+        //          <!--Optional:-->
+        //          <salePartnerSessionId>eMSP_Id_001</salePartnerSessionId>
         //
         //          <sessionAction>
         //
@@ -175,14 +161,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="SetSessionActionRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
+        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionActionRequest Parse(XElement                                          SetSessionActionRequestXML,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                                    CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                                     OnExceptionDelegate                               OnException = null)
         {
 
             if (TryParse(SetSessionActionRequestXML,
                          CustomSendSetSessionActionRequestParser,
+                         CustomSessionActionParser,
                          out SetSessionActionRequest _SetSessionActionRequest,
                          OnException))
             {
@@ -202,14 +191,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="SetSessionActionRequestText">The text to parse.</param>
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
+        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionActionRequest Parse(String                                            SetSessionActionRequestText,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                                    CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                                     OnExceptionDelegate                               OnException = null)
         {
 
             if (TryParse(SetSessionActionRequestText,
                          CustomSendSetSessionActionRequestParser,
+                         CustomSessionActionParser,
                          out SetSessionActionRequest _SetSessionActionRequest,
                          OnException))
             {
@@ -229,6 +221,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="SetSessionActionRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
+        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="SetSessionActionRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
@@ -238,6 +231,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                          SetSessionActionRequestXML,
                                        CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                       CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                        out SetSessionActionRequest                       SetSessionActionRequest,
                                        OnExceptionDelegate                               OnException        = null,
 
@@ -256,24 +250,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 SetSessionActionRequest = new SetSessionActionRequest(
 
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("partnerId",                Partner_Id.              Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail    ("partnerId",             Partner_Id.              Parse),
 
                                                      //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("operatorId",               Operator_Id.             Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail    ("operatorId",            Operator_Id.             Parse),
 
-                                                     //ToDo: What to do with: <targetOperatorIdType>eMI3</targetOperatorIdType>
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.             Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail    ("serviceSessionId",      ServiceSession_Id.       Parse),
 
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.       Parse),
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("salePartnerSessionId",     PartnerServiceSession_Id.Parse),
+                                                     SessionActionXML.          MapElementOrFail  ("sessionAction",
+                                                                                                   (s, e) => SessionAction.Parse(s,
+                                                                                                                                 CustomSessionActionParser,
+                                                                                                                                 e),
+                                                                                                   OnException),
 
-                                                     SessionActionXML.          ElementValueOrFail   ("sessionActionNature"),
-                                                     SessionActionXML.          ElementValueOrFail   ("sessionActionDateTime"),
 
-                                                     SetSessionActionRequestXML.MapValueOrNullable   ("transactionId",            Transaction_Id.          Parse),
-                                                     SessionActionXML.          ElementValueOrDefault("sessionActionId"),
-                                                     SessionActionXML.          ElementValueOrDefault("sessionActionParameter"),
-                                                     SessionActionXML.          ElementValueOrDefault("relatedSessionEventId"),
+                                                     SetSessionActionRequestXML.MapValueOrNullable("transactionId",         Transaction_Id.          Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail    ("salePartnerSessionId",  PartnerServiceSession_Id.Parse),
 
                                                      Timestamp,
                                                      CancellationToken,
@@ -311,10 +303,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="SetSessionActionRequestText">The text to parse.</param>
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
+        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="SetSessionActionRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(String                                            SetSessionActionRequestText,
                                        CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                       CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                        out SetSessionActionRequest                       SetSessionActionRequest,
                                        OnExceptionDelegate                               OnException  = null)
         {
@@ -324,6 +318,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                 if (TryParse(XDocument.Parse(SetSessionActionRequestText).Root,
                              CustomSendSetSessionActionRequestParser,
+                             CustomSessionActionParser,
                              out SetSessionActionRequest,
                              OnException))
                 {
@@ -355,40 +350,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetSessionActionRequest",
 
                           TransactionId.HasValue
-                              ? new XElement("transactionId",           TransactionId.          ToString())
+                              ? new XElement("transactionId",         TransactionId.       ToString())
                               : null,
 
-                          new XElement("partnerIdType",                 PartnerId.Format.       AsText()),
-                          new XElement("partnerId",                     PartnerId.              ToString()),
+                          new XElement("partnerIdType",       PartnerId.Format. AsText()),
+                          new XElement("partnerId",           PartnerId.        ToString()),
 
-                          new XElement("operatorIdType",                OperatorId.Format.      AsText()),
-                          new XElement("operatorId",                    OperatorId.             ToString()),
+                          new XElement("operatorIdType",      OperatorId.Format.AsText()),
+                          new XElement("operatorId",          OperatorId.       ToString()),
 
-                          new XElement("targetOperatorIdType",          TargetOperatorId.Format.AsText()),
-                          new XElement("targetOperatorId",              TargetOperatorId.       ToString()),
+                          new XElement("serviceSessionId",    ServiceSessionId. ToString()),
 
-                          new XElement("serviceSessionId",              ServiceSessionId.       ToString()),
-                          new XElement("execPartnerSessionId",          ExecPartnerSessionId.   ToString()),
+                          SessionAction.ToXML(),
 
-                          new XElement("sessionAction",
-
-                              new XElement("sessionActionNature",           SessionActionNature),
-
-                              SessionActionId.IsNotNullOrEmpty()
-                                  ? new XElement("sessionActionId",         SessionActionId)
-                                  : null,
-
-                              new XElement("sessionActionDateTime",         SessionActionDateTime),
-
-                              SessionActionParameter.IsNotNullOrEmpty()
-                                  ? new XElement("sessionActionParameter",  SessionActionParameter)
-                                  : null,
-
-                              RelatedSessionEventId.IsNotNullOrEmpty()
-                                  ? new XElement("relatedSessionEventId",   RelatedSessionEventId)
-                                  : null
-
-                          )
+                          SalePartnerSessionId.HasValue
+                              ? new XElement("salePartnerSessionId",  SalePartnerSessionId.ToString())
+                              : null
 
                       );
 
@@ -420,7 +397,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetSessionActionRequest1 == null) || ((Object) SetSessionActionRequest2 == null))
+            if ((SetSessionActionRequest1 is null) || (SetSessionActionRequest2 is null))
                 return false;
 
             return SetSessionActionRequest1.Equals(SetSessionActionRequest2);
@@ -457,11 +434,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            var SetSessionActionRequest = Object as SetSessionActionRequest;
-            if ((Object) SetSessionActionRequest == null)
+            if (!(Object is SetSessionActionRequest SetSessionActionRequest))
                 return false;
 
             return Equals(SetSessionActionRequest);
@@ -480,7 +456,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public override Boolean Equals(SetSessionActionRequest SetSessionActionRequest)
         {
 
-            if ((Object) SetSessionActionRequest == null)
+            if (SetSessionActionRequest is null)
                 return false;
 
             return ((!TransactionId.HasValue && !SetSessionActionRequest.TransactionId.HasValue) ||
@@ -488,20 +464,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                    PartnerId.             Equals(SetSessionActionRequest.PartnerId)              &&
                    OperatorId.            Equals(SetSessionActionRequest.OperatorId)             &&
-                   TargetOperatorId.      Equals(SetSessionActionRequest.TargetOperatorId)       &&
                    ServiceSessionId.      Equals(SetSessionActionRequest.ServiceSessionId)       &&
-                   ExecPartnerSessionId.  Equals(SetSessionActionRequest.ExecPartnerSessionId)   &&
-                   SessionActionNature.   Equals(SetSessionActionRequest.SessionActionNature)    &&
-                   SessionActionDateTime. Equals(SetSessionActionRequest.SessionActionDateTime)  &&
+                   SessionAction.         Equals(SetSessionActionRequest.SessionAction)  &&
 
-                   ((!SessionActionId.IsNotNullOrEmpty() && !SetSessionActionRequest.SessionActionId.IsNotNullOrEmpty()) ||
-                     (SessionActionId.IsNotNullOrEmpty() &&  SetSessionActionRequest.SessionActionId.IsNotNullOrEmpty() && SessionActionId.Equals(SetSessionActionRequest.SessionActionId))) &&
-
-                   ((!SessionActionParameter.IsNotNullOrEmpty() && !SetSessionActionRequest.SessionActionParameter.IsNotNullOrEmpty()) ||
-                     (SessionActionParameter.IsNotNullOrEmpty() && SetSessionActionRequest.SessionActionParameter.IsNotNullOrEmpty() && SessionActionParameter.Equals(SetSessionActionRequest.SessionActionParameter))) &&
-
-                   ((!RelatedSessionEventId.IsNotNullOrEmpty() && !SetSessionActionRequest.RelatedSessionEventId.IsNotNullOrEmpty()) ||
-                     (RelatedSessionEventId.IsNotNullOrEmpty() && SetSessionActionRequest.RelatedSessionEventId.IsNotNullOrEmpty() && RelatedSessionEventId.Equals(SetSessionActionRequest.RelatedSessionEventId)));
+                   ((!SalePartnerSessionId.HasValue && !SetSessionActionRequest.SalePartnerSessionId.HasValue) ||
+                     (SalePartnerSessionId.HasValue &&  SetSessionActionRequest.SalePartnerSessionId.HasValue && SalePartnerSessionId.Equals(SetSessionActionRequest.SalePartnerSessionId)));
 
         }
 
@@ -521,27 +488,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             {
 
                 return (TransactionId.HasValue
-                            ? TransactionId.GetHashCode() * 31
+                            ? TransactionId.GetHashCode() * 13
                             : 0) ^
 
-                       PartnerId.            GetHashCode() * 29 ^
-                       OperatorId.           GetHashCode() * 23 ^
-                       TargetOperatorId.     GetHashCode() * 21 ^
-                       ServiceSessionId.     GetHashCode() * 17 ^
-                       ExecPartnerSessionId. GetHashCode() * 13 ^
-                       SessionActionNature.  GetHashCode() * 11 ^
-                       SessionActionDateTime.GetHashCode() *  7 ^
+                       PartnerId.       GetHashCode() * 11 ^
+                       OperatorId.      GetHashCode() *  7 ^
+                       ServiceSessionId.GetHashCode() *  5 ^
+                       SessionAction.   GetHashCode() *  3 ^
 
-                       (SessionActionId.IsNotNullOrEmpty()
-                            ? SessionActionId.GetHashCode()
-                            : 0) * 5 ^
-
-                       (SessionActionParameter.IsNotNullOrEmpty()
-                            ? SessionActionParameter.GetHashCode()
-                            : 0) * 3 ^
-
-                       (RelatedSessionEventId.IsNotNullOrEmpty()
-                            ? RelatedSessionEventId.GetHashCode()
+                       (SalePartnerSessionId.HasValue
+                            ? SalePartnerSessionId.GetHashCode()
                             : 0);
 
             }
@@ -557,10 +513,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public override String ToString()
 
             => String.Concat(PartnerId,  " / ",
-                             OperatorId, " (",
-                             TargetOperatorId, "): ",
-                             SessionActionNature,
-                             ", " + SessionActionId + "(" + SessionActionParameter + ")");
+                             OperatorId, ": ",
+                             SessionAction.Nature,
+                             SessionAction.Parameter.IsNotNullOrEmpty() ? ", (" + SessionAction.Parameter + ")" : "");
 
         #endregion
 

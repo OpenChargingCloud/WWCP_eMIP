@@ -88,12 +88,45 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Custom request/response mappers
 
+        public CustomXMLParserDelegate<GetServiceAuthorisationRequest>       CustomGetServiceAuthorisationRequestParser        { get; set; }
+
+        public CustomXMLSerializerDelegate<GetServiceAuthorisationResponse>  CustomGetServiceAuthorisationResponseSerializer   { get; set; }
+
+
         public OnExceptionDelegate                                           OnException                                       { get; set; }
 
         #endregion
 
         #region Events
 
+        #region OnGetServiceAuthorisation
+
+        /// <summary>
+        /// An event sent whenever a GetServiceAuthorisation SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                           OnGetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a GetServiceAuthorisation request was received.
+        /// </summary>
+        public event OnGetServiceAuthorisationRequestDelegate    OnGetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event sent whenever a GetServiceAuthorisation request was received.
+        /// </summary>
+        public event OnGetServiceAuthorisationDelegate           OnGetServiceAuthorisation;
+
+        /// <summary>
+        /// An event sent whenever a response to a GetServiceAuthorisation request was sent.
+        /// </summary>
+        public event OnGetServiceAuthorisationResponseDelegate   OnGetServiceAuthorisationResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a GetServiceAuthorisation SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                            OnGetServiceAuthorisationSOAPResponse;
+
+        #endregion
 
         #endregion
 
@@ -184,7 +217,198 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         protected void RegisterURITemplates()
         {
 
+            #region ~/ - GetServiceAuthorisation
 
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix + AuthorisationURI,
+                                            "GetServiceAuthorisationRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_GetServiceAuthorisationRequest").FirstOrDefault(),
+                                            async (HTTPRequest, GetServiceAuthorisationXML) => {
+
+
+                GetServiceAuthorisationResponse Response  = null;
+
+                #region Send OnGetServiceAuthorisationSOAPRequest event
+
+                var StartTime = DateTime.UtcNow;
+
+                try
+                {
+
+                    if (OnGetServiceAuthorisationSOAPRequest != null)
+                        await Task.WhenAll(OnGetServiceAuthorisationSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPRequest));
+                }
+
+                #endregion
+
+
+                if (GetServiceAuthorisationRequest.TryParse(GetServiceAuthorisationXML,
+                                                            CustomGetServiceAuthorisationRequestParser,
+                                                            out GetServiceAuthorisationRequest _GetServiceAuthorisationRequest,
+                                                            OnException,
+
+                                                            HTTPRequest.Timestamp,
+                                                            HTTPRequest.CancellationToken,
+                                                            HTTPRequest.EventTrackingId,
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
+
+                    #region Send OnGetServiceAuthorisationRequest event
+
+                    try
+                    {
+
+                        if (OnGetServiceAuthorisationRequest != null)
+                            await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
+                                               Cast<OnGetServiceAuthorisationRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                              _GetServiceAuthorisationRequest.Timestamp.Value,
+                                                              this,
+                                                              ServiceId,
+                                                              _GetServiceAuthorisationRequest.EventTrackingId,
+                                                              _GetServiceAuthorisationRequest.TransactionId.Value,
+                                                              _GetServiceAuthorisationRequest.PartnerId,
+                                                              _GetServiceAuthorisationRequest.OperatorId,
+                                                              _GetServiceAuthorisationRequest.TargetOperatorId,
+                                                              _GetServiceAuthorisationRequest.EVSEId,
+                                                              _GetServiceAuthorisationRequest.UserId,
+                                                              _GetServiceAuthorisationRequest.RequestedServiceId,
+                                                              _GetServiceAuthorisationRequest.ServiceSessionId,
+                                                              _GetServiceAuthorisationRequest.BookingId,
+
+                                                              _GetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationRequest));
+                    }
+
+                    #endregion
+
+                    #region Call async subscribers
+
+                    if (OnGetServiceAuthorisation != null)
+                    {
+
+                        var results = await Task.WhenAll(OnGetServiceAuthorisation.GetInvocationList().
+                                                             Cast<OnGetServiceAuthorisationDelegate>().
+                                                             Select(e => e(DateTime.UtcNow,
+                                                                           this,
+                                                                           _GetServiceAuthorisationRequest))).
+                                                             ConfigureAwait(false);
+
+                        Response = results.FirstOrDefault();
+
+                    }
+
+                    //if (Response == null)
+                    //    Response = Response<EMP.GetServiceAuthorisationRequest>.SystemError(
+                    //                         _GetServiceAuthorisationRequest,
+                    //                         "Could not process the incoming GetServiceAuthorisation request!",
+                    //                         null,
+                    //                         _GetServiceAuthorisationRequest.SessionId,
+                    //                         _GetServiceAuthorisationRequest.PartnerSessionId
+                    //                     );
+
+                    #endregion
+
+                    #region Send OnGetServiceAuthorisationResponse event
+
+                    var EndTime = DateTime.UtcNow;
+
+                    try
+                    {
+
+                        if (OnGetServiceAuthorisationResponse != null)
+                            await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
+                                               Cast<OnGetServiceAuthorisationResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _GetServiceAuthorisationRequest.EventTrackingId,
+                                                             _GetServiceAuthorisationRequest.TransactionId.Value,
+                                                             _GetServiceAuthorisationRequest.PartnerId,
+                                                             _GetServiceAuthorisationRequest.OperatorId,
+                                                             _GetServiceAuthorisationRequest.TargetOperatorId,
+                                                             _GetServiceAuthorisationRequest.EVSEId,
+                                                             _GetServiceAuthorisationRequest.UserId,
+                                                             _GetServiceAuthorisationRequest.RequestedServiceId,
+                                                             _GetServiceAuthorisationRequest.ServiceSessionId,
+                                                             _GetServiceAuthorisationRequest.BookingId,
+                                                             _GetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationResponse));
+                    }
+
+                    #endregion
+
+                }
+
+                //else
+                //    Response = Response<EMP.GetServiceAuthorisationRequest>.DataError(
+                //                          _GetServiceAuthorisationRequest,
+                //                          "Could not process the incoming GetServiceAuthorisation request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Date            = DateTime.UtcNow,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomGetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
+
+                #endregion
+
+                #region Send OnGetServiceAuthorisationSOAPResponse event
+
+                try
+                {
+
+                    if (OnGetServiceAuthorisationSOAPResponse != null)
+                        await Task.WhenAll(OnGetServiceAuthorisationSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPResponse));
+                }
+
+                #endregion
+
+                return HTTPResponse;
+
+            });
+
+            #endregion
 
         }
 

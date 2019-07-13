@@ -321,7 +321,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                           HTTPPath?                            URIPrefix                       = null,
                           String                               HTTPUserAgent                   = EMPClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
-                          TimeSpan?                            TransmissionRetryDelay          = null,
+                          TransmissionRetryDelayDelegate       TransmissionRetryDelay          = null,
                           Byte?                                MaxNumberOfRetries              = EMPClient.DefaultMaxNumberOfRetries,
 
                           String                               ServerName                      = EMPServer.DefaultHTTPServerName,

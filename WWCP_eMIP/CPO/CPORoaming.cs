@@ -1350,7 +1350,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           HTTPPath?                            URIPrefix                       = null,
                           String                               HTTPUserAgent                   = CPOClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
-                          TimeSpan?                            TransmissionRetryDelay          = null,
+                          TransmissionRetryDelayDelegate       TransmissionRetryDelay          = null,
                           Byte?                                MaxNumberOfRetries              = CPOClient.DefaultMaxNumberOfRetries,
 
                           String                               ServerName                      = CPOServer.DefaultHTTPServerName,

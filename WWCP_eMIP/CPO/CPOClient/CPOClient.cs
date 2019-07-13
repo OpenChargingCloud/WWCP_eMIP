@@ -821,7 +821,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
-                         TimeSpan?                            TransmissionRetryDelay       = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null,
                          String                               LoggingContext               = CPOClientLogger.DefaultContext,
@@ -879,7 +879,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
-                         TimeSpan?                            TransmissionRetryDelay       = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null)
 

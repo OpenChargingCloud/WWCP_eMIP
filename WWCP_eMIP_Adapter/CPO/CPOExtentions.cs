@@ -120,7 +120,7 @@ namespace org.GraphDefined.WWCP
                                                 HTTPPath?                                                         URIPrefix                                       = null,
                                                 String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
                                                 TimeSpan?                                                         RequestTimeout                                  = null,
-                                                TimeSpan?                                                         TransmissionRetryDelay                          = null,
+                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                          = null,
                                                 Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
                                                 String                                                            ServerName                                      = eMIPv0_7_4.CPO.CPOServer.DefaultHTTPServerName,
@@ -318,7 +318,7 @@ namespace org.GraphDefined.WWCP
                                                 HTTPPath?                                                         URIPrefix                                       = null,
                                                 String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
                                                 TimeSpan?                                                         RequestTimeout                                  = null,
-                                                TimeSpan?                                                         TransmissionRetryDelay                          = null,
+                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                          = null,
                                                 Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
                                                 HTTPPath?                                                         ServerURIPrefix                                 = null,

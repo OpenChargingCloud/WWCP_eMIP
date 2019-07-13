@@ -190,7 +190,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
-                         TimeSpan?                            TransmissionRetryDelay       = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null,
                          String                               LoggingContext               = EMPClientLogger.DefaultContext,
@@ -248,7 +248,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
-                         TimeSpan?                            TransmissionRetryDelay       = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null)
 

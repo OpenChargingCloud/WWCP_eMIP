@@ -398,6 +398,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>                      CustomSetEVSEBusyStatusRequestSerializer                       { get; set; }
 
 
+        #region CustomSetEVSESyntheticStatusRequestMapper
+
+        #region CustomSetEVSESyntheticStatusRequestMapper
+
+        private Func<SetEVSESyntheticStatusRequest, SetEVSESyntheticStatusRequest> _CustomSetEVSESyntheticStatusRequestMapper = _ => _;
+
+        public Func<SetEVSESyntheticStatusRequest, SetEVSESyntheticStatusRequest> CustomSetEVSESyntheticStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSESyntheticStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSESyntheticStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSESyntheticStatusSOAPRequestMapper
+
+        private Func<SetEVSESyntheticStatusRequest, XElement, XElement> _CustomSetEVSESyntheticStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetEVSESyntheticStatusRequest, XElement, XElement> CustomSetEVSESyntheticStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetEVSESyntheticStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetEVSESyntheticStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetEVSESyntheticStatusResponse> CustomSetEVSESyntheticStatusParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetEVSESyntheticStatusRequest>                 CustomSetEVSESyntheticStatusRequestSerializer                  { get; set; }
+
+
+
         #region CustomGetServiceAuthorisationRequestMapper
 
         #region CustomGetServiceAuthorisationRequestMapper
@@ -449,6 +503,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
         public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>                CustomGetServiceAuthorisationRequestSerializer                 { get; set; }
+
 
 
         #region CustomSetChargeDetailRecordRequestMapper
@@ -658,6 +713,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// An event fired whenever a response to an EVSE busy status request had been received.
         /// </summary>
         public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
+
+        #endregion
+
+        #region OnSetEVSESyntheticStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE synthetic status will be send.
+        /// </summary>
+        public event OnSetEVSESyntheticStatusRequestDelegate   OnSetEVSESyntheticStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE synthetic status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                   OnSetEVSESyntheticStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                  OnSetEVSESyntheticStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status request had been received.
+        /// </summary>
+        public event OnSetEVSESyntheticStatusResponseDelegate  OnSetEVSESyntheticStatusResponse;
 
         #endregion
 
@@ -2400,6 +2479,282 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             catch (Exception e)
             {
                 e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region SetEVSESyntheticStatus                (Request)
+
+        /// <summary>
+        /// Send the given EVSE busy status.
+        /// </summary>
+        /// <param name="Request">A SetEVSESyntheticStatus request.</param>
+        public async Task<HTTPResponse<SetEVSESyntheticStatusResponse>>
+
+            SetEVSESyntheticStatus(SetEVSESyntheticStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetEVSESyntheticStatus request must not be null!");
+
+            Request = _CustomSetEVSESyntheticStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetEVSESyntheticStatus request must not be null!");
+
+
+            Byte                                         TransmissionRetry  = 0;
+            HTTPResponse<SetEVSESyntheticStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetEVSESyntheticStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSESyntheticStatusRequest != null)
+                    await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
+                                       Cast<OnSetEVSESyntheticStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+                                                     Request.BusyStatusEventDate,
+                                                     Request.BusyStatus,
+                                                     Request.BusyStatusUntil,
+                                                     Request.BusyStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusRequest));
+            }
+
+            #endregion
+
+
+            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+                    result = HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
+                                 new SetEVSESyntheticStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetEVSESyntheticStatusSOAPRequestMapper(Request,
+                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSESyntheticStatusRequestSerializer))),
+                                                     "eMIP_ToIOP_SetEVSESyntheticStatusV1/",
+                                                     RequestLogDelegate:   OnSetEVSESyntheticStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetEVSESyntheticStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetEVSESyntheticStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetEVSESyntheticStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetEVSESyntheticStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSESyntheticStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetEVSESyntheticStatusResponse>(httpresponse,
+                                                                                                        new SetEVSESyntheticStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetEVSESyntheticStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetEVSESyntheticStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.ExceptionThrown(
+
+                                                                new SetEVSESyntheticStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
+                                 new SetEVSESyntheticStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetEVSESyntheticStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetEVSESyntheticStatusResponse != null)
+                    await Task.WhenAll(OnSetEVSESyntheticStatusResponse.GetInvocationList().
+                                       Cast<OnSetEVSESyntheticStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.EVSEId,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+                                                     Request.BusyStatusEventDate,
+                                                     Request.BusyStatus,
+                                                     Request.BusyStatusUntil,
+                                                     Request.BusyStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusResponse));
             }
 
             #endregion

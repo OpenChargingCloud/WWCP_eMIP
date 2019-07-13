@@ -298,6 +298,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
     #endregion
 
+    #region OnSetEVSESyntheticStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever an EVSE synthetic status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetEVSESyntheticStatusRequestDelegate (DateTime                                 LogTimestamp,
+                                                                  DateTime                                 RequestTimestamp,
+                                                                  ICPOClient                               Sender,
+                                                                  String                                   SenderId,
+                                                                  EventTracking_Id                         EventTrackingId,
+
+                                                                  Partner_Id                               PartnerId,
+                                                                  Operator_Id                              OperatorId,
+                                                                  EVSE_Id                                  EVSEId,
+                                                                  Transaction_Id?                          TransactionId,
+                                                                  DateTime?                                AvailabilityStatusEventDate,
+                                                                  EVSEAvailabilityStatusTypes?             AvailabilityStatus,
+                                                                  DateTime?                                AvailabilityStatusUntil,
+                                                                  String                                   AvailabilityStatusComment,
+                                                                  DateTime?                                BusyStatusEventDate,
+                                                                  EVSEBusyStatusTypes?                     BusyStatus,
+                                                                  DateTime?                                BusyStatusUntil,
+                                                                  String                                   BusyStatusComment,
+
+                                                                  TimeSpan                                 RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever an EVSE synthetic status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetEVSESyntheticStatusResponseDelegate(DateTime                                 LogTimestamp,
+                                                                  DateTime                                 RequestTimestamp,
+                                                                  ICPOClient                               Sender,
+                                                                  String                                   SenderId,
+                                                                  EventTracking_Id                         EventTrackingId,
+
+                                                                  Partner_Id                               PartnerId,
+                                                                  Operator_Id                              OperatorId,
+                                                                  EVSE_Id                                  EVSEId,
+                                                                  Transaction_Id?                          TransactionId,
+                                                                  DateTime?                                AvailabilityStatusEventDate,
+                                                                  EVSEAvailabilityStatusTypes?             AvailabilityStatus,
+                                                                  DateTime?                                AvailabilityStatusUntil,
+                                                                  String                                   AvailabilityStatusComment,
+                                                                  DateTime?                                BusyStatusEventDate,
+                                                                  EVSEBusyStatusTypes?                     BusyStatus,
+                                                                  DateTime?                                BusyStatusUntil,
+                                                                  String                                   BusyStatusComment,
+
+                                                                  TimeSpan                                 RequestTimeout,
+                                                                  SetEVSESyntheticStatusResponse           Result,
+                                                                  TimeSpan                                 Duration);
+
+    #endregion
+
 
     #region OnGetServiceAuthorisationRequest/-Response
 

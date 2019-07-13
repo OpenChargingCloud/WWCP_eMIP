@@ -1185,6 +1185,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+        #region SetEVSESyntheticStatus                (Request)
+
+        /// <summary>
+        /// Send the given EVSE synthetic status.
+        /// </summary>
+        /// <param name="Request">A SetEVSESyntheticStatus request.</param>
+        public Task<HTTPResponse<SetEVSESyntheticStatusResponse>>
+
+            SetEVSESyntheticStatus(SetEVSESyntheticStatusRequest Request)
+
+                => CPOClient.SetEVSESyntheticStatus(Request);
+
+        #endregion
+
 
         #region GetServiceAuthorisation               (Request)
 

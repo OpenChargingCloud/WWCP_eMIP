@@ -215,15 +215,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSESyntheticStatusRequest Parse(XElement                                                SetEVSESyntheticStatusRequestXML,
                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
-                                                          OnExceptionDelegate                                     OnException = null)
+                                                          OnExceptionDelegate                                     OnException         = null,
+
+                                                          DateTime?                                               Timestamp           = null,
+                                                          CancellationToken?                                      CancellationToken   = null,
+                                                          EventTracking_Id                                        EventTrackingId     = null,
+                                                          TimeSpan?                                               RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSESyntheticStatusRequestXML,
                          CustomSendSetEVSESyntheticStatusRequestParser,
                          out SetEVSESyntheticStatusRequest _SetEVSESyntheticStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSESyntheticStatusRequest;
             }
@@ -242,15 +257,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSESyntheticStatusRequest Parse(String                                                  SetEVSESyntheticStatusRequestText,
                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
-                                                          OnExceptionDelegate                                     OnException = null)
+                                                          OnExceptionDelegate                                     OnException         = null,
+
+                                                          DateTime?                                               Timestamp           = null,
+                                                          CancellationToken?                                      CancellationToken   = null,
+                                                          EventTracking_Id                                        EventTrackingId     = null,
+                                                          TimeSpan?                                               RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSESyntheticStatusRequestText,
                          CustomSendSetEVSESyntheticStatusRequestParser,
                          out SetEVSESyntheticStatusRequest _SetEVSESyntheticStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSESyntheticStatusRequest;
             }
@@ -270,10 +300,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                                SetEVSESyntheticStatusRequestXML,
                                        CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
                                        out SetEVSESyntheticStatusRequest                       SetEVSESyntheticStatusRequest,
-                                       OnExceptionDelegate                                     OnException  = null)
+                                       OnExceptionDelegate                                     OnException         = null,
+
+                                       DateTime?                                               Timestamp           = null,
+                                       CancellationToken?                                      CancellationToken   = null,
+                                       EventTracking_Id                                        EventTrackingId     = null,
+                                       TimeSpan?                                               RequestTimeout      = null)
         {
 
             try
@@ -321,7 +361,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                     SetEVSESyntheticStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "busyStatusUntil",
                                                                                                         DateTime.Parse),
 
-                                                    SetEVSESyntheticStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "busyStatusComment")
+                                                    SetEVSESyntheticStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "busyStatusComment"),
+
+                                                    Timestamp,
+                                                    CancellationToken,
+                                                    EventTrackingId,
+                                                    RequestTimeout
 
                                                 );
 
@@ -356,10 +401,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                  SetEVSESyntheticStatusRequestText,
                                        CustomXMLParserDelegate<SetEVSESyntheticStatusRequest>  CustomSendSetEVSESyntheticStatusRequestParser,
                                        out SetEVSESyntheticStatusRequest                       SetEVSESyntheticStatusRequest,
-                                       OnExceptionDelegate                                     OnException  = null)
+                                       OnExceptionDelegate                                     OnException         = null,
+
+                                       DateTime?                                               Timestamp           = null,
+                                       CancellationToken?                                      CancellationToken   = null,
+                                       EventTracking_Id                                        EventTrackingId     = null,
+                                       TimeSpan?                                               RequestTimeout      = null)
         {
 
             try
@@ -368,7 +423,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TryParse(XDocument.Parse(SetEVSESyntheticStatusRequestText).Root,
                              CustomSendSetEVSESyntheticStatusRequestParser,
                              out SetEVSESyntheticStatusRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

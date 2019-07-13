@@ -168,15 +168,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSEBusyStatusRequest Parse(XElement                                           SetEVSEBusyStatusRequestXML,
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
-                                                     OnExceptionDelegate                                OnException = null)
+                                                     OnExceptionDelegate                                OnException         = null,
+
+                                                     DateTime?                                          Timestamp           = null,
+                                                     CancellationToken?                                 CancellationToken   = null,
+                                                     EventTracking_Id                                   EventTrackingId     = null,
+                                                     TimeSpan?                                          RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSEBusyStatusRequestXML,
                          CustomSendSetEVSEBusyStatusRequestParser,
                          out SetEVSEBusyStatusRequest _SetEVSEBusyStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSEBusyStatusRequest;
             }
@@ -195,15 +210,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSEBusyStatusRequest Parse(String                                             SetEVSEBusyStatusRequestText,
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
-                                                     OnExceptionDelegate                                OnException = null)
+                                                     OnExceptionDelegate                                OnException         = null,
+
+                                                     DateTime?                                          Timestamp           = null,
+                                                     CancellationToken?                                 CancellationToken   = null,
+                                                     EventTracking_Id                                   EventTrackingId     = null,
+                                                     TimeSpan?                                          RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSEBusyStatusRequestText,
                          CustomSendSetEVSEBusyStatusRequestParser,
                          out SetEVSEBusyStatusRequest _SetEVSEBusyStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSEBusyStatusRequest;
             }
@@ -223,10 +253,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                           SetEVSEBusyStatusRequestXML,
                                        CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
                                        out SetEVSEBusyStatusRequest                       SetEVSEBusyStatusRequest,
-                                       OnExceptionDelegate                                OnException  = null)
+                                       OnExceptionDelegate                                OnException         = null,
+
+                                       DateTime?                                          Timestamp           = null,
+                                       CancellationToken?                                 CancellationToken   = null,
+                                       EventTracking_Id                                   EventTrackingId     = null,
+                                       TimeSpan?                                          RequestTimeout      = null)
         {
 
             try
@@ -249,7 +289,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                SetEVSEBusyStatusRequestXML.MapValueOrNullable("transactionId",     Transaction_Id.   Parse),
                                                SetEVSEBusyStatusRequestXML.MapValueOrNullable("busyStatusUntil",   DateTime.         Parse),
 
-                                               SetEVSEBusyStatusRequestXML.MapValueOrNull    ("busyStatusComment")
+                                               SetEVSEBusyStatusRequestXML.MapValueOrNull    ("busyStatusComment"),
+
+                                               Timestamp,
+                                               CancellationToken,
+                                               EventTrackingId,
+                                               RequestTimeout
 
                                            );
 
@@ -284,10 +329,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                             SetEVSEBusyStatusRequestText,
                                        CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
                                        out SetEVSEBusyStatusRequest                       SetEVSEBusyStatusRequest,
-                                       OnExceptionDelegate                                OnException  = null)
+                                       OnExceptionDelegate                                OnException         = null,
+
+                                       DateTime?                                          Timestamp           = null,
+                                       CancellationToken?                                 CancellationToken   = null,
+                                       EventTracking_Id                                   EventTrackingId     = null,
+                                       TimeSpan?                                          RequestTimeout      = null)
         {
 
             try
@@ -296,7 +351,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TryParse(XDocument.Parse(SetEVSEBusyStatusRequestText).Root,
                              CustomSendSetEVSEBusyStatusRequestParser,
                              out SetEVSEBusyStatusRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

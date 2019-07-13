@@ -116,15 +116,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static HeartbeatRequest Parse(XElement                                   HeartbeatRequestXML,
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
-                                             OnExceptionDelegate                        OnException = null)
+                                             OnExceptionDelegate                        OnException         = null,
+
+                                             DateTime?                                  Timestamp           = null,
+                                             CancellationToken?                         CancellationToken   = null,
+                                             EventTracking_Id                           EventTrackingId     = null,
+                                             TimeSpan?                                  RequestTimeout      = null)
         {
 
             if (TryParse(HeartbeatRequestXML,
                          CustomSendHeartbeatRequestParser,
                          out HeartbeatRequest _HeartbeatRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _HeartbeatRequest;
             }
@@ -143,15 +158,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="HeartbeatRequestText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static HeartbeatRequest Parse(String                                     HeartbeatRequestText,
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
-                                             OnExceptionDelegate                        OnException = null)
+                                             OnExceptionDelegate                        OnException         = null,
+
+                                             DateTime?                                  Timestamp           = null,
+                                             CancellationToken?                         CancellationToken   = null,
+                                             EventTracking_Id                           EventTrackingId     = null,
+                                             TimeSpan?                                  RequestTimeout      = null)
         {
 
             if (TryParse(HeartbeatRequestText,
                          CustomSendHeartbeatRequestParser,
                          out HeartbeatRequest _HeartbeatRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _HeartbeatRequest;
             }
@@ -171,10 +201,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                   HeartbeatRequestXML,
                                        CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                        out HeartbeatRequest                       HeartbeatRequest,
-                                       OnExceptionDelegate                        OnException  = null)
+                                       OnExceptionDelegate                        OnException         = null,
+
+                                       DateTime?                                  Timestamp           = null,
+                                       CancellationToken?                         CancellationToken   = null,
+                                       EventTracking_Id                           EventTrackingId     = null,
+                                       TimeSpan?                                  RequestTimeout      = null)
         {
 
             try
@@ -224,10 +264,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                     HeartbeatRequestText,
                                        CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                        out HeartbeatRequest                       HeartbeatRequest,
-                                       OnExceptionDelegate                        OnException  = null)
+                                       OnExceptionDelegate                        OnException         = null,
+
+                                       DateTime?                                  Timestamp           = null,
+                                       CancellationToken?                         CancellationToken   = null,
+                                       EventTracking_Id                           EventTrackingId     = null,
+                                       TimeSpan?                                  RequestTimeout      = null)
         {
 
             try
@@ -236,7 +286,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 if (TryParse(XDocument.Parse(HeartbeatRequestText).Root,
                              CustomSendHeartbeatRequestParser,
                              out HeartbeatRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

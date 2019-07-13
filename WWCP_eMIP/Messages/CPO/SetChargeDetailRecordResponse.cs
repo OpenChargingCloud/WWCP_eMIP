@@ -438,8 +438,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             unchecked
             {
 
-                return TransactionId.   GetHashCode() * 3 ^
-                       ServiceSessionId.GetHashCode() * 3 ^
+                return TransactionId.   GetHashCode() * 7 ^
+                       ServiceSessionId.GetHashCode() * 5 ^
                        RequestStatus.   GetHashCode() * 3 ^
 
                        (SalesPartnerOperatorId.HasValue

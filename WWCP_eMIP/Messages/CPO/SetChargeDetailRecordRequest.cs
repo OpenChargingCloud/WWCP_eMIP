@@ -130,11 +130,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetChargeDetailRecordRequest Parse(XElement                                               SetChargeDetailRecordRequestXML,
                                                          CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                                          CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
                                                          CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                                         OnExceptionDelegate                                    OnException                                   = null)
+                                                         OnExceptionDelegate                                    OnException                                   = null,
+
+                                                         DateTime?                                              Timestamp                                     = null,
+                                                         CancellationToken?                                     CancellationToken                             = null,
+                                                         EventTracking_Id                                       EventTrackingId                               = null,
+                                                         TimeSpan?                                              RequestTimeout                                = null)
         {
 
             if (TryParse(SetChargeDetailRecordRequestXML,
@@ -142,7 +152,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          CustomSendSetChargeDetailRecordRequestParser,
                          CustomChargeDetailRecordParser,
                          CustomMeterReportParser,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetChargeDetailRecordRequest;
             }
@@ -163,11 +178,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetChargeDetailRecordRequest Parse(String                                                 SetChargeDetailRecordRequestText,
                                                          CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                                          CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
                                                          CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                                         OnExceptionDelegate                                    OnException                                   = null)
+                                                         OnExceptionDelegate                                    OnException                                   = null,
+
+                                                         DateTime?                                              Timestamp                                     = null,
+                                                         CancellationToken?                                     CancellationToken                             = null,
+                                                         EventTracking_Id                                       EventTrackingId                               = null,
+                                                         TimeSpan?                                              RequestTimeout                                = null)
         {
 
             if (TryParse(SetChargeDetailRecordRequestText,
@@ -175,7 +200,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          CustomSendSetChargeDetailRecordRequestParser,
                          CustomChargeDetailRecordParser,
                          CustomMeterReportParser,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetChargeDetailRecordRequest;
             }
@@ -197,12 +227,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                               SetChargeDetailRecordRequestXML,
                                        out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
                                        CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                        CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
                                        CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                       OnExceptionDelegate                                    OnException                                   = null)
+                                       OnExceptionDelegate                                    OnException                                   = null,
+
+                                       DateTime?                                              Timestamp                                     = null,
+                                       CancellationToken?                                     CancellationToken                             = null,
+                                       EventTracking_Id                                       EventTrackingId                               = null,
+                                       TimeSpan?                                              RequestTimeout                                = null)
         {
 
             try
@@ -220,7 +260,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                                                          e),
                                                                                                       OnException),
 
-                                                   SetChargeDetailRecordRequestXML.MapValueOrNullable("transactionId",  Transaction_Id.Parse)
+                                                   SetChargeDetailRecordRequestXML.MapValueOrNullable("transactionId",  Transaction_Id.Parse),
+
+                                                   Timestamp,
+                                                   CancellationToken,
+                                                   EventTrackingId,
+                                                   RequestTimeout
 
                                                );
 
@@ -257,12 +302,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                 SetChargeDetailRecordRequestText,
                                        out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
                                        CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
                                        CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
                                        CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                       OnExceptionDelegate                                    OnException                                   = null)
+                                       OnExceptionDelegate                                    OnException                                   = null,
+
+                                       DateTime?                                              Timestamp                                     = null,
+                                       CancellationToken?                                     CancellationToken                             = null,
+                                       EventTracking_Id                                       EventTrackingId                               = null,
+                                       TimeSpan?                                              RequestTimeout                                = null)
         {
 
             try
@@ -273,7 +328,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              CustomSendSetChargeDetailRecordRequestParser,
                              CustomChargeDetailRecordParser,
                              CustomMeterReportParser,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

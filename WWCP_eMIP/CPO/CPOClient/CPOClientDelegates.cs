@@ -409,8 +409,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                  EventTracking_Id                EventTrackingId,
 
                                                                  Partner_Id                      PartnerId,
+                                                                 Operator_Id                     OperatorId,
                                                                  ServiceSession_Id               ServiceSessionId,
-                                                                 SessionAction                   SessionAction,
+                                                                 SessionEvent                    SessionEvent,
 
                                                                  Transaction_Id?                 TransactionIdl,
                                                                  PartnerServiceSession_Id?       ExecPartnerSessionId,
@@ -427,8 +428,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                  EventTracking_Id                EventTrackingId,
 
                                                                  Partner_Id                      PartnerId,
+                                                                 Operator_Id                     OperatorId,
                                                                  ServiceSession_Id               ServiceSessionId,
-                                                                 SessionAction                   SessionAction,
+                                                                 SessionEvent                    SessionEvent,
 
                                                                  Transaction_Id?                 TransactionIdl,
                                                                  PartnerServiceSession_Id?       ExecPartnerSessionId,

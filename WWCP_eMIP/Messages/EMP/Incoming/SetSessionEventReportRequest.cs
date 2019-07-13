@@ -26,12 +26,12 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
     /// A SetSessionEventReportRequest request,
-    /// e.g. report an event from a CPO during a charging session.
+    /// e.g. report an event from a CPO to an EMP during a charging session.
     /// </summary>
     public class SetSessionEventReportRequest : ARequest<SetSessionEventReportRequest>
     {
@@ -41,7 +41,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The operator identification.
         /// </summary>
-        public Operator_Id                OperatorId              { get; }
+        public Operator_Id                OperatorId             { get; }
+
+        /// <summary>
+        /// The target operator identification.
+        /// </summary>
+        public Operator_Id                TargetOperatorId       { get; }
 
         /// <summary>
         /// The service session identification.
@@ -51,7 +56,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An optional partner service session identification.
         /// </summary>
-        public PartnerServiceSession_Id?  ExecPartnerSessionId    { get; }
+        public PartnerServiceSession_Id?  SalePartnerSessionId    { get; }
 
         /// <summary>
         /// The session event.
@@ -67,11 +72,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>
+        /// <param name="TargetOperatorId">The target operator identification.</param>
         /// <param name="ServiceSessionId">The service session identification.</param>
         /// <param name="SessionEvent">The session event.</param>
         /// 
         /// <param name="TransactionId">An optional transaction identification.</param>
-        /// <param name="ExecPartnerSessionId">An optional partner service session identification.</param>
+        /// <param name="SalePartnerSessionId">An optional partner service session identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -79,16 +85,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public SetSessionEventReportRequest(Partner_Id                 PartnerId,
                                             Operator_Id                OperatorId,
+                                            Operator_Id                TargetOperatorId,
                                             ServiceSession_Id          ServiceSessionId,
                                             SessionEvent               SessionEvent,
 
-                                            Transaction_Id?            TransactionId            = null,
-                                            PartnerServiceSession_Id?  ExecPartnerSessionId     = null,
+                                            Transaction_Id?            TransactionId          = null,
+                                            PartnerServiceSession_Id?  SalePartnerSessionId   = null,
 
-                                            DateTime?                  Timestamp                = null,
-                                            CancellationToken?         CancellationToken        = null,
-                                            EventTracking_Id           EventTrackingId          = null,
-                                            TimeSpan?                  RequestTimeout           = null)
+                                            DateTime?                  Timestamp              = null,
+                                            CancellationToken?         CancellationToken      = null,
+                                            EventTracking_Id           EventTrackingId        = null,
+                                            TimeSpan?                  RequestTimeout         = null)
 
             : base(PartnerId,
                    TransactionId,
@@ -100,9 +107,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             this.OperatorId            = OperatorId;
+            this.TargetOperatorId      = TargetOperatorId;
             this.ServiceSessionId      = ServiceSessionId;
             this.SessionEvent          = SessionEvent;
-            this.ExecPartnerSessionId  = ExecPartnerSessionId;
+            this.SalePartnerSessionId  = SalePartnerSessionId;
 
         }
 
@@ -116,21 +124,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //
         //    <soap:Header/>
         //    <soap:Body>
-        //       <aut:eMIP_ToIOP_SetSessionEventReportRequestRequest>
+        //       <aut:eMIP_FromIOP_SetSessionEventReportRequest>
         //
         //          <!--Optional:-->
         //          <transactionId>?</transactionId>
         //
         //          <partnerIdType>eMI3</partnerIdType>
-        //          <partnerId>FR*PAR</partnerId>
+        //          <partnerId>FR*IOP</partnerId>
         //
         //          <operatorIdType>eMI3</operatorIdType>
         //          <operatorId>FR*CPO</operatorId>
         //
-        //          <serviceSessionId>?</serviceSessionId>
+        //          <targetOperatorIdType>eMI3</targetOperatorIdType>
+        //          <targetOperatorId>FR*EMP</targetOperatorId>
+        //
+        //          <serviceSessionId>IOP-SID-GIR-V-IOPFT01-0dc6fc3...153e</serviceSessionId>
         //
         //          <!--Optional:-->
-        //          <execPartnerSessionId>CPOxxx2</execPartnerSessionId>
+        //          <salePartnerSessionId>eMSP_Id_001</salePartnerSessionId>
         //
         //          <sessionEvent>
         //
@@ -142,10 +153,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //             <sessionEventDateTime>2015-11-19T11:14:17.123Z</sessionEventDateTime>
         //
         //             <!--Optional:-->
-        //             <sessionEventParameter>Param1</sessionEventParameter>
+        //             <sessionEventParameter>?</sessionEventParameter>
         //
         //             <!--Optional:-->
-        //             <relatedSessionActionId>?</relatedSessionActionId>
+        //             <relatedSessionEventId>?</relatedSessionEventId>
         //
         //          </sessionEvent>
         //
@@ -170,20 +181,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetSessionEventReportRequest Parse(XElement                                               SetSessionEventReportRequestXML,
-                                                         CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
-                                                         CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
-                                                         OnExceptionDelegate                                    OnException         = null,
+                                                         CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser   = null,
+                                                         CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
+                                                         OnExceptionDelegate                                    OnException                                    = null,
 
-                                                         DateTime?                                              Timestamp           = null,
-                                                         CancellationToken?                                     CancellationToken   = null,
-                                                         EventTracking_Id                                       EventTrackingId     = null,
-                                                         TimeSpan?                                              RequestTimeout      = null)
+                                                         DateTime?                                              Timestamp                                      = null,
+                                                         CancellationToken?                                     CancellationToken                              = null,
+                                                         EventTracking_Id                                       EventTrackingId                                = null,
+                                                         TimeSpan?                                              RequestTimeout                                 = null)
         {
 
             if (TryParse(SetSessionEventReportRequestXML,
+                         out SetSessionEventReportRequest _SetSessionEventReportRequest,
                          CustomSendSetSessionEventReportRequestParser,
                          CustomSessionEventParser,
-                         out SetSessionEventReportRequest _SetSessionEventReportRequest,
                          OnException,
 
                          Timestamp,
@@ -215,20 +226,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetSessionEventReportRequest Parse(String                                                 SetSessionEventReportRequestText,
-                                                         CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
-                                                         CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
-                                                         OnExceptionDelegate                                    OnException         = null,
+                                                         CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser   = null,
+                                                         CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
+                                                         OnExceptionDelegate                                    OnException                                    = null,
 
-                                                         DateTime?                                              Timestamp           = null,
-                                                         CancellationToken?                                     CancellationToken   = null,
-                                                         EventTracking_Id                                       EventTrackingId     = null,
-                                                         TimeSpan?                                              RequestTimeout      = null)
+                                                         DateTime?                                              Timestamp                                      = null,
+                                                         CancellationToken?                                     CancellationToken                              = null,
+                                                         EventTracking_Id                                       EventTrackingId                                = null,
+                                                         TimeSpan?                                              RequestTimeout                                 = null)
         {
 
             if (TryParse(SetSessionEventReportRequestText,
+                         out SetSessionEventReportRequest _SetSessionEventReportRequest,
                          CustomSendSetSessionEventReportRequestParser,
                          CustomSessionEventParser,
-                         out SetSessionEventReportRequest _SetSessionEventReportRequest,
                          OnException,
 
                          Timestamp,
@@ -251,9 +262,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given XML representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetSessionEventReportRequestXML">The XML to parse.</param>
+        /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -261,15 +272,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                               SetSessionEventReportRequestXML,
-                                       CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
-                                       CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
                                        out SetSessionEventReportRequest                       SetSessionEventReportRequest,
-                                       OnExceptionDelegate                                    OnException        = null,
+                                       CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser   = null,
+                                       CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
+                                       OnExceptionDelegate                                    OnException                                    = null,
 
-                                       DateTime?                                              Timestamp          = null,
-                                       CancellationToken?                                     CancellationToken  = null,
-                                       EventTracking_Id                                       EventTrackingId    = null,
-                                       TimeSpan?                                              RequestTimeout     = null)
+                                       DateTime?                                              Timestamp                                      = null,
+                                       CancellationToken?                                     CancellationToken                              = null,
+                                       EventTracking_Id                                       EventTrackingId                                = null,
+                                       TimeSpan?                                              RequestTimeout                                 = null)
         {
 
             try
@@ -283,6 +294,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
                                                      SetSessionEventReportRequestXML.MapValueOrFail    ("partnerId",             Partner_Id.              Parse),
                                                      SetSessionEventReportRequestXML.MapValueOrFail    ("operatorId",            Operator_Id.             Parse),
+                                                     SetSessionEventReportRequestXML.MapValueOrFail    ("targetOperatorId",      Operator_Id.             Parse),
 
                                                      SetSessionEventReportRequestXML.MapValueOrFail    ("serviceSessionId",      ServiceSession_Id.       Parse),
 
@@ -306,7 +318,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (CustomSendSetSessionEventReportRequestParser != null)
                     SetSessionEventReportRequest = CustomSendSetSessionEventReportRequestParser(SetSessionEventReportRequestXML,
-                                                                                      SetSessionEventReportRequest);
+                                                                                                SetSessionEventReportRequest);
 
                 return true;
 
@@ -331,9 +343,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Try to parse the given text representation of an eMIP heartbeat request.
         /// </summary>
         /// <param name="SetSessionEventReportRequestText">The text to parse.</param>
+        /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -341,24 +353,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                 SetSessionEventReportRequestText,
-                                       CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
-                                       CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
                                        out SetSessionEventReportRequest                       SetSessionEventReportRequest,
-                                       OnExceptionDelegate                                    OnException         = null,
+                                       CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser   = null,
+                                       CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
+                                       OnExceptionDelegate                                    OnException                                    = null,
 
-                                       DateTime?                                              Timestamp           = null,
-                                       CancellationToken?                                     CancellationToken   = null,
-                                       EventTracking_Id                                       EventTrackingId     = null,
-                                       TimeSpan?                                              RequestTimeout      = null)
+                                       DateTime?                                              Timestamp                                      = null,
+                                       CancellationToken?                                     CancellationToken                              = null,
+                                       EventTracking_Id                                       EventTrackingId                                = null,
+                                       TimeSpan?                                              RequestTimeout                                 = null)
         {
 
             try
             {
 
                 if (TryParse(XDocument.Parse(SetSessionEventReportRequestText).Root,
+                             out SetSessionEventReportRequest,
                              CustomSendSetSessionEventReportRequestParser,
                              CustomSessionEventParser,
-                             out SetSessionEventReportRequest,
                              OnException,
 
                              Timestamp,
@@ -397,18 +409,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               ? new XElement("transactionId",         TransactionId.       ToString())
                               : null,
 
-                          new XElement("partnerIdType",       PartnerId.Format. AsText()),
-                          new XElement("partnerId",           PartnerId.        ToString()),
+                          new XElement("partnerIdType",         PartnerId.Format.        AsText()),
+                          new XElement("partnerId",             PartnerId.               ToString()),
 
-                          new XElement("operatorIdType",      OperatorId.Format.AsText()),
-                          new XElement("operatorId",          OperatorId.       ToString()),
+                          new XElement("operatorIdType",        OperatorId.Format.       AsText()),
+                          new XElement("operatorId",            OperatorId.              ToString()),
 
-                          new XElement("serviceSessionId",    ServiceSessionId. ToString()),
+                          new XElement("targetOperatorIdType",  TargetOperatorId.Format. AsText()),
+                          new XElement("targetOperatorId",      TargetOperatorId.        ToString()),
+
+                          new XElement("serviceSessionId",      ServiceSessionId.        ToString()),
 
                           SessionEvent.ToXML(),
 
-                          ExecPartnerSessionId.HasValue
-                              ? new XElement("execPartnerSessionId",  ExecPartnerSessionId.ToString())
+                          SalePartnerSessionId.HasValue
+                              ? new XElement("salePartnerSessionId",  SalePartnerSessionId.ToString())
                               : null
 
                       );
@@ -508,11 +523,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    PartnerId.       Equals(SetSessionEventReportRequest.PartnerId)        &&
                    OperatorId.      Equals(SetSessionEventReportRequest.OperatorId)       &&
+                   TargetOperatorId.Equals(SetSessionEventReportRequest.TargetOperatorId) &&
                    ServiceSessionId.Equals(SetSessionEventReportRequest.ServiceSessionId) &&
                    SessionEvent.    Equals(SetSessionEventReportRequest.SessionEvent)     &&
 
-                   ((!ExecPartnerSessionId.HasValue && !SetSessionEventReportRequest.ExecPartnerSessionId.HasValue) ||
-                     (ExecPartnerSessionId.HasValue &&  SetSessionEventReportRequest.ExecPartnerSessionId.HasValue && ExecPartnerSessionId.Equals(SetSessionEventReportRequest.ExecPartnerSessionId)));
+                   ((!SalePartnerSessionId.HasValue && !SetSessionEventReportRequest.SalePartnerSessionId.HasValue) ||
+                     (SalePartnerSessionId.HasValue &&  SetSessionEventReportRequest.SalePartnerSessionId.HasValue && SalePartnerSessionId.Equals(SetSessionEventReportRequest.SalePartnerSessionId)));
 
         }
 
@@ -532,16 +548,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 return (TransactionId.HasValue
-                            ? TransactionId.GetHashCode() * 13
+                            ? TransactionId.GetHashCode() * 17
                             : 0) ^
 
-                       PartnerId.       GetHashCode() * 11 ^
-                       OperatorId.      GetHashCode() * 7 ^
-                       ServiceSessionId.GetHashCode() * 5 ^
-                       SessionEvent.    GetHashCode() * 3 ^
+                       PartnerId.       GetHashCode() * 13 ^
+                       OperatorId.      GetHashCode() * 11 ^
+                       TargetOperatorId.GetHashCode() *  7 ^
+                       ServiceSessionId.GetHashCode() *  5 ^
+                       SessionEvent.    GetHashCode() *  3 ^
 
-                       (ExecPartnerSessionId.HasValue
-                            ? ExecPartnerSessionId.GetHashCode()
+                       (SalePartnerSessionId.HasValue
+                            ? SalePartnerSessionId.GetHashCode()
                             : 0);
 
             }

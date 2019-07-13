@@ -168,15 +168,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSEAvailabilityStatusRequest Parse(XElement                                                   SetEVSEAvailabilityStatusRequestXML,
                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
-                                                             OnExceptionDelegate                                        OnException = null)
+                                                             OnExceptionDelegate                                        OnException         = null,
+
+                                                             DateTime?                                                  Timestamp           = null,
+                                                             CancellationToken?                                         CancellationToken   = null,
+                                                             EventTracking_Id                                           EventTrackingId     = null,
+                                                             TimeSpan?                                                  RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSEAvailabilityStatusRequestXML,
                          CustomSendSetEVSEAvailabilityStatusRequestParser,
                          out SetEVSEAvailabilityStatusRequest _SetEVSEAvailabilityStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSEAvailabilityStatusRequest;
             }
@@ -195,15 +210,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetEVSEAvailabilityStatusRequest Parse(String                                                     SetEVSEAvailabilityStatusRequestText,
                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
-                                                             OnExceptionDelegate                                        OnException = null)
+                                                             OnExceptionDelegate                                        OnException         = null,
+
+                                                             DateTime?                                                  Timestamp           = null,
+                                                             CancellationToken?                                         CancellationToken   = null,
+                                                             EventTracking_Id                                           EventTrackingId     = null,
+                                                             TimeSpan?                                                  RequestTimeout      = null)
         {
 
             if (TryParse(SetEVSEAvailabilityStatusRequestText,
                          CustomSendSetEVSEAvailabilityStatusRequestParser,
                          out SetEVSEAvailabilityStatusRequest _SetEVSEAvailabilityStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetEVSEAvailabilityStatusRequest;
             }
@@ -223,10 +253,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetEVSEAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                                   SetEVSEAvailabilityStatusRequestXML,
                                        CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                        out SetEVSEAvailabilityStatusRequest                       SetEVSEAvailabilityStatusRequest,
-                                       OnExceptionDelegate                                        OnException  = null)
+                                       OnExceptionDelegate                                        OnException         = null,
+
+                                       DateTime?                                                  Timestamp           = null,
+                                       CancellationToken?                                         CancellationToken   = null,
+                                       EventTracking_Id                                           EventTrackingId     = null,
+                                       TimeSpan?                                                  RequestTimeout      = null)
         {
 
             try
@@ -247,7 +287,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                        SetEVSEAvailabilityStatusRequestXML.MapValueOrFail    ("availabilityStatus",       ConversionMethods.AsEVSEAvailabilityStatusTypes),
                                                        SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.Parse),
                                                        SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable("availabilityStatusUntil",  DateTime.Parse),
-                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNull    ("availabilityStatusComment")
+                                                       SetEVSEAvailabilityStatusRequestXML.MapValueOrNull    ("availabilityStatusComment"),
+
+                                                       Timestamp,
+                                                       CancellationToken,
+                                                       EventTrackingId,
+                                                       RequestTimeout
 
                                                    );
 
@@ -282,10 +327,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetEVSEAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                     SetEVSEAvailabilityStatusRequestText,
                                        CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                        out SetEVSEAvailabilityStatusRequest                       SetEVSEAvailabilityStatusRequest,
-                                       OnExceptionDelegate                                        OnException  = null)
+                                       OnExceptionDelegate                                        OnException         = null,
+
+                                       DateTime?                                                  Timestamp           = null,
+                                       CancellationToken?                                         CancellationToken   = null,
+                                       EventTracking_Id                                           EventTrackingId     = null,
+                                       TimeSpan?                                                  RequestTimeout      = null)
         {
 
             try
@@ -294,7 +349,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TryParse(XDocument.Parse(SetEVSEAvailabilityStatusRequestText).Root,
                              CustomSendSetEVSEAvailabilityStatusRequestParser,
                              out SetEVSEAvailabilityStatusRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

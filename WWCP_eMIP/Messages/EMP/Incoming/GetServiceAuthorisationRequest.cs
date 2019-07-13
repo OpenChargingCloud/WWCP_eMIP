@@ -149,7 +149,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         //       <operatorId>FR*798</operatorId>
         //
         //       <targetOperatorIdType>eMI3</targetOperatorIdType>
-        //       <targetOperatorId>FR*EMP</targetOperatorId>        //        //       <EVSEIdType>eMI3</EVSEIdType>
+        //       <targetOperatorId>FR*EMP</targetOperatorId>
+        //
+        //       <EVSEIdType>eMI3</EVSEIdType>
         //       <EVSEId>?</EVSEId>
         //
         //       <userIdType>RFID-UID</userIdType>
@@ -178,15 +180,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationRequestXML">The XML to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static GetServiceAuthorisationRequest Parse(XElement                                                 GetServiceAuthorisationRequestXML,
                                                            CustomXMLParserDelegate<GetServiceAuthorisationRequest>  CustomSendGetServiceAuthorisationRequestParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           OnExceptionDelegate                                      OnException         = null,
+
+                                                           DateTime?                                                Timestamp           = null,
+                                                           CancellationToken?                                       CancellationToken   = null,
+                                                           EventTracking_Id                                         EventTrackingId     = null,
+                                                           TimeSpan?                                                RequestTimeout      = null)
         {
 
             if (TryParse(GetServiceAuthorisationRequestXML,
                          CustomSendGetServiceAuthorisationRequestParser,
                          out GetServiceAuthorisationRequest _GetServiceAuthorisationRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _GetServiceAuthorisationRequest;
             }
@@ -205,15 +222,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationRequestText">The text to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static GetServiceAuthorisationRequest Parse(String                                                   GetServiceAuthorisationRequestText,
                                                            CustomXMLParserDelegate<GetServiceAuthorisationRequest>  CustomSendGetServiceAuthorisationRequestParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           OnExceptionDelegate                                      OnException         = null,
+
+                                                           DateTime?                                                Timestamp           = null,
+                                                           CancellationToken?                                       CancellationToken   = null,
+                                                           EventTracking_Id                                         EventTrackingId     = null,
+                                                           TimeSpan?                                                RequestTimeout      = null)
         {
 
             if (TryParse(GetServiceAuthorisationRequestText,
                          CustomSendGetServiceAuthorisationRequestParser,
                          out GetServiceAuthorisationRequest _GetServiceAuthorisationRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _GetServiceAuthorisationRequest;
             }
@@ -233,15 +265,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="GetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                                 GetServiceAuthorisationRequestXML,
                                        CustomXMLParserDelegate<GetServiceAuthorisationRequest>  CustomSendGetServiceAuthorisationRequestParser,
                                        out GetServiceAuthorisationRequest                       GetServiceAuthorisationRequest,
-                                       OnExceptionDelegate                                      OnException        = null,
+                                       OnExceptionDelegate                                      OnException         = null,
 
-                                       DateTime?                                                Timestamp          = null,
-                                       CancellationToken?                                       CancellationToken  = null,
-                                       EventTracking_Id                                         EventTrackingId    = null,
-                                       TimeSpan?                                                RequestTimeout     = null)
+                                       DateTime?                                                Timestamp           = null,
+                                       CancellationToken?                                       CancellationToken   = null,
+                                       EventTracking_Id                                         EventTrackingId     = null,
+                                       TimeSpan?                                                RequestTimeout      = null)
         {
 
             try
@@ -310,10 +347,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="GetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                   GetServiceAuthorisationRequestText,
                                        CustomXMLParserDelegate<GetServiceAuthorisationRequest>  CustomSendGetServiceAuthorisationRequestParser,
                                        out GetServiceAuthorisationRequest                       GetServiceAuthorisationRequest,
-                                       OnExceptionDelegate                                      OnException  = null)
+                                       OnExceptionDelegate                                      OnException         = null,
+
+                                       DateTime?                                                Timestamp           = null,
+                                       CancellationToken?                                       CancellationToken   = null,
+                                       EventTracking_Id                                         EventTrackingId     = null,
+                                       TimeSpan?                                                RequestTimeout      = null)
         {
 
             try
@@ -322,7 +369,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 if (TryParse(XDocument.Parse(GetServiceAuthorisationRequestText).Root,
                              CustomSendGetServiceAuthorisationRequestParser,
                              out GetServiceAuthorisationRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

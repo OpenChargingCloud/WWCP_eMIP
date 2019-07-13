@@ -128,4 +128,180 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
     #endregion
 
+    #region OnSetSessionEventReportDelegate
+
+    /// <summary>
+    /// A delegate called whenever a SetSessionEventReport request was received.
+    /// </summary>
+    /// <param name="LogTimestamp">The timestamp of the logging request.</param>
+    /// <param name="RequestTimestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="SenderId">The unique identification of the sender.</param>
+    /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+    /// 
+    /// <param name="PartnerId">The partner identification.</param>
+    /// <param name="OperatorId">The operator identification.</param>
+    /// <param name="TargetOperatorId">The target operator identification.</param>
+    /// <param name="ServiceSessionId">The service session identification.</param>
+    /// <param name="SessionEvent">The session event.</param>
+    /// 
+    /// <param name="TransactionId">An optional transaction identification.</param>
+    /// <param name="SalePartnerSessionId">An optional partner service session identification.</param>
+    /// 
+    /// <param name="RequestTimeout">The timeout of this request.</param>
+    public delegate Task
+
+        OnSetSessionEventReportRequestDelegate(DateTime                    LogTimestamp,
+                                               DateTime                    RequestTimestamp,
+                                               EMPServer                   Sender,
+                                               String                      SenderId,
+                                               EventTracking_Id            EventTrackingId,
+
+                                               Partner_Id                  PartnerId,
+                                               Operator_Id                 OperatorId,
+                                               Operator_Id                 TargetOperatorId,
+                                               ServiceSession_Id           ServiceSessionId,
+                                               SessionEvent                SessionEvent,
+
+                                               Transaction_Id?             TransactionId,
+                                               PartnerServiceSession_Id?   SalePartnerSessionId,
+
+                                               TimeSpan?                   RequestTimeout);
+
+
+    /// <summary>
+    /// Initiate a SetSessionEventReport.
+    /// </summary>
+    /// <param name="Timestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="Request">A 'set service authorisation' request.</param>
+    public delegate Task<SetSessionEventReportResponse>
+
+        OnSetSessionEventReportDelegate(DateTime                      Timestamp,
+                                        EMPServer                     Sender,
+                                        SetSessionEventReportRequest  Request);
+
+
+    /// <summary>
+    /// A delegate called whenever a response to a SetSessionEventReport request was sent.
+    /// </summary>
+    /// <param name="Timestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="SenderId">The unique identification of the sender.</param>
+    /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+    /// 
+    /// <param name="PartnerId">The partner identification.</param>
+    /// <param name="OperatorId">The operator identification.</param>
+    /// <param name="TargetOperatorId">The target operator identification.</param>
+    /// <param name="ServiceSessionId">The service session identification.</param>
+    /// <param name="SessionEvent">The session event.</param>
+    /// 
+    /// <param name="TransactionId">An optional transaction identification.</param>
+    /// <param name="SalePartnerSessionId">An optional partner service session identification.</param>
+    /// 
+    /// <param name="RequestTimeout">An optional timeout for this request.</param>
+    /// <param name="Result">The result of the request.</param>
+    /// <param name="Duration">The time between request and response.</param>
+    public delegate Task
+
+        OnSetSessionEventReportResponseDelegate(DateTime                        Timestamp,
+                                                EMPServer                       Sender,
+                                                String                          SenderId,
+                                                EventTracking_Id                EventTrackingId,
+
+                                                Partner_Id                      PartnerId,
+                                                Operator_Id                     OperatorId,
+                                                Operator_Id                     TargetOperatorId,
+                                                ServiceSession_Id               ServiceSessionId,
+                                                SessionEvent                    SessionEvent,
+
+                                                Transaction_Id?                 TransactionId,
+                                                PartnerServiceSession_Id?       SalePartnerSessionId,
+
+                                                TimeSpan                        RequestTimeout,
+                                                SetSessionEventReportResponse   Result,
+                                                TimeSpan                        Duration);
+
+    #endregion
+
+    #region OnSetChargeDetailRecordDelegate
+
+    /// <summary>
+    /// A delegate called whenever a SetChargeDetailRecord request was received.
+    /// </summary>
+    /// <param name="LogTimestamp">The timestamp of the logging request.</param>
+    /// <param name="RequestTimestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="SenderId">The unique identification of the sender.</param>
+    /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+    /// 
+    /// <param name="PartnerId">The partner identification.</param>
+    /// <param name="OperatorId">The operator identification.</param>
+    /// <param name="ChargeDetailRecord">The charge detail record.</param>
+    /// <param name="TransactionId">An optional transaction identification.</param>
+    /// 
+    /// <param name="RequestTimeout">The timeout of this request.</param>
+    public delegate Task
+
+        OnSetChargeDetailRecordRequestDelegate(DateTime             LogTimestamp,
+                                               DateTime             RequestTimestamp,
+                                               EMPServer            Sender,
+                                               String               SenderId,
+                                               EventTracking_Id     EventTrackingId,
+
+                                               Partner_Id           PartnerId,
+                                               Operator_Id          OperatorId,
+                                               ChargeDetailRecord   ChargeDetailRecord,
+                                               Transaction_Id?      TransactionId,
+
+                                               TimeSpan?            RequestTimeout);
+
+
+    /// <summary>
+    /// Initiate a SetChargeDetailRecord.
+    /// </summary>
+    /// <param name="Timestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="Request">A 'set service authorisation' request.</param>
+    public delegate Task<SetChargeDetailRecordResponse>
+
+        OnSetChargeDetailRecordDelegate(DateTime                      Timestamp,
+                                        EMPServer                     Sender,
+                                        SetChargeDetailRecordRequest  Request);
+
+
+    /// <summary>
+    /// A delegate called whenever a response to a SetChargeDetailRecord request was sent.
+    /// </summary>
+    /// <param name="Timestamp">The timestamp of the request.</param>
+    /// <param name="Sender">The sender of the request.</param>
+    /// <param name="SenderId">The unique identification of the sender.</param>
+    /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+    /// 
+    /// <param name="PartnerId">The partner identification.</param>
+    /// <param name="OperatorId">The operator identification.</param>
+    /// <param name="ChargeDetailRecord">The charge detail record.</param>
+    /// <param name="TransactionId">An optional transaction identification.</param>
+    /// 
+    /// <param name="RequestTimeout">An optional timeout for this request.</param>
+    /// <param name="Result">The result of the request.</param>
+    /// <param name="Duration">The time between request and response.</param>
+    public delegate Task
+
+        OnSetChargeDetailRecordResponseDelegate(DateTime                          Timestamp,
+                                                  EMPServer                       Sender,
+                                                  String                          SenderId,
+                                                  EventTracking_Id                EventTrackingId,
+
+                                                  Partner_Id                      PartnerId,
+                                                  Operator_Id                     OperatorId,
+                                                  ChargeDetailRecord              ChargeDetailRecord,
+                                                  Transaction_Id?                 TransactionId,
+
+                                                  TimeSpan                        RequestTimeout,
+                                                  SetChargeDetailRecordResponse   Result,
+                                                  TimeSpan                        Duration);
+
+    #endregion
+
 }

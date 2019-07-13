@@ -88,12 +88,28 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Custom request/response mappers
 
-        public CustomXMLParserDelegate<GetServiceAuthorisationRequest>       CustomGetServiceAuthorisationRequestParser        { get; set; }
+        public CustomXMLParserDelegate<GetServiceAuthorisationRequest>       CustomGetServiceAuthorisationRequestParser         { get; set; }
 
-        public CustomXMLSerializerDelegate<GetServiceAuthorisationResponse>  CustomGetServiceAuthorisationResponseSerializer   { get; set; }
+        public CustomXMLSerializerDelegate<GetServiceAuthorisationResponse>  CustomGetServiceAuthorisationResponseSerializer    { get; set; }
 
 
-        public OnExceptionDelegate                                           OnException                                       { get; set; }
+        public CustomXMLParserDelegate<SetSessionEventReportRequest>         CustomSetSessionEventReportRequestParser           { get; set; }
+
+        public CustomXMLParserDelegate<SessionEvent>                         CustomSessionEventParser                           { get; set; }
+
+        public CustomXMLSerializerDelegate<SetSessionEventReportResponse>    CustomSetSessionEventReportResponseSerializer      { get; set; }
+
+
+        public CustomXMLParserDelegate<SetChargeDetailRecordRequest>         CustomSetChargeDetailRecordRequestParser           { get; set; }
+
+        public CustomXMLParserDelegate<ChargeDetailRecord>                   CustomChargeDetailRecordParser                     { get; set; }
+
+        public CustomXMLParserDelegate<MeterReport>                          CustomMeterReportParser                            { get; set; }
+
+        public CustomXMLSerializerDelegate<SetChargeDetailRecordResponse>    CustomSetChargeDetailRecordResponseSerializer      { get; set; }
+
+
+        public OnExceptionDelegate                                           OnException                                        { get; set; }
 
         #endregion
 
@@ -125,6 +141,64 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// An event sent whenever a response to a GetServiceAuthorisation SOAP request was sent.
         /// </summary>
         public event AccessLogHandler                            OnGetServiceAuthorisationSOAPResponse;
+
+        #endregion
+
+        #region OnSetSessionEventReport
+
+        /// <summary>
+        /// An event sent whenever a SetSessionEventReport SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                           OnSetSessionEventReportSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a SetSessionEventReport request was received.
+        /// </summary>
+        public event OnSetSessionEventReportRequestDelegate      OnSetSessionEventReportRequest;
+
+        /// <summary>
+        /// An event sent whenever a SetSessionEventReport request was received.
+        /// </summary>
+        public event OnSetSessionEventReportDelegate             OnSetSessionEventReport;
+
+        /// <summary>
+        /// An event sent whenever a response to a SetSessionEventReport request was sent.
+        /// </summary>
+        public event OnSetSessionEventReportResponseDelegate     OnSetSessionEventReportResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a SetSessionEventReport SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                            OnSetSessionEventReportSOAPResponse;
+
+        #endregion
+
+        #region OnSetChargeDetailRecord
+
+        /// <summary>
+        /// An event sent whenever a SetChargeDetailRecord SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler                           OnSetChargeDetailRecordSOAPRequest;
+
+        /// <summary>
+        /// An event sent whenever a SetChargeDetailRecord request was received.
+        /// </summary>
+        public event OnSetChargeDetailRecordRequestDelegate      OnSetChargeDetailRecordRequest;
+
+        /// <summary>
+        /// An event sent whenever a SetChargeDetailRecord request was received.
+        /// </summary>
+        public event OnSetChargeDetailRecordDelegate             OnSetChargeDetailRecord;
+
+        /// <summary>
+        /// An event sent whenever a response to a SetChargeDetailRecord request was sent.
+        /// </summary>
+        public event OnSetChargeDetailRecordResponseDelegate     OnSetChargeDetailRecordResponse;
+
+        /// <summary>
+        /// An event sent whenever a response to a SetChargeDetailRecord SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler                            OnSetChargeDetailRecordSOAPResponse;
 
         #endregion
 
@@ -400,6 +474,389 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 catch (Exception e)
                 {
                     e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPResponse));
+                }
+
+                #endregion
+
+                return HTTPResponse;
+
+            });
+
+            #endregion
+
+            #region ~/ - SetSessionEventReport
+
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix + AuthorisationURI,
+                                            "SetSessionEventReportRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionEventReportRequest").FirstOrDefault(),
+                                            async (HTTPRequest, SetSessionEventReportXML) => {
+
+
+                SetSessionEventReportResponse Response  = null;
+
+                #region Send OnSetSessionEventReportSOAPRequest event
+
+                var StartTime = DateTime.UtcNow;
+
+                try
+                {
+
+                    if (OnSetSessionEventReportSOAPRequest != null)
+                        await Task.WhenAll(OnSetSessionEventReportSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPRequest));
+                }
+
+                #endregion
+
+
+                if (SetSessionEventReportRequest.TryParse(SetSessionEventReportXML,
+                                                          out SetSessionEventReportRequest _SetSessionEventReportRequest,
+                                                          CustomSetSessionEventReportRequestParser,
+                                                          CustomSessionEventParser,
+                                                          OnException,
+
+                                                          HTTPRequest.Timestamp,
+                                                          HTTPRequest.CancellationToken,
+                                                          HTTPRequest.EventTrackingId,
+                                                          HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
+
+                    #region Send OnSetSessionEventReportRequest event
+
+                    try
+                    {
+
+                        if (OnSetSessionEventReportRequest != null)
+                            await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
+                                               Cast<OnSetSessionEventReportRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                             _SetSessionEventReportRequest.Timestamp.Value,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetSessionEventReportRequest.EventTrackingId,
+
+                                                             _SetSessionEventReportRequest.PartnerId,
+                                                             _SetSessionEventReportRequest.OperatorId,
+                                                             _SetSessionEventReportRequest.TargetOperatorId,
+                                                             _SetSessionEventReportRequest.ServiceSessionId,
+                                                             _SetSessionEventReportRequest.SessionEvent,
+
+                                                             _SetSessionEventReportRequest.TransactionId,
+                                                             _SetSessionEventReportRequest.SalePartnerSessionId,
+
+                                                             _SetSessionEventReportRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportRequest));
+                    }
+
+                    #endregion
+
+                    #region Call async subscribers
+
+                    if (OnSetSessionEventReport != null)
+                    {
+
+                        var results = await Task.WhenAll(OnSetSessionEventReport.GetInvocationList().
+                                                             Cast<OnSetSessionEventReportDelegate>().
+                                                             Select(e => e(DateTime.UtcNow,
+                                                                           this,
+                                                                           _SetSessionEventReportRequest))).
+                                                             ConfigureAwait(false);
+
+                        Response = results.FirstOrDefault();
+
+                    }
+
+                    //if (Response == null)
+                    //    Response = Response<EMP.SetSessionEventReportRequest>.SystemError(
+                    //                         _SetSessionEventReportRequest,
+                    //                         "Could not process the incoming SetSessionEventReport request!",
+                    //                         null,
+                    //                         _SetSessionEventReportRequest.SessionId,
+                    //                         _SetSessionEventReportRequest.PartnerSessionId
+                    //                     );
+
+                    #endregion
+
+                    #region Send OnSetSessionEventReportResponse event
+
+                    var EndTime = DateTime.UtcNow;
+
+                    try
+                    {
+
+                        if (OnSetSessionEventReportResponse != null)
+                            await Task.WhenAll(OnSetSessionEventReportResponse.GetInvocationList().
+                                               Cast<OnSetSessionEventReportResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetSessionEventReportRequest.EventTrackingId,
+
+                                                             _SetSessionEventReportRequest.PartnerId,
+                                                             _SetSessionEventReportRequest.OperatorId,
+                                                             _SetSessionEventReportRequest.TargetOperatorId,
+                                                             _SetSessionEventReportRequest.ServiceSessionId,
+                                                             _SetSessionEventReportRequest.SessionEvent,
+
+                                                             _SetSessionEventReportRequest.TransactionId,
+                                                             _SetSessionEventReportRequest.SalePartnerSessionId,
+
+                                                             _SetSessionEventReportRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportResponse));
+                    }
+
+                    #endregion
+
+                }
+
+                //else
+                //    Response = Response<EMP.SetSessionEventReportRequest>.DataError(
+                //                          _SetSessionEventReportRequest,
+                //                          "Could not process the incoming SetSessionEventReport request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Date            = DateTime.UtcNow,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionEventReportResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
+
+                #endregion
+
+                #region Send OnSetSessionEventReportSOAPResponse event
+
+                try
+                {
+
+                    if (OnSetSessionEventReportSOAPResponse != null)
+                        await Task.WhenAll(OnSetSessionEventReportSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPResponse));
+                }
+
+                #endregion
+
+                return HTTPResponse;
+
+            });
+
+            #endregion
+
+            #region ~/ - SetChargeDetailRecord
+
+            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+                                            URIPrefix + AuthorisationURI,
+                                            "SetChargeDetailRecordRequest",
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetChargeDetailRecordRequest").FirstOrDefault(),
+                                            async (HTTPRequest, SetChargeDetailRecordXML) => {
+
+
+                SetChargeDetailRecordResponse Response  = null;
+
+                #region Send OnSetChargeDetailRecordSOAPRequest event
+
+                var StartTime = DateTime.UtcNow;
+
+                try
+                {
+
+                    if (OnSetChargeDetailRecordSOAPRequest != null)
+                        await Task.WhenAll(OnSetChargeDetailRecordSOAPRequest.GetInvocationList().
+                                           Cast<RequestLogHandler>().
+                                           Select(e => e(StartTime,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPRequest));
+                }
+
+                #endregion
+
+
+                if (SetChargeDetailRecordRequest.TryParse(SetChargeDetailRecordXML,
+                                                          out SetChargeDetailRecordRequest _SetChargeDetailRecordRequest,
+                                                          CustomSetChargeDetailRecordRequestParser,
+                                                          CustomChargeDetailRecordParser,
+                                                          CustomMeterReportParser,
+                                                          OnException,
+
+                                                          HTTPRequest.Timestamp,
+                                                          HTTPRequest.CancellationToken,
+                                                          HTTPRequest.EventTrackingId,
+                                                          HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                {
+
+                    #region Send OnSetChargeDetailRecordRequest event
+
+                    try
+                    {
+
+                        if (OnSetChargeDetailRecordRequest != null)
+                            await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
+                                               Cast<OnSetChargeDetailRecordRequestDelegate>().
+                                               Select(e => e(StartTime,
+                                                              _SetChargeDetailRecordRequest.Timestamp.Value,
+                                                              this,
+                                                              ServiceId,
+                                                              _SetChargeDetailRecordRequest.EventTrackingId,
+
+                                                              _SetChargeDetailRecordRequest.PartnerId,
+                                                              _SetChargeDetailRecordRequest.OperatorId,
+                                                              _SetChargeDetailRecordRequest.ChargeDetailRecord,
+                                                              _SetChargeDetailRecordRequest.TransactionId,
+
+                                                              _SetChargeDetailRecordRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordRequest));
+                    }
+
+                    #endregion
+
+                    #region Call async subscribers
+
+                    if (OnSetChargeDetailRecord != null)
+                    {
+
+                        var results = await Task.WhenAll(OnSetChargeDetailRecord.GetInvocationList().
+                                                             Cast<OnSetChargeDetailRecordDelegate>().
+                                                             Select(e => e(DateTime.UtcNow,
+                                                                           this,
+                                                                           _SetChargeDetailRecordRequest))).
+                                                             ConfigureAwait(false);
+
+                        Response = results.FirstOrDefault();
+
+                    }
+
+                    //if (Response == null)
+                    //    Response = Response<EMP.SetChargeDetailRecordRequest>.SystemError(
+                    //                         _SetChargeDetailRecordRequest,
+                    //                         "Could not process the incoming SetChargeDetailRecord request!",
+                    //                         null,
+                    //                         _SetChargeDetailRecordRequest.SessionId,
+                    //                         _SetChargeDetailRecordRequest.PartnerSessionId
+                    //                     );
+
+                    #endregion
+
+                    #region Send OnSetChargeDetailRecordResponse event
+
+                    var EndTime = DateTime.UtcNow;
+
+                    try
+                    {
+
+                        if (OnSetChargeDetailRecordResponse != null)
+                            await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().
+                                               Cast<OnSetChargeDetailRecordResponseDelegate>().
+                                               Select(e => e(EndTime,
+                                                             this,
+                                                             ServiceId,
+                                                             _SetChargeDetailRecordRequest.EventTrackingId,
+
+                                                             _SetChargeDetailRecordRequest.PartnerId,
+                                                             _SetChargeDetailRecordRequest.OperatorId,
+                                                             _SetChargeDetailRecordRequest.ChargeDetailRecord,
+                                                             _SetChargeDetailRecordRequest.TransactionId,
+
+                                                             _SetChargeDetailRecordRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             Response,
+                                                             EndTime - StartTime))).
+                                               ConfigureAwait(false);
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordResponse));
+                    }
+
+                    #endregion
+
+                }
+
+                //else
+                //    Response = Response<EMP.SetChargeDetailRecordRequest>.DataError(
+                //                          _SetChargeDetailRecordRequest,
+                //                          "Could not process the incoming SetChargeDetailRecord request!"
+                //                      );
+
+
+                #region Create SOAPResponse
+
+                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
+                    HTTPStatusCode  = HTTPStatusCode.OK,
+                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Date            = DateTime.UtcNow,
+                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetChargeDetailRecordResponseSerializer)).ToUTF8Bytes(),
+                    Connection      = "close"
+                };
+
+                #endregion
+
+                #region Send OnSetChargeDetailRecordSOAPResponse event
+
+                try
+                {
+
+                    if (OnSetChargeDetailRecordSOAPResponse != null)
+                        await Task.WhenAll(OnSetChargeDetailRecordSOAPResponse.GetInvocationList().
+                                           Cast<AccessLogHandler>().
+                                           Select(e => e(HTTPResponse.Timestamp,
+                                                         SOAPServer.HTTPServer,
+                                                         HTTPRequest,
+                                                         HTTPResponse))).
+                                           ConfigureAwait(false);
+
+                }
+                catch (Exception e)
+                {
+                    e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPResponse));
                 }
 
                 #endregion

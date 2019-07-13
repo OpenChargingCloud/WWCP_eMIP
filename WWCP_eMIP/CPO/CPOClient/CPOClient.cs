@@ -556,7 +556,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetSessionEventReportRequest>                CustomSetSessionEventReportRequestSerializer                 { get; set; }
+        public CustomXMLSerializerDelegate<SetSessionEventReportRequest>                  CustomSetSessionEventReportRequestSerializer                   { get; set; }
 
 
 
@@ -3165,8 +3165,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
+                                                     Request.OperatorId,
                                                      Request.ServiceSessionId,
-                                                     Request.SessionAction,
+                                                     Request.SessionEvent,
 
                                                      Request.TransactionId,
                                                      Request.ExecPartnerSessionId,
@@ -3371,8 +3372,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
+                                                     Request.OperatorId,
                                                      Request.ServiceSessionId,
-                                                     Request.SessionAction,
+                                                     Request.SessionEvent,
 
                                                      Request.TransactionId,
                                                      Request.ExecPartnerSessionId,

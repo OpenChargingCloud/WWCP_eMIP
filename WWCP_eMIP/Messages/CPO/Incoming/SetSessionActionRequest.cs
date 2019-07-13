@@ -172,17 +172,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetSessionActionRequest Parse(XElement                                          SetSessionActionRequestXML,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException = null)
+                                                    OnExceptionDelegate                               OnException        = null,
+
+                                                    DateTime?                                         Timestamp          = null,
+                                                    CancellationToken?                                CancellationToken  = null,
+                                                    EventTracking_Id                                  EventTrackingId    = null,
+                                                    TimeSpan?                                         RequestTimeout     = null)
         {
 
             if (TryParse(SetSessionActionRequestXML,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
                          out SetSessionActionRequest _SetSessionActionRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetSessionActionRequest;
             }
@@ -202,17 +217,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetSessionActionRequest Parse(String                                            SetSessionActionRequestText,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException = null)
+                                                    OnExceptionDelegate                               OnException        = null,
+
+                                                    DateTime?                                         Timestamp          = null,
+                                                    CancellationToken?                                CancellationToken  = null,
+                                                    EventTracking_Id                                  EventTrackingId    = null,
+                                                    TimeSpan?                                         RequestTimeout     = null)
         {
 
             if (TryParse(SetSessionActionRequestText,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
                          out SetSessionActionRequest _SetSessionActionRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetSessionActionRequest;
             }
@@ -319,11 +349,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="SetSessionActionRequest">The parsed SetSessionAction request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                            SetSessionActionRequestText,
                                        CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                        CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                        out SetSessionActionRequest                       SetSessionActionRequest,
-                                       OnExceptionDelegate                               OnException  = null)
+                                       OnExceptionDelegate                               OnException        = null,
+
+                                       DateTime?                                         Timestamp          = null,
+                                       CancellationToken?                                CancellationToken  = null,
+                                       EventTracking_Id                                  EventTrackingId    = null,
+                                       TimeSpan?                                         RequestTimeout     = null)
         {
 
             try
@@ -333,7 +373,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              CustomSendSetSessionActionRequestParser,
                              CustomSessionActionParser,
                              out SetSessionActionRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

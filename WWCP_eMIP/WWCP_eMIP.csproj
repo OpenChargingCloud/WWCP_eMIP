@@ -135,6 +135,10 @@
     <Compile Include="Messages\EMP\HeartbeatResponse.cs" />
     <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\EMP\Incoming\SetChargeDetailRecordRequest.cs" />
+    <Compile Include="Messages\EMP\Incoming\SetChargeDetailRecordResponse.cs" />
+    <Compile Include="Messages\EMP\Incoming\SetSessionEventReportRequest.cs" />
+    <Compile Include="Messages\EMP\Incoming\SetSessionEventReportResponse.cs" />
     <Compile Include="Messages\EMP\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\EMP\SetServiceAuthorisationResponse.cs" />
     <Compile Include="Messages\CPO\SetSessionEventReportRequest.cs" />

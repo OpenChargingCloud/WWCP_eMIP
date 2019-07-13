@@ -168,15 +168,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargingStationAvailabilityStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetChargingStationAvailabilityStatusRequest Parse(XElement                                                              SetChargingStationAvailabilityStatusRequestXML,
                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
-                                                                        OnExceptionDelegate                                                   OnException = null)
+                                                                        OnExceptionDelegate                                                   OnException         = null,
+
+                                                                        DateTime?                                                             Timestamp           = null,
+                                                                        CancellationToken?                                                    CancellationToken   = null,
+                                                                        EventTracking_Id                                                      EventTrackingId     = null,
+                                                                        TimeSpan?                                                             RequestTimeout      = null)
         {
 
             if (TryParse(SetChargingStationAvailabilityStatusRequestXML,
                          CustomSendSetChargingStationAvailabilityStatusRequestParser,
                          out SetChargingStationAvailabilityStatusRequest _SetChargingStationAvailabilityStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetChargingStationAvailabilityStatusRequest;
             }
@@ -195,15 +210,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetChargingStationAvailabilityStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetChargingStationAvailabilityStatusRequest Parse(String                                                                SetChargingStationAvailabilityStatusRequestText,
                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
-                                                                        OnExceptionDelegate                                                   OnException = null)
+                                                                        OnExceptionDelegate                                                   OnException         = null,
+
+                                                                        DateTime?                                                             Timestamp           = null,
+                                                                        CancellationToken?                                                    CancellationToken   = null,
+                                                                        EventTracking_Id                                                      EventTrackingId     = null,
+                                                                        TimeSpan?                                                             RequestTimeout      = null)
         {
 
             if (TryParse(SetChargingStationAvailabilityStatusRequestText,
                          CustomSendSetChargingStationAvailabilityStatusRequestParser,
                          out SetChargingStationAvailabilityStatusRequest _SetChargingStationAvailabilityStatusRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetChargingStationAvailabilityStatusRequest;
             }
@@ -223,10 +253,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                                              SetChargingStationAvailabilityStatusRequestXML,
                                        CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
                                        out SetChargingStationAvailabilityStatusRequest                       SetChargingStationAvailabilityStatusRequest,
-                                       OnExceptionDelegate                                                   OnException  = null)
+                                       OnExceptionDelegate                                                   OnException         = null,
+
+                                       DateTime?                                                             Timestamp           = null,
+                                       CancellationToken?                                                    CancellationToken   = null,
+                                       EventTracking_Id                                                      EventTrackingId     = null,
+                                       TimeSpan?                                                             RequestTimeout      = null)
         {
 
             try
@@ -261,7 +301,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                   SetChargingStationAvailabilityStatusRequestXML.MapValueOrNullable(eMIPNS.EVCIDynamic + "availabilityStatusUntil",
                                                                                                                                     DateTime.Parse),
 
-                                                                  SetChargingStationAvailabilityStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "availabilityStatusComment")
+                                                                  SetChargingStationAvailabilityStatusRequestXML.MapValueOrNull    (eMIPNS.EVCIDynamic + "availabilityStatusComment"),
+
+                                                                  Timestamp,
+                                                                  CancellationToken,
+                                                                  EventTrackingId,
+                                                                  RequestTimeout
 
                                                               );
 
@@ -296,10 +341,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetChargingStationAvailabilityStatusRequestParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusRequest XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                                SetChargingStationAvailabilityStatusRequestText,
                                        CustomXMLParserDelegate<SetChargingStationAvailabilityStatusRequest>  CustomSendSetChargingStationAvailabilityStatusRequestParser,
                                        out SetChargingStationAvailabilityStatusRequest                       SetChargingStationAvailabilityStatusRequest,
-                                       OnExceptionDelegate                                                   OnException  = null)
+                                       OnExceptionDelegate                                                   OnException         = null,
+
+                                       DateTime?                                                             Timestamp           = null,
+                                       CancellationToken?                                                    CancellationToken   = null,
+                                       EventTracking_Id                                                      EventTrackingId     = null,
+                                       TimeSpan?                                                             RequestTimeout      = null)
         {
 
             try
@@ -308,7 +363,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TryParse(XDocument.Parse(SetChargingStationAvailabilityStatusRequestText).Root,
                              CustomSendSetChargingStationAvailabilityStatusRequestParser,
                              out SetChargingStationAvailabilityStatusRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

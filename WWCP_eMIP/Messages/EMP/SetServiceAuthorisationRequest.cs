@@ -242,17 +242,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetServiceAuthorisationRequest Parse(XElement                                                 SetServiceAuthorisationRequestXML,
                                                            CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
                                                            CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           OnExceptionDelegate                                      OnException         = null,
+
+                                                           DateTime?                                                Timestamp           = null,
+                                                           CancellationToken?                                       CancellationToken   = null,
+                                                           EventTracking_Id                                         EventTrackingId     = null,
+                                                           TimeSpan?                                                RequestTimeout      = null)
         {
 
             if (TryParse(SetServiceAuthorisationRequestXML,
                          CustomSendSetServiceAuthorisationRequestParser,
                          CustomMeterReportParser,
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetServiceAuthorisationRequest;
             }
@@ -272,17 +287,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static SetServiceAuthorisationRequest Parse(String                                                   SetServiceAuthorisationRequestText,
                                                            CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
                                                            CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           OnExceptionDelegate                                      OnException         = null,
+
+                                                           DateTime?                                                Timestamp           = null,
+                                                           CancellationToken?                                       CancellationToken   = null,
+                                                           EventTracking_Id                                         EventTrackingId     = null,
+                                                           TimeSpan?                                                RequestTimeout      = null)
         {
 
             if (TryParse(SetServiceAuthorisationRequestText,
                          CustomSendSetServiceAuthorisationRequestParser,
                          CustomMeterReportParser,
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
-                         OnException))
+                         OnException,
+
+                         Timestamp,
+                         CancellationToken,
+                         EventTrackingId,
+                         RequestTimeout))
             {
                 return _SetServiceAuthorisationRequest;
             }
@@ -392,11 +422,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                                   SetServiceAuthorisationRequestText,
                                        CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
                                        CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                        out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
-                                       OnExceptionDelegate                                      OnException  = null)
+                                       OnExceptionDelegate                                      OnException         = null,
+
+                                       DateTime?                                                Timestamp           = null,
+                                       CancellationToken?                                       CancellationToken   = null,
+                                       EventTracking_Id                                         EventTrackingId     = null,
+                                       TimeSpan?                                                RequestTimeout      = null)
         {
 
             try
@@ -406,7 +446,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              CustomSendSetServiceAuthorisationRequestParser,
                              CustomMeterReportParser,
                              out SetServiceAuthorisationRequest,
-                             OnException))
+                             OnException,
+
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout))
                 {
                     return true;
                 }

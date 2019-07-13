@@ -157,7 +157,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup />

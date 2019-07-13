@@ -67,6 +67,7 @@
     <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
+    <Compile Include="DataTypes\Simple\SessionEvent_Id.cs" />
     <Compile Include="DataTypes\Simple\SessionAction_Id.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />
     <Compile Include="DataTypes\Simple\Booking_Id.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />
-    <Compile Include="Messages\CPO\SetSessionEventReportRequest.cs" />
+    <Compile Include="Messages\CPO\__SetSessionEventReportRequest.cs" />
     <Compile Include="Messages\CPO\SetChargeDetailRecordRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />
@@ -137,7 +138,9 @@
     <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationResponse.cs" />
     <Compile Include="Messages\EMP\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\EMP\SetServiceAuthorisationResponse.cs" />
+    <Compile Include="Messages\CPO\SetSessionEventReportRequest.cs" />
     <Compile Include="Messages\EMP\SetSessionActionRequest.cs" />
+    <Compile Include="Messages\CPO\SetSessionEventReportResponse.cs" />
     <Compile Include="Messages\EMP\SetSessionActionResponse.cs" />
     <Compile Include="Messages\CPO\Incoming\SetSessionActionRequest.cs" />
     <Compile Include="Messages\CPO\Incoming\SetSessionActionResponse.cs" />

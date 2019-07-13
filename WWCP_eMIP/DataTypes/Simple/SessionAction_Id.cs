@@ -32,7 +32,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     public struct SessionAction_Id : IId,
                                      IEquatable <SessionAction_Id>,
                                      IComparable<SessionAction_Id>
-                                 
     {
 
         #region Data

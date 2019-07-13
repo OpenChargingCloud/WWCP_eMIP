@@ -163,6 +163,160 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         #endregion
 
 
+        #region OnSetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        public event OnSetServiceAuthorisationRequestDelegate   OnSetServiceAuthorisationRequest
+        {
+
+            add
+            {
+                EMPClient.OnSetServiceAuthorisationRequest += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetServiceAuthorisationRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                    OnSetServiceAuthorisationSOAPRequest
+        {
+
+            add
+            {
+                EMPClient.OnSetServiceAuthorisationSOAPRequest += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetServiceAuthorisationSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                   OnSetServiceAuthorisationSOAPResponse
+        {
+
+            add
+            {
+                EMPClient.OnSetServiceAuthorisationSOAPResponse += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetServiceAuthorisationSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation request had been received.
+        /// </summary>
+        public event OnSetServiceAuthorisationResponseDelegate  OnSetServiceAuthorisationResponse
+        {
+
+            add
+            {
+                EMPClient.OnSetServiceAuthorisationResponse += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetServiceAuthorisationResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetSessionActionRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a SetSessionAction will be send.
+        /// </summary>
+        public event OnSetSessionActionRequestDelegate   OnSetSessionActionRequest
+        {
+
+            add
+            {
+                EMPClient.OnSetSessionActionRequest += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetSessionActionRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a SetSessionAction will be send.
+        /// </summary>
+        public event ClientRequestLogHandler             OnSetSessionActionSOAPRequest
+        {
+
+            add
+            {
+                EMPClient.OnSetSessionActionSOAPRequest += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetSessionActionSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionAction SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler            OnSetSessionActionSOAPResponse
+        {
+
+            add
+            {
+                EMPClient.OnSetSessionActionSOAPResponse += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetSessionActionSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionAction request had been received.
+        /// </summary>
+        public event OnSetSessionActionResponseDelegate  OnSetSessionActionResponse
+        {
+
+            add
+            {
+                EMPClient.OnSetSessionActionResponse += value;
+            }
+
+            remove
+            {
+                EMPClient.OnSetSessionActionResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+
+
         // EMPServer methods
 
 
@@ -390,6 +544,37 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             SendHeartbeat(HeartbeatRequest Request)
 
                 => EMPClient.SendHeartbeat(Request);
+
+        #endregion
+
+
+        #region SetServiceAuthorisation    (Request)
+
+        /// <summary>
+        /// Send the given SetServiceAuthorisation request.
+        /// </summary>
+        /// <param name="Request">A SetServiceAuthorisation request.</param>
+        public Task<HTTPResponse<SetServiceAuthorisationResponse>>
+
+            SetServiceAuthorisation(SetServiceAuthorisationRequest Request)
+
+                => EMPClient.SetServiceAuthorisation(Request);
+
+        #endregion
+
+        // ToIOP_SetAuthenticationData
+
+        #region SetSessionActionRequest    (Request)
+
+        /// <summary>
+        /// Send the given SetSessionActionRequest request.
+        /// </summary>
+        /// <param name="Request">A SetSessionActionRequest request.</param>
+        public Task<HTTPResponse<SetSessionActionResponse>>
+
+            SetSessionAction(SetSessionActionRequest Request)
+
+                => EMPClient.SetSessionAction(Request);
 
         #endregion
 

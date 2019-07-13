@@ -624,7 +624,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region OnGetServiceAuthorisationRequest/-Response
 
         /// <summary>
-        /// An event fired whenever a service authorisation request will be send.
+        /// An event fired whenever a GetServiceAuthorisation request will be send.
         /// </summary>
         public event OnGetServiceAuthorisationRequestDelegate OnGetServiceAuthorisationRequest
         {
@@ -642,7 +642,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         /// <summary>
-        /// An event fired whenever a SOAP service authorisation request will be send.
+        /// An event fired whenever a SOAP GetServiceAuthorisation request will be send.
         /// </summary>
         public event ClientRequestLogHandler OnGetServiceAuthorisationSOAPRequest
         {
@@ -660,7 +660,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         /// <summary>
-        /// An event fired whenever a response to a service authorisation SOAP request had been received.
+        /// An event fired whenever a response to a GetServiceAuthorisation SOAP request had been received.
         /// </summary>
         public event ClientResponseLogHandler OnGetServiceAuthorisationSOAPResponse
         {
@@ -678,7 +678,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         /// <summary>
-        /// An event fired whenever a response to a service authorisation request had been received.
+        /// An event fired whenever a response to a GetServiceAuthorisation request had been received.
         /// </summary>
         public event OnGetServiceAuthorisationResponseDelegate OnGetServiceAuthorisationResponse
         {
@@ -691,6 +691,82 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             remove
             {
                 CPOClient.OnGetServiceAuthorisationResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetSessionEventReportRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a SetSessionEventReport request will be send.
+        /// </summary>
+        public event OnSetSessionEventReportRequestDelegate OnSetSessionEventReportRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetSessionEventReportRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetSessionEventReportRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP SetSessionEventReport request will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetSessionEventReportSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetSessionEventReportSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetSessionEventReportSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionEventReport SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetSessionEventReportSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetSessionEventReportSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetSessionEventReportSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionEventReport request had been received.
+        /// </summary>
+        public event OnSetSessionEventReportResponseDelegate OnSetSessionEventReportResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetSessionEventReportResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetSessionEventReportResponse -= value;
             }
 
         }
@@ -1522,6 +1598,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 => CPOClient.GetServiceAuthorisation(Request);
 
         #endregion
+
+        #region SetSessionEventReport               (Request)
+
+        /// <summary>
+        /// Send a session event report.
+        /// </summary>
+        /// <param name="Request">A SetSessionEventReport request.</param>
+        public Task<HTTPResponse<SetSessionEventReportResponse>>
+
+            SetSessionEventReport(SetSessionEventReportRequest Request)
+
+                => CPOClient.SetSessionEventReport(Request);
+
+        #endregion
+
 
         #region SetChargeDetailRecord                 (Request)
 

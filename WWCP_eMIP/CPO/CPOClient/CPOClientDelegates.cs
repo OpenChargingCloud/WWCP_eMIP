@@ -356,7 +356,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #region OnGetServiceAuthorisationRequest/-Response
 
     /// <summary>
-    /// A delegate called whenever a service authorisation request will be send upstream.
+    /// A delegate called whenever a GetServiceAuthorisation request will be send upstream.
     /// </summary>
     public delegate Task OnGetServiceAuthorisationRequestDelegate (DateTime                                 LogTimestamp,
                                                                    DateTime                                 RequestTimestamp,
@@ -375,7 +375,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    TimeSpan                                 RequestTimeout);
 
     /// <summary>
-    /// A delegate called whenever a service authorisation request had been sent upstream.
+    /// A delegate called whenever a GetServiceAuthorisation request had been sent upstream.
     /// </summary>
     public delegate Task OnGetServiceAuthorisationResponseDelegate(DateTime                                 LogTimestamp,
                                                                    DateTime                                 RequestTimestamp,
@@ -396,6 +396,49 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    TimeSpan                                 Duration);
 
     #endregion
+
+    #region OnSetSessionEventReportRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a SetSessionEventReport request will be send upstream.
+    /// </summary>
+    public delegate Task OnSetSessionEventReportRequestDelegate (DateTime                        LogTimestamp,
+                                                                 DateTime                        RequestTimestamp,
+                                                                 ICPOClient                      Sender,
+                                                                 String                          SenderId,
+                                                                 EventTracking_Id                EventTrackingId,
+
+                                                                 Partner_Id                      PartnerId,
+                                                                 ServiceSession_Id               ServiceSessionId,
+                                                                 SessionAction                   SessionAction,
+
+                                                                 Transaction_Id?                 TransactionIdl,
+                                                                 PartnerServiceSession_Id?       ExecPartnerSessionId,
+
+                                                                 TimeSpan                        RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a SetSessionEventReport request had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetSessionEventReportResponseDelegate(DateTime                        LogTimestamp,
+                                                                 DateTime                        RequestTimestamp,
+                                                                 ICPOClient                      Sender,
+                                                                 String                          SenderId,
+                                                                 EventTracking_Id                EventTrackingId,
+
+                                                                 Partner_Id                      PartnerId,
+                                                                 ServiceSession_Id               ServiceSessionId,
+                                                                 SessionAction                   SessionAction,
+
+                                                                 Transaction_Id?                 TransactionIdl,
+                                                                 PartnerServiceSession_Id?       ExecPartnerSessionId,
+
+                                                                 TimeSpan                        RequestTimeout,
+                                                                 SetSessionEventReportResponse   Result,
+                                                                 TimeSpan                        Duration);
+
+    #endregion
+
 
     #region OnSetChargeDetailRecordRequest/-Response
 

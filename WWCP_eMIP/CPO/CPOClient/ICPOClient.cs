@@ -209,26 +209,51 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region OnGetServiceAuthorisationRequest/-Response
 
         /// <summary>
-        /// An event fired whenever a service authorisation request will be send.
+        /// An event fired whenever a GetServiceAuthorisation request will be send.
         /// </summary>
         event OnGetServiceAuthorisationRequestDelegate   OnGetServiceAuthorisationRequest;
 
         /// <summary>
-        /// An event fired whenever a SOAP service authorisation request will be send.
+        /// An event fired whenever a SOAP GetServiceAuthorisation request will be send.
         /// </summary>
         event ClientRequestLogHandler                    OnGetServiceAuthorisationSOAPRequest;
 
         /// <summary>
-        /// An event fired whenever a response to a service authorisation SOAP request had been received.
+        /// An event fired whenever a response to a GetServiceAuthorisation SOAP request had been received.
         /// </summary>
         event ClientResponseLogHandler                   OnGetServiceAuthorisationSOAPResponse;
 
         /// <summary>
-        /// An event fired whenever a response to a service authorisation request had been received.
+        /// An event fired whenever a response to a GetServiceAuthorisation request had been received.
         /// </summary>
         event OnGetServiceAuthorisationResponseDelegate  OnGetServiceAuthorisationResponse;
 
         #endregion
+
+        #region OnSetSessionEventReportRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a SetSessionEventReport request will be send.
+        /// </summary>
+        event OnSetSessionEventReportRequestDelegate   OnSetSessionEventReportRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP SetSessionEventReport request will be send.
+        /// </summary>
+        event ClientRequestLogHandler                  OnSetSessionEventReportSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionEventReport SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                 OnSetSessionEventReportSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionEventReport request had been received.
+        /// </summary>
+        event OnSetSessionEventReportResponseDelegate  OnSetSessionEventReportResponse;
+
+        #endregion
+
 
         #region OnSetChargeDetailRecordRequest/-Response
 
@@ -315,6 +340,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">A GetServiceAuthorisation request.</param>
         Task<HTTPResponse<GetServiceAuthorisationResponse>>
             GetServiceAuthorisation(GetServiceAuthorisationRequest Request);
+
+        /// <summary>
+        /// Send a session event report.
+        /// </summary>
+        /// <param name="Request">A SetSessionEventReport request.</param>
+        Task<HTTPResponse<SetSessionEventReportResponse>>
+
+            SetSessionEventReport(SetSessionEventReportRequest Request);
 
 
         /// <summary>

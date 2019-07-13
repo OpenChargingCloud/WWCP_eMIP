@@ -36,12 +36,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Properties
 
-
+        /// <summary>
+        /// The nature of the session action.
+        /// </summary>
         public SessionEventNatures  Nature                   { get; }
+
+        /// <summary>
+        /// The timestamp of the session action.
+        /// </summary>
         public DateTime             DateTime                 { get; }
+
+        /// <summary>
+        /// The unique identification of the session action.
+        /// </summary>
         public SessionAction_Id?    Id                       { get; }
+
+        /// <summary>
+        /// Optional parameters of the session action.
+        /// </summary>
         public String               Parameter                { get; }
-        public ServiceSession_Id?   RelatedSessionEventId    { get; }
+
+        /// <summary>
+        /// An optional related session event identification.
+        /// </summary>
+        public SessionEvent_Id?     RelatedSessionEventId    { get; }
 
         #endregion
 
@@ -50,11 +68,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Create a new session action.
         /// </summary>
+        /// <param name="Nature">The nature of the session action.</param>
+        /// <param name="DateTime">The timestamp of the session action.</param>
+        /// <param name="Id">The unique identification of the session action.</param>
+        /// <param name="Parameter">Optional parameters of the session action.</param>
+        /// <param name="RelatedSessionEventId">An optional related session event identification.</param>
         public SessionAction(SessionEventNatures  Nature,
                              DateTime             DateTime,
                              SessionAction_Id?    Id                      = null,
                              String               Parameter               = null,
-                             ServiceSession_Id?   RelatedSessionEventId   = null)
+                             SessionEvent_Id?     RelatedSessionEventId   = null)
 
 
         {
@@ -168,7 +191,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                                                   SessionActionXML.MapValueOrNullable   ("sessionActionId",        SessionAction_Id.   Parse),
                                                   SessionActionXML.ElementValueOrDefault("sessionActionParameter"),
-                                                  SessionActionXML.MapValueOrNullable   ("relatedSessionEventId",  ServiceSession_Id.  Parse));
+                                                  SessionActionXML.MapValueOrNullable   ("relatedSessionEventId",  SessionEvent_Id.    Parse));
 
 
                 if (CustomSessionActionParser != null)
@@ -201,10 +224,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="SessionAction">The parsed SessionAction object.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(String                                            SessionActionText,
+        public static Boolean TryParse(String                                  SessionActionText,
                                        CustomXMLParserDelegate<SessionAction>  CustomSessionActionParser,
                                        out SessionAction                       SessionAction,
-                                       OnExceptionDelegate                               OnException  = null)
+                                       OnExceptionDelegate                     OnException  = null)
         {
 
             try

@@ -284,6 +284,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
 
+                RegisterEvent("SetSessionEventReportRequest",
+                              handler => CPOClient.OnSetSessionEventReportSOAPRequest += handler,
+                              handler => CPOClient.OnSetSessionEventReportSOAPRequest -= handler,
+                              "SetSessionEventReport", "Authorisation", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetSessionEventReportResponse",
+                              handler => CPOClient.OnSetSessionEventReportSOAPResponse += handler,
+                              handler => CPOClient.OnSetSessionEventReportSOAPResponse -= handler,
+                              "SetSessionEventReport", "Authorisation", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+
                 RegisterEvent("SetChargeDetailRecordRequest",
                               handler => CPOClient.OnSetChargeDetailRecordSOAPRequest += handler,
                               handler => CPOClient.OnSetChargeDetailRecordSOAPRequest -= handler,

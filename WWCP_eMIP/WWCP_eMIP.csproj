@@ -112,7 +112,6 @@
     <Compile Include="Messages\ARequest.cs" />
     <Compile Include="Messages\AResponse.cs" />
     <Compile Include="Messages\AResponseBuilder.cs" />
-    <Compile Include="Messages\CPO\__SetSessionEventReportRequest.cs" />
     <Compile Include="Messages\CPO\SetChargeDetailRecordRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />

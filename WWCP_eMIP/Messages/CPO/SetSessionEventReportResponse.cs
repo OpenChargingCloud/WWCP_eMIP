@@ -97,10 +97,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <serviceSessionId>IOP-SID-GIR-V-IOPFT01-0dc6fc3...153e</serviceSessionId>
         //          <sessionActionId>00969e30-78a0-435e-a368-ea50ef20e878</sessionActionId>
         //
-        //          <!--       1: OK-Normal:  Normal successful completion! -->
-        //          <!--     205: OK-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE! -->
-        //          <!--     206: OK-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)! -->
-        //          <!--   10201: Ko-Error:   The autorisation request is rejected: Unknown error! -->
+        //          <!--       1: Ok-Normal  Normal successful completion! -->
+        //          <!--   10501: Ko-Error   session not found
+        //          <!--   10502: Ko-Error   CPO/eMSP not found
+        //          <!--   10503: Ko-Error   the CPO/eMSP does not accept Action/Event
+        //          <!--   10504: Ko-Error   the request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond
+        //          <!--   10505: Ko-Error   the CPO/eMSP returns an IOP Fault 
+        //          <!--   10506: Ko-Error   the CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side
+        //          <!--   10507: Ko-Error   the CPO/eMSP returns an error code: an error occured on its side during the action/report treatment 
+        //          <!--   10508: Ko-Error   The requestor is neither eMSP nor CPO for this session.
         //          <!--  <10000: OK:         Reserved for future use! -->
         //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>?</requestStatus>

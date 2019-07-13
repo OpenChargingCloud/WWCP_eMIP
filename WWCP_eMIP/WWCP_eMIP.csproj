@@ -93,6 +93,15 @@
     <Compile Include="DataTypes\Simple\RequestStatus.cs" />
     <Compile Include="DataTypes\Simple\PartnerServiceSession_Id.cs" />
     <Compile Include="DataTypes\Simple\Transaction_Id.cs" />
+    <Compile Include="EMP\EMPRoaming.cs" />
+    <Compile Include="EMP\EMPClient\EMPClientLogger.cs" />
+    <Compile Include="EMP\EMPClient\EMPClientDelegates.cs" />
+    <Compile Include="EMP\EMPClient\EMPClient.cs" />
+    <Compile Include="EMP\EMPClient\IEMPClientExtentions.cs" />
+    <Compile Include="EMP\EMPClient\IEMPClient.cs" />
+    <Compile Include="EMP\EMPServer\EMPServer.cs" />
+    <Compile Include="EMP\EMPServer\EMPServerDelegates.cs" />
+    <Compile Include="EMP\EMPServer\EMPServerLogger.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IO\Exceptions\eMIPException.cs" />
     <Compile Include="IO\eMIPNS.cs" />
@@ -120,6 +129,10 @@
     <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatRequest.cs" />
     <Compile Include="Messages\CPO\HeartbeatResponse.cs" />
+    <Compile Include="Messages\EMP\HeartbeatRequest.cs" />
+    <Compile Include="Messages\EMP\HeartbeatResponse.cs" />
+    <Compile Include="Messages\EMP\SetSessionActionRequest.cs" />
+    <Compile Include="Messages\EMP\SetSessionActionResponse.cs" />
     <Compile Include="Messages\IOP\SetSessionActionRequest.cs" />
     <Compile Include="Messages\IOP\SetSessionActionResponse.cs" />
     <Compile Include="Messages\IOP\SetServiceAuthorisationResponse.cs" />
@@ -147,5 +160,6 @@
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

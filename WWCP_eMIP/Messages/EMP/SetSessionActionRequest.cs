@@ -26,7 +26,7 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //
         //    <soap:Header/>
         //    <soap:Body>
-        //       <aut:eMIP_FromIOP_SetSessionActionRequestRequest>
+        //       <aut:eMIP_ToIOP_SetSessionActionRequestRequest>
         //
         //          <!--Optional:-->
         //          <transactionId>?</transactionId>
@@ -143,7 +143,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <targetOperatorId>?</targetOperatorId>
         //
         //          <serviceSessionId>?</serviceSessionId>
-        //          <execPartnerSessionId>?</execPartnerSessionId>
+        //          <salePartnerSessionId>?</salePartnerSessionId>
         //
         //          <sessionAction>
         //
@@ -162,7 +162,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //
         //          </sessionAction>
         //
-        //       </aut:eMIP_FromIOP_SetSessionActionRequestRequest>
+        //       </aut:eMIP_ToIOP_SetSessionActionRequestRequest>
         //    </soap:Body>
         // </soap:Envelope>
 
@@ -265,7 +265,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      SetSessionActionRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.             Parse),
 
                                                      SetSessionActionRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.       Parse),
-                                                     SetSessionActionRequestXML.MapValueOrFail       ("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrFail       ("salePartnerSessionId",     PartnerServiceSession_Id.Parse),
 
                                                      SessionActionXML.          ElementValueOrFail   ("sessionActionNature"),
                                                      SessionActionXML.          ElementValueOrFail   ("sessionActionDateTime"),
@@ -352,7 +352,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequest> CustomSetSessionActionRequestSerializer = null)
         {
 
-            var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequest",
+            var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetSessionActionRequest",
 
                           TransactionId.HasValue
                               ? new XElement("transactionId",           TransactionId.          ToString())

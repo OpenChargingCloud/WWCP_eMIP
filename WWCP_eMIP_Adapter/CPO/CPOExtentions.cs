@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2010-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,6 +62,7 @@ namespace org.GraphDefined.WWCP
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ServerName"> An optional identification string for the HTTP server.</param>
@@ -116,15 +117,16 @@ namespace org.GraphDefined.WWCP
                                                 HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
                                                 RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
                                                 LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
-                                                HTTPPath?                                                          URIPrefix                                       = null,
+                                                HTTPPath?                                                         URIPrefix                                       = null,
                                                 String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
                                                 TimeSpan?                                                         RequestTimeout                                  = null,
+                                                TimeSpan?                                                         TransmissionRetryDelay                          = null,
                                                 Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
                                                 String                                                            ServerName                                      = eMIPv0_7_4.CPO.CPOServer.DefaultHTTPServerName,
                                                 String                                                            ServiceId                                       = null,
                                                 IPPort?                                                           ServerTCPPort                                   = null,
-                                                HTTPPath?                                                          ServerURIPrefix                                 = null,
+                                                HTTPPath?                                                         ServerURIPrefix                                 = null,
                                                 String                                                            ServerAuthorisationURI                          = eMIPv0_7_4.CPO.CPOServer.DefaultAuthorisationURI,
                                                 HTTPContentType                                                   ServerContentType                               = null,
                                                 Boolean                                                           ServerRegisterHTTPRootService                   = true,
@@ -193,6 +195,7 @@ namespace org.GraphDefined.WWCP
                                                                        URIPrefix ?? eMIPv0_7_4.CPO.CPOClient.DefaultURIPrefix,
                                                                        HTTPUserAgent,
                                                                        RequestTimeout,
+                                                                       TransmissionRetryDelay,
                                                                        MaxNumberOfRetries,
 
                                                                        ServerName,
@@ -265,6 +268,7 @@ namespace org.GraphDefined.WWCP
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ClientLoggingContext">An optional context for logging client methods.</param>
@@ -311,12 +315,13 @@ namespace org.GraphDefined.WWCP
                                                 RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
                                                 LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
                                                 HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
-                                                HTTPPath?                                                          URIPrefix                                       = null,
+                                                HTTPPath?                                                         URIPrefix                                       = null,
                                                 String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
                                                 TimeSpan?                                                         RequestTimeout                                  = null,
+                                                TimeSpan?                                                         TransmissionRetryDelay                          = null,
                                                 Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
-                                                HTTPPath?                                                          ServerURIPrefix                                 = null,
+                                                HTTPPath?                                                         ServerURIPrefix                                 = null,
                                                 String                                                            ServiceId                                       = null,
 
                                                 String                                                            ClientLoggingContext                            = eMIPv0_7_4.CPO.CPOClient.CPOClientLogger.DefaultContext,
@@ -385,6 +390,7 @@ namespace org.GraphDefined.WWCP
                                                                                                     URIPrefix ?? eMIPv0_7_4.CPO.CPOClient.DefaultURIPrefix,
                                                                                                     HTTPUserAgent,
                                                                                                     RequestTimeout,
+                                                                                                    TransmissionRetryDelay,
                                                                                                     MaxNumberOfRetries,
                                                                                                     DNSClient,
                                                                                                     ClientLoggingContext,

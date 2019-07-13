@@ -163,6 +163,158 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetChargingPoolAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging pool availability status will be send.
+        /// </summary>
+        public event OnSetChargingPoolAvailabilityStatusRequestDelegate OnSetChargingPoolAvailabilityStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging pool availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetChargingPoolAvailabilityStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetChargingPoolAvailabilityStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status request had been received.
+        /// </summary>
+        public event OnSetChargingPoolAvailabilityStatusResponseDelegate OnSetChargingPoolAvailabilityStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingPoolAvailabilityStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetChargingStationAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging station availability status will be send.
+        /// </summary>
+        public event OnSetChargingStationAvailabilityStatusRequestDelegate OnSetChargingStationAvailabilityStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging station availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetChargingStationAvailabilityStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetChargingStationAvailabilityStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status request had been received.
+        /// </summary>
+        public event OnSetChargingStationAvailabilityStatusResponseDelegate OnSetChargingStationAvailabilityStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingStationAvailabilityStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
         #region OnSetEVSEAvailabilityStatusRequest/-Response
 
         /// <summary>
@@ -239,6 +391,83 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+        #region OnSetChargingConnectorAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging connector availability status will be send.
+        /// </summary>
+        public event OnSetChargingConnectorAvailabilityStatusRequestDelegate OnSetChargingConnectorAvailabilityStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging connector availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetChargingConnectorAvailabilityStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetChargingConnectorAvailabilityStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status request had been received.
+        /// </summary>
+        public event OnSetChargingConnectorAvailabilityStatusResponseDelegate OnSetChargingConnectorAvailabilityStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetChargingConnectorAvailabilityStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+
         #region OnSetEVSEBusyStatusRequest/-Response
 
         /// <summary>
@@ -309,6 +538,82 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             remove
             {
                 CPOClient.OnSetEVSEBusyStatusResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetEVSESyntheticStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE synthetic status will be send.
+        /// </summary>
+        public event OnSetEVSESyntheticStatusRequestDelegate OnSetEVSESyntheticStatusRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSESyntheticStatusRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSESyntheticStatusRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE synthetic status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler OnSetEVSESyntheticStatusSOAPRequest
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSESyntheticStatusSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSESyntheticStatusSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler OnSetEVSESyntheticStatusSOAPResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSESyntheticStatusSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSESyntheticStatusSOAPResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status request had been received.
+        /// </summary>
+        public event OnSetEVSESyntheticStatusResponseDelegate OnSetEVSESyntheticStatusResponse
+        {
+
+            add
+            {
+                CPOClient.OnSetEVSESyntheticStatusResponse += value;
+            }
+
+            remove
+            {
+                CPOClient.OnSetEVSESyntheticStatusResponse -= value;
             }
 
         }
@@ -391,6 +696,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         }
 
         #endregion
+
 
         #region OnSetChargeDetailRecordRequest/-Response
 
@@ -1018,6 +1324,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ServerName">An optional identification string for the HTTP server.</param>
@@ -1043,6 +1350,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           HTTPPath?                            URIPrefix                       = null,
                           String                               HTTPUserAgent                   = CPOClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
+                          TimeSpan?                            TransmissionRetryDelay          = null,
                           Byte?                                MaxNumberOfRetries              = CPOClient.DefaultMaxNumberOfRetries,
 
                           String                               ServerName                      = CPOServer.DefaultHTTPServerName,
@@ -1069,6 +1377,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                  URIPrefix ?? CPOClient.DefaultURIPrefix,
                                  HTTPUserAgent,
                                  RequestTimeout,
+                                 TransmissionRetryDelay,
                                  MaxNumberOfRetries,
                                  DNSClient,
                                  ClientLoggingContext,

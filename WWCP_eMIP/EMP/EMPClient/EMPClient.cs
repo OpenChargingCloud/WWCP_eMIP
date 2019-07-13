@@ -176,6 +176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         /// <param name="LoggingContext">An optional context for logging client methods.</param>
@@ -186,9 +187,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                             URIPrefix                    = null,
+                         HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
+                         TimeSpan?                            TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null,
                          String                               LoggingContext               = EMPClientLogger.DefaultContext,
@@ -204,6 +206,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
+                   TransmissionRetryDelay,
                    MaxNumberOfRetries,
                    DNSClient)
 
@@ -232,6 +235,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public EMPClient(String                               ClientId,
@@ -241,9 +245,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
                          HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                             URIPrefix                    = null,
+                         HTTPPath?                            URIPrefix                    = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
+                         TimeSpan?                            TransmissionRetryDelay       = null,
                          Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
                          DNSClient                            DNSClient                    = null)
 
@@ -257,6 +262,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
+                   TransmissionRetryDelay,
                    MaxNumberOfRetries,
                    DNSClient)
 

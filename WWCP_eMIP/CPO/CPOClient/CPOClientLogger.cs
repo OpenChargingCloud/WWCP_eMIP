@@ -175,17 +175,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
 
-                RegisterEvent("SetEVSEBusyStatusRequest",
-                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest += handler,
-                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest -= handler,
-                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Request", "All").
+                RegisterEvent("SetChargingPoolAvailabilityStatusRequest",
+                              handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest -= handler,
+                              "SetChargingPoolAvailabilityStatus", "SetChargingPoolStatus", "ChargingPool", "AvailabilityStatus", "Status", "Request", "All").
                     RegisterDefaultConsoleLogTarget(this).
                     RegisterDefaultDiscLogTarget(this);
 
-                RegisterEvent("SetEVSEBusyStatusResponse",
-                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse += handler,
-                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse -= handler,
-                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Response", "All").
+                RegisterEvent("SetChargingPoolAvailabilityStatusResponse",
+                              handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse -= handler,
+                              "SetChargingPoolAvailabilityStatus", "SetChargingPoolStatus", "ChargingPool", "AvailabilityStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+                RegisterEvent("SetChargingStationAvailabilityStatusRequest",
+                              handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest -= handler,
+                              "SetChargingStationAvailabilityStatus", "SetChargingStationStatus", "ChargingStation", "AvailabilityStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetChargingStationAvailabilityStatusResponse",
+                              handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse -= handler,
+                              "SetChargingStationAvailabilityStatus", "SetChargingStationStatus", "ChargingStation", "AvailabilityStatus", "Status", "Response", "All").
                     RegisterDefaultConsoleLogTarget(this).
                     RegisterDefaultDiscLogTarget(this);
 
@@ -203,6 +218,53 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               "SetEVSEAvailabilityStatus", "SetEVSEStatus", "EVSE", "AvailabilityStatus", "Status", "Response", "All").
                     RegisterDefaultConsoleLogTarget(this).
                     RegisterDefaultDiscLogTarget(this);
+
+
+                RegisterEvent("SetChargingConnectorAvailabilityStatusRequest",
+                              handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest -= handler,
+                              "SetChargingConnectorAvailabilityStatus", "SetChargingConnectorStatus", "ChargingConnector", "AvailabilityStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetChargingConnectorAvailabilityStatusResponse",
+                              handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse -= handler,
+                              "SetChargingConnectorAvailabilityStatus", "SetChargingConnectorStatus", "ChargingConnector", "AvailabilityStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+
+                RegisterEvent("SetEVSEBusyStatusRequest",
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest -= handler,
+                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetEVSEBusyStatusResponse",
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse -= handler,
+                              "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+                RegisterEvent("SetEVSESyntheticStatusRequest",
+                              handler => CPOClient.OnSetEVSESyntheticStatusSOAPRequest += handler,
+                              handler => CPOClient.OnSetEVSESyntheticStatusSOAPRequest -= handler,
+                              "SetEVSESyntheticStatus", "SetEVSEStatus", "EVSE", "SyntheticStatus", "Status", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetEVSESyntheticStatusResponse",
+                              handler => CPOClient.OnSetEVSESyntheticStatusSOAPResponse += handler,
+                              handler => CPOClient.OnSetEVSESyntheticStatusSOAPResponse -= handler,
+                              "SetEVSESyntheticStatus", "SetEVSEStatus", "EVSE", "SyntheticStatus", "Status", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
 
 
 

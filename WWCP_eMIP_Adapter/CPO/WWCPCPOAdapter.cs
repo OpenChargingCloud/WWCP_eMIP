@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2018 GraphDefined GmbH
+ * Copyright (c) 2010-2019 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -560,6 +560,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ServerName">An optional identification string for the HTTP server.</param>
@@ -612,6 +613,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               HTTPPath?                                          URIPrefix                                       = null,
                               String                                             HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
                               TimeSpan?                                          RequestTimeout                                  = null,
+                              TimeSpan?                                          TransmissionRetryDelay                          = null,
                               Byte?                                              MaxNumberOfRetries                              = CPOClient.DefaultMaxNumberOfRetries,
 
                               String                                             ServerName                                      = CPOServer.DefaultHTTPServerName,
@@ -665,6 +667,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   URIPrefix ?? CPOClient.DefaultURIPrefix,
                                   HTTPUserAgent,
                                   RequestTimeout,
+                                  TransmissionRetryDelay,
                                   MaxNumberOfRetries,
 
                                   ServerName,
@@ -6430,7 +6433,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) WWCPCPOAdapter1 == null) || ((Object) WWCPCPOAdapter2 == null))
+            if (WWCPCPOAdapter1 is null || WWCPCPOAdapter2 is null)
                 return false;
 
             return WWCPCPOAdapter1.Equals(WWCPCPOAdapter2);
@@ -6448,7 +6451,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="WWCPCPOAdapter2">Another WWCPCPOAdapter.</param>
         /// <returns>False if both match; True otherwise.</returns>
         public static Boolean operator != (WWCPCPOAdapter WWCPCPOAdapter1, WWCPCPOAdapter WWCPCPOAdapter2)
-
             => !(WWCPCPOAdapter1 == WWCPCPOAdapter2);
 
         #endregion
@@ -6461,11 +6463,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="WWCPCPOAdapter1">A WWCPCPOAdapter.</param>
         /// <param name="WWCPCPOAdapter2">Another WWCPCPOAdapter.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (WWCPCPOAdapter  WWCPCPOAdapter1,
-                                          WWCPCPOAdapter  WWCPCPOAdapter2)
+        public static Boolean operator < (WWCPCPOAdapter  WWCPCPOAdapter1, WWCPCPOAdapter  WWCPCPOAdapter2)
         {
 
-            if ((Object) WWCPCPOAdapter1 == null)
+            if (WWCPCPOAdapter1 is null)
                 throw new ArgumentNullException(nameof(WWCPCPOAdapter1),  "The given WWCPCPOAdapter must not be null!");
 
             return WWCPCPOAdapter1.CompareTo(WWCPCPOAdapter2) < 0;
@@ -6482,9 +6483,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="WWCPCPOAdapter1">A WWCPCPOAdapter.</param>
         /// <param name="WWCPCPOAdapter2">Another WWCPCPOAdapter.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (WWCPCPOAdapter WWCPCPOAdapter1,
-                                           WWCPCPOAdapter WWCPCPOAdapter2)
-
+        public static Boolean operator <= (WWCPCPOAdapter WWCPCPOAdapter1, WWCPCPOAdapter WWCPCPOAdapter2)
             => !(WWCPCPOAdapter1 > WWCPCPOAdapter2);
 
         #endregion
@@ -6497,11 +6496,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="WWCPCPOAdapter1">A WWCPCPOAdapter.</param>
         /// <param name="WWCPCPOAdapter2">Another WWCPCPOAdapter.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (WWCPCPOAdapter WWCPCPOAdapter1,
-                                          WWCPCPOAdapter WWCPCPOAdapter2)
+        public static Boolean operator > (WWCPCPOAdapter WWCPCPOAdapter1, WWCPCPOAdapter WWCPCPOAdapter2)
         {
 
-            if ((Object) WWCPCPOAdapter1 == null)
+            if (WWCPCPOAdapter1 is null)
                 throw new ArgumentNullException(nameof(WWCPCPOAdapter1),  "The given WWCPCPOAdapter must not be null!");
 
             return WWCPCPOAdapter1.CompareTo(WWCPCPOAdapter2) > 0;
@@ -6518,9 +6516,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="WWCPCPOAdapter1">A WWCPCPOAdapter.</param>
         /// <param name="WWCPCPOAdapter2">Another WWCPCPOAdapter.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (WWCPCPOAdapter WWCPCPOAdapter1,
-                                           WWCPCPOAdapter WWCPCPOAdapter2)
-
+        public static Boolean operator >= (WWCPCPOAdapter WWCPCPOAdapter1, WWCPCPOAdapter WWCPCPOAdapter2)
             => !(WWCPCPOAdapter1 < WWCPCPOAdapter2);
 
         #endregion
@@ -6541,11 +6537,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object == null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            var WWCPCPOAdapter = Object as WWCPCPOAdapter;
-            if ((Object) WWCPCPOAdapter == null)
+            if (!(Object is WWCPCPOAdapter))
                 throw new ArgumentException("The given object is not an WWCPCPOAdapter!", nameof(Object));
 
-            return CompareTo(WWCPCPOAdapter);
+            return CompareTo(Object as WWCPCPOAdapter);
 
         }
 
@@ -6560,7 +6555,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public Int32 CompareTo(WWCPCPOAdapter WWCPCPOAdapter)
         {
 
-            if ((Object) WWCPCPOAdapter == null)
+            if (WWCPCPOAdapter is null)
                 throw new ArgumentNullException(nameof(WWCPCPOAdapter), "The given WWCPCPOAdapter must not be null!");
 
             return Id.CompareTo(WWCPCPOAdapter.Id);
@@ -6586,11 +6581,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object == null)
                 return false;
 
-            var WWCPCPOAdapter = Object as WWCPCPOAdapter;
-            if ((Object) WWCPCPOAdapter == null)
+            if (!(Object is WWCPCPOAdapter))
                 return false;
 
-            return Equals(WWCPCPOAdapter);
+            return Equals(Object as WWCPCPOAdapter);
 
         }
 
@@ -6606,7 +6600,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public Boolean Equals(WWCPCPOAdapter WWCPCPOAdapter)
         {
 
-            if ((Object) WWCPCPOAdapter == null)
+            if (WWCPCPOAdapter is null)
                 return false;
 
             return Id.Equals(WWCPCPOAdapter.Id);

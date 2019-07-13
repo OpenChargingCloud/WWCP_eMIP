@@ -295,6 +295,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="URIPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ServerName">An optional identification string for the HTTP server.</param>
@@ -320,6 +321,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                           HTTPPath?                            URIPrefix                       = null,
                           String                               HTTPUserAgent                   = EMPClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                  = null,
+                          TimeSpan?                            TransmissionRetryDelay          = null,
                           Byte?                                MaxNumberOfRetries              = EMPClient.DefaultMaxNumberOfRetries,
 
                           String                               ServerName                      = EMPServer.DefaultHTTPServerName,
@@ -346,6 +348,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                  URIPrefix ?? EMPClient.DefaultURIPrefix,
                                  HTTPUserAgent,
                                  RequestTimeout,
+                                 TransmissionRetryDelay,
                                  MaxNumberOfRetries,
                                  DNSClient,
                                  ClientLoggingContext,

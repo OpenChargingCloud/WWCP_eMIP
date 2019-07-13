@@ -60,6 +60,54 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetChargingPoolAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging pool availability status will be send.
+        /// </summary>
+        event OnSetChargingPoolAvailabilityStatusRequestDelegate   OnSetChargingPoolAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging pool availability status will be send.
+        /// </summary>
+        event ClientRequestLogHandler                              OnSetChargingPoolAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                             OnSetChargingPoolAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status request had been received.
+        /// </summary>
+        event OnSetChargingPoolAvailabilityStatusResponseDelegate  OnSetChargingPoolAvailabilityStatusResponse;
+
+        #endregion
+
+        #region OnSetChargingStationAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging station availability status will be send.
+        /// </summary>
+        event OnSetChargingStationAvailabilityStatusRequestDelegate   OnSetChargingStationAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging station availability status will be send.
+        /// </summary>
+        event ClientRequestLogHandler                                 OnSetChargingStationAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                                OnSetChargingStationAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status request had been received.
+        /// </summary>
+        event OnSetChargingStationAvailabilityStatusResponseDelegate  OnSetChargingStationAvailabilityStatusResponse;
+
+        #endregion
+
         #region OnSetEVSEAvailabilityStatusRequest/-Response
 
         /// <summary>
@@ -84,6 +132,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+        #region OnSetChargingConnectorAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging connector availability status will be send.
+        /// </summary>
+        event OnSetChargingConnectorAvailabilityStatusRequestDelegate   OnSetChargingConnectorAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging connector availability status will be send.
+        /// </summary>
+        event ClientRequestLogHandler                                   OnSetChargingConnectorAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                                  OnSetChargingConnectorAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status request had been received.
+        /// </summary>
+        event OnSetChargingConnectorAvailabilityStatusResponseDelegate  OnSetChargingConnectorAvailabilityStatusResponse;
+
+        #endregion
+
+
         #region OnSetEVSEBusyStatusRequest/-Response
 
         /// <summary>
@@ -105,6 +178,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// An event fired whenever a response to an EVSE busy status request had been received.
         /// </summary>
         event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
+
+        #endregion
+
+        #region OnSetEVSESyntheticStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending an EVSE synthetic status will be send.
+        /// </summary>
+        event OnSetEVSESyntheticStatusRequestDelegate   OnSetEVSESyntheticStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending an EVSE synthetic status will be send.
+        /// </summary>
+        event ClientRequestLogHandler                   OnSetEVSESyntheticStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                  OnSetEVSESyntheticStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to an EVSE synthetic status request had been received.
+        /// </summary>
+        event OnSetEVSESyntheticStatusResponseDelegate  OnSetEVSESyntheticStatusResponse;
 
         #endregion
 
@@ -169,11 +266,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
         /// <summary>
-        /// Send the given EVSE Availability status.
+        /// Send the given charging pool availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingPoolAvailabilityStatus request.</param>
+        Task<HTTPResponse<SetChargingPoolAvailabilityStatusResponse>>
+            SetChargingPoolAvailabilityStatus(SetChargingPoolAvailabilityStatusRequest Request);
+
+        /// <summary>
+        /// Send the given charging station availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingStationAvailabilityStatus request.</param>
+        Task<HTTPResponse<SetChargingStationAvailabilityStatusResponse>>
+            SetChargingStationAvailabilityStatus(SetChargingStationAvailabilityStatusRequest Request);
+
+        /// <summary>
+        /// Send the given EVSE availability status.
         /// </summary>
         /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
         Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
             SetEVSEAvailabilityStatus(SetEVSEAvailabilityStatusRequest Request);
+
+        /// <summary>
+        /// Send the given charging connector availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingConnectorAvailabilityStatus request.</param>
+        Task<HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>>
+            SetChargingConnectorAvailabilityStatus(SetChargingConnectorAvailabilityStatusRequest Request);
+
 
         /// <summary>
         /// Send the given EVSE busy status.
@@ -182,6 +301,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         Task<HTTPResponse<SetEVSEBusyStatusResponse>>
             SetEVSEBusyStatus(SetEVSEBusyStatusRequest Request);
 
+        /// <summary>
+        /// Send the given EVSE synthetic status.
+        /// </summary>
+        /// <param name="Request">A SetEVSESyntheticStatus request.</param>
+        Task<HTTPResponse<SetEVSESyntheticStatusResponse>>
+            SetEVSESyntheticStatus(SetEVSESyntheticStatusRequest Request);
+
 
         /// <summary>
         /// Request an service authorisation.
@@ -189,6 +315,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">A GetServiceAuthorisation request.</param>
         Task<HTTPResponse<GetServiceAuthorisationResponse>>
             GetServiceAuthorisation(GetServiceAuthorisationRequest Request);
+
 
         /// <summary>
         /// Upload the given charge detail record.

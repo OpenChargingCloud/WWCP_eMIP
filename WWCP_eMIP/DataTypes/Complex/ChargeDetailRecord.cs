@@ -65,7 +65,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Alias of the contract id between the end-user and the eMSP.
         /// This alias may have been anonymised by the eMSP.
         /// </summary>
-        public Contract_Id               UserContractIdAlias      { get; }
+        public Contract_Id?              UserContractIdAlias      { get; }
 
         /// <summary>
         /// The unique identification of the user.
@@ -141,11 +141,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                   ServiceSession_Id                    ServiceSessionId,
                                   Service_Id                           RequestedServiceId,
                                   EVSE_Id                              EVSEId,
-                                  Contract_Id                          UserContractIdAlias,
                                   User_Id                              UserId,
                                   DateTime                             StartTime,
                                   DateTime                             EndTime,
 
+                                  Contract_Id?                         UserContractIdAlias      = null,
                                   ServiceSession_Id?                   ExecPartnerSessionId     = null,
                                   Operator_Id?                         ExecPartnerOperatorId    = null,
                                   ServiceSession_Id?                   SalesPartnerSessionId    = null,
@@ -217,6 +217,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         //    <EVSEIdType>?</EVSEIdType>
         //    <EVSEId>?</EVSEId>
         //
+        //    <!--Optional:-->
         //    <userContractIdAlias>?</userContractIdAlias>
         //    <userIdType>?</userIdType>
         //    <userId>?</userId>
@@ -328,20 +329,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                                          ChargeDetailRecordXML.MapValueOrFail     ("CDRNature",              ConversionMethods.AsCDRNature),
                                          ChargeDetailRecordXML.MapValueOrFail     ("serviceSessionId",       ServiceSession_Id.Parse),
-                                         ChargeDetailRecordXML.MapValueOrFail     ("requestedServiceId",     Service_Id.Parse),
-                                         ChargeDetailRecordXML.MapValueOrFail     ("EVSEId",                 EVSE_Id.Parse),
-                                         ChargeDetailRecordXML.MapValueOrFail     ("userContractIdAlias",    Contract_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("requestedServiceId",     Service_Id.       Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("EVSEId",                 EVSE_Id.          Parse),
 
                                          ChargeDetailRecordXML.MapValueOrFail     ("userId", s => User_Id.Parse(s,
                                              ChargeDetailRecordXML.MapValueOrFail("userIdType", ConversionMethods.AsUserIdFormat))),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     ("startTime",              DateTime.Parse),
-                                         ChargeDetailRecordXML.MapValueOrFail     ("endTime",                DateTime.Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("startTime",              DateTime.         Parse),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("endTime",                DateTime.         Parse),
 
+                                         ChargeDetailRecordXML.MapValueOrNullable ("userContractIdAlias",    Contract_Id.      Parse),
                                          ChargeDetailRecordXML.MapValueOrNullable ("execPartnerSessionId",   ServiceSession_Id.Parse),
-                                         ChargeDetailRecordXML.MapValueOrNullable ("execPartnerOperatorId",  Operator_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("execPartnerOperatorId",  Operator_Id.      Parse),
                                          ChargeDetailRecordXML.MapValueOrNullable ("salePartnerSessionId",   ServiceSession_Id.Parse),
-                                         ChargeDetailRecordXML.MapValueOrNullable ("salePartnerOperatorId",  Provider_Id.Parse),
+                                         ChargeDetailRecordXML.MapValueOrNullable ("salePartnerOperatorId",  Provider_Id.      Parse),
                                          ChargeDetailRecordXML.MapValueOrNullable ("partnerProductId",       PartnerProduct_Id.Parse),
 
                                          ChargeDetailRecordXML.MapElements        ("meterReportList",
@@ -819,7 +820,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             /// Alias of the contract id between the end-user and the eMSP.
             /// This alias may have been anonymised by the eMSP.
             /// </summary>
-            public Contract_Id               UserContractIdAlias      { get; set; }
+            public Contract_Id?              UserContractIdAlias      { get; set; }
 
             /// <summary>
             /// The unique identification of the user.
@@ -1060,11 +1061,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                           ServiceSessionId,
                                           RequestedServiceId,
                                           EVSEId,
-                                          UserContractIdAlias,
                                           UserId,
                                           StartTime,
                                           EndTime,
 
+                                          UserContractIdAlias,
                                           ExecPartnerSessionId,
                                           ExecPartnerOperatorId,
                                           SalesPartnerSessionId,

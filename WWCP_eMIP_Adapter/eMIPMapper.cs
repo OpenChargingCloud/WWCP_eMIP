@@ -300,7 +300,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                           ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
                           Service_Id.Parse("1"),
                           ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
-                          Contract_Id.Parse("test"),
+                          //Contract_Id.Parse("test"),
                           User_Id.Parse(ChargeDetailRecord.IdentificationStart.ToString()),
                           ChargeDetailRecord.SessionTime.Value.StartTime,
                           ChargeDetailRecord.SessionTime.Value.EndTime.Value

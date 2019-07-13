@@ -552,6 +552,423 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
+        #region CustomSetChargingPoolAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingPoolAvailabilityStatusRequestMapper
+
+        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> CustomSetChargingPoolAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingPoolAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingPoolAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+
+        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse> CustomSetChargingPoolAvailabilityStatusParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingPoolAvailabilityStatusParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetChargingPoolAvailabilityStatusParser = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingStationAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingStationAvailabilityStatusRequestMapper
+
+        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> CustomSetChargingStationAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingStationAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingStationAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+
+        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingStationAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse> CustomSetChargingStationAvailabilityStatusParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingStationAvailabilityStatusParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetChargingStationAvailabilityStatusParser = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSEAvailabilityStatusRequestMapper
+
+        #region CustomSetEVSEAvailabilityStatusRequestMapper
+
+        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> CustomSetEVSEAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetEVSEAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+
+        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetEVSEAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse> CustomSetEVSEAvailabilityStatusParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEAvailabilityStatusParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetEVSEAvailabilityStatusParser = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
+
+        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingConnectorAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingConnectorAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+
+        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse> CustomSetChargingConnectorAvailabilityStatusParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargingConnectorAvailabilityStatusParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetChargingConnectorAvailabilityStatusParser = value;
+            }
+
+        }
+
+        #endregion
+
+
+        #region CustomSetEVSEBusyStatusRequestMapper
+
+        #region CustomSetEVSEBusyStatusRequestMapper
+
+        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> CustomSetEVSEBusyStatusRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEBusyStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetEVSEBusyStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetEVSEBusyStatusSOAPRequestMapper
+
+        public Func<SetEVSEBusyStatusRequest, XElement, XElement> CustomSetEVSEBusyStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEBusyStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetEVSEBusyStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse> CustomSetEVSEBusyStatusParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetEVSEBusyStatusParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetEVSEBusyStatusParser = value;
+            }
+
+        }
+
+        #endregion
+
+
+        #region CustomGetServiceAuthorisationRequestMapper
+
+        #region CustomGetServiceAuthorisationRequestMapper
+
+        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> CustomGetServiceAuthorisationRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomGetServiceAuthorisationRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomGetServiceAuthorisationRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomGetServiceAuthorisationSOAPRequestMapper
+
+        public Func<GetServiceAuthorisationRequest, XElement, XElement> CustomGetServiceAuthorisationSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomGetServiceAuthorisationSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomGetServiceAuthorisationSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationParser
+        {
+
+            get
+            {
+                return CPOClient.CustomGetServiceAuthorisationParser;
+            }
+
+            set
+            {
+                CPOClient.CustomGetServiceAuthorisationParser = value;
+            }
+
+        }
+
+        #endregion
+
+
+        #region CustomSetChargeDetailRecordRequestMapper
+
+        #region CustomSetChargeDetailRecordRequestMapper
+
+        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargeDetailRecordRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargeDetailRecordRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargeDetailRecordSOAPRequestMapper
+
+        public Func<SetChargeDetailRecordRequest, XElement, XElement> CustomSetChargeDetailRecordSOAPRequestMapper
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargeDetailRecordSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    CPOClient.CustomSetChargeDetailRecordSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargeDetailRecordResponse> CustomSetChargeDetailRecordParser
+        {
+
+            get
+            {
+                return CPOClient.CustomSetChargeDetailRecordParser;
+            }
+
+            set
+            {
+                CPOClient.CustomSetChargeDetailRecordParser = value;
+            }
+
+        }
+
+        #endregion
+
         #endregion
 
         #region Constructor(s)
@@ -682,7 +1099,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SendHeartbeat  (Request)
+        #region SendHeartbeat                         (Request)
 
         /// <summary>
         /// Send the given heartbeat.
@@ -697,10 +1114,38 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SetEVSEAvailabilityStatus(Request)
+        #region SetChargingPoolAvailabilityStatus     (Request)
 
         /// <summary>
-        /// Send the given EVSE Availability status.
+        /// Send the given charging pool availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingPoolAvailabilityStatus request.</param>
+        public Task<HTTPResponse<SetChargingPoolAvailabilityStatusResponse>>
+
+            SetChargingPoolAvailabilityStatus(SetChargingPoolAvailabilityStatusRequest Request)
+
+                => CPOClient.SetChargingPoolAvailabilityStatus(Request);
+
+        #endregion
+
+        #region SetChargingStationAvailabilityStatus  (Request)
+
+        /// <summary>
+        /// Send the given charging station availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingStationAvailabilityStatus request.</param>
+        public Task<HTTPResponse<SetChargingStationAvailabilityStatusResponse>>
+
+            SetChargingStationAvailabilityStatus(SetChargingStationAvailabilityStatusRequest Request)
+
+                => CPOClient.SetChargingStationAvailabilityStatus(Request);
+
+        #endregion
+
+        #region SetEVSEAvailabilityStatus             (Request)
+
+        /// <summary>
+        /// Send the given EVSE availability status.
         /// </summary>
         /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
         public Task<HTTPResponse<SetEVSEAvailabilityStatusResponse>>
@@ -711,7 +1156,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetEVSEBusyStatus(Request)
+        #region SetChargingConnectorAvailabilityStatus(Request)
+
+        /// <summary>
+        /// Send the given charging connector availability status.
+        /// </summary>
+        /// <param name="Request">A SetChargingConnectorAvailabilityStatus request.</param>
+        public Task<HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>>
+
+            SetChargingConnectorAvailabilityStatus(SetChargingConnectorAvailabilityStatusRequest Request)
+
+                => CPOClient.SetChargingConnectorAvailabilityStatus(Request);
+
+        #endregion
+
+
+        #region SetEVSEBusyStatus                     (Request)
 
         /// <summary>
         /// Send the given EVSE busy status.
@@ -726,7 +1186,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region GetServiceAuthorisation(Request)
+        #region GetServiceAuthorisation               (Request)
 
         /// <summary>
         /// Request an service authorisation.
@@ -740,7 +1200,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetChargeDetailRecord(Request)
+        #region SetChargeDetailRecord                 (Request)
 
         /// <summary>
         /// Upload the given charge detail record.

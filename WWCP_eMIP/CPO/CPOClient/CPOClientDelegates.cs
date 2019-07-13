@@ -18,9 +18,7 @@
 #region Usings
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
@@ -69,51 +67,190 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     #endregion
 
 
+    #region OnSetChargingPoolAvailabilityStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a charging pool availability status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetChargingPoolAvailabilityStatusRequestDelegate (DateTime                                    LogTimestamp,
+                                                                             DateTime                                    RequestTimestamp,
+                                                                             ICPOClient                                  Sender,
+                                                                             String                                      SenderId,
+                                                                             EventTracking_Id                            EventTrackingId,
+
+                                                                             Partner_Id                                  PartnerId,
+                                                                             Operator_Id                                 OperatorId,
+                                                                             ChargingPool_Id                             ChargingPoolId,
+                                                                             DateTime                                    StatusEventDate,
+                                                                             ChargingPoolAvailabilityStatusTypes         AvailabilityStatus,
+                                                                             Transaction_Id?                             TransactionId,
+                                                                             DateTime?                                   AvailabilityStatusUntil,
+                                                                             String                                      AvailabilityStatusComment,
+
+                                                                             TimeSpan                                    RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a charging pool availability status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetChargingPoolAvailabilityStatusResponseDelegate(DateTime                                    LogTimestamp,
+                                                                             DateTime                                    RequestTimestamp,
+                                                                             ICPOClient                                  Sender,
+                                                                             String                                      SenderId,
+                                                                             EventTracking_Id                            EventTrackingId,
+
+                                                                             Partner_Id                                  PartnerId,
+                                                                             Operator_Id                                 OperatorId,
+                                                                             ChargingPool_Id                             ChargingPoolId,
+                                                                             DateTime                                    StatusEventDate,
+                                                                             ChargingPoolAvailabilityStatusTypes         AvailabilityStatus,
+                                                                             Transaction_Id?                             TransactionId,
+                                                                             DateTime?                                   AvailabilityStatusUntil,
+                                                                             String                                      AvailabilityStatusComment,
+
+                                                                             TimeSpan                                    RequestTimeout,
+                                                                             SetChargingPoolAvailabilityStatusResponse   Result,
+                                                                             TimeSpan                                    Duration);
+
+    #endregion
+
+    #region OnSetChargingStationAvailabilityStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a charging station availability status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetChargingStationAvailabilityStatusRequestDelegate (DateTime                                       LogTimestamp,
+                                                                                DateTime                                       RequestTimestamp,
+                                                                                ICPOClient                                     Sender,
+                                                                                String                                         SenderId,
+                                                                                EventTracking_Id                               EventTrackingId,
+
+                                                                                Partner_Id                                     PartnerId,
+                                                                                Operator_Id                                    OperatorId,
+                                                                                ChargingStation_Id                             ChargingStationId,
+                                                                                DateTime                                       StatusEventDate,
+                                                                                ChargingStationAvailabilityStatusTypes         AvailabilityStatus,
+                                                                                Transaction_Id?                                TransactionId,
+                                                                                DateTime?                                      AvailabilityStatusUntil,
+                                                                                String                                         AvailabilityStatusComment,
+
+                                                                                TimeSpan                                       RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a charging station availability status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetChargingStationAvailabilityStatusResponseDelegate(DateTime                                       LogTimestamp,
+                                                                                DateTime                                       RequestTimestamp,
+                                                                                ICPOClient                                     Sender,
+                                                                                String                                         SenderId,
+                                                                                EventTracking_Id                               EventTrackingId,
+
+                                                                                Partner_Id                                     PartnerId,
+                                                                                Operator_Id                                    OperatorId,
+                                                                                ChargingStation_Id                             ChargingStationId,
+                                                                                DateTime                                       StatusEventDate,
+                                                                                ChargingStationAvailabilityStatusTypes         AvailabilityStatus,
+                                                                                Transaction_Id?                                TransactionId,
+                                                                                DateTime?                                      AvailabilityStatusUntil,
+                                                                                String                                         AvailabilityStatusComment,
+
+                                                                                TimeSpan                                       RequestTimeout,
+                                                                                SetChargingStationAvailabilityStatusResponse   Result,
+                                                                                TimeSpan                                       Duration);
+
+    #endregion
+
     #region OnSetEVSEAvailabilityStatusRequest/-Response
 
     /// <summary>
     /// A delegate called whenever an EVSE availability status will be send upstream.
     /// </summary>
-    public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                                 LogTimestamp,
-                                                                     DateTime                                 RequestTimestamp,
-                                                                     ICPOClient                               Sender,
-                                                                     String                                   SenderId,
-                                                                     EventTracking_Id                         EventTrackingId,
+    public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                            LogTimestamp,
+                                                                     DateTime                            RequestTimestamp,
+                                                                     ICPOClient                          Sender,
+                                                                     String                              SenderId,
+                                                                     EventTracking_Id                    EventTrackingId,
 
-                                                                     Partner_Id                               PartnerId,
-                                                                     Operator_Id                              OperatorId,
-                                                                     EVSE_Id                                  EVSEId,
-                                                                     DateTime                                 StatusEventDate,
-                                                                     EVSEAvailabilityStatusTypes              AvailabilityStatus,
-                                                                     Transaction_Id?                          TransactionId,
-                                                                     DateTime?                                AvailabilityStatusUntil,
-                                                                     String                                   AvailabilityStatusComment,
+                                                                     Partner_Id                          PartnerId,
+                                                                     Operator_Id                         OperatorId,
+                                                                     EVSE_Id                             EVSEId,
+                                                                     DateTime                            StatusEventDate,
+                                                                     EVSEAvailabilityStatusTypes         AvailabilityStatus,
+                                                                     Transaction_Id?                     TransactionId,
+                                                                     DateTime?                           AvailabilityStatusUntil,
+                                                                     String                              AvailabilityStatusComment,
 
-                                                                     TimeSpan                                 RequestTimeout);
+                                                                     TimeSpan                            RequestTimeout);
 
     /// <summary>
     /// A delegate called whenever an EVSE availability status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                                 LogTimestamp,
-                                                                     DateTime                                 RequestTimestamp,
-                                                                     ICPOClient                               Sender,
-                                                                     String                                   SenderId,
-                                                                     EventTracking_Id                         EventTrackingId,
+    public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                            LogTimestamp,
+                                                                     DateTime                            RequestTimestamp,
+                                                                     ICPOClient                          Sender,
+                                                                     String                              SenderId,
+                                                                     EventTracking_Id                    EventTrackingId,
 
-                                                                     Partner_Id                               PartnerId,
-                                                                     Operator_Id                              OperatorId,
-                                                                     EVSE_Id                                  EVSEId,
-                                                                     DateTime                                 StatusEventDate,
-                                                                     EVSEAvailabilityStatusTypes              AvailabilityStatus,
-                                                                     Transaction_Id?                          TransactionId,
-                                                                     DateTime?                                AvailabilityStatusUntil,
-                                                                     String                                   AvailabilityStatusComment,
+                                                                     Partner_Id                          PartnerId,
+                                                                     Operator_Id                         OperatorId,
+                                                                     EVSE_Id                             EVSEId,
+                                                                     DateTime                            StatusEventDate,
+                                                                     EVSEAvailabilityStatusTypes         AvailabilityStatus,
+                                                                     Transaction_Id?                     TransactionId,
+                                                                     DateTime?                           AvailabilityStatusUntil,
+                                                                     String                              AvailabilityStatusComment,
 
-                                                                     TimeSpan                                 RequestTimeout,
-                                                                     SetEVSEAvailabilityStatusResponse        Result,
-                                                                     TimeSpan                                 Duration);
+                                                                     TimeSpan                            RequestTimeout,
+                                                                     SetEVSEAvailabilityStatusResponse   Result,
+                                                                     TimeSpan                            Duration);
 
     #endregion
+
+    #region OnSetChargingConnectorAvailabilityStatusRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a charging connector availability status will be send upstream.
+    /// </summary>
+    public delegate Task OnSetChargingConnectorAvailabilityStatusRequestDelegate (DateTime                                         LogTimestamp,
+                                                                                  DateTime                                         RequestTimestamp,
+                                                                                  ICPOClient                                       Sender,
+                                                                                  String                                           SenderId,
+                                                                                  EventTracking_Id                                 EventTrackingId,
+
+                                                                                  Partner_Id                                       PartnerId,
+                                                                                  Operator_Id                                      OperatorId,
+                                                                                  ChargingConnector_Id                             ChargingConnectorId,
+                                                                                  DateTime                                         StatusEventDate,
+                                                                                  ChargingConnectorAvailabilityStatusTypes         AvailabilityStatus,
+                                                                                  Transaction_Id?                                  TransactionId,
+                                                                                  DateTime?                                        AvailabilityStatusUntil,
+                                                                                  String                                           AvailabilityStatusComment,
+
+                                                                                  TimeSpan                                         RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a charging connector availability status had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetChargingConnectorAvailabilityStatusResponseDelegate(DateTime                                         LogTimestamp,
+                                                                                  DateTime                                         RequestTimestamp,
+                                                                                  ICPOClient                                       Sender,
+                                                                                  String                                           SenderId,
+                                                                                  EventTracking_Id                                 EventTrackingId,
+
+                                                                                  Partner_Id                                       PartnerId,
+                                                                                  Operator_Id                                      OperatorId,
+                                                                                  ChargingConnector_Id                             ChargingConnectorId,
+                                                                                  DateTime                                         StatusEventDate,
+                                                                                  ChargingConnectorAvailabilityStatusTypes         AvailabilityStatus,
+                                                                                  Transaction_Id?                                  TransactionId,
+                                                                                  DateTime?                                        AvailabilityStatusUntil,
+                                                                                  String                                           AvailabilityStatusComment,
+
+                                                                                  TimeSpan                                         RequestTimeout,
+                                                                                  SetChargingConnectorAvailabilityStatusResponse   Result,
+                                                                                  TimeSpan                                         Duration);
+
+    #endregion
+
 
     #region OnSetEVSEBusyStatusRequest/-Response
 

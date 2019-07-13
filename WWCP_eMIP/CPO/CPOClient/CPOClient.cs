@@ -47,12 +47,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String   DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " CPO Client";
+        public new const           String    DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " CPO Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort   DefaultRemotePort           = IPPort.Parse(443);
+        public new static readonly IPPort    DefaultRemotePort           = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
@@ -63,7 +63,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default SOAP action prefix.
         /// </summary>
-        public     const           String   DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
+        public     const           String    DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
 
         #endregion
 
@@ -128,7 +128,114 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<HeartbeatRequest>                  CustomHeartbeatRequestSerializer                    { get; set; }
+        public CustomXMLSerializerDelegate<HeartbeatRequest>                              CustomHeartbeatRequestSerializer                               { get; set; }
+
+
+
+        #region CustomSetChargingPoolAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingPoolAvailabilityStatusRequestMapper
+
+        private Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> _CustomSetChargingPoolAvailabilityStatusRequestMapper = _ => _;
+
+        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> CustomSetChargingPoolAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingPoolAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingPoolAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+
+        private Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse> CustomSetChargingPoolAvailabilityStatusParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetChargingPoolAvailabilityStatusRequest>      CustomSetChargingPoolAvailabilityStatusRequestSerializer       { get; set; }
+
+
+        #region CustomSetChargingStationAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingStationAvailabilityStatusRequestMapper
+
+        private Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> _CustomSetChargingStationAvailabilityStatusRequestMapper = _ => _;
+
+        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> CustomSetChargingStationAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingStationAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingStationAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+
+        private Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingStationAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse> CustomSetChargingStationAvailabilityStatusParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetChargingStationAvailabilityStatusRequest>   CustomSetChargingStationAvailabilityStatusRequestSerializer    { get; set; }
 
 
         #region CustomSetEVSEAvailabilityStatusRequestMapper
@@ -181,7 +288,61 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSEAvailabilityStatusRequest>  CustomSetEVSEAvailabilityStatusRequestSerializer    { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSEAvailabilityStatusRequest>              CustomSetEVSEAvailabilityStatusRequestSerializer               { get; set; }
+
+
+        #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
+
+        #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
+
+        private Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> _CustomSetChargingConnectorAvailabilityStatusRequestMapper = _ => _;
+
+        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingConnectorAvailabilityStatusRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingConnectorAvailabilityStatusRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+
+        private Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse> CustomSetChargingConnectorAvailabilityStatusParser { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestSerializer  { get; set; }
+
 
 
         #region CustomSetEVSEBusyStatusRequestMapper
@@ -234,7 +395,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>          CustomSetEVSEBusyStatusRequestSerializer            { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>                      CustomSetEVSEBusyStatusRequestSerializer                       { get; set; }
 
 
         #region CustomGetServiceAuthorisationRequestMapper
@@ -287,7 +448,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>    CustomGetServiceAuthorisationRequestSerializer      { get; set; }
+        public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>                CustomGetServiceAuthorisationRequestSerializer                 { get; set; }
 
 
         #region CustomSetChargeDetailRecordRequestMapper
@@ -340,15 +501,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>      CustomSetChargeDetailRecordRequestSerializer        { get; set; }
+        public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>                  CustomSetChargeDetailRecordRequestSerializer                   { get; set; }
 
 
 
-        public CustomXMLSerializerDelegate<ChargeDetailRecord>                CustomChargeDetailRecordSerializer                  { get; set; }
-        public CustomXMLParserDelegate<ChargeDetailRecord>                    CustomChargeDetailRecordParser                      { get; set; }
+        public CustomXMLSerializerDelegate<ChargeDetailRecord>                            CustomChargeDetailRecordSerializer                             { get; set; }
+        public CustomXMLParserDelegate<ChargeDetailRecord>                                CustomChargeDetailRecordParser                                 { get; set; }
 
-        public CustomXMLSerializerDelegate<MeterReport>                       CustomMeterReportSerializer                         { get; set; }
-        public CustomXMLParserDelegate<MeterReport>                           CustomMeterReportParser                             { get; set; }
+        public CustomXMLSerializerDelegate<MeterReport>                                   CustomMeterReportSerializer                                    { get; set; }
+        public CustomXMLParserDelegate<MeterReport>                                       CustomMeterReportParser                                        { get; set; }
 
         #endregion
 
@@ -379,6 +540,54 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region OnSetChargingPoolAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging pool availability status will be send.
+        /// </summary>
+        public event OnSetChargingPoolAvailabilityStatusRequestDelegate   OnSetChargingPoolAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging pool availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                              OnSetChargingPoolAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                             OnSetChargingPoolAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging pool availability status request had been received.
+        /// </summary>
+        public event OnSetChargingPoolAvailabilityStatusResponseDelegate  OnSetChargingPoolAvailabilityStatusResponse;
+
+        #endregion
+
+        #region OnSetChargingStationAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging station availability status will be send.
+        /// </summary>
+        public event OnSetChargingStationAvailabilityStatusRequestDelegate   OnSetChargingStationAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging station availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                                 OnSetChargingStationAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                                OnSetChargingStationAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging station availability status request had been received.
+        /// </summary>
+        public event OnSetChargingStationAvailabilityStatusResponseDelegate  OnSetChargingStationAvailabilityStatusResponse;
+
+        #endregion
+
         #region OnSetEVSEAvailabilityStatusRequest/-Response
 
         /// <summary>
@@ -402,6 +611,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse;
 
         #endregion
+
+        #region OnSetChargingConnectorAvailabilityStatusRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a charging connector availability status will be send.
+        /// </summary>
+        public event OnSetChargingConnectorAvailabilityStatusRequestDelegate   OnSetChargingConnectorAvailabilityStatusRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a charging connector availability status will be send.
+        /// </summary>
+        public event ClientRequestLogHandler                                   OnSetChargingConnectorAvailabilityStatusSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler                                  OnSetChargingConnectorAvailabilityStatusSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a charging connector availability status request had been received.
+        /// </summary>
+        public event OnSetChargingConnectorAvailabilityStatusResponseDelegate  OnSetChargingConnectorAvailabilityStatusResponse;
+
+        #endregion
+
 
         #region OnSetEVSEBusyStatusRequest/-Response
 
@@ -589,7 +823,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SendHeartbeat            (Request)
+        #region SendHeartbeat                         (Request)
 
         /// <summary>
         /// Send the given heartbeat.
@@ -831,7 +1065,545 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region SetEVSEAvailabilityStatus(Request)
+        #region SetChargingPoolAvailabilityStatus     (Request)
+
+        /// <summary>
+        /// Send the given ChargingPool busy status.
+        /// </summary>
+        /// <param name="Request">A SetChargingPoolAvailabilityStatus request.</param>
+        public async Task<HTTPResponse<SetChargingPoolAvailabilityStatusResponse>>
+
+            SetChargingPoolAvailabilityStatus(SetChargingPoolAvailabilityStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetChargingPoolAvailabilityStatus request must not be null!");
+
+            Request = _CustomSetChargingPoolAvailabilityStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetChargingPoolAvailabilityStatus request must not be null!");
+
+
+            Byte                                                    TransmissionRetry  = 0;
+            HTTPResponse<SetChargingPoolAvailabilityStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetChargingPoolAvailabilityStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingPoolAvailabilityStatusRequest != null)
+                    await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
+                                       Cast<OnSetChargingPoolAvailabilityStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingPoolId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusRequest));
+            }
+
+            #endregion
+
+
+
+            if (!Request.ChargingPoolId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.ChargingPoolId.ToString().StartsWith("DE*BDO*ChargingPool*CI*TESTS"))
+                    result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
+                                 new SetChargingPoolAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper(Request,
+                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingPoolAvailabilityStatusRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingPoolAvailabilityStatusV1/",
+                                                     RequestLogDelegate:   OnSetChargingPoolAvailabilityStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetChargingPoolAvailabilityStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetChargingPoolAvailabilityStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetChargingPoolAvailabilityStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingPoolAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(httpresponse,
+                                                                                                        new SetChargingPoolAvailabilityStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingPoolAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.ExceptionThrown(
+
+                                                                new SetChargingPoolAvailabilityStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
+                                 new SetChargingPoolAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetChargingPoolAvailabilityStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingPoolAvailabilityStatusResponse != null)
+                    await Task.WhenAll(OnSetChargingPoolAvailabilityStatusResponse.GetInvocationList().
+                                       Cast<OnSetChargingPoolAvailabilityStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingPoolId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region SetChargingStationAvailabilityStatus  (Request)
+
+        /// <summary>
+        /// Send the given ChargingStation busy status.
+        /// </summary>
+        /// <param name="Request">A SetChargingStationAvailabilityStatus request.</param>
+        public async Task<HTTPResponse<SetChargingStationAvailabilityStatusResponse>>
+
+            SetChargingStationAvailabilityStatus(SetChargingStationAvailabilityStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetChargingStationAvailabilityStatus request must not be null!");
+
+            Request = _CustomSetChargingStationAvailabilityStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetChargingStationAvailabilityStatus request must not be null!");
+
+
+            Byte                                                       TransmissionRetry  = 0;
+            HTTPResponse<SetChargingStationAvailabilityStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetChargingStationAvailabilityStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingStationAvailabilityStatusRequest != null)
+                    await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
+                                       Cast<OnSetChargingStationAvailabilityStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingStationId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusRequest));
+            }
+
+            #endregion
+
+
+
+            if (!Request.ChargingStationId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.ChargingStationId.ToString().StartsWith("DE*BDO*ChargingStation*CI*TESTS"))
+                    result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
+                                 new SetChargingStationAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetChargingStationAvailabilityStatusSOAPRequestMapper(Request,
+                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingStationAvailabilityStatusRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingStationAvailabilityStatusV1/",
+                                                     RequestLogDelegate:   OnSetChargingStationAvailabilityStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetChargingStationAvailabilityStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetChargingStationAvailabilityStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetChargingStationAvailabilityStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingStationAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(httpresponse,
+                                                                                                        new SetChargingStationAvailabilityStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingStationAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.ExceptionThrown(
+
+                                                                new SetChargingStationAvailabilityStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
+                                 new SetChargingStationAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetChargingStationAvailabilityStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingStationAvailabilityStatusResponse != null)
+                    await Task.WhenAll(OnSetChargingStationAvailabilityStatusResponse.GetInvocationList().
+                                       Cast<OnSetChargingStationAvailabilityStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingStationId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region SetEVSEAvailabilityStatus             (Request)
 
         /// <summary>
         /// Send the given EVSE busy status.
@@ -854,7 +1626,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEAvailabilityStatus request must not be null!");
 
 
-            Byte                                    TransmissionRetry  = 0;
+            Byte                                            TransmissionRetry  = 0;
             HTTPResponse<SetEVSEAvailabilityStatusResponse> result             = null;
 
             #endregion
@@ -1100,7 +1872,277 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetEVSEBusyStatus        (Request)
+        #region SetChargingConnectorAvailabilityStatus(Request)
+
+        /// <summary>
+        /// Send the given ChargingConnector busy status.
+        /// </summary>
+        /// <param name="Request">A SetChargingConnectorAvailabilityStatus request.</param>
+        public async Task<HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>>
+
+            SetChargingConnectorAvailabilityStatus(SetChargingConnectorAvailabilityStatusRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetChargingConnectorAvailabilityStatus request must not be null!");
+
+            Request = _CustomSetChargingConnectorAvailabilityStatusRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetChargingConnectorAvailabilityStatus request must not be null!");
+
+
+            Byte                                                         TransmissionRetry  = 0;
+            HTTPResponse<SetChargingConnectorAvailabilityStatusResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetChargingConnectorAvailabilityStatusRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingConnectorAvailabilityStatusRequest != null)
+                    await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
+                                       Cast<OnSetChargingConnectorAvailabilityStatusRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingConnectorId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusRequest));
+            }
+
+            #endregion
+
+
+
+            if (!Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*E666181358*") &&
+                !Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*ChargingConnector*CI*TESTS"))
+                    result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
+                                 new SetChargingConnectorAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.ServiceNotAvailable
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            else
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper(Request,
+                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingConnectorAvailabilityStatusRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingConnectorAvailabilityStatusV1/",
+                                                     RequestLogDelegate:   OnSetChargingConnectorAvailabilityStatusSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetChargingConnectorAvailabilityStatusSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetChargingConnectorAvailabilityStatusResponse.Parse(request,
+                                                                                                                                      xml,
+                                                                                                                                      CustomSetChargingConnectorAvailabilityStatusParser,
+                                                                                                                                      onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingConnectorAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError
+                                                                        //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(httpresponse,
+                                                                                                        new SetChargingConnectorAvailabilityStatusResponse(
+                                                                                                            Request,
+                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                            RequestStatus.HTTPError
+                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        ),
+                                                                                                        IsFault: true);
+
+
+                                                         return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetChargingConnectorAvailabilityStatusResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError
+                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.ExceptionThrown(
+
+                                                                new SetChargingConnectorAvailabilityStatusResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
+                                 new SetChargingConnectorAvailabilityStatusResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError
+                                     //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSendSetChargingConnectorAvailabilityStatusResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetChargingConnectorAvailabilityStatusResponse != null)
+                    await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusResponse.GetInvocationList().
+                                       Cast<OnSetChargingConnectorAvailabilityStatusResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ChargingConnectorId,
+                                                     Request.StatusEventDate,
+                                                     Request.AvailabilityStatus,
+                                                     Request.TransactionId,
+                                                     Request.AvailabilityStatusUntil,
+                                                     Request.AvailabilityStatusComment,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+
+        #region SetEVSEBusyStatus                     (Request)
 
         /// <summary>
         /// Send the given EVSE busy status.
@@ -1369,7 +2411,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region GetServiceAuthorisation  (Request)
+        #region GetServiceAuthorisation               (Request)
 
         /// <summary>
         /// Request an service authorisation.
@@ -1636,7 +2678,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region SetChargeDetailRecord    (Request)
+        #region SetChargeDetailRecord                 (Request)
 
         /// <summary>
         /// Upload the given charge detail record.

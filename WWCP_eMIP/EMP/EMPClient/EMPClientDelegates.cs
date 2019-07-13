@@ -18,7 +18,6 @@
 #region Usings
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -121,5 +120,50 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                    TimeSpan                          Duration);
 
     #endregion
+
+    #region OnSetSessionActionRequest/-Response
+
+    /// <summary>
+    /// A delegate called whenever a SetSessionAction will be send upstream.
+    /// </summary>
+    public delegate Task OnSetSessionActionRequestDelegate (DateTime                   LogTimestamp,
+                                                            DateTime                   RequestTimestamp,
+                                                            IEMPClient                 Sender,
+                                                            String                     SenderId,
+                                                            EventTracking_Id           EventTrackingId,
+
+                                                            Partner_Id                 PartnerId,
+                                                            Operator_Id                OperatorId,
+                                                            ServiceSession_Id          ServiceSessionId,
+                                                            SessionAction              SessionAction,
+
+                                                            Transaction_Id?            TransactionId,
+                                                            PartnerServiceSession_Id?  SalePartnerSessionId,
+
+                                                            TimeSpan                   RequestTimeout);
+
+    /// <summary>
+    /// A delegate called whenever a SetSessionAction had been sent upstream.
+    /// </summary>
+    public delegate Task OnSetSessionActionResponseDelegate(DateTime                   LogTimestamp,
+                                                            DateTime                   RequestTimestamp,
+                                                            IEMPClient                 Sender,
+                                                            String                     SenderId,
+                                                            EventTracking_Id           EventTrackingId,
+
+                                                            Partner_Id                 PartnerId,
+                                                            Operator_Id                OperatorId,
+                                                            ServiceSession_Id          ServiceSessionId,
+                                                            SessionAction              SessionAction,
+
+                                                            Transaction_Id?            TransactionId,
+                                                            PartnerServiceSession_Id?  SalePartnerSessionId,
+
+                                                            TimeSpan                   RequestTimeout,
+                                                            SetSessionActionResponse   Result,
+                                                            TimeSpan                   Duration);
+
+    #endregion
+
 
 }

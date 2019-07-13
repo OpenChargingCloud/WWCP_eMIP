@@ -173,6 +173,37 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     RegisterDefaultConsoleLogTarget(this).
                     RegisterDefaultDiscLogTarget(this);
 
+
+
+                RegisterEvent("SetServiceAuthorisationRequest",
+                              handler => EMPClient.OnSetServiceAuthorisationSOAPRequest  += handler,
+                              handler => EMPClient.OnSetServiceAuthorisationSOAPRequest -= handler,
+                              "SetServiceAuthorisation", "ServiceAuthorisation", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetServiceAuthorisationResponse",
+                              handler => EMPClient.OnSetServiceAuthorisationSOAPResponse += handler,
+                              handler => EMPClient.OnSetServiceAuthorisationSOAPResponse -= handler,
+                              "SetServiceAuthorisation", "ServiceAuthorisation", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+
+                RegisterEvent("SetSessionActionRequest",
+                              handler => EMPClient.OnSetSessionActionSOAPRequest += handler,
+                              handler => EMPClient.OnSetSessionActionSOAPRequest -= handler,
+                              "SetSessionAction", "SessionAction", "Request", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
+                RegisterEvent("SetSessionActionResponse",
+                              handler => EMPClient.OnSetSessionActionSOAPResponse += handler,
+                              handler => EMPClient.OnSetSessionActionSOAPResponse -= handler,
+                              "SetSessionAction", "SessionAction", "Response", "All").
+                    RegisterDefaultConsoleLogTarget(this).
+                    RegisterDefaultDiscLogTarget(this);
+
                 #endregion
 
             }

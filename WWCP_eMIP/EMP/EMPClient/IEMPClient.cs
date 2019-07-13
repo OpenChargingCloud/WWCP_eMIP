@@ -53,9 +53,58 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         event ClientResponseLogHandler         OnSendHeartbeatSOAPResponse;
 
         /// <summary>
-        /// An event fired whenever EVSE status records had been sent upstream.
+        /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
         event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
+
+        #endregion
+
+
+        #region OnSetServiceAuthorisationRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        event OnSetServiceAuthorisationRequestDelegate   OnSetServiceAuthorisationRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a SetServiceAuthorisation will be send.
+        /// </summary>
+        event ClientRequestLogHandler                    OnSetServiceAuthorisationSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler                   OnSetServiceAuthorisationSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetServiceAuthorisation request had been received.
+        /// </summary>
+        event OnSetServiceAuthorisationResponseDelegate  OnSetServiceAuthorisationResponse;
+
+        #endregion
+
+        #region OnSetSessionActionRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a heartbeat will be send.
+        /// </summary>
+        event OnSetSessionActionRequestDelegate   OnSetSessionActionRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a heartbeat will be send.
+        /// </summary>
+        event ClientRequestLogHandler             OnSetSessionActionSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a heartbeat SOAP request had been received.
+        /// </summary>
+        event ClientResponseLogHandler            OnSetSessionActionSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a heartbeat request had been received.
+        /// </summary>
+        event OnSetSessionActionResponseDelegate  OnSetSessionActionResponse;
 
         #endregion
 
@@ -69,6 +118,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         Task<HTTPResponse<HeartbeatResponse>>
             SendHeartbeat(HeartbeatRequest Request);
 
+
+        /// <summary>
+        /// Send the given SetServiceAuthorisation request.
+        /// </summary>
+        /// <param name="Request">A SetServiceAuthorisation request.</param>
+        Task<HTTPResponse<SetServiceAuthorisationResponse>>
+            SetServiceAuthorisation(SetServiceAuthorisationRequest Request);
+
+        /// <summary>
+        /// Send the given SetSessionActionRequest request.
+        /// </summary>
+        /// <param name="Request">A SetSessionActionRequest request.</param>
+        Task<HTTPResponse<SetSessionActionResponse>>
+            SetSessionAction(SetSessionActionRequest Request);
 
     }
 

@@ -118,18 +118,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      XElement                                           SetSessionActionResponseXML,
-                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
-                                                     OnExceptionDelegate                                OnException                               = null)
+                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser  = null,
+                                                     OnExceptionDelegate                                OnException                           = null)
         {
 
             if (TryParse(Request,
                          SetSessionActionResponseXML,
                          out SetSessionActionResponse SetSessionActionResponse,
-                         CustomSendSetSessionActionResponseParser,
+                         CustomSetSessionActionResponseParser,
                          OnException))
             {
                 return SetSessionActionResponse;
@@ -148,18 +148,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      String                                             SetSessionActionResponseText,
-                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
-                                                     OnExceptionDelegate                                OnException                               = null)
+                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser  = null,
+                                                     OnExceptionDelegate                                OnException                           = null)
         {
 
             if (TryParse(Request,
                          SetSessionActionResponseText,
                          out SetSessionActionResponse SetSessionActionResponse,
-                         CustomSendSetSessionActionResponseParser,
+                         CustomSetSessionActionResponseParser,
                          OnException))
             {
                 return SetSessionActionResponse;
@@ -179,13 +179,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
-        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        XElement                                           SetSessionActionResponseXML,
                                        out SetSessionActionResponse                       SetSessionActionResponse,
-                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
-                                       OnExceptionDelegate                                OnException                               = null)
+                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser  = null,
+                                       OnExceptionDelegate                                OnException                           = null)
         {
 
             try
@@ -206,9 +206,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                            );
 
 
-                if (CustomSendSetSessionActionResponseParser != null)
-                    SetSessionActionResponse = CustomSendSetSessionActionResponseParser(SetSessionActionResponseXML,
-                                                                                                      SetSessionActionResponse);
+                if (CustomSetSessionActionResponseParser != null)
+                    SetSessionActionResponse = CustomSetSessionActionResponseParser(SetSessionActionResponseXML,
+                                                                                    SetSessionActionResponse);
 
                 return true;
 
@@ -234,14 +234,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetSessionActionRequest                     Request,
+        public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        String                                             SetSessionActionResponseText,
                                        out SetSessionActionResponse                       SetSessionActionResponse,
-                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
-                                       OnExceptionDelegate                                OnException                               = null)
+                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser  = null,
+                                       OnExceptionDelegate                                OnException                           = null)
         {
 
             try
@@ -250,7 +250,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 if (TryParse(Request,
                              XDocument.Parse(SetSessionActionResponseText).Root,
                              out SetSessionActionResponse,
-                             CustomSendSetSessionActionResponseParser,
+                             CustomSetSessionActionResponseParser,
                              OnException))
                 {
                     return true;

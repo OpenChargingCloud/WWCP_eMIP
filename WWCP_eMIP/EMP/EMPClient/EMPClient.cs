@@ -183,6 +183,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         public CustomXMLSerializerDelegate<SetServiceAuthorisationRequest>    CustomSetServiceAuthorisationRequestSerializer      { get; set; }
 
+
+        #region CustomSetSessionActionMapper
+
+        #region CustomSetSessionActionRequestMapper
+
+        private Func<SetSessionActionRequest, SetSessionActionRequest> _CustomSetSessionActionRequestMapper = _ => _;
+
+        public Func<SetSessionActionRequest, SetSessionActionRequest> CustomSetSessionActionRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetSessionActionRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetSessionActionRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        #region CustomSetSessionActionSOAPRequestMapper
+
+        private Func<SetSessionActionRequest, XElement, XElement> _CustomSetSessionActionSOAPRequestMapper = (request, xml) => xml;
+
+        public Func<SetSessionActionRequest, XElement, XElement> CustomSetSessionActionSOAPRequestMapper
+        {
+
+            get
+            {
+                return _CustomSetSessionActionSOAPRequestMapper;
+            }
+
+            set
+            {
+                if (value != null)
+                    _CustomSetSessionActionSOAPRequestMapper = value;
+            }
+
+        }
+
+        #endregion
+
+        public CustomXMLParserDelegate<SetSessionActionResponse> CustomSetSessionActionParser   { get; set; }
+
+        #endregion
+
+        public CustomXMLSerializerDelegate<SetSessionActionRequest>    CustomSetSessionActionRequestSerializer      { get; set; }
+
+
         #endregion
 
         #region Events
@@ -233,6 +287,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// An event fired whenever a response to a SetServiceAuthorisation request had been received.
         /// </summary>
         public event OnSetServiceAuthorisationResponseDelegate  OnSetServiceAuthorisationResponse;
+
+        #endregion
+
+        #region OnSetSessionActionRequest/-Response
+
+        /// <summary>
+        /// An event fired whenever a request sending a SetSessionAction will be send.
+        /// </summary>
+        public event OnSetSessionActionRequestDelegate   OnSetSessionActionRequest;
+
+        /// <summary>
+        /// An event fired whenever a SOAP request sending a SetSessionAction will be send.
+        /// </summary>
+        public event ClientRequestLogHandler             OnSetSessionActionSOAPRequest;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionAction SOAP request had been received.
+        /// </summary>
+        public event ClientResponseLogHandler            OnSetSessionActionSOAPResponse;
+
+        /// <summary>
+        /// An event fired whenever a response to a SetSessionAction request had been received.
+        /// </summary>
+        public event OnSetSessionActionResponseDelegate  OnSetSessionActionResponse;
 
         #endregion
 
@@ -873,7 +951,271 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         // ToIOP_SetAuthenticationData
 
-        // ToIOP_SetSessionActionRequest
+
+        #region SetSessionActionRequest    (Request)
+
+        /// <summary>
+        /// Send the given SetSessionActionRequest request.
+        /// </summary>
+        /// <param name="Request">A SetSessionActionRequest request.</param>
+        public async Task<HTTPResponse<SetSessionActionResponse>>
+
+            SetSessionAction(SetSessionActionRequest Request)
+
+        {
+
+            #region Initial checks
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The given SetSessionActionRequest request must not be null!");
+
+            Request = _CustomSetSessionActionRequestMapper(Request);
+
+            if (Request == null)
+                throw new ArgumentNullException(nameof(Request), "The mapped SetSessionActionRequest request must not be null!");
+
+
+            Byte                                   TransmissionRetry  = 0;
+            HTTPResponse<SetSessionActionResponse> result             = null;
+
+            #endregion
+
+            #region Send OnSetSessionActionRequest event
+
+            var StartTime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetSessionActionRequest != null)
+                    await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
+                                       Cast<OnSetSessionActionRequestDelegate>().
+                                       Select(e => e(StartTime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ServiceSessionId,
+                                                     Request.SessionAction,
+
+                                                     Request.TransactionId,
+                                                     Request.SalePartnerSessionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(EMPClient) + "." + nameof(OnSetSessionActionRequest));
+            }
+
+            #endregion
+
+
+            do
+            {
+
+                using (var _eMIPClient = new SOAPClient(Hostname,
+                                                        URIPrefix,
+                                                        VirtualHostname,
+                                                        RemotePort,
+                                                        RemoteCertificateValidator,
+                                                        ClientCertificateSelector,
+                                                        UserAgent,
+                                                        RequestTimeout,
+                                                        DNSClient))
+                {
+
+                    result = await _eMIPClient.Query(_CustomSetSessionActionSOAPRequestMapper(Request,
+                                                                                              SOAP.Encapsulation(Request.ToXML(CustomSetSessionActionRequestSerializer))),
+                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_SetSessionActionRequestV1/",
+                                                     RequestLogDelegate:   OnSetSessionActionSOAPRequest,
+                                                     ResponseLogDelegate:  OnSetSessionActionSOAPResponse,
+                                                     CancellationToken:    Request.CancellationToken,
+                                                     EventTrackingId:      Request.EventTrackingId,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     NumberOfRetry:        TransmissionRetry,
+
+                                                     #region OnSuccess
+
+                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                          (request, xml, onexception) =>
+                                                                                                              SetSessionActionResponse.Parse(request,
+                                                                                                                                             xml,
+                                                                                                                                             CustomSetSessionActionParser,
+                                                                                                                                             onexception)),
+
+                                                     #endregion
+
+                                                     #region OnSOAPFault
+
+                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+
+                                                         return new HTTPResponse<SetSessionActionResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetSessionActionResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.DataError,
+                                                                        ServiceSession_Id.Zero,
+                                                                        SessionAction_Id.Zero
+                                                                    //httpresponse.Content.ToString()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnHTTPError
+
+                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                         SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                             return new HTTPResponse<SetSessionActionResponse>(httpresponse,
+                                                                                                               new SetSessionActionResponse(
+                                                                                                                   Request,
+                                                                                                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                                   RequestStatus.HTTPError,
+                                                                                                                   ServiceSession_Id.Zero,
+                                                                                                                   SessionAction_Id.Zero
+                                                                                                               //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                               //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                               ),
+                                                                                                               IsFault: true);
+
+
+                                                         return new HTTPResponse<SetSessionActionResponse>(
+
+                                                                    httpresponse,
+
+                                                                    new SetSessionActionResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.SystemError,
+                                                                        ServiceSession_Id.Zero,
+                                                                        SessionAction_Id.Zero
+                                                                    //httpresponse.HTTPStatusCode.ToString(),
+                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    ),
+
+                                                                    IsFault: true
+
+                                                                );
+
+                                                     },
+
+                                                     #endregion
+
+                                                     #region OnException
+
+                                                     OnException: (timestamp, sender, exception) => {
+
+                                                         SendException(timestamp, sender, exception);
+
+                                                         return HTTPResponse<SetSessionActionResponse>.ExceptionThrown(
+
+                                                                new SetSessionActionResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.ServiceNotAvailable,
+                                                                    ServiceSession_Id.Zero,
+                                                                    SessionAction_Id.Zero
+                                                                //httpresponse.HTTPStatusCode.ToString(),
+                                                                //httpresponse.HTTPBody.      ToUTF8String()
+                                                                ),
+
+                                                                Exception: exception
+
+                                                            );
+
+                                                     }
+
+                                                     #endregion
+
+                                                    );
+
+                }
+
+                if (result == null)
+                    result = HTTPResponse<SetSessionActionResponse>.OK(
+                                 new SetSessionActionResponse(
+                                     Request,
+                                     Request.TransactionId ?? Transaction_Id.Zero,
+                                     RequestStatus.SystemError,
+                                     ServiceSession_Id.Zero,
+                                     SessionAction_Id.Zero
+                                 //"HTTP request failed!"
+                                 )
+                             );
+
+            }
+            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+                   TransmissionRetry++ < MaxNumberOfRetries);
+
+
+            #region Send OnSetSessionActionResponse event
+
+            var Endtime = DateTime.UtcNow;
+
+            try
+            {
+
+                if (OnSetSessionActionResponse != null)
+                    await Task.WhenAll(OnSetSessionActionResponse.GetInvocationList().
+                                       Cast<OnSetSessionActionResponseDelegate>().
+                                       Select(e => e(Endtime,
+                                                     Request.Timestamp.Value,
+                                                     this,
+                                                     ClientId,
+                                                     Request.EventTrackingId,
+
+                                                     Request.PartnerId,
+                                                     Request.OperatorId,
+                                                     Request.ServiceSessionId,
+                                                     Request.SessionAction,
+
+                                                     Request.TransactionId,
+                                                     Request.SalePartnerSessionId,
+
+                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     result.Content,
+                                                     Endtime - StartTime))).
+                                       ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                e.Log(nameof(EMPClient) + "." + nameof(OnSetSessionActionResponse));
+            }
+
+            #endregion
+
+            return result;
+
+        }
+
+        #endregion
+
+
 
     }
 

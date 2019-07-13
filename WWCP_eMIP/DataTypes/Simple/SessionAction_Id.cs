@@ -171,6 +171,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+        public static SessionAction_Id Zero
+                    => new SessionAction_Id("0");
+
+
         #region Operator overloading
 
         #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)

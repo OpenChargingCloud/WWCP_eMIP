@@ -290,14 +290,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Booking_Id))
+            if (!(Object is Booking_Id BookingId))
                 throw new ArgumentException("The given object is not a booking identification!",
                                             nameof(Object));
 
-            return CompareTo((Booking_Id) Object);
+            return CompareTo(BookingId);
 
         }
 
@@ -315,7 +315,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) PartnerServiceSessionId == null)
                 throw new ArgumentNullException(nameof(PartnerServiceSessionId),  "The given booking identification must not be null!");
 
-            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -335,13 +335,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Booking_Id))
+            if (!(Object is Booking_Id BookingId))
                 return false;
 
-            return Equals((Booking_Id) Object);
+            return Equals(BookingId);
 
         }
 
@@ -360,7 +360,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) PartnerServiceSessionId == null)
                 return false;
 
-            return InternalId.Equals(PartnerServiceSessionId.InternalId);
+            return InternalId.ToLower().Equals(PartnerServiceSessionId.InternalId.ToLower());
 
         }
 

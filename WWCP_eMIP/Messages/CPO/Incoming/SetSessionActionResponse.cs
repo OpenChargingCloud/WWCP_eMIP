@@ -264,6 +264,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region (static) SystemError(Request, TransactionId, CustomData = null)
+
+        /// <summary>
+        /// Signal a system error.
+        /// </summary>
+        /// <param name="Request">The SetServiceAuthorisation request.</param>
+        /// <param name="TransactionId">The transaction identification.</param>
+        /// <param name="CustomData">Optional custom data.</param>
+        public static SetSessionActionResponse SystemError(SetSessionActionRequest              Request,
+                                                           Transaction_Id                       TransactionId,
+                                                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+            => new SetSessionActionResponse(Request,
+                                            TransactionId,
+                                            RequestStatus.SystemError,
+                                            CustomData);
+
+        #endregion
+
+
         #region Operator overloading
 
         #region Operator == (SetSessionActionResponse1, SetSessionActionResponse2)

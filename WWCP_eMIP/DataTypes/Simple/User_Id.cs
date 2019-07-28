@@ -427,13 +427,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is User_Id))
+            if (!(Object is User_Id UserId))
                 throw new ArgumentException("The given object is not an user identification!", nameof(Object));
 
-            return CompareTo((User_Id) Object);
+            return CompareTo(UserId);
 
         }
 
@@ -451,7 +451,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) UserId == null)
                 throw new ArgumentNullException(nameof(UserId), "The given user identification must not be null!");
 
-            var _Result = String.Compare(InternalId, UserId.InternalId, StringComparison.Ordinal);
+            var _Result = String.Compare(InternalId, UserId.InternalId, StringComparison.OrdinalIgnoreCase);
 
             if (_Result == 0)
                 return Format.CompareTo(UserId.Format);
@@ -479,10 +479,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is User_Id))
+            if (!(Object is User_Id UserId))
                 return false;
 
-            return Equals((User_Id) Object);
+            return Equals(UserId);
 
         }
 
@@ -501,8 +501,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) UserId == null)
                 return false;
 
-            return InternalId.Equals(UserId.InternalId) &&
-                   Format.    Equals(UserId.Format);
+            return InternalId.ToLower().Equals(UserId.InternalId.ToLower()) &&
+                   Format.              Equals(UserId.Format);
 
         }
 

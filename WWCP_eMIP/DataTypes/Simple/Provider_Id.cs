@@ -529,13 +529,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Provider_Id))
+            if (!(Object is Provider_Id ProviderId))
                 throw new ArgumentException("The given object is not an e-mobility provider identification!", nameof(Object));
 
-            return CompareTo((Provider_Id) Object);
+            return CompareTo(ProviderId);
 
         }
 
@@ -556,7 +556,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = CountryCode.CompareTo(ProviderId.CountryCode);
 
             if (_Result == 0)
-                _Result = String.Compare(Suffix, ProviderId.Suffix, StringComparison.Ordinal);
+                _Result = String.Compare(Suffix, ProviderId.Suffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -578,13 +578,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Provider_Id))
+            if (!(Object is Provider_Id ProviderId))
                 return false;
 
-            return Equals((Provider_Id) Object);
+            return Equals(ProviderId);
 
         }
 
@@ -603,8 +603,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ProviderId == null)
                 return false;
 
-            return CountryCode.Equals(ProviderId.CountryCode) &&
-                   Suffix.     Equals(ProviderId.Suffix);
+            return CountryCode.     Equals(ProviderId.CountryCode) &&
+                   Suffix.ToLower().Equals(ProviderId.Suffix.ToLower());
 
         }
 

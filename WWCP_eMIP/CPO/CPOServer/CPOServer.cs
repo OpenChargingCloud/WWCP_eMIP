@@ -356,14 +356,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     }
 
-                    //if (Response == null)
-                    //    Response = Response<EMP.SetServiceAuthorisationRequest>.SystemError(
-                    //                         _SetServiceAuthorisationRequest,
-                    //                         "Could not process the incoming SetServiceAuthorisation request!",
-                    //                         null,
-                    //                         _SetServiceAuthorisationRequest.SessionId,
-                    //                         _SetServiceAuthorisationRequest.PartnerSessionId
-                    //                     );
+                    //"Could not forward the incoming SetServiceAuthorisation request!",
+                    if (Response == null)
+                        Response = SetServiceAuthorisationResponse.SystemError(
+                                       _SetServiceAuthorisationRequest,
+                                       _SetServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
+                                   );
 
                     #endregion
 
@@ -410,11 +408,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 }
 
-                //else
-                //    Response = Response<EMP.SetServiceAuthorisationRequest>.DataError(
-                //                          _SetServiceAuthorisationRequest,
-                //                          "Could not process the incoming SetServiceAuthorisation request!"
-                //                      );
+                // "Could not process the incoming SetServiceAuthorisation request!"
+                else
+                    Response = SetServiceAuthorisationResponse.SystemError(
+                                   _SetServiceAuthorisationRequest,
+                                   _SetServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
+                               );
 
 
                 #region Create SOAPResponse
@@ -560,14 +559,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     }
 
-                    //if (Response == null)
-                    //    Response = Response<EMP.SetSessionActionRequest>.SystemError(
-                    //                         _SetSessionActionRequest,
-                    //                         "Could not process the incoming SetSessionAction request!",
-                    //                         null,
-                    //                         _SetSessionActionRequest.SessionId,
-                    //                         _SetSessionActionRequest.PartnerSessionId
-                    //                     );
+                    // "Could not process the incoming SetSessionAction request!",
+                    if (Response == null)
+                        Response = SetSessionActionResponse.SystemError(
+                                       _SetSessionActionRequest,
+                                       _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
+                                   );
 
                     #endregion
 
@@ -609,11 +606,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 }
 
-                //else
-                //    Response = Response<EMP.SetSessionActionRequest>.DataError(
-                //                          _SetSessionActionRequest,
-                //                          "Could not process the incoming SetSessionAction request!"
-                //                      );
+                // "Could not process the incoming SetSessionAction request!"
+                else
+                    Response = SetSessionActionResponse.SystemError(
+                                   _SetSessionActionRequest,
+                                   _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
+                               );
 
 
                 #region Create SOAPResponse

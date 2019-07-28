@@ -294,14 +294,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Contract_Id))
+            if (!(Object is Contract_Id ContractId))
                 throw new ArgumentException("The given object is not a contract identification!",
                                             nameof(Object));
 
-            return CompareTo((Contract_Id) Object);
+            return CompareTo(ContractId);
 
         }
 
@@ -319,7 +319,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ContractId == null)
                 throw new ArgumentNullException(nameof(ContractId),  "The given contract identification must not be null!");
 
-            return String.Compare(InternalId, ContractId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, ContractId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -339,13 +339,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Contract_Id))
+            if (!(Object is Contract_Id ContractId))
                 return false;
 
-            return Equals((Contract_Id) Object);
+            return Equals(ContractId);
 
         }
 
@@ -364,7 +364,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ContractId == null)
                 return false;
 
-            return InternalId.Equals(ContractId.InternalId);
+            return InternalId.ToLower().Equals(ContractId.InternalId.ToLower());
 
         }
 

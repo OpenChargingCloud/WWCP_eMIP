@@ -527,13 +527,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Operator_Id))
+            if (!(Object is Operator_Id OperatorId))
                 throw new ArgumentException("The given object is not an operator identification!", nameof(Object));
 
-            return CompareTo((Operator_Id) Object);
+            return CompareTo(OperatorId);
 
         }
 
@@ -554,7 +554,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = CountryCode.CompareTo(OperatorId.CountryCode);
 
             if (_Result == 0)
-                _Result = String.Compare(Suffix, OperatorId.Suffix, StringComparison.Ordinal);
+                _Result = String.Compare(Suffix, OperatorId.Suffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -576,13 +576,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Operator_Id))
+            if (!(Object is Operator_Id OperatorId))
                 return false;
 
-            return Equals((Operator_Id) Object);
+            return Equals(OperatorId);
 
         }
 
@@ -601,8 +601,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) OperatorId == null)
                 return false;
 
-            return CountryCode.Equals(OperatorId.CountryCode) &&
-                   Suffix.     Equals(OperatorId.Suffix);
+            return CountryCode.     Equals(OperatorId.CountryCode) &&
+                   Suffix.ToLower().Equals(OperatorId.Suffix.ToLower());
 
         }
 

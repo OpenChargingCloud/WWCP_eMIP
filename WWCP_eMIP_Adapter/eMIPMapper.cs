@@ -188,6 +188,36 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         }
 
 
+        public static ServiceSession_Id ToEMIP(this ChargingSession_Id ChargingSessionId)
+            => ServiceSession_Id.Parse(ChargingSessionId.ToString());
+
+        public static ServiceSession_Id? ToEMIP(this ChargingSession_Id? ChargingSessionId)
+            => ChargingSessionId.HasValue
+                   ? ServiceSession_Id.Parse(ChargingSessionId.ToString())
+                   : new ServiceSession_Id?();
+
+        public static ChargingSession_Id ToWWCP(this ServiceSession_Id ServiceSessionId)
+            => ChargingSession_Id.Parse(ServiceSessionId.ToString());
+
+        public static ChargingSession_Id? ToWWCP(this ServiceSession_Id? ServiceSessionId)
+            => ServiceSessionId.HasValue
+                   ? ChargingSession_Id.Parse(ServiceSessionId.ToString())
+                   : new ChargingSession_Id?();
+
+
+        public static eMobilityProvider_Id ToWWCP_ProviderId(this Partner_Id PartnerId)
+            => eMobilityProvider_Id.Parse(PartnerId.ToString());
+
+        public static eMobilityAccount_Id? ToWWCP_eMAId(this User_Id UserId)
+            => UserId.Format == UserIdFormats.eMA  ||
+               UserId.Format == UserIdFormats.eMI3 ||
+               UserId.Format == UserIdFormats.EVCO
+               ? eMobilityAccount_Id.Parse(UserId.ToString())
+               : new eMobilityAccount_Id?();
+
+
+
+
         public static Provider_Id ToEMIP(this eMobilityProvider_Id ProviderId)
             => Provider_Id.Parse(ProviderId.ToString());
 

@@ -523,13 +523,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Partner_Id))
+            if (!(Object is Partner_Id PartnerId))
                 throw new ArgumentException("The given object is not a charging operator identification!", nameof(Object));
 
-            return CompareTo((Partner_Id) Object);
+            return CompareTo(PartnerId);
 
         }
 
@@ -547,16 +547,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) PartnerId == null)
                 throw new ArgumentNullException(nameof(PartnerId), "The given charging operator identification must not be null!");
 
-            // Compare the length of the PartnerIds
-            var _Result = this.Length.CompareTo(PartnerId.Length);
+            var _Result = CountryCode.CompareTo(PartnerId.CountryCode);
 
-            // If equal: Compare country codes
             if (_Result == 0)
-                _Result = CountryCode.CompareTo(PartnerId.CountryCode);
-
-            // If equal: Compare provider ids
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, PartnerId.Suffix, StringComparison.Ordinal);
+                _Result = String.Compare(Suffix, PartnerId.Suffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -578,13 +572,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Partner_Id))
+            if (!(Object is Partner_Id PartnerId))
                 return false;
 
-            return Equals((Partner_Id) Object);
+            return Equals(PartnerId);
 
         }
 
@@ -603,8 +597,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) PartnerId == null)
                 return false;
 
-            return CountryCode.Equals(PartnerId.CountryCode) &&
-                   Suffix.     Equals(PartnerId.Suffix);
+            return CountryCode.     Equals(PartnerId.CountryCode) &&
+                   Suffix.ToLower().Equals(PartnerId.Suffix.ToLower());
 
         }
 

@@ -409,13 +409,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object),  "The given object must not be null!");
 
-            if (!(Object is EVSE_Id))
+            if (!(Object is EVSE_Id EVSEId))
                 throw new ArgumentException("The given object is not a EVSE identification!", nameof(Object));
 
-            return CompareTo((EVSE_Id) Object);
+            return CompareTo(EVSEId);
 
         }
 
@@ -436,7 +436,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = OperatorId.CompareTo(EVSEId.OperatorId);
 
             if (_Result == 0)
-                _Result = String.Compare(MinSuffix, EVSEId.MinSuffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, EVSEId.MinSuffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -458,13 +458,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is EVSE_Id))
+            if (!(Object is EVSE_Id EVSEId))
                 return false;
 
-            return Equals((EVSE_Id) Object);
+            return Equals(EVSEId);
 
         }
 
@@ -483,8 +483,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) EVSEId == null)
                 return false;
 
-            return OperatorId.Equals(EVSEId.OperatorId) &&
-                   MinSuffix. Equals(EVSEId.MinSuffix);
+            return OperatorId.         Equals(EVSEId.OperatorId) &&
+                   MinSuffix.ToLower().Equals(EVSEId.MinSuffix.ToLower());
 
         }
 

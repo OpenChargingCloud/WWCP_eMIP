@@ -480,13 +480,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is ChargingPool_Id))
+            if (!(Object is ChargingPool_Id ChargingPoolId))
                 throw new ArgumentException("The given object is not a ChargingPoolId!", nameof(Object));
 
-            return CompareTo((ChargingPool_Id) Object);
+            return CompareTo(ChargingPoolId);
 
         }
 
@@ -507,7 +507,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = OperatorId.CompareTo(ChargingPoolId.OperatorId);
 
             if (_Result == 0)
-                _Result = String.Compare(MinSuffix, ChargingPoolId.MinSuffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, ChargingPoolId.MinSuffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -529,13 +529,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is ChargingPool_Id))
+            if (!(Object is ChargingPool_Id ChargingPoolId))
                 return false;
 
-            return Equals((ChargingPool_Id) Object);
+            return Equals(ChargingPoolId);
 
         }
 
@@ -554,8 +554,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargingPoolId == null)
                 return false;
 
-            return OperatorId.Equals(ChargingPoolId.OperatorId) &&
-                   MinSuffix. Equals(ChargingPoolId.MinSuffix);
+            return OperatorId.         Equals(ChargingPoolId.OperatorId) &&
+                   MinSuffix.ToLower().Equals(ChargingPoolId.MinSuffix.ToLower());
 
         }
 

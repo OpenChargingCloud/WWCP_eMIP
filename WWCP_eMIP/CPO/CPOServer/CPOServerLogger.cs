@@ -146,19 +146,37 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             this.CPOServer = CPOServer ?? throw new ArgumentNullException(nameof(CPOServer), "The given CPO server must not be null!");
 
-            #region Register remote start/stop log events
+            #region Register SetServiceAuthorisation log events
 
-            RegisterEvent("SetServiceAuthorisation",
+            RegisterEvent("SetServiceAuthorisationRequest",
                           handler => CPOServer.OnSetServiceAuthorisationSOAPRequest += handler,
                           handler => CPOServer.OnSetServiceAuthorisationSOAPRequest -= handler,
-                          "RemoteStart", "All").
+                          "SetServiceAuthorisation", "Request", "All").
                 RegisterDefaultConsoleLogTarget(this).
                 RegisterDefaultDiscLogTarget(this);
 
-            RegisterEvent("SetSessionAction",
+            RegisterEvent("SetServiceAuthorisationResponse",
+                          handler => CPOServer.OnSetServiceAuthorisationSOAPResponse += handler,
+                          handler => CPOServer.OnSetServiceAuthorisationSOAPResponse -= handler,
+                          "SetServiceAuthorisation", "Response", "All").
+                RegisterDefaultConsoleLogTarget(this).
+                RegisterDefaultDiscLogTarget(this);
+
+            #endregion
+
+            #region Register SetSessionAction log events
+
+            RegisterEvent("SetSessionActionRequest",
+                          handler => CPOServer.OnSetSessionActionSOAPRequest += handler,
+                          handler => CPOServer.OnSetSessionActionSOAPRequest -= handler,
+                          "SetSessionAction", "Request", "All").
+                RegisterDefaultConsoleLogTarget(this).
+                RegisterDefaultDiscLogTarget(this);
+
+            RegisterEvent("SetSessionActionResponse",
                           handler => CPOServer.OnSetSessionActionSOAPResponse += handler,
                           handler => CPOServer.OnSetSessionActionSOAPResponse -= handler,
-                          "RemoteStop", "All").
+                          "SetSessionAction", "Response", "All").
                 RegisterDefaultConsoleLogTarget(this).
                 RegisterDefaultDiscLogTarget(this);
 

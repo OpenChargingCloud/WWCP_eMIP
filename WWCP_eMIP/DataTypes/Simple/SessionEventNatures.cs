@@ -425,14 +425,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is SessionEventNatures))
+            if (!(Object is SessionEventNatures SessionEventNature))
                 throw new ArgumentException("The given object is not a meter type!",
                                             nameof(Object));
 
-            return CompareTo((SessionEventNatures) Object);
+            return CompareTo(SessionEventNature);
 
         }
 
@@ -470,13 +470,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is SessionEventNatures))
+            if (!(Object is SessionEventNatures SessionEventNature))
                 return false;
 
-            return Equals((SessionEventNatures) Object);
+            return Equals(SessionEventNature);
 
         }
 

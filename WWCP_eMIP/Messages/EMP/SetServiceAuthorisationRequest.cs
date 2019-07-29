@@ -510,7 +510,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                               ? new XElement("userContractIdAlias",      UserContractIdAlias.          ToString())
                               : null,
 
-                          MeterLimits.Any()
+                          MeterLimits.SafeAny()
                               ? new XElement("meterLimitList",           MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer)))
                               : null,
 

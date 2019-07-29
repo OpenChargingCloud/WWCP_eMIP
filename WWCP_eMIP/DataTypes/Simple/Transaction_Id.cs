@@ -297,14 +297,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Transaction_Id))
+            if (!(Object is Transaction_Id TransactionId))
                 throw new ArgumentException("The given object is not a transaction identification!",
                                             nameof(Object));
 
-            return CompareTo((Transaction_Id) Object);
+            return CompareTo(TransactionId);
 
         }
 
@@ -322,7 +322,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) TransactionId == null)
                 throw new ArgumentNullException(nameof(TransactionId),  "The given transaction identification must not be null!");
 
-            return String.Compare(InternalId, TransactionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, TransactionId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -342,13 +342,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is Transaction_Id))
+            if (!(Object is Transaction_Id TransactionId))
                 return false;
 
-            return Equals((Transaction_Id) Object);
+            return Equals(TransactionId);
 
         }
 
@@ -367,7 +367,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) TransactionId == null)
                 return false;
 
-            return InternalId.Equals(TransactionId.InternalId);
+            return InternalId.ToLower().Equals(TransactionId.InternalId.ToLower());
 
         }
 

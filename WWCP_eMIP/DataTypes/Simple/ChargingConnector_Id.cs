@@ -401,13 +401,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is ChargingConnector_Id))
+            if (!(Object is ChargingConnector_Id ChargingConnectorId))
                 throw new ArgumentException("The given object is not a charging connector identification!", nameof(Object));
 
-            return CompareTo((ChargingConnector_Id) Object);
+            return CompareTo(ChargingConnectorId);
 
         }
 
@@ -428,7 +428,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = OperatorId.CompareTo(ChargingConnectorId.OperatorId);
 
             if (_Result == 0)
-                _Result = String.Compare(MinSuffix, ChargingConnectorId.MinSuffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, ChargingConnectorId.MinSuffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -450,13 +450,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            if (!(Object is ChargingConnector_Id))
+            if (!(Object is ChargingConnector_Id ChargingConnectorId))
                 return false;
 
-            return Equals((ChargingConnector_Id) Object);
+            return Equals(ChargingConnectorId);
 
         }
 
@@ -475,8 +475,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargingConnectorId == null)
                 return false;
 
-            return OperatorId.Equals(ChargingConnectorId.OperatorId) &&
-                   MinSuffix. Equals(ChargingConnectorId.MinSuffix);
+            return OperatorId.         Equals(ChargingConnectorId.OperatorId) &&
+                   MinSuffix.ToLower().Equals(ChargingConnectorId.MinSuffix.ToLower());
 
         }
 

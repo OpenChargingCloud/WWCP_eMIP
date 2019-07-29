@@ -39,27 +39,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The nature of the session action.
         /// </summary>
-        public SessionEventNatures  Nature                   { get; }
+        public SessionActionNatures  Nature                   { get; }
 
         /// <summary>
         /// The timestamp of the session action.
         /// </summary>
-        public DateTime             DateTime                 { get; }
+        public DateTime              DateTime                 { get; }
 
         /// <summary>
         /// The unique identification of the session action.
         /// </summary>
-        public SessionAction_Id?    Id                       { get; }
+        public SessionAction_Id?     Id                       { get; }
 
         /// <summary>
         /// Optional parameters of the session action.
         /// </summary>
-        public String               Parameter                { get; }
+        public String                Parameter                { get; }
 
         /// <summary>
         /// An optional related session event identification.
         /// </summary>
-        public SessionEvent_Id?     RelatedSessionEventId    { get; }
+        public SessionEvent_Id?      RelatedSessionEventId    { get; }
 
         #endregion
 
@@ -73,11 +73,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Id">The unique identification of the session action.</param>
         /// <param name="Parameter">Optional parameters of the session action.</param>
         /// <param name="RelatedSessionEventId">An optional related session event identification.</param>
-        public SessionAction(SessionEventNatures  Nature,
-                             DateTime             DateTime,
-                             SessionAction_Id?    Id                      = null,
-                             String               Parameter               = null,
-                             SessionEvent_Id?     RelatedSessionEventId   = null)
+        public SessionAction(SessionActionNatures  Nature,
+                             DateTime              DateTime,
+                             SessionAction_Id?     Id                      = null,
+                             String                Parameter               = null,
+                             SessionEvent_Id?      RelatedSessionEventId   = null)
 
 
         {
@@ -186,12 +186,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                SessionAction = new SessionAction(SessionActionXML.MapValueOrFail       ("sessionActionNature",    SessionEventNatures.Parse),
-                                                  SessionActionXML.MapValueOrFail       ("sessionActionDateTime",  DateTime.           Parse),
+                SessionAction = new SessionAction(SessionActionXML.MapValueOrFail       ("sessionActionNature",    SessionActionNatures.Parse),
+                                                  SessionActionXML.MapValueOrFail       ("sessionActionDateTime",  DateTime.            Parse),
 
-                                                  SessionActionXML.MapValueOrNullable   ("sessionActionId",        SessionAction_Id.   Parse),
+                                                  SessionActionXML.MapValueOrNullable   ("sessionActionId",        SessionAction_Id.    Parse),
                                                   SessionActionXML.ElementValueOrDefault("sessionActionParameter"),
-                                                  SessionActionXML.MapValueOrNullable   ("relatedSessionEventId",  SessionEvent_Id.    Parse));
+                                                  SessionActionXML.MapValueOrNullable   ("relatedSessionEventId",  SessionEvent_Id.     Parse));
 
 
                 if (CustomSessionActionParser != null)

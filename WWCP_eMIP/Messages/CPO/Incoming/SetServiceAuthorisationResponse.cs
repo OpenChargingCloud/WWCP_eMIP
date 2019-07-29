@@ -34,7 +34,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// A SetServiceAuthorisation response.
     /// </summary>
     public class SetServiceAuthorisationResponse : AResponse<SetServiceAuthorisationRequest,
-                                                   SetServiceAuthorisationResponse>
+                                                             SetServiceAuthorisationResponse>
     {
 
         #region Properties
@@ -283,6 +283,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                        : XML;
 
         }
+
+        #endregion
+
+
+        #region (static) SystemError(Request, TransactionId, PartnerServiceSessionId = null, CustomData = null)
+
+        /// <summary>
+        /// Signal a system error.
+        /// </summary>
+        /// <param name="Request">The SetServiceAuthorisation request.</param>
+        /// <param name="TransactionId">The transaction identification.</param>
+        /// <param name="PartnerServiceSessionId">An optional partner service session identification.</param>
+        /// <param name="CustomData">Optional custom data.</param>
+        public static SetServiceAuthorisationResponse SystemError(SetServiceAuthorisationRequest       Request,
+                                                                  Transaction_Id                       TransactionId,
+                                                                  PartnerServiceSession_Id?            PartnerServiceSessionId  = null,
+                                                                  IReadOnlyDictionary<String, Object>  CustomData               = null)
+
+            => new SetServiceAuthorisationResponse(Request,
+                                                   TransactionId,
+                                                   RequestStatus.SystemError,
+                                                   PartnerServiceSessionId,
+                                                   CustomData);
 
         #endregion
 

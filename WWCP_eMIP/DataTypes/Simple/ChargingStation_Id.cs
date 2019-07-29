@@ -626,13 +626,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is ChargingStation_Id))
+            if (!(Object is ChargingStation_Id ChargingStationId))
                 throw new ArgumentException("The given object is not a charging station identification!", nameof(Object));
 
-            return CompareTo((ChargingStation_Id) Object);
+            return CompareTo(ChargingStationId);
 
         }
 
@@ -653,7 +653,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var _Result = OperatorId.CompareTo(ChargingStationId.OperatorId);
 
             if (_Result == 0)
-                _Result = String.Compare(MinSuffix, ChargingStationId.MinSuffix, StringComparison.Ordinal);
+                _Result = String.Compare(MinSuffix, ChargingStationId.MinSuffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -678,10 +678,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is ChargingStation_Id))
+            if (!(Object is ChargingStation_Id ChargingStationId))
                 return false;
 
-            return Equals((ChargingStation_Id) Object);
+            return Equals(ChargingStationId);
 
         }
 
@@ -700,8 +700,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ChargingStationId == null)
                 return false;
 
-            return OperatorId.Equals(ChargingStationId.OperatorId) &&
-                   MinSuffix. Equals(ChargingStationId.MinSuffix);
+            return OperatorId.         Equals(ChargingStationId.OperatorId) &&
+                   MinSuffix.ToLower().Equals(ChargingStationId.MinSuffix.ToLower());
 
         }
 

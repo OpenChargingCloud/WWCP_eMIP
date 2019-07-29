@@ -853,6 +853,194 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         // CPOServer methods
 
+        #region OnSetServiceAuthorisation
+
+        /// <summary>
+        /// An event sent whenever a SetServiceAuthorisation SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler OnSetServiceAuthorisationSOAPRequest
+        {
+
+            add
+            {
+                CPOServer.OnSetServiceAuthorisationSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetServiceAuthorisationSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a SetServiceAuthorisation request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationRequestDelegate OnSetServiceAuthorisationRequest
+        {
+
+            add
+            {
+                CPOServer.OnSetServiceAuthorisationRequest += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetServiceAuthorisationRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a SetServiceAuthorisation request was received.
+        /// </summary>
+        public event OnSetServiceAuthorisationDelegate OnSetServiceAuthorisation
+        {
+
+            add
+            {
+                CPOServer.OnSetServiceAuthorisation += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetServiceAuthorisation -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a response to a SetServiceAuthorisation request was sent.
+        /// </summary>
+        public event OnSetServiceAuthorisationResponseDelegate OnSetServiceAuthorisationResponse
+        {
+
+            add
+            {
+                CPOServer.OnSetServiceAuthorisationResponse += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetServiceAuthorisationResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a response to a SetServiceAuthorisation SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler OnSetServiceAuthorisationSOAPResponse
+        {
+
+            add
+            {
+                CPOServer.OnSetServiceAuthorisationSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetServiceAuthorisationSOAPResponse -= value;
+            }
+
+        }
+
+        #endregion
+
+        #region OnSetSessionAction
+
+        /// <summary>
+        /// An event sent whenever a SetSessionAction SOAP request was received.
+        /// </summary>
+        public event RequestLogHandler OnSetSessionActionSOAPRequest
+        {
+
+            add
+            {
+                CPOServer.OnSetSessionActionSOAPRequest += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetSessionActionSOAPRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a SetSessionAction request was received.
+        /// </summary>
+        public event OnSetSessionActionRequestDelegate OnSetSessionActionRequest
+        {
+
+            add
+            {
+                CPOServer.OnSetSessionActionRequest += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetSessionActionRequest -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a SetSessionAction request was received.
+        /// </summary>
+        public event OnSetSessionActionDelegate OnSetSessionAction
+        {
+
+            add
+            {
+                CPOServer.OnSetSessionAction += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetSessionAction -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a response to a SetSessionAction request was sent.
+        /// </summary>
+        public event OnSetSessionActionResponseDelegate OnSetSessionActionResponse
+        {
+
+            add
+            {
+                CPOServer.OnSetSessionActionResponse += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetSessionActionResponse -= value;
+            }
+
+        }
+
+        /// <summary>
+        /// An event sent whenever a response to a SetSessionAction SOAP request was sent.
+        /// </summary>
+        public event AccessLogHandler OnSetSessionActionSOAPResponse
+        {
+
+            add
+            {
+                CPOServer.OnSetSessionActionSOAPResponse += value;
+            }
+
+            remove
+            {
+                CPOServer.OnSetSessionActionSOAPResponse -= value;
+            }
+
+        }
+
+        #endregion
+
 
         #region Generic HTTP/SOAP server logging
 

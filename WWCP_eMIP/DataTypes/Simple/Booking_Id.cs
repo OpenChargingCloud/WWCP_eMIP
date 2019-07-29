@@ -116,14 +116,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out PartnerServiceSessionId)
+        #region TryParse(Text, out BookingId)
 
         /// <summary>
         /// Try to parse the given string as a booking identification.
         /// </summary>
         /// <param name="Text">A text representation of a booking identification.</param>
-        /// <param name="PartnerServiceSessionId">The parsed booking identification.</param>
-        public static Boolean TryParse(String Text, out Booking_Id PartnerServiceSessionId)
+        /// <param name="BookingId">The parsed booking identification.</param>
+        public static Boolean TryParse(String Text, out Booking_Id BookingId)
         {
 
             #region Initial checks
@@ -133,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerServiceSessionId = default(Booking_Id);
+                BookingId = default(Booking_Id);
                 return false;
             }
 
@@ -142,7 +142,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                PartnerServiceSessionId = new Booking_Id(Text);
+                BookingId = new Booking_Id(Text);
 
                 return true;
 
@@ -150,7 +150,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             catch (Exception)
             { }
 
-            PartnerServiceSessionId = default(Booking_Id);
+            BookingId = default(Booking_Id);
             return false;
 
         }
@@ -173,113 +173,113 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator == (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
+        public static Boolean operator == (Booking_Id BookingId1, Booking_Id BookingId2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(PartnerServiceSessionId1, PartnerServiceSessionId2))
+            if (Object.ReferenceEquals(BookingId1, BookingId2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) PartnerServiceSessionId1 == null) || ((Object) PartnerServiceSessionId2 == null))
+            if (((Object) BookingId1 == null) || ((Object) BookingId2 == null))
                 return false;
 
-            return PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
+            return BookingId1.Equals(BookingId2);
 
         }
 
         #endregion
 
-        #region Provider != (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator != (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 == PartnerServiceSessionId2);
+        public static Boolean operator != (Booking_Id BookingId1, Booking_Id BookingId2)
+            => !(BookingId1 == BookingId2);
 
         #endregion
 
-        #region Provider <  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator <  (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
+        public static Boolean operator < (Booking_Id BookingId1, Booking_Id BookingId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) BookingId1 == null)
+                throw new ArgumentNullException(nameof(BookingId1), "The given BookingId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) < 0;
+            return BookingId1.CompareTo(BookingId2) < 0;
 
         }
 
         #endregion
 
-        #region Provider <= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator <= (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 > PartnerServiceSessionId2);
+        public static Boolean operator <= (Booking_Id BookingId1, Booking_Id BookingId2)
+            => !(BookingId1 > BookingId2);
 
         #endregion
 
-        #region Provider >  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator >  (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
+        public static Boolean operator > (Booking_Id BookingId1, Booking_Id BookingId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) BookingId1 == null)
+                throw new ArgumentNullException(nameof(BookingId1), "The given BookingId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) > 0;
+            return BookingId1.CompareTo(BookingId2) > 0;
 
         }
 
         #endregion
 
-        #region Provider >= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator >= (BookingId1, BookingId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A booking identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another booking identification.</param>
+        /// <param name="BookingId1">A booking identification.</param>
+        /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Booking_Id PartnerServiceSessionId1, Booking_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 < PartnerServiceSessionId2);
+        public static Boolean operator >= (Booking_Id BookingId1, Booking_Id BookingId2)
+            => !(BookingId1 < BookingId2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerServiceSessionId> Members
+        #region IComparable<BookingId> Members
 
         #region CompareTo(Object)
 
@@ -303,19 +303,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region CompareTo(PartnerServiceSessionId)
+        #region CompareTo(BookingId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">An object to compare with.</param>
-        public Int32 CompareTo(Booking_Id PartnerServiceSessionId)
+        /// <param name="BookingId">An object to compare with.</param>
+        public Int32 CompareTo(Booking_Id BookingId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId),  "The given booking identification must not be null!");
+            if ((Object) BookingId == null)
+                throw new ArgumentNullException(nameof(BookingId),  "The given booking identification must not be null!");
 
-            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, BookingId.InternalId, StringComparison.Ordinal);
 
         }
 
@@ -323,7 +323,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<PartnerServiceSessionId> Members
+        #region IEquatable<BookingId> Members
 
         #region Equals(Object)
 
@@ -347,20 +347,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Equals(PartnerServiceSessionId)
+        #region Equals(BookingId)
 
         /// <summary>
-        /// Compares two PartnerServiceSessionIds for equality.
+        /// Compares two BookingIds for equality.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">A booking identification to compare with.</param>
+        /// <param name="BookingId">A booking identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(Booking_Id PartnerServiceSessionId)
+        public Boolean Equals(Booking_Id BookingId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
+            if ((Object) BookingId == null)
                 return false;
 
-            return InternalId.Equals(PartnerServiceSessionId.InternalId);
+            return InternalId.Equals(BookingId.InternalId);
 
         }
 

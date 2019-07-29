@@ -202,7 +202,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text, Format = RFID_UID)
+        #region (static) Parse   (Text, Format = RFID_UID)
 
         /// <summary>
         /// Parse the given text representation of an user identification.
@@ -230,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, Format = RFID_UID)
+        #region (static) TryParse(Text, Format = RFID_UID)
 
         /// <summary>
         /// Try to parse the given text representation of an user identification.
@@ -250,7 +250,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out UserId, Format = RFID_UID)
+        #region (static) TryParse(Text, out UserId, Format = RFID_UID)
 
         /// <summary>
         /// Try to parse the given text representation of an user identification.
@@ -260,7 +260,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Format">The format of the user identification.</param>
         public static Boolean TryParse(String         Text,
                                        out User_Id    UserId,
-                                       UserIdFormats  Format = UserIdFormats.RFID_UID)
+                                       UserIdFormats  Format  = UserIdFormats.RFID_UID)
         {
 
             #region Initial checks
@@ -270,7 +270,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                UserId = default(User_Id);
+                UserId = default;
                 return false;
             }
 
@@ -278,17 +278,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
-                UserId = new User_Id(Text,
-                                     Format);
-
+                UserId = new User_Id(Text, Format);
                 return true;
-
             }
             catch (Exception)
             { }
 
-            UserId = default(User_Id);
+            UserId = default;
             return false;
 
         }

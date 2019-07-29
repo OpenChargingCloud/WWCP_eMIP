@@ -30,8 +30,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// The unique identification of a session event.
     /// </summary>
     public struct SessionEvent_Id : IId,
-                                     IEquatable <SessionEvent_Id>,
-                                     IComparable<SessionEvent_Id>
+                                    IEquatable <SessionEvent_Id>,
+                                    IComparable<SessionEvent_Id>
     {
 
         #region Data
@@ -70,7 +70,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Zero
+
+        public static SessionEvent_Id Zero
+            => new SessionEvent_Id("0");
+
+        #endregion
+
+
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a session event identification.
@@ -89,13 +97,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new SessionEvent_Id(Text);
+            if (TryParse(Text, out SessionEvent_Id ServiceSessionId))
+                return ServiceSessionId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a session event identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a session event identification.
@@ -104,25 +115,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static SessionEvent_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out SessionEvent_Id ServiceSessionId))
+                return ServiceSessionId;
 
-            return Text.IsNullOrEmpty()
-                       ? new SessionEvent_Id?()
-                       : new SessionEvent_Id(Text);
+            return new SessionEvent_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out PartnerServiceSessionId)
+        #region TryParse(Text, out SessionEventId)
 
         /// <summary>
         /// Try to parse the given string as a session event identification.
         /// </summary>
         /// <param name="Text">A text representation of a session event identification.</param>
-        /// <param name="PartnerServiceSessionId">The parsed session event identification.</param>
-        public static Boolean TryParse(String Text, out SessionEvent_Id PartnerServiceSessionId)
+        /// <param name="SessionEventId">The parsed session event identification.</param>
+        public static Boolean TryParse(String Text, out SessionEvent_Id SessionEventId)
         {
 
             #region Initial checks
@@ -132,7 +141,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerServiceSessionId = default(SessionEvent_Id);
+                SessionEventId = default;
                 return false;
             }
 
@@ -140,16 +149,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
-                PartnerServiceSessionId = new SessionEvent_Id(Text);
-
+                SessionEventId = new SessionEvent_Id(Text);
                 return true;
-
             }
             catch (Exception)
             { }
 
-            PartnerServiceSessionId = default(SessionEvent_Id);
+            SessionEventId = default;
             return false;
 
         }
@@ -170,119 +176,115 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        public static SessionEvent_Id Zero
-                    => new SessionEvent_Id("0");
-
-
         #region Operator overloading
 
-        #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider == (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
+        public static Boolean operator == (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(PartnerServiceSessionId1, PartnerServiceSessionId2))
+            if (Object.ReferenceEquals(SessionEventId1, SessionEventId2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) PartnerServiceSessionId1 == null) || ((Object) PartnerServiceSessionId2 == null))
+            if (((Object) SessionEventId1 == null) || ((Object) SessionEventId2 == null))
                 return false;
 
-            return PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
+            return SessionEventId1.Equals(SessionEventId2);
 
         }
 
         #endregion
 
-        #region Provider != (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider != (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 == PartnerServiceSessionId2);
+        public static Boolean operator != (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
+            => !(SessionEventId1 == SessionEventId2);
 
         #endregion
 
-        #region Provider <  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider <  (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
+        public static Boolean operator < (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) SessionEventId1 == null)
+                throw new ArgumentNullException(nameof(SessionEventId1), "The given SessionEventId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) < 0;
+            return SessionEventId1.CompareTo(SessionEventId2) < 0;
 
         }
 
         #endregion
 
-        #region Provider <= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider <= (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 > PartnerServiceSessionId2);
+        public static Boolean operator <= (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
+            => !(SessionEventId1 > SessionEventId2);
 
         #endregion
 
-        #region Provider >  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider >  (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
+        public static Boolean operator > (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) SessionEventId1 == null)
+                throw new ArgumentNullException(nameof(SessionEventId1), "The given SessionEventId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) > 0;
+            return SessionEventId1.CompareTo(SessionEventId2) > 0;
 
         }
 
         #endregion
 
-        #region Provider >= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider >= (SessionEventId1, SessionEventId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A session event identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another session event identification.</param>
+        /// <param name="SessionEventId1">A session event identification.</param>
+        /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (SessionEvent_Id PartnerServiceSessionId1, SessionEvent_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 < PartnerServiceSessionId2);
+        public static Boolean operator >= (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
+            => !(SessionEventId1 < SessionEventId2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerServiceSessionId> Members
+        #region IComparable<SessionEventId> Members
 
         #region CompareTo(Object)
 
@@ -296,29 +298,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is SessionEvent_Id))
+            if (!(Object is SessionEvent_Id SessionEventId))
                 throw new ArgumentException("The given object is not a session event identification!",
                                             nameof(Object));
 
-            return CompareTo((SessionEvent_Id) Object);
+            return CompareTo(SessionEventId);
 
         }
 
         #endregion
 
-        #region CompareTo(PartnerServiceSessionId)
+        #region CompareTo(SessionEventId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">An object to compare with.</param>
-        public Int32 CompareTo(SessionEvent_Id PartnerServiceSessionId)
+        /// <param name="SessionEventId">An object to compare with.</param>
+        public Int32 CompareTo(SessionEvent_Id SessionEventId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId),  "The given session event identification must not be null!");
+            if ((Object) SessionEventId == null)
+                throw new ArgumentNullException(nameof(SessionEventId),  "The given session event identification must not be null!");
 
-            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, SessionEventId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -326,7 +328,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<PartnerServiceSessionId> Members
+        #region IEquatable<SessionEventId> Members
 
         #region Equals(Object)
 
@@ -341,29 +343,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is SessionEvent_Id))
+            if (!(Object is SessionEvent_Id SessionEventId))
                 return false;
 
-            return Equals((SessionEvent_Id) Object);
+            return Equals(SessionEventId);
 
         }
 
         #endregion
 
-        #region Equals(PartnerServiceSessionId)
+        #region Equals(SessionEventId)
 
         /// <summary>
-        /// Compares two PartnerServiceSessionIds for equality.
+        /// Compares two SessionEventIds for equality.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">A session event identification to compare with.</param>
+        /// <param name="SessionEventId">A session event identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(SessionEvent_Id PartnerServiceSessionId)
+        public Boolean Equals(SessionEvent_Id SessionEventId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
+            if ((Object) SessionEventId == null)
                 return false;
 
-            return InternalId.Equals(PartnerServiceSessionId.InternalId);
+            return InternalId.ToLower().Equals(SessionEventId.InternalId.ToLower());
 
         }
 

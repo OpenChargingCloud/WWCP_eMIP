@@ -71,7 +71,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Random(Length = 20)
+
+        public static PartnerServiceSession_Id Random(Byte Length = 20)
+            => new PartnerServiceSession_Id(_Random.RandomString(Length));
+
+        #endregion
+
+        #region (static) Zero
+
+        public static PartnerServiceSession_Id Zero
+            => new PartnerServiceSession_Id("0");
+
+        #endregion
+
+
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a partner service session identification.
@@ -90,13 +105,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new PartnerServiceSession_Id(Text);
+            if (TryParse(Text, out PartnerServiceSession_Id PartnerServiceSessionId))
+                return PartnerServiceSessionId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a partner service session identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a partner service session identification.
@@ -105,18 +123,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static PartnerServiceSession_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out PartnerServiceSession_Id PartnerServiceSessionId))
+                return PartnerServiceSessionId;
 
-            return Text.IsNullOrEmpty()
-                       ? new PartnerServiceSession_Id?()
-                       : new PartnerServiceSession_Id(Text);
+            return new PartnerServiceSession_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out PartnerServiceSessionId)
+        #region (static) TryParse(Text, out PartnerServiceSessionId)
 
         /// <summary>
         /// Try to parse the given string as a partner service session identification.
@@ -133,7 +149,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerServiceSessionId = default(PartnerServiceSession_Id);
+                PartnerServiceSessionId = default;
                 return false;
             }
 
@@ -141,16 +157,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 PartnerServiceSessionId = new PartnerServiceSession_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            PartnerServiceSessionId = default(PartnerServiceSession_Id);
+            PartnerServiceSessionId = default;
             return false;
 
         }
@@ -169,13 +182,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                );
 
         #endregion
-
-
-        public static PartnerServiceSession_Id Random(Byte Length = 20)
-            => new PartnerServiceSession_Id(_Random.RandomString(Length));
-
-        public static PartnerServiceSession_Id Zero
-            => new PartnerServiceSession_Id("0");
 
 
         #region Operator overloading

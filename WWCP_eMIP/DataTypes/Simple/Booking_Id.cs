@@ -71,7 +71,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a booking identification.
@@ -90,13 +90,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new Booking_Id(Text);
+            if (TryParse(Text, out Booking_Id BookingId))
+                return BookingId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a booking identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a booking identification.
@@ -105,18 +108,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static Booking_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out Booking_Id BookingId))
+                return BookingId;
 
-            return Text.IsNullOrEmpty()
-                       ? new Booking_Id?()
-                       : new Booking_Id(Text);
+            return new Booking_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out BookingId)
+        #region (static) TryParse(Text, out BookingId)
 
         /// <summary>
         /// Try to parse the given string as a booking identification.
@@ -133,7 +134,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                BookingId = default(Booking_Id);
+                BookingId = default;
                 return false;
             }
 
@@ -141,16 +142,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 BookingId = new Booking_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            BookingId = default(Booking_Id);
+            BookingId = default;
             return false;
 
         }

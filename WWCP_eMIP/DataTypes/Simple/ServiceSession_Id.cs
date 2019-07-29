@@ -71,7 +71,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Random(Length = 20)
+
+        public static ServiceSession_Id Random(Byte Length = 20)
+            => new ServiceSession_Id(_Random.RandomString(Length));
+
+        #endregion
+
+        #region (static) Zero
+
+        public static ServiceSession_Id Zero
+            => new ServiceSession_Id("0");
+
+        #endregion
+
+
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a service session identification.
@@ -90,13 +105,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new ServiceSession_Id(Text);
+            if (TryParse(Text, out ServiceSession_Id ServiceSessionId))
+                return ServiceSessionId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a service session identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a service session identification.
@@ -105,18 +123,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static ServiceSession_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out ServiceSession_Id ServiceSessionId))
+                return ServiceSessionId;
 
-            return Text.IsNullOrEmpty()
-                       ? new ServiceSession_Id?()
-                       : new ServiceSession_Id(Text);
+            return new ServiceSession_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out ServiceSessionId)
+        #region (static) TryParse(Text, out ServiceSessionId)
 
         /// <summary>
         /// Try to parse the given string as a service session identification.
@@ -133,7 +149,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                ServiceSessionId = default(ServiceSession_Id);
+                ServiceSessionId = default;
                 return false;
             }
 
@@ -141,16 +157,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 ServiceSessionId = new ServiceSession_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            ServiceSessionId = default(ServiceSession_Id);
+            ServiceSessionId = default;
             return false;
 
         }
@@ -169,13 +182,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                );
 
         #endregion
-
-
-        public static ServiceSession_Id Random(Byte Length = 20)
-            => new ServiceSession_Id(_Random.RandomString(Length));
-
-        public static ServiceSession_Id Zero
-            => new ServiceSession_Id("0");
 
 
         #region Operator overloading

@@ -71,7 +71,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Random(Length = 20)
+
+        public static Transaction_Id Random(Byte Length = 20)
+            => new Transaction_Id(_Random.RandomString(Length));
+
+        #endregion
+
+        #region (static) Zero
+
+        public static Transaction_Id Zero
+            => new Transaction_Id("0");
+
+        #endregion
+
+
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a transaction identification.
@@ -90,13 +105,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new Transaction_Id(Text);
+            if (TryParse(Text, out Transaction_Id TransactionId))
+                return TransactionId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a transaction identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a transaction identification.
@@ -105,18 +123,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static Transaction_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out Transaction_Id TransactionId))
+                return TransactionId;
 
-            return Text.IsNullOrEmpty()
-                       ? new Transaction_Id?()
-                       : new Transaction_Id(Text);
+            return new Transaction_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out TransactionId)
+        #region (static) TryParse(Text, out TransactionId)
 
         /// <summary>
         /// Try to parse the given string as a transaction identification.
@@ -133,7 +149,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                TransactionId = default(Transaction_Id);
+                TransactionId = default;
                 return false;
             }
 
@@ -141,41 +157,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 TransactionId = new Transaction_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            TransactionId = default(Transaction_Id);
+            TransactionId = default;
             return false;
 
         }
 
         #endregion
-
-        #region Clone
-
-        /// <summary>
-        /// Clone this transaction identification.
-        /// </summary>
-        public Transaction_Id Clone
-
-            => new Transaction_Id(
-                   new String(InternalId.ToCharArray())
-               );
-
-        #endregion
-
-
-        public static Transaction_Id Random(Byte Length = 20)
-            => new Transaction_Id(_Random.RandomString(Length));
-
-        public static Transaction_Id Zero
-            => new Transaction_Id("0");
 
 
         #region Operator overloading

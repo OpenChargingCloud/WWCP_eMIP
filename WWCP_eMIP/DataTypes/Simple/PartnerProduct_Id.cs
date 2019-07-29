@@ -71,7 +71,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a partner product identification.
@@ -90,13 +90,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new PartnerProduct_Id(Text);
+            if (TryParse(Text, out PartnerProduct_Id PartnerProductId))
+                return PartnerProductId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a partner product identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a partner product identification.
@@ -105,18 +108,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static PartnerProduct_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out PartnerProduct_Id PartnerProductId))
+                return PartnerProductId;
 
-            return Text.IsNullOrEmpty()
-                       ? new PartnerProduct_Id?()
-                       : new PartnerProduct_Id(Text);
+            return new PartnerProduct_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out PartnerProductId)
+        #region (static) TryParse(Text, out PartnerProductId)
 
         /// <summary>
         /// Try to parse the given string as a partner product identification.
@@ -133,7 +134,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerProductId = default(PartnerProduct_Id);
+                PartnerProductId = default;
                 return false;
             }
 
@@ -141,16 +142,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 PartnerProductId = new PartnerProduct_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            PartnerProductId = default(PartnerProduct_Id);
+            PartnerProductId = default;
             return false;
 
         }

@@ -71,7 +71,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a service identification.
@@ -90,13 +90,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new Service_Id(Text);
+            if (TryParse(Text, out Service_Id ServiceId))
+                return ServiceId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a service identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a service identification.
@@ -105,25 +108,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static Service_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out Service_Id ServiceId))
+                return ServiceId;
 
-            return Text.IsNullOrEmpty()
-                       ? new Service_Id?()
-                       : new Service_Id(Text);
+            return new Service_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out PartnerServiceSessionId)
+        #region (static) TryParse(Text, out ServiceId)
 
         /// <summary>
         /// Try to parse the given string as a service identification.
         /// </summary>
         /// <param name="Text">A text representation of a service identification.</param>
-        /// <param name="PartnerServiceSessionId">The parsed service identification.</param>
-        public static Boolean TryParse(String Text, out Service_Id PartnerServiceSessionId)
+        /// <param name="ServiceId">The parsed service identification.</param>
+        public static Boolean TryParse(String Text, out Service_Id ServiceId)
         {
 
             #region Initial checks
@@ -133,7 +134,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerServiceSessionId = default(Service_Id);
+                ServiceId = default;
                 return false;
             }
 
@@ -141,16 +142,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
-                PartnerServiceSessionId = new Service_Id(Text);
-
+                ServiceId = new Service_Id(Text);
                 return true;
-
             }
             catch (Exception)
             { }
 
-            PartnerServiceSessionId = default(Service_Id);
+            ServiceId = default;
             return false;
 
         }
@@ -173,113 +171,113 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider == (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
+        public static Boolean operator == (Service_Id ServiceId1, Service_Id ServiceId2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(PartnerServiceSessionId1, PartnerServiceSessionId2))
+            if (Object.ReferenceEquals(ServiceId1, ServiceId2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) PartnerServiceSessionId1 == null) || ((Object) PartnerServiceSessionId2 == null))
+            if (((Object) ServiceId1 == null) || ((Object) ServiceId2 == null))
                 return false;
 
-            return PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
+            return ServiceId1.Equals(ServiceId2);
 
         }
 
         #endregion
 
-        #region Provider != (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider != (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 == PartnerServiceSessionId2);
+        public static Boolean operator != (Service_Id ServiceId1, Service_Id ServiceId2)
+            => !(ServiceId1 == ServiceId2);
 
         #endregion
 
-        #region Provider <  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider <  (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
+        public static Boolean operator < (Service_Id ServiceId1, Service_Id ServiceId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) ServiceId1 == null)
+                throw new ArgumentNullException(nameof(ServiceId1), "The given ServiceId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) < 0;
+            return ServiceId1.CompareTo(ServiceId2) < 0;
 
         }
 
         #endregion
 
-        #region Provider <= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider <= (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 > PartnerServiceSessionId2);
+        public static Boolean operator <= (Service_Id ServiceId1, Service_Id ServiceId2)
+            => !(ServiceId1 > ServiceId2);
 
         #endregion
 
-        #region Provider >  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider >  (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
+        public static Boolean operator > (Service_Id ServiceId1, Service_Id ServiceId2)
         {
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
+            if ((Object) ServiceId1 == null)
+                throw new ArgumentNullException(nameof(ServiceId1), "The given ServiceId1 must not be null!");
 
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) > 0;
+            return ServiceId1.CompareTo(ServiceId2) > 0;
 
         }
 
         #endregion
 
-        #region Provider >= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Provider >= (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId1">A service identification.</param>
-        /// <param name="PartnerServiceSessionId2">Another service identification.</param>
+        /// <param name="ServiceId1">A service identification.</param>
+        /// <param name="ServiceId2">Another service identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Service_Id PartnerServiceSessionId1, Service_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 < PartnerServiceSessionId2);
+        public static Boolean operator >= (Service_Id ServiceId1, Service_Id ServiceId2)
+            => !(ServiceId1 < ServiceId2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerServiceSessionId> Members
+        #region IComparable<ServiceId> Members
 
         #region CompareTo(Object)
 
@@ -293,29 +291,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Service_Id))
+            if (!(Object is Service_Id ServiceId))
                 throw new ArgumentException("The given object is not a service identification!",
                                             nameof(Object));
 
-            return CompareTo((Service_Id) Object);
+            return CompareTo(ServiceId);
 
         }
 
         #endregion
 
-        #region CompareTo(PartnerServiceSessionId)
+        #region CompareTo(ServiceId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">An object to compare with.</param>
-        public Int32 CompareTo(Service_Id PartnerServiceSessionId)
+        /// <param name="ServiceId">An object to compare with.</param>
+        public Int32 CompareTo(Service_Id ServiceId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId),  "The given service identification must not be null!");
+            if ((Object) ServiceId == null)
+                throw new ArgumentNullException(nameof(ServiceId),  "The given service identification must not be null!");
 
-            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, ServiceId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -323,7 +321,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<PartnerServiceSessionId> Members
+        #region IEquatable<ServiceId> Members
 
         #region Equals(Object)
 
@@ -338,29 +336,29 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is Service_Id))
+            if (!(Object is Service_Id ServiceId))
                 return false;
 
-            return Equals((Service_Id) Object);
+            return Equals(ServiceId);
 
         }
 
         #endregion
 
-        #region Equals(PartnerServiceSessionId)
+        #region Equals(ServiceId)
 
         /// <summary>
-        /// Compares two PartnerServiceSessionIds for equality.
+        /// Compares two ServiceIds for equality.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">A service identification to compare with.</param>
+        /// <param name="ServiceId">A service identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(Service_Id PartnerServiceSessionId)
+        public Boolean Equals(Service_Id ServiceId)
         {
 
-            if ((Object) PartnerServiceSessionId == null)
+            if ((Object) ServiceId == null)
                 return false;
 
-            return InternalId.Equals(PartnerServiceSessionId.InternalId);
+            return InternalId.ToLower().Equals(ServiceId.InternalId.ToLower());
 
         }
 

@@ -193,24 +193,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         //
         //    <serviceSessionId>?</serviceSessionId>
         //
-        //
         //    <!--Optional:-->
         //    <execPartnerSessionId>?</execPartnerSessionId>
         //
         //    <!--Optional:-->
         //    <execPartnerOperatorIdType>?</execPartnerOperatorIdType>
+        //
         //    <!--Optional:-->
         //    <execPartnerOperatorId>?</execPartnerOperatorId>
-        //
         //
         //    <!--Optional:-->
         //    <salePartnerSessionId>?</salePartnerSessionId>
         //
         //    <!--Optional:-->
         //    <salePartnerOperatorIdType>?</salePartnerOperatorIdType>
+        //
         //    <!--Optional:-->
         //    <salePartnerOperatorId>?</salePartnerOperatorId>
-        //
         //
         //    <requestedServiceId>?</requestedServiceId>
         //
@@ -219,6 +218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         //
         //    <!--Optional:-->
         //    <userContractIdAlias>?</userContractIdAlias>
+        //
         //    <userIdType>?</userIdType>
         //    <userId>?</userId>
         //

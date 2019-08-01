@@ -1174,151 +1174,144 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            do
+            // No retransmissions for heartbeats!
+            using (var _eMIPClient = new SOAPClient(Hostname,
+                                                    URIPrefix,
+                                                    VirtualHostname,
+                                                    RemotePort,
+                                                    RemoteCertificateValidator,
+                                                    ClientCertificateSelector,
+                                                    UserAgent,
+                                                    RequestTimeout,
+                                                    DNSClient))
             {
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
-                                                        VirtualHostname,
-                                                        RemotePort,
-                                                        RemoteCertificateValidator,
-                                                        ClientCertificateSelector,
-                                                        UserAgent,
-                                                        RequestTimeout,
-                                                        DNSClient))
-                {
+                result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
+                                                                                   SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
+                                                 DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
+                                                 RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
+                                                 ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
+                                                 CancellationToken:    Request.CancellationToken,
+                                                 EventTrackingId:      Request.EventTrackingId,
+                                                 RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                 NumberOfRetry:        TransmissionRetry,
 
-                    result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
-                                                                                       SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
-                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
-                                                     RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
-                                                     ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
-                                                     CancellationToken:    Request.CancellationToken,
-                                                     EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
-                                                     NumberOfRetry:        TransmissionRetry,
+                                                 #region OnSuccess
 
-                                                     #region OnSuccess
+                                                 OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                      (request, xml, onexception) =>
+                                                                                                          HeartbeatResponse.Parse(request,
+                                                                                                                                  xml,
+                                                                                                                                  CustomHeartbeatParser,
+                                                                                                                                  onexception)),
 
-                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
-                                                                                                              HeartbeatResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomHeartbeatParser,
-                                                                                                                                      onexception)),
+                                                 #endregion
 
-                                                     #endregion
+                                                 #region OnSOAPFault
 
-                                                     #region OnSOAPFault
+                                                 OnSOAPFault: (timestamp, soapclient, httpresponse) => {
 
-                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+                                                     SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+                                                     return new HTTPResponse<HeartbeatResponse>(
 
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
-                                                                    httpresponse,
-
-                                                                    new HeartbeatResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
-                                                                    ),
-
-                                                                    IsFault: true
-
-                                                                );
-
-                                                     },
-
-                                                     #endregion
-
-                                                     #region OnHTTPError
-
-                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
-
-                                                         SendHTTPError(timestamp, this, httpresponse);
-
-
-                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
-
-                                                             return new HTTPResponse<HeartbeatResponse>(httpresponse,
-                                                                                                        new HeartbeatResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
-                                                                                                        ),
-                                                                                                        IsFault: true);
-
-
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
-                                                                    httpresponse,
-
-                                                                    new HeartbeatResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
-                                                                    ),
-
-                                                                    IsFault: true
-
-                                                                );
-
-                                                     },
-
-                                                     #endregion
-
-                                                     #region OnException
-
-                                                     OnException: (timestamp, sender, exception) => {
-
-                                                         SendException(timestamp, sender, exception);
-
-                                                         return HTTPResponse<HeartbeatResponse>.ExceptionThrown(
+                                                                httpresponse,
 
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                                                    RequestStatus.ServiceNotAvailable
+                                                                    RequestStatus.DataError
+                                                                    //httpresponse.Content.ToString()
+                                                                ),
+
+                                                                IsFault: true
+
+                                                            );
+
+                                                 },
+
+                                                 #endregion
+
+                                                 #region OnHTTPError
+
+                                                 OnHTTPError: (timestamp, soapclient, httpresponse) => {
+
+                                                     SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                     if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                         return new HTTPResponse<HeartbeatResponse>(httpresponse,
+                                                                                                    new HeartbeatResponse(
+                                                                                                        Request,
+                                                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                        RequestStatus.HTTPError
+                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
+                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                    ),
+                                                                                                    IsFault: true);
+
+
+                                                     return new HTTPResponse<HeartbeatResponse>(
+
+                                                                httpresponse,
+
+                                                                new HeartbeatResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.SystemError
                                                                     //httpresponse.HTTPStatusCode.ToString(),
                                                                     //httpresponse.HTTPBody.      ToUTF8String()
                                                                 ),
 
-                                                                Exception: exception
+                                                                IsFault: true
 
                                                             );
 
-                                                     }
+                                                 },
 
-                                                     #endregion
+                                                 #endregion
 
-                                                    );
+                                                 #region OnException
 
-                }
+                                                 OnException: (timestamp, sender, exception) => {
 
-                if (result == null)
-                    result = HTTPResponse<HeartbeatResponse>.OK(
-                                 new HeartbeatResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                                                     SendException(timestamp, sender, exception);
+
+                                                     return HTTPResponse<HeartbeatResponse>.ExceptionThrown(
+
+                                                            new HeartbeatResponse(
+                                                                Request,
+                                                                Request.TransactionId ?? Transaction_Id.Zero,
+                                                                RequestStatus.ServiceNotAvailable
+                                                                //httpresponse.HTTPStatusCode.ToString(),
+                                                                //httpresponse.HTTPBody.      ToUTF8String()
+                                                            ),
+
+                                                            Exception: exception
+
+                                                        );
+
+                                                 }
+
+                                                 #endregion
+
+                                                );
 
             }
-            while ((result.HTTPStatusCode.IsServerError ||
-                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
-                   TransmissionRetry++ < MaxNumberOfRetries);
+
+            if (result == null)
+                result = HTTPResponse<HeartbeatResponse>.OK(
+                             new HeartbeatResponse(
+                                 Request,
+                                 Request.TransactionId ?? Transaction_Id.Zero,
+                                 RequestStatus.SystemError
+                                 //"HTTP request failed!"
+                             )
+                         );
 
 
             #region Send OnSendHeartbeatResponse event
@@ -1448,6 +1441,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -1644,6 +1640,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
         #region SetChargingStationAvailabilityStatus  (Request)
 
         /// <summary>
@@ -1726,6 +1723,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -2005,6 +2005,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -2282,6 +2286,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -2561,6 +2568,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -2844,6 +2854,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -3126,6 +3139,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -3323,7 +3339,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         // eMIP_ToIOP_GetAuthenticationDataRequest
 
-        #region SetSessionEventReport               (Request)
+        #region SetSessionEventReport                 (Request)
 
         /// <summary>
         /// Send a session event report.
@@ -3391,6 +3407,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -3675,6 +3694,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,

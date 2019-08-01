@@ -285,11 +285,125 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static RequestStatus Ok
             => new RequestStatus(1,         "Ok!");
 
+
+
+        /// <summary>
+        /// Ok-Warning: The CPO of the EVSE cannot by identified!
+        /// </summary>
+        public static RequestStatus CPONotFound
+            => new RequestStatus(201,       "The CPO of the EVSE cannot by identified!");
+
+        /// <summary>
+        /// Ok-Warning: There is no roaming contract between the CPO and the eMSP for the requested service!
+        /// </summary>
+        public static RequestStatus NoRoamingContract
+            => new RequestStatus(202,       "There is no roaming contract between the CPO and the eMSP for the requested service!");
+
+        /// <summary>
+        /// Ok-Warning: The eMSP of the end-user cannot be identified!
+        /// </summary>
+        public static RequestStatus EMSPNotFound
+            => new RequestStatus(203,       "The eMSP of the end-user cannot be identified!");
+
+        /// <summary>
+        /// Ok-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE!
+        /// </summary>
+        public static RequestStatus EVSEServiceNotAvailable
+            => new RequestStatus(205,       "The autorisation request is rejected by CPO: The requested service is not available on this EVSE!");
+
+        /// <summary>
+        /// Ok-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!
+        /// </summary>
+        public static RequestStatus EVSENotReachable
+            => new RequestStatus(206,       "The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!");
+
+
+
+        /// <summary>
+        /// KO-Error 201: The autorisation request is rejected: Unknown error!
+        /// </summary>
+        public static RequestStatus UnknownAuthError
+            => new RequestStatus(10201,     "The autorisation request is rejected: Unknown error!");
+
+        /// <summary>
+        /// KO-Error 207: The CPO of the EVSE is not reachable!
+        /// </summary>
+        public static RequestStatus CPO_NotReachable
+            => new RequestStatus(10207,     "The CPO of the EVSE is not reachable!");
+
+        /// <summary>
+        /// KO-Error 210: The eMSP did not respond correctly to the request!
+        /// </summary>
+        public static RequestStatus EMSP_InvalidResponse
+            => new RequestStatus(10210,     "The eMSP did not respond correctly to the request!");
+
+
+
+        /// <summary>
+        /// KO-Error 501: Session not found!
+        /// </summary>
+        public static RequestStatus SessionNotFound
+            => new RequestStatus(10501,     "Session not found!");
+
+        /// <summary>
+        /// KO-Error 502: CPO/eMSP not found!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_NotFound
+            => new RequestStatus(10502,     "CPO/eMSP not found!");
+
+        /// <summary>
+        /// KO-Error 503: The CPO/eMSP does not accept Action/Event!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_DoesNotAcceptActionOrEvent
+            => new RequestStatus(10503,     "The CPO/eMSP does not accept Action/Event!");
+
+        /// <summary>
+        /// KO-Error 504: The request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_DoesNotRespond
+            => new RequestStatus(10504,     "The request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond!");
+
+        /// <summary>
+        /// KO-Error 505: The CPO/eMSP returns an IOP Fault!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_IOPFault
+            => new RequestStatus(10505,     "The CPO/eMSP returns an IOP Fault!");
+
+        /// <summary>
+        /// KO-Error 506: The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_DoesNotRecogniseActionOrEventNature
+            => new RequestStatus(10506,     "The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!");
+
+        /// <summary>
+        /// KO-Error 507: The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_ActionOrReportErrorOccured
+            => new RequestStatus(10507,     "The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!");
+
+        /// <summary>
+        /// KO-Error 508: The requestor is neither eMSP nor CPO for this session!
+        /// </summary>
+        public static RequestStatus CPOorEMSP_IllegalSessionAccess
+            => new RequestStatus(10508,     "The requestor is neither eMSP nor CPO for this session!");
+
+
+
         /// <summary>
         /// The charging pool/station/point/connector is unknown!
         /// </summary>
         public static RequestStatus UnknownEntity
             => new RequestStatus(10601,     "The charging pool/station/point/connector is unknown!");
+
+
+
+        /// <summary>
+        /// OKWarning701: eMSP doesn't accept this final CDR because one has already been received for this session (optional)!
+        /// </summary>
+        public static RequestStatus OKWarning701
+            => new RequestStatus(10701,     "eMSP doesn't accept this final CDR because one has already been received for this session (optional)!");
+
+
 
         /// <summary>
         /// System error!

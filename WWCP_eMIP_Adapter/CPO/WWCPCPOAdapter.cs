@@ -535,30 +535,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                    );
 
                         //case RemoteStartEVSEResultType.InvalidSessionId:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.SessionIsInvalid(
-                        //               Request,
-                        //               SessionId: Request.SessionId
-                        //           );
-
                         //case RemoteStartEVSEResultType.InvalidCredentials:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.NoValidContract(Request);
 
-                        //case RemoteStartEVSEResultType.Offline:
-                        //case RemoteStartEVSEResultType.Timeout:
-                        //case RemoteStartEVSEResultType.CommunicationError:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.CommunicationToEVSEFailed(Request);
+                        case RemoteStartEVSEResultType.Offline:
+                        case RemoteStartEVSEResultType.Timeout:
+                        case RemoteStartEVSEResultType.OutOfService:
+                        case RemoteStartEVSEResultType.CommunicationError:
+                            return new SetServiceAuthorisationResponse(
+                                       Request,
+                                       Request.TransactionId ?? Transaction_Id.Zero,
+                                       RequestStatus.EVSENotReachable
+                                   );
 
-                        //case RemoteStartEVSEResultType.Reserved:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEAlreadyReserved(Request);
+                        case RemoteStartEVSEResultType.Reserved:
+                        case RemoteStartEVSEResultType.AlreadyInUse:
+                            return new SetServiceAuthorisationResponse(
+                                       Request,
+                                       Request.TransactionId ?? Transaction_Id.Zero,
+                                       RequestStatus.EVSEServiceNotAvailable
+                                   );
 
-                        //case RemoteStartEVSEResultType.AlreadyInUse:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEAlreadyInUse_WrongToken(Request);
-
-                        //case RemoteStartEVSEResultType.UnknownEVSE:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.UnknownEVSEID(Request);
-
-                        //case RemoteStartEVSEResultType.OutOfService:
-                        //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEOutOfService(Request);
+                        case RemoteStartEVSEResultType.UnknownEVSE:
+                            return new SetServiceAuthorisationResponse(
+                                       Request,
+                                       Request.TransactionId ?? Transaction_Id.Zero,
+                                       RequestStatus.UnknownEntity
+                                   );
 
                     }
                 }
@@ -658,14 +660,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 var execPartnerSessionId  = Request.ExecPartnerSessionId;
                 var SessionAction         = Request.SessionAction;
 
-                // 0 Emergency Stop
-                // 1 Stop and terminate current operation
-                // 2 Suspend current operation
-                // 3 Restart current operation
-                var Nature                = Request.SessionAction.Nature;
-
-                if (Request.SessionAction.Nature == SessionActionNatures.Stop ||
-                    Request.SessionAction.Nature == SessionActionNatures.EmergencyStop)
+                // Nature 0: Emergency Stop
+                // Nature 1: Stop and terminate current operation
+                // Nature 2: Suspend current operation
+                // Nature 3: Restart current operation
+                if (Request.SessionAction.Nature == SessionActionNatures.EmergencyStop ||
+                    Request.SessionAction.Nature == SessionActionNatures.Stop)
                 {
 
                     var response = await RoamingNetwork.
@@ -694,31 +694,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                            RequestStatus.Ok
                                        );
 
-                            //case RemoteStartEVSEResultType.InvalidSessionId:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.SessionIsInvalid(
-                            //               Request,
-                            //               SessionId: Request.SessionId
-                            //           );
+                            case RemoteStopResultType.InvalidSessionId:
+                                return new SetSessionActionResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.SessionNotFound
+                                       );
 
-                            //case RemoteStartEVSEResultType.InvalidCredentials:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.NoValidContract(Request);
-
-                            //case RemoteStartEVSEResultType.Offline:
-                            //case RemoteStartEVSEResultType.Timeout:
-                            //case RemoteStartEVSEResultType.CommunicationError:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.CommunicationToEVSEFailed(Request);
-
-                            //case RemoteStartEVSEResultType.Reserved:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEAlreadyReserved(Request);
-
-                            //case RemoteStartEVSEResultType.AlreadyInUse:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEAlreadyInUse_WrongToken(Request);
-
-                            //case RemoteStartEVSEResultType.UnknownEVSE:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.UnknownEVSEID(Request);
-
-                            //case RemoteStartEVSEResultType.OutOfService:
-                            //    return Acknowledgement<EMP.AuthorizeRemoteStartRequest>.EVSEOutOfService(Request);
+                            case RemoteStopResultType.Offline:
+                            case RemoteStopResultType.Timeout:
+                            case RemoteStopResultType.OutOfService:
+                            case RemoteStopResultType.CommunicationError:
+                                return new SetSessionActionResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.EVSENotReachable
+                                       );
 
                         }
                     }
@@ -4827,7 +4818,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
                     response.Content                     != null              &&
-                    response.Content.AuthorisationValue == AuthorisationValues.OK)
+                    response.Content.RequestStatus.Code  == 1                 &&
+                    response.Content.AuthorisationValue  == AuthorisationValues.OK)
                 {
 
                     result = AuthStartEVSEResult.Authorized(

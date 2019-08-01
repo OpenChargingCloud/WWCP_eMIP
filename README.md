@@ -2,7 +2,7 @@ WWCP eMIP
 =========
 
 This software will allow the communication between World Wide Charging Protocol
-(WWCP) entities and entities implementing the _eMIP protocol_,
+(WWCP) entities and entities implementing the [eMIP protocol](https://www.gireve.com/wp-content/uploads/2017/02/Gireve_Tech_eMIP-V0.7.4_ProtocolDescription_1.0.2_en.pdf),
 which is defined and used by [Gireve](http://www.gireve.com). The focus
 of this protocol are the communication aspects between a central clearing house,
 charge point operators (CPOs) and e-mobility providers (EMPs). For more details

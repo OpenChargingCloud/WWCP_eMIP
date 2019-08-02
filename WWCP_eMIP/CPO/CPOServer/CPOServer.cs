@@ -422,7 +422,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
                     Date            = DateTime.UtcNow,
-                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    ContentType     = HTTPContentType.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
                 };
@@ -468,7 +468,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
                                             URIPrefix + AuthorisationURI,
                                             "SetSessionActionRequest",
-                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequest").FirstOrDefault(),
+                                            XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetSessionActionXML) => {
 
 
@@ -620,7 +620,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
                     Date            = DateTime.UtcNow,
-                    ContentType     = HTTPContentType.XMLTEXT_UTF8,
+                    ContentType     = HTTPContentType.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
                 };

@@ -283,7 +283,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                var SessionActionXML = SetSessionActionRequestXML.ElementOrFail("sessionAction");
+            //    var SessionActionXML = SetSessionActionRequestXML.ElementOrFail("sessionAction");
 
 
                 SetSessionActionRequest = new SetSessionActionRequest(
@@ -299,7 +299,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                      SetSessionActionRequestXML.MapValueOrFail    ("serviceSessionId",         ServiceSession_Id.       Parse),
 
-                                                     SessionActionXML.          MapElementOrFail  ("sessionAction",
+                                                     SetSessionActionRequestXML.MapElementOrFail  ("sessionAction",
                                                                                                    (s, e) => SessionAction.Parse(s,
                                                                                                                                  CustomSessionActionParser,
                                                                                                                                  e),
@@ -307,7 +307,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                      SetSessionActionRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.          Parse),
 
-                                                     SetSessionActionRequestXML.MapValueOrFail    ("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrNullable("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
 
 
                                                      Timestamp,

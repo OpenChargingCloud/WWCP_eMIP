@@ -716,23 +716,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable GetServiceAuthorisationResponse.
             /// </summary>
-            public override GetServiceAuthorisationResponse ToImmutable
+            /// <param name="Builder">A GetServiceAuthorisationResponse builder.</param>
+            public static implicit operator GetServiceAuthorisationResponse(Builder Builder)
 
-                => new GetServiceAuthorisationResponse(Request,
-                                                       TransactionId,
-                                                       AuthorisationValue,
-                                                       PartnerServiceSessionId,
-                                                       IntermediateCDRRequested,
-                                                       RequestStatus,
+                => new GetServiceAuthorisationResponse(Builder.Request,
+                                                       Builder.TransactionId,
+                                                       Builder.AuthorisationValue,
+                                                       Builder.PartnerServiceSessionId,
+                                                       Builder.IntermediateCDRRequested,
+                                                       Builder.RequestStatus,
 
-                                                       UserContractIdAlias,
-                                                       MeterLimits,
-                                                       Parameter);
+                                                       Builder.UserContractIdAlias,
+                                                       Builder.MeterLimits,
+                                                       Builder.Parameter);
 
             #endregion
 

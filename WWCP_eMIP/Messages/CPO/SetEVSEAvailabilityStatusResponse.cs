@@ -480,16 +480,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetEVSEAvailabilityStatusResponse response.
             /// </summary>
-            public override SetEVSEAvailabilityStatusResponse ToImmutable
+            /// <param name="Builder">A SetEVSEAvailabilityStatusResponse response builder.</param>
+            public static implicit operator SetEVSEAvailabilityStatusResponse(Builder Builder)
 
-                => new SetEVSEAvailabilityStatusResponse(Request,
-                                                         TransactionId,
-                                                         RequestStatus);
+                => new SetEVSEAvailabilityStatusResponse(Builder.Request,
+                                                         Builder.TransactionId,
+                                                         Builder.RequestStatus);
 
             #endregion
 

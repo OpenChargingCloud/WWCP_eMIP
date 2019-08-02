@@ -484,16 +484,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetSessionEventReportResponse response.
             /// </summary>
-            public override SetSessionEventReportResponse ToImmutable
+            /// <param name="Builder">A SetSessionEventReportResponse response builder.</param>
+            public static implicit operator SetSessionEventReportResponse(Builder Builder)
 
-                => new SetSessionEventReportResponse(Request,
-                                                     TransactionId,
-                                                     RequestStatus);
+                => new SetSessionEventReportResponse(Builder.Request,
+                                                     Builder.TransactionId,
+                                                     Builder.RequestStatus);
 
             #endregion
 

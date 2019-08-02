@@ -160,14 +160,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region (abstract) ToImmutable
+        //#region (abstract) ToImmutable
 
-        /// <summary>
-        /// Return an immutable response.
-        /// </summary>
-        public abstract TResponse ToImmutable { get; }
+        ///// <summary>
+        ///// Return an immutable response.
+        ///// </summary>
+        //public abstract TResponse ToImmutable { get; }
 
-        #endregion
+        //#endregion
 
     }
 

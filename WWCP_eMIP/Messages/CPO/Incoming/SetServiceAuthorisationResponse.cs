@@ -542,17 +542,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetServiceAuthorisationResponse response.
             /// </summary>
-            public override SetServiceAuthorisationResponse ToImmutable
+            /// <param name="Builder">A SetServiceAuthorisationResponse response builder.</param>
+            public static implicit operator SetServiceAuthorisationResponse(Builder Builder)
 
-                => new SetServiceAuthorisationResponse(Request,
-                                                       TransactionId,
-                                                       RequestStatus,
-                                                       PartnerServiceSessionId);
+                => new SetServiceAuthorisationResponse(Builder.Request,
+                                                       Builder.TransactionId,
+                                                       Builder.RequestStatus,
+                                                       Builder.PartnerServiceSessionId);
 
             #endregion
 

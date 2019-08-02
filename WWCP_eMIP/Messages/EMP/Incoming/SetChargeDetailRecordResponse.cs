@@ -544,17 +544,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetChargeDetailRecordResponse response.
             /// </summary>
-            public override SetChargeDetailRecordResponse ToImmutable
+            /// <param name="Builder">A SetChargeDetailRecordResponse response builder.</param>
+            public static implicit operator SetChargeDetailRecordResponse(Builder Builder)
 
-                => new SetChargeDetailRecordResponse(Request,
-                                                     TransactionId,
-                                                     RequestStatus,
-                                                     PartnerServiceSessionId);
+                => new SetChargeDetailRecordResponse(Builder.Request,
+                                                     Builder.TransactionId,
+                                                     Builder.RequestStatus,
+                                                     Builder.PartnerServiceSessionId);
 
             #endregion
 

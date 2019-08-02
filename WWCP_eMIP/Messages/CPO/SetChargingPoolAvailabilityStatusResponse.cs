@@ -486,16 +486,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetChargingPoolAvailabilityStatusResponse response.
             /// </summary>
-            public override SetChargingPoolAvailabilityStatusResponse ToImmutable
+            /// <param name="Builder">A SetChargingPoolAvailabilityStatusResponse response builder.</param>
+            public static implicit operator SetChargingPoolAvailabilityStatusResponse(Builder Builder)
 
-                => new SetChargingPoolAvailabilityStatusResponse(Request,
-                                                                 TransactionId,
-                                                                 RequestStatus);
+                => new SetChargingPoolAvailabilityStatusResponse(Builder.Request,
+                                                                 Builder.TransactionId,
+                                                                 Builder.RequestStatus);
 
             #endregion
 

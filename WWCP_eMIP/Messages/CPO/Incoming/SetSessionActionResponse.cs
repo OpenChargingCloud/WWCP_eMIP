@@ -495,16 +495,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetSessionActionResponse response.
             /// </summary>
-            public override SetSessionActionResponse ToImmutable
+            /// <param name="Builder">A SetSessionActionResponse response builder.</param>
+            public static implicit operator SetSessionActionResponse(Builder Builder)
 
-                => new SetSessionActionResponse(Request,
-                                                TransactionId,
-                                                RequestStatus);
+                => new SetSessionActionResponse(Builder.Request,
+                                                Builder.TransactionId,
+                                                Builder.RequestStatus);
 
             #endregion
 

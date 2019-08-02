@@ -769,24 +769,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable GetServiceAuthorisation response.
             /// </summary>
-            public override GetServiceAuthorisationResponse ToImmutable
+            /// <param name="Builder">A GetServiceAuthorisation response builder.</param>
+            public static implicit operator GetServiceAuthorisationResponse(Builder Builder)
 
-                => new GetServiceAuthorisationResponse(Request,
-                                                       TransactionId,
-                                                       AuthorisationValue,
-                                                       ServiceSessionId,
-                                                       IntermediateCDRRequested,
-                                                       RequestStatus,
+                => new GetServiceAuthorisationResponse(Builder.Request,
+                                                       Builder.TransactionId,
+                                                       Builder.AuthorisationValue,
+                                                       Builder.ServiceSessionId,
+                                                       Builder.IntermediateCDRRequested,
+                                                       Builder.RequestStatus,
 
-                                                       SalesPartnerOperatorId,
-                                                       UserContractIdAlias,
-                                                       MeterLimits,
-                                                       Parameter);
+                                                       Builder.SalesPartnerOperatorId,
+                                                       Builder.UserContractIdAlias,
+                                                       Builder.MeterLimits,
+                                                       Builder.Parameter);
 
             #endregion
 

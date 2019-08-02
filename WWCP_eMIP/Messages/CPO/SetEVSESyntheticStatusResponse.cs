@@ -486,16 +486,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetEVSESyntheticStatusResponse response.
             /// </summary>
-            public override SetEVSESyntheticStatusResponse ToImmutable
+            /// <param name="Builder">A SetEVSESyntheticStatusResponse response builder.</param>
+            public static implicit operator SetEVSESyntheticStatusResponse(Builder Builder)
 
-                => new SetEVSESyntheticStatusResponse(Request,
-                                                      TransactionId,
-                                                      RequestStatus);
+                => new SetEVSESyntheticStatusResponse(Builder.Request,
+                                                      Builder.TransactionId,
+                                                      Builder.RequestStatus);
 
             #endregion
 

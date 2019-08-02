@@ -563,18 +563,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable Heartbeat response.
             /// </summary>
-            public override HeartbeatResponse ToImmutable
+            /// <param name="Builder">A Heartbeat response builder.</param>
+            public static implicit operator HeartbeatResponse(Builder Builder)
 
-                => new HeartbeatResponse(Request,
-                                         HeartbeatPeriod,
-                                         CurrentTime,
-                                         TransactionId,
-                                         RequestStatus);
+                => new HeartbeatResponse(Builder.Request,
+                                         Builder.HeartbeatPeriod,
+                                         Builder.CurrentTime,
+                                         Builder.TransactionId,
+                                         Builder.RequestStatus);
 
             #endregion
 

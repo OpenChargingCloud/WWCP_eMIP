@@ -1989,18 +1989,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
-                                 new SetEVSEAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+            //                     new SetEVSEAvailabilityStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -2553,18 +2553,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
-                                 new SetEVSEBusyStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+            //                     new SetEVSEBusyStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {

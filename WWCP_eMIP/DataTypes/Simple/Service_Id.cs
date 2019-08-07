@@ -59,8 +59,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new service identification.
-        /// based on the given string.
+        /// Create a new service identification based on the given string.
         /// </summary>
         /// <param name="Text">The text representation of a service identification.</param>
         private Service_Id(String Text)
@@ -171,7 +170,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (ServiceId1, ServiceId2)
+        #region Operator == (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -196,7 +195,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider != (ServiceId1, ServiceId2)
+        #region Operator != (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -209,7 +208,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <  (ServiceId1, ServiceId2)
+        #region Operator <  (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -229,7 +228,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <= (ServiceId1, ServiceId2)
+        #region Operator <= (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -242,7 +241,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >  (ServiceId1, ServiceId2)
+        #region Operator >  (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -262,7 +261,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >= (ServiceId1, ServiceId2)
+        #region Operator >= (ServiceId1, ServiceId2)
 
         /// <summary>
         /// Compares two instances of this object.

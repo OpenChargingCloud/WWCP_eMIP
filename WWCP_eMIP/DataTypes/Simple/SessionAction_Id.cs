@@ -178,7 +178,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (SessionActionId1, SessionActionId2)
+        #region Operator == (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider != (SessionActionId1, SessionActionId2)
+        #region Operator != (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -216,7 +216,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <  (SessionActionId1, SessionActionId2)
+        #region Operator <  (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -236,7 +236,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <= (SessionActionId1, SessionActionId2)
+        #region Operator <= (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -249,7 +249,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >  (SessionActionId1, SessionActionId2)
+        #region Operator >  (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -269,7 +269,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >= (SessionActionId1, SessionActionId2)
+        #region Operator >= (SessionActionId1, SessionActionId2)
 
         /// <summary>
         /// Compares two instances of this object.

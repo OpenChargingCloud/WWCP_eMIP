@@ -53,6 +53,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         public String  Description   { get; }
 
+        /// <summary>
+        /// Indicates whether this identification is null or empty.
+        /// </summary>
+        public Boolean IsNullOrEmpty
+            => false;
+
+        /// <summary>
+        /// The length of the tag identification.
+        /// </summary>
+        public UInt64 Length
+            => 0;
+
         #endregion
 
         #region Constructor(s)

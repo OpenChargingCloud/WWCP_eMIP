@@ -31,6 +31,7 @@ using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Org.BouncyCastle.Crypto.Parameters;
 
 #endregion
 
@@ -341,8 +342,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">The attached DNS service.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -371,8 +370,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Boolean                                            DisableAuthentication                           = false,
                               Boolean                                            DisableSendChargeDetailRecords                  = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                   = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                   = null,
+                              String                                             EllipticCurve                                   = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                      = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                           = null,
+
                               DNSClient                                          DNSClient                                       = null)
 
             : base(Id,
@@ -393,8 +394,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient ?? CPORoaming?.DNSClient)
 
         {
@@ -506,13 +509,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 #endregion
 
                 var response = await RoamingNetwork.
-                                         RemoteStart(EVSEId:                    Request.EVSEId.ToWWCP().Value,
+                                         RemoteStart(ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
                                                      ChargingProduct:           null,
                                                      ReservationId:             null,
                                                      SessionId:                 Request.ServiceSessionId.ToWWCP(),
                                                      ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
                                                      RemoteAuthentication:      Request.UserId.          ToWWCP(),
-                                                     ISendChargeDetailRecords:  this,
+                                              //       ISendChargeDetailRecords:  this,
 
                                                      Timestamp:                 Request.Timestamp,
                                                      CancellationToken:         Request.CancellationToken,
@@ -527,35 +530,35 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     switch (response.Result)
                     {
 
-                        case RemoteStartEVSEResultType.Success:
+                        case RemoteStartResultType.Success:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.Ok
                                    );
 
-                        //case RemoteStartEVSEResultType.InvalidSessionId:
-                        //case RemoteStartEVSEResultType.InvalidCredentials:
+                        //case RemoteStartResultType.InvalidSessionId:
+                        //case RemoteStartResultType.InvalidCredentials:
 
-                        case RemoteStartEVSEResultType.Offline:
-                        case RemoteStartEVSEResultType.Timeout:
-                        case RemoteStartEVSEResultType.OutOfService:
-                        case RemoteStartEVSEResultType.CommunicationError:
+                        case RemoteStartResultType.Offline:
+                        case RemoteStartResultType.Timeout:
+                        case RemoteStartResultType.OutOfService:
+                        case RemoteStartResultType.CommunicationError:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSENotReachable
                                    );
 
-                        case RemoteStartEVSEResultType.Reserved:
-                        case RemoteStartEVSEResultType.AlreadyInUse:
+                        case RemoteStartResultType.Reserved:
+                        case RemoteStartResultType.AlreadyInUse:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSEServiceNotAvailable
                                    );
 
-                        case RemoteStartEVSEResultType.UnknownEVSE:
+                        case RemoteStartResultType.UnknownLocation:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
@@ -769,8 +772,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -802,8 +803,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Boolean                                            DisableAuthentication                           = false,
                               Boolean                                            DisableSendChargeDetailRecords                  = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                   = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                   = null,
+                              String                                             EllipticCurve                                   = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                      = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                           = null,
+
                               DNSClient                                          DNSClient                                       = null)
 
             : this(Id,
@@ -836,8 +839,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient ?? CPOServer?.DNSClient)
 
         { }
@@ -899,8 +904,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -952,8 +955,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Boolean                                            DisableAuthentication                                    = false,
                               Boolean                                            DisableSendChargeDetailRecords                           = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                            = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                            = null,
+                              String                                             EllipticCurve                                            = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                               = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                                    = null,
 
                               CounterValues?                                     CPOClientSendHeartbeatCounter                            = null,
                               CounterValues?                                     CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
@@ -1031,8 +1035,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient)
 
         {

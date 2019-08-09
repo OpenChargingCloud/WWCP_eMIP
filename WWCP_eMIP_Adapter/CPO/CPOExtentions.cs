@@ -27,6 +27,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Org.BouncyCastle.Crypto.Parameters;
 
 #endregion
 
@@ -100,8 +101,6 @@ namespace org.GraphDefined.WWCP
         /// <param name="eMIPConfigurator">An optional delegate to configure the new eMIP roaming provider after its creation.</param>
         /// <param name="Configurator">An optional delegate to configure the new roaming provider after its creation.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public static eMIPv0_7_4.CPO.WWCPCPOAdapter
 
@@ -158,8 +157,9 @@ namespace org.GraphDefined.WWCP
                                                 Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                         = null,
                                                 Action<ICSORoamingProvider>                                       Configurator                                             = null,
 
-                                                PgpPublicKeyRing                                                  PublicKeyRing                                            = null,
-                                                PgpSecretKeyRing                                                  SecretKeyRing                                            = null,
+                                                String                                                            EllipticCurve                                            = "P-256",
+                                                ECPrivateKeyParameters                                            PrivateKey                                               = null,
+                                                PublicKeyCertificates                                             PublicKeyCertificates                                    = null,
 
                                                 CounterValues?                                                    CPOClientSendHeartbeatCounter                            = null,
                                                 CounterValues?                                                    CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
@@ -242,8 +242,9 @@ namespace org.GraphDefined.WWCP
                                                                        DisableAuthentication,
                                                                        DisableSendChargeDetailRecords,
 
-                                                                       PublicKeyRing,
-                                                                       SecretKeyRing,
+                                                                       EllipticCurve,
+                                                                       PrivateKey,
+                                                                       PublicKeyCertificates,
 
                                                                        CPOClientSendHeartbeatCounter,
                                                                        CPOClientSetChargingPoolAvailabilityStatusCounter,
@@ -321,8 +322,6 @@ namespace org.GraphDefined.WWCP
         /// <param name="eMIPConfigurator">An optional delegate to configure the new eMIP roaming provider after its creation.</param>
         /// <param name="Configurator">An optional delegate to configure the new roaming provider after its creation.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public static eMIPv0_7_4.CPO.WWCPCPOAdapter
 
@@ -372,8 +371,9 @@ namespace org.GraphDefined.WWCP
                                                 Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                         = null,
                                                 Action<ICSORoamingProvider>                                       Configurator                                             = null,
 
-                                                PgpPublicKeyRing                                                  PublicKeyRing                                            = null,
-                                                PgpSecretKeyRing                                                  SecretKeyRing                                            = null,
+                                                String                                                            EllipticCurve                                            = "P-256",
+                                                ECPrivateKeyParameters                                            PrivateKey                                               = null,
+                                                PublicKeyCertificates                                             PublicKeyCertificates                                    = null,
 
                                                 CounterValues?                                                    CPOClientSendHeartbeatCounter                            = null,
                                                 CounterValues?                                                    CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
@@ -470,8 +470,10 @@ namespace org.GraphDefined.WWCP
                                                                        DisableAuthentication,
                                                                        DisableSendChargeDetailRecords,
 
-                                                                       PublicKeyRing,
-                                                                       SecretKeyRing,
+                                                                       EllipticCurve,
+                                                                       PrivateKey,
+                                                                       PublicKeyCertificates,
+
                                                                        DNSClient);
 
             eMIPConfigurator?.Invoke(NewRoamingProvider);

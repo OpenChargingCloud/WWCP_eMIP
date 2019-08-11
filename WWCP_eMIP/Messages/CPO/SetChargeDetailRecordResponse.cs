@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -61,17 +62,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest         Request,
                                              Transaction_Id                       TransactionId,
                                              RequestStatus                        RequestStatus,
-                                             IReadOnlyDictionary<String, Object>  CustomData               = null)
+
+                                             HTTPResponse                         HTTPResponse   = null,
+                                             IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : this(Request,
                    TransactionId,
                    ServiceSession_Id.Zero,
                    RequestStatus,
                    null,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -87,18 +93,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="ServiceSessionId">The service session identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
         /// <param name="SalesPartnerOperatorId">An optional sales partner operator identification.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest         Request,
                                              Transaction_Id                       TransactionId,
                                              ServiceSession_Id                    ServiceSessionId,
                                              RequestStatus                        RequestStatus,
+
                                              Operator_Id?                         SalesPartnerOperatorId   = null,
+                                             HTTPResponse                         HTTPResponse             = null,
                                              IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -149,17 +160,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
         /// <param name="SetChargeDetailRecordResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargeDetailRecordResponse Parse(SetChargeDetailRecordRequest                            Request,
                                                           XElement                                                SetChargeDetailRecordResponseXML,
-                                                          CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser,
-                                                          OnExceptionDelegate                                     OnException = null)
+                                                          CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
+                                                          HTTPResponse                                            HTTPResponse                                    = null,
+                                                          OnExceptionDelegate                                     OnException                                     = null)
         {
 
             if (TryParse(Request,
                          SetChargeDetailRecordResponseXML,
-                         CustomSendSetChargeDetailRecordResponseParser,
                          out SetChargeDetailRecordResponse SetChargeDetailRecordResponse,
+                         CustomSendSetChargeDetailRecordResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetChargeDetailRecordResponse;
@@ -179,17 +193,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
         /// <param name="SetChargeDetailRecordResponseText">The text to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargeDetailRecordResponse Parse(SetChargeDetailRecordRequest                            Request,
                                                           String                                                  SetChargeDetailRecordResponseText,
-                                                          CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser,
-                                                          OnExceptionDelegate                                     OnException = null)
+                                                          CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
+                                                          HTTPResponse                                            HTTPResponse                                    = null,
+                                                          OnExceptionDelegate                                     OnException                                     = null)
         {
 
             if (TryParse(Request,
                          SetChargeDetailRecordResponseText,
-                         CustomSendSetChargeDetailRecordResponseParser,
                          out SetChargeDetailRecordResponse SetChargeDetailRecordResponse,
+                         CustomSendSetChargeDetailRecordResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetChargeDetailRecordResponse;
@@ -208,14 +225,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
         /// <param name="SetChargeDetailRecordResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="SetChargeDetailRecordResponse">The parsed SetChargeDetailRecord response.</param>
+        /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargeDetailRecordRequest                            Request,
                                        XElement                                                SetChargeDetailRecordResponseXML,
-                                       CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser,
                                        out SetChargeDetailRecordResponse                       SetChargeDetailRecordResponse,
-                                       OnExceptionDelegate                                     OnException  = null)
+                                       CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
+                                       HTTPResponse                                            HTTPResponse                                    = null,
+                                       OnExceptionDelegate                                     OnException                                     = null)
         {
 
             try
@@ -230,7 +249,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         SetChargeDetailRecordResponseXML.MapValueOrFail    ("requestStatus",          RequestStatus.Parse),
 
                                                         //ToDo: What to do with: <salePartnerOperatorIdType>eMI3</salePartnerOperatorIdType>?
-                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable("salePartnerOperatorId",  Operator_Id.Parse)
+                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable("salePartnerOperatorId",  Operator_Id.Parse),
+
+                                                        HTTPResponse
 
                                                     );
 
@@ -263,14 +284,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargeDetailRecord request leading to this response.</param>
         /// <param name="SetChargeDetailRecordResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="SetChargeDetailRecordResponse">The parsed SetChargeDetailRecord response.</param>
+        /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargeDetailRecordRequest                            Request,
-                                       String                                                      SetChargeDetailRecordResponseText,
-                                       CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser,
+                                       String                                                  SetChargeDetailRecordResponseText,
                                        out SetChargeDetailRecordResponse                       SetChargeDetailRecordResponse,
-                                       OnExceptionDelegate                                         OnException  = null)
+                                       CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
+                                       HTTPResponse                                            HTTPResponse                                    = null,
+                                       OnExceptionDelegate                                     OnException                                     = null)
         {
 
             try
@@ -278,8 +301,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(SetChargeDetailRecordResponseText).Root,
-                             CustomSendSetChargeDetailRecordResponseParser,
                              out SetChargeDetailRecordResponse,
+                             CustomSendSetChargeDetailRecordResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

@@ -17,6 +17,7 @@
 
 #region Usings
 
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using System;
 using System.Collections.Generic;
 
@@ -47,6 +48,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public TRequest        Request             { get; }
 
         /// <summary>
+        /// The correlated HTTP response of this eMIP response.
+        /// </summary>
+        public HTTPResponse    HTTPResponse        { get; set; }
+
+        /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
         public DateTime        ResponseTimestamp   { get; set; }
@@ -73,7 +79,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                             Request,
-                                   IReadOnlyDictionary<String, Object>  CustomData  = null)
+                                   IReadOnlyDictionary<String, Object>  CustomData   = null)
 
             : this(Request,
                    DateTime.UtcNow,
@@ -92,8 +98,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                             Request,
-                                   DateTime?                            ResponseTimestamp  = null,
-                                   IReadOnlyDictionary<String, Object>  CustomData         = null)
+                                   DateTime?                            ResponseTimestamp   = null,
+                                   IReadOnlyDictionary<String, Object>  CustomData          = null)
 
             : base(CustomData)
 
@@ -114,7 +120,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                                   Request,
-                                   IEnumerable<KeyValuePair<String, Object>>  CustomData  = null)
+                                   IEnumerable<KeyValuePair<String, Object>>  CustomData   = null)
 
             : this(Request,
                    DateTime.UtcNow,
@@ -133,8 +139,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                                   Request,
-                                   DateTime?                                  ResponseTimestamp  = null,
-                                   IEnumerable<KeyValuePair<String, Object>>  CustomData         = null)
+                                   DateTime?                                  ResponseTimestamp   = null,
+                                   IEnumerable<KeyValuePair<String, Object>>  CustomData          = null)
 
             : base(CustomData)
 

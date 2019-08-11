@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -54,17 +55,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
         /// <param name="PartnerServiceSessionId">The GIREVE session id for this service session.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetServiceAuthorisationResponse(SetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
                                                RequestStatus                        RequestStatus,
-                                               PartnerServiceSession_Id?            PartnerServiceSessionId  = null,
-                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
+
+                                               PartnerServiceSession_Id?            PartnerServiceSessionId   = null,
+                                               HTTPResponse                         HTTPResponse              = null,
+                                               IReadOnlyDictionary<String, Object>  CustomData                = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -111,10 +117,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="SetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  SetServiceAuthorisationResponseXML,
                                                             CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
+                                                            HTTPResponse                                              HTTPResponse                                     = null,
                                                             OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -122,6 +130,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          SetServiceAuthorisationResponseXML,
                          out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetServiceAuthorisationResponse;
@@ -141,10 +150,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             String                                                    SetServiceAuthorisationResponseText,
                                                             CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
+                                                            HTTPResponse                                              HTTPResponse                                     = null,
                                                             OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -152,6 +163,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          SetServiceAuthorisationResponseText,
                          out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetServiceAuthorisationResponse;
@@ -172,11 +184,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        XElement                                                  SetServiceAuthorisationResponseXML,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
                                        CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
+                                       HTTPResponse                                              HTTPResponse                                     = null,
                                        OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -189,7 +203,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                       SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",            Transaction_Id.          Parse),
                                                       SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",            RequestStatus.           Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("partnerServiceSessionId",  PartnerServiceSession_Id.Parse)
+                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("partnerServiceSessionId",  PartnerServiceSession_Id.Parse),
+
+                                                      HTTPResponse
 
                                                   );
 
@@ -222,13 +238,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
+        /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        String                                                    SetServiceAuthorisationResponseText,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
                                        CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
+                                       HTTPResponse                                              HTTPResponse                                     = null,
                                        OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -239,6 +257,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              XDocument.Parse(SetServiceAuthorisationResponseText).Root,
                              out SetServiceAuthorisationResponse,
                              CustomSendSetServiceAuthorisationResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -287,7 +306,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region (static) SystemError(Request, TransactionId, PartnerServiceSessionId = null, CustomData = null)
+        #region (static) SystemError(Request, TransactionId, PartnerServiceSessionId = null, HTTPResponse = null, CustomData = null)
 
         /// <summary>
         /// Signal a system error.
@@ -295,16 +314,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetServiceAuthorisation request.</param>
         /// <param name="TransactionId">The transaction identification.</param>
         /// <param name="PartnerServiceSessionId">An optional partner service session identification.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional custom data.</param>
         public static SetServiceAuthorisationResponse SystemError(SetServiceAuthorisationRequest       Request,
                                                                   Transaction_Id                       TransactionId,
-                                                                  PartnerServiceSession_Id?            PartnerServiceSessionId  = null,
-                                                                  IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                                                  PartnerServiceSession_Id?            PartnerServiceSessionId   = null,
+                                                                  HTTPResponse                         HTTPResponse              = null,
+                                                                  IReadOnlyDictionary<String, Object>  CustomData                = null)
 
             => new SetServiceAuthorisationResponse(Request,
                                                    TransactionId,
                                                    RequestStatus.SystemError,
                                                    PartnerServiceSessionId,
+                                                   HTTPResponse,
                                                    CustomData);
 
         #endregion

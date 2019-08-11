@@ -32,6 +32,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using Org.BouncyCastle.Crypto.Parameters;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
@@ -436,6 +437,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 Sender,
                                                                 Request) => {
 
+                // intermediateCDRRequested
+                // meterLimitList
+                // bookingId
+
                 #region Request mapping
 
                 //ChargingReservation_Id? ReservationId      = null;
@@ -509,19 +514,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 #endregion
 
                 var response = await RoamingNetwork.
-                                         RemoteStart(ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
+                                         RemoteStart(this,
+                                                     ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
                                                      ChargingProduct:           null,
                                                      ReservationId:             null,
                                                      SessionId:                 Request.ServiceSessionId.ToWWCP(),
                                                      ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
                                                      RemoteAuthentication:      Request.UserId.          ToWWCP(),
-                                              //       ISendChargeDetailRecords:  this,
 
                                                      Timestamp:                 Request.Timestamp,
                                                      CancellationToken:         Request.CancellationToken,
                                                      EventTrackingId:           Request.EventTrackingId,
                                                      RequestTimeout:            Request.RequestTimeout).
                                          ConfigureAwait(false);
+
+
+                var Gireve = response.Session.AddJSON("Gireve");
+
+                if (Request.UserContractIdAlias.HasValue)
+                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request);
+
+
+                if (Request.UserContractIdAlias.HasValue)
+                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias);
+
+                if (Request.Parameter.IsNotNullOrEmpty())
+                    response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
+
 
                 #region Response mapping
 
@@ -1535,6 +1554,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    null, //AvailabilityAdminStatusUntil
                                                                    null, //AvailabilityAdminStatusComment
 
+                                                                   null,
                                                                    Timestamp,
                                                                    CancellationToken,
                                                                    EventTrackingId,
@@ -1753,6 +1773,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            null, //BusyStatusUntil
                                                            null, //BusyStatusComment
 
+                                                           null,
                                                            Timestamp,
                                                            CancellationToken,
                                                            EventTrackingId,
@@ -6163,6 +6184,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                       ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
                                                                                       Transaction_Id.Random(),
 
+                                                                                      null,
                                                                                       Timestamp,
                                                                                       CancellationToken,
                                                                                       EventTrackingId,
@@ -6313,6 +6335,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                Operator_Id.Parse("DE*BDO"),
                                                                                Transaction_Id.Random(),
 
+                                                                               null,
                                                                                DateTime.UtcNow,
                                                                                new CancellationTokenSource().Token,
                                                                                EventTracking_Id.New,
@@ -6727,6 +6750,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                        chargedetailrecord,
                                                                        Transaction_Id.Random(),
 
+                                                                       null,
                                                                        DateTime.UtcNow,
                                                                        new CancellationTokenSource().Token,
                                                                        EventTracking_Id.New,

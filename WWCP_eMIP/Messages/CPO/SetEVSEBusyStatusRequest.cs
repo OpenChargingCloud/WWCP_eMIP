@@ -23,6 +23,7 @@ using System.Threading;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -83,6 +84,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="BusyStatusUntil">An optional timestamp until which the given busy status is valid.</param>
         /// <param name="BusyStatusComment">An optional comment about the busy status.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -96,12 +98,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                         DateTime?            BusyStatusUntil     = null,
                                         String               BusyStatusComment   = null,
 
+                                        HTTPRequest          HTTPRequest         = null,
                                         DateTime?            Timestamp           = null,
                                         CancellationToken?   CancellationToken   = null,
                                         EventTracking_Id     EventTrackingId     = null,
                                         TimeSpan?            RequestTimeout      = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -169,6 +173,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -177,6 +182,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
                                                      OnExceptionDelegate                                OnException         = null,
 
+                                                     HTTPRequest                                        HTTPRequest         = null,
                                                      DateTime?                                          Timestamp           = null,
                                                      CancellationToken?                                 CancellationToken   = null,
                                                      EventTracking_Id                                   EventTrackingId     = null,
@@ -188,6 +194,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetEVSEBusyStatusRequest _SetEVSEBusyStatusRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -211,6 +218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -219,6 +227,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      CustomXMLParserDelegate<SetEVSEBusyStatusRequest>  CustomSendSetEVSEBusyStatusRequestParser,
                                                      OnExceptionDelegate                                OnException         = null,
 
+                                                     HTTPRequest                                        HTTPRequest         = null,
                                                      DateTime?                                          Timestamp           = null,
                                                      CancellationToken?                                 CancellationToken   = null,
                                                      EventTracking_Id                                   EventTrackingId     = null,
@@ -230,6 +239,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetEVSEBusyStatusRequest _SetEVSEBusyStatusRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -254,6 +264,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -263,6 +274,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out SetEVSEBusyStatusRequest                       SetEVSEBusyStatusRequest,
                                        OnExceptionDelegate                                OnException         = null,
 
+                                       HTTPRequest                                        HTTPRequest         = null,
                                        DateTime?                                          Timestamp           = null,
                                        CancellationToken?                                 CancellationToken   = null,
                                        EventTracking_Id                                   EventTrackingId     = null,
@@ -291,6 +303,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                SetEVSEBusyStatusRequestXML.MapValueOrNull    ("busyStatusComment"),
 
+                                               HTTPRequest,
                                                Timestamp,
                                                CancellationToken,
                                                EventTrackingId,
@@ -330,6 +343,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -339,6 +353,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out SetEVSEBusyStatusRequest                       SetEVSEBusyStatusRequest,
                                        OnExceptionDelegate                                OnException         = null,
 
+                                       HTTPRequest                                        HTTPRequest         = null,
                                        DateTime?                                          Timestamp           = null,
                                        CancellationToken?                                 CancellationToken   = null,
                                        EventTracking_Id                                   EventTrackingId     = null,
@@ -353,6 +368,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out SetEVSEBusyStatusRequest,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

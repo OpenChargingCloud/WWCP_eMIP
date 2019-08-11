@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEAvailabilityStatus request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetEVSEAvailabilityStatusResponse(SetEVSEAvailabilityStatusRequest     Request,
                                                  Transaction_Id                       TransactionId,
                                                  RequestStatus                        RequestStatus,
-                                                 IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                                 HTTPResponse                         HTTPResponse   = null,
+                                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -87,17 +93,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEAvailabilityStatus request leading to this response.</param>
         /// <param name="SetEVSEAvailabilityStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEAvailabilityStatusResponse Parse(SetEVSEAvailabilityStatusRequest                            Request,
                                                               XElement                                                    SetEVSEAvailabilityStatusResponseXML,
-                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser,
-                                                              OnExceptionDelegate                                         OnException = null)
+                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
+                                                              HTTPResponse                                                HTTPResponse                                        = null,
+                                                              OnExceptionDelegate                                         OnException                                         = null)
         {
 
             if (TryParse(Request,
                          SetEVSEAvailabilityStatusResponseXML,
-                         CustomSendSetEVSEAvailabilityStatusResponseParser,
                          out SetEVSEAvailabilityStatusResponse SetEVSEAvailabilityStatusResponse,
+                         CustomSendSetEVSEAvailabilityStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSEAvailabilityStatusResponse;
@@ -117,17 +126,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEAvailabilityStatus request leading to this response.</param>
         /// <param name="SetEVSEAvailabilityStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEAvailabilityStatusResponse Parse(SetEVSEAvailabilityStatusRequest                            Request,
                                                               String                                                      SetEVSEAvailabilityStatusResponseText,
-                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser,
-                                                              OnExceptionDelegate                                         OnException = null)
+                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
+                                                              HTTPResponse                                                HTTPResponse                                        = null,
+                                                              OnExceptionDelegate                                         OnException                                         = null)
         {
 
             if (TryParse(Request,
                          SetEVSEAvailabilityStatusResponseText,
-                         CustomSendSetEVSEAvailabilityStatusResponseParser,
                          out SetEVSEAvailabilityStatusResponse SetEVSEAvailabilityStatusResponse,
+                         CustomSendSetEVSEAvailabilityStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSEAvailabilityStatusResponse;
@@ -146,14 +158,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSEAvailabilityStatus request leading to this response.</param>
         /// <param name="SetEVSEAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetEVSEAvailabilityStatusResponse">The parsed SetEVSEAvailabilityStatus response.</param>
+        /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSEAvailabilityStatusRequest                            Request,
                                        XElement                                                    SetEVSEAvailabilityStatusResponseXML,
-                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser,
                                        out SetEVSEAvailabilityStatusResponse                       SetEVSEAvailabilityStatusResponse,
-                                       OnExceptionDelegate                                         OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
+                                       HTTPResponse                                                HTTPResponse                                        = null,
+                                       OnExceptionDelegate                                         OnException                                         = null)
         {
 
             try
@@ -162,7 +176,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 SetEVSEAvailabilityStatusResponse = new SetEVSEAvailabilityStatusResponse(
                                                         Request,
                                                         SetEVSEAvailabilityStatusResponseXML.MapValueOrFail("transactionId",  Transaction_Id.Parse),
-                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail("requestStatus",  RequestStatus.Parse)
+                                                        SetEVSEAvailabilityStatusResponseXML.MapValueOrFail("requestStatus",  RequestStatus.Parse),
+                                                        HTTPResponse
                                                     );
 
 
@@ -194,14 +209,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSEAvailabilityStatus request leading to this response.</param>
         /// <param name="SetEVSEAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetEVSEAvailabilityStatusResponse">The parsed SetEVSEAvailabilityStatus response.</param>
+        /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSEAvailabilityStatusRequest                            Request,
                                        String                                                      SetEVSEAvailabilityStatusResponseText,
-                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser,
                                        out SetEVSEAvailabilityStatusResponse                       SetEVSEAvailabilityStatusResponse,
-                                       OnExceptionDelegate                                         OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
+                                       HTTPResponse                                                HTTPResponse                                        = null,
+                                       OnExceptionDelegate                                         OnException                                         = null)
         {
 
             try
@@ -209,8 +226,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(SetEVSEAvailabilityStatusResponseText).Root,
-                             CustomSendSetEVSEAvailabilityStatusResponseParser,
                              out SetEVSEAvailabilityStatusResponse,
+                             CustomSendSetEVSEAvailabilityStatusResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

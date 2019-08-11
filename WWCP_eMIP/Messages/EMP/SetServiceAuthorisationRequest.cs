@@ -25,6 +25,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -123,6 +124,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="BookingId"></param>
         /// <param name="SalePartnerBookingId"></param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -143,12 +145,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                               Booking_Id?                BookingId                 = null,
                                               Booking_Id?                SalePartnerBookingId      = null,
 
+                                              HTTPRequest                HTTPRequest               = null,
                                               DateTime?                  Timestamp                 = null,
                                               CancellationToken?         CancellationToken         = null,
                                               EventTracking_Id           EventTrackingId           = null,
                                               TimeSpan?                  RequestTimeout            = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -243,6 +247,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -252,6 +257,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                            CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                                            OnExceptionDelegate                                      OnException         = null,
 
+                                                           HTTPRequest                                              HTTPRequest         = null,
                                                            DateTime?                                                Timestamp           = null,
                                                            CancellationToken?                                       CancellationToken   = null,
                                                            EventTracking_Id                                         EventTrackingId     = null,
@@ -264,6 +270,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -288,6 +295,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -297,6 +305,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                            CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                                            OnExceptionDelegate                                      OnException         = null,
 
+                                                           HTTPRequest                                              HTTPRequest         = null,
                                                            DateTime?                                                Timestamp           = null,
                                                            CancellationToken?                                       CancellationToken   = null,
                                                            EventTracking_Id                                         EventTrackingId     = null,
@@ -309,6 +318,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -334,6 +344,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -342,12 +353,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser,
                                        CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser,
                                        out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
-                                       OnExceptionDelegate                                      OnException        = null,
+                                       OnExceptionDelegate                                      OnException         = null,
 
-                                       DateTime?                                                Timestamp          = null,
-                                       CancellationToken?                                       CancellationToken  = null,
-                                       EventTracking_Id                                         EventTrackingId    = null,
-                                       TimeSpan?                                                RequestTimeout     = null)
+                                       HTTPRequest                                              HTTPRequest         = null,
+                                       DateTime?                                                Timestamp           = null,
+                                       CancellationToken?                                       CancellationToken   = null,
+                                       EventTracking_Id                                         EventTrackingId     = null,
+                                       TimeSpan?                                                RequestTimeout      = null)
         {
 
             try
@@ -383,6 +395,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      SetServiceAuthorisationRequestXML.MapValueOrNullable   ("bookingId",                Booking_Id.Parse),
                                                      SetServiceAuthorisationRequestXML.MapValueOrNullable   ("salePartnerBookingId",     Booking_Id.Parse),
 
+                                                     HTTPRequest,
                                                      Timestamp,
                                                      CancellationToken,
                                                      EventTrackingId,
@@ -423,6 +436,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -433,6 +447,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
                                        OnExceptionDelegate                                      OnException         = null,
 
+                                       HTTPRequest                                              HTTPRequest         = null,
                                        DateTime?                                                Timestamp           = null,
                                        CancellationToken?                                       CancellationToken   = null,
                                        EventTracking_Id                                         EventTrackingId     = null,
@@ -448,6 +463,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              out SetServiceAuthorisationRequest,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

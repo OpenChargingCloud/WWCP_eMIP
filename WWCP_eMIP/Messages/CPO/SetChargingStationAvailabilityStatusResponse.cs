@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargingStationAvailabilityStatus request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetChargingStationAvailabilityStatusResponse(SetChargingStationAvailabilityStatusRequest  Request,
                                                             Transaction_Id                               TransactionId,
                                                             RequestStatus                                RequestStatus,
-                                                            IReadOnlyDictionary<String, Object>          CustomData  = null)
+
+                                                            HTTPResponse                                 HTTPResponse   = null,
+                                                            IReadOnlyDictionary<String, Object>          CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -87,17 +93,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargingStationAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingStationAvailabilityStatusResponse Parse(SetChargingStationAvailabilityStatusRequest                            Request,
                                                                          XElement                                                               SetChargingStationAvailabilityStatusResponseXML,
-                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser,
-                                                                         OnExceptionDelegate                                                    OnException = null)
+                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser   = null,
+                                                                         HTTPResponse                                                           HTTPResponse                                                   = null,
+                                                                         OnExceptionDelegate                                                    OnException                                                    = null)
         {
 
             if (TryParse(Request,
                          SetChargingStationAvailabilityStatusResponseXML,
-                         CustomSendSetChargingStationAvailabilityStatusResponseParser,
                          out SetChargingStationAvailabilityStatusResponse SetChargingStationAvailabilityStatusResponse,
+                         CustomSendSetChargingStationAvailabilityStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetChargingStationAvailabilityStatusResponse;
@@ -117,17 +126,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetChargingStationAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetChargingStationAvailabilityStatusResponse Parse(SetChargingStationAvailabilityStatusRequest                            Request,
                                                                          String                                                                 SetChargingStationAvailabilityStatusResponseText,
-                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser,
-                                                                         OnExceptionDelegate                                                    OnException = null)
+                                                                         CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser   = null,
+                                                                         HTTPResponse                                                           HTTPResponse                                                   = null,
+                                                                         OnExceptionDelegate                                                    OnException                                                    = null)
         {
 
             if (TryParse(Request,
                          SetChargingStationAvailabilityStatusResponseText,
-                         CustomSendSetChargingStationAvailabilityStatusResponseParser,
                          out SetChargingStationAvailabilityStatusResponse SetChargingStationAvailabilityStatusResponse,
+                         CustomSendSetChargingStationAvailabilityStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetChargingStationAvailabilityStatusResponse;
@@ -146,14 +158,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingStationAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponse">The parsed SetChargingStationAvailabilityStatus response.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingStationAvailabilityStatusRequest                            Request,
                                        XElement                                                               SetChargingStationAvailabilityStatusResponseXML,
-                                       CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser,
                                        out SetChargingStationAvailabilityStatusResponse                       SetChargingStationAvailabilityStatusResponse,
-                                       OnExceptionDelegate                                                    OnException  = null)
+                                       CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser   = null,
+                                       HTTPResponse                                                           HTTPResponse                                                   = null,
+                                       OnExceptionDelegate                                                    OnException                                                    = null)
         {
 
             try
@@ -167,7 +181,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                                                   Transaction_Id.Parse),
 
                                                                    SetChargingStationAvailabilityStatusResponseXML.MapValueOrFail(eMIPNS.EVCIDynamic + "requestStatus",
-                                                                                                                                  RequestStatus.Parse)
+                                                                                                                                  RequestStatus.Parse),
+
+                                                                   HTTPResponse
 
                                                                );
 
@@ -200,14 +216,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetChargingStationAvailabilityStatus request leading to this response.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
         /// <param name="SetChargingStationAvailabilityStatusResponse">The parsed SetChargingStationAvailabilityStatus response.</param>
+        /// <param name="CustomSendSetChargingStationAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingStationAvailabilityStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetChargingStationAvailabilityStatusRequest                            Request,
                                        String                                                                 SetChargingStationAvailabilityStatusResponseText,
-                                       CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser,
                                        out SetChargingStationAvailabilityStatusResponse                       SetChargingStationAvailabilityStatusResponse,
-                                       OnExceptionDelegate                                                    OnException  = null)
+                                       CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>  CustomSendSetChargingStationAvailabilityStatusResponseParser   = null,
+                                       HTTPResponse                                                           HTTPResponse                                                   = null,
+                                       OnExceptionDelegate                                                    OnException                                                    = null)
         {
 
             try
@@ -215,8 +233,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(SetChargingStationAvailabilityStatusResponseText).Root,
-                             CustomSendSetChargingStationAvailabilityStatusResponseParser,
                              out SetChargingStationAvailabilityStatusResponse,
+                             CustomSendSetChargingStationAvailabilityStatusResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

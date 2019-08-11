@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetSessionActionResponse(SetSessionActionRequest              Request,
                                         Transaction_Id                       TransactionId,
                                         RequestStatus                        RequestStatus,
-                                        IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                        HTTPResponse                         HTTPResponse   = null,
+                                        IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -94,9 +100,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                     Request,
+        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      XElement                                           SetSessionActionResponseXML,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                                     HTTPResponse                                       HTTPResponse                              = null,
                                                      OnExceptionDelegate                                OnException                               = null)
         {
 
@@ -104,6 +111,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          SetSessionActionResponseXML,
                          out SetSessionActionResponse SetSessionActionResponse,
                          CustomSendSetSessionActionResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetSessionActionResponse;
@@ -123,10 +131,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                     Request,
+        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      String                                             SetSessionActionResponseText,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                                     HTTPResponse                                       HTTPResponse                              = null,
                                                      OnExceptionDelegate                                OnException                               = null)
         {
 
@@ -134,6 +144,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          SetSessionActionResponseText,
                          out SetSessionActionResponse SetSessionActionResponse,
                          CustomSendSetSessionActionResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetSessionActionResponse;
@@ -154,11 +165,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        XElement                                           SetSessionActionResponseXML,
                                        out SetSessionActionResponse                       SetSessionActionResponse,
                                        CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                       HTTPResponse                                       HTTPResponse                              = null,
                                        OnExceptionDelegate                                OnException                               = null)
         {
 
@@ -169,8 +182,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                       Request,
 
-                                                      SetSessionActionResponseXML.MapValueOrFail    ("transactionId",     Transaction_Id.   Parse),
-                                                      SetSessionActionResponseXML.MapValueOrFail    ("requestStatus",     RequestStatus.    Parse)
+                                                      SetSessionActionResponseXML.MapValueOrFail("transactionId",  Transaction_Id.Parse),
+                                                      SetSessionActionResponseXML.MapValueOrFail("requestStatus",  RequestStatus. Parse),
+
+                                                      HTTPResponse
 
                                                   );
 
@@ -203,13 +218,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
+        /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetSessionActionRequest                     Request,
+        public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        String                                             SetSessionActionResponseText,
                                        out SetSessionActionResponse                       SetSessionActionResponse,
                                        CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                       HTTPResponse                                       HTTPResponse                              = null,
                                        OnExceptionDelegate                                OnException                               = null)
         {
 
@@ -220,6 +237,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              XDocument.Parse(SetSessionActionResponseText).Root,
                              out SetSessionActionResponse,
                              CustomSendSetSessionActionResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -264,21 +282,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #endregion
 
 
-        #region (static) SystemError(Request, TransactionId, CustomData = null)
+        #region (static) SystemError(Request, TransactionId, HTTPResponse = null, CustomData = null)
 
         /// <summary>
         /// Signal a system error.
         /// </summary>
         /// <param name="Request">The SetServiceAuthorisation request.</param>
         /// <param name="TransactionId">The transaction identification.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional custom data.</param>
         public static SetSessionActionResponse SystemError(SetSessionActionRequest              Request,
                                                            Transaction_Id                       TransactionId,
-                                                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+                                                           HTTPResponse                         HTTPResponse   = null,
+                                                           IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             => new SetSessionActionResponse(Request,
                                             TransactionId,
                                             RequestStatus.SystemError,
+                                            HTTPResponse,
                                             CustomData);
 
         #endregion

@@ -23,6 +23,7 @@ using System.Threading;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -53,6 +54,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="OperatorId">The operator identification.</param>
         /// <param name="TransactionId">An optional transaction identification.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -61,12 +63,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                 Operator_Id         OperatorId,
                                 Transaction_Id?     TransactionId       = null,
 
+                                HTTPRequest         HTTPRequest         = null,
                                 DateTime?           Timestamp           = null,
                                 CancellationToken?  CancellationToken   = null,
                                 EventTracking_Id    EventTrackingId     = null,
                                 TimeSpan?           RequestTimeout      = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -117,6 +121,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -125,6 +130,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                              OnExceptionDelegate                        OnException         = null,
 
+                                             HTTPRequest                                HTTPRequest         = null,
                                              DateTime?                                  Timestamp           = null,
                                              CancellationToken?                         CancellationToken   = null,
                                              EventTracking_Id                           EventTrackingId     = null,
@@ -136,6 +142,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out HeartbeatRequest _HeartbeatRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -159,6 +166,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -167,6 +175,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                              OnExceptionDelegate                        OnException         = null,
 
+                                             HTTPRequest                                HTTPRequest         = null,
                                              DateTime?                                  Timestamp           = null,
                                              CancellationToken?                         CancellationToken   = null,
                                              EventTracking_Id                           EventTrackingId     = null,
@@ -178,6 +187,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out HeartbeatRequest _HeartbeatRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -202,6 +212,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -211,6 +222,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out HeartbeatRequest                       HeartbeatRequest,
                                        OnExceptionDelegate                        OnException         = null,
 
+                                       HTTPRequest                                HTTPRequest         = null,
                                        DateTime?                                  Timestamp           = null,
                                        CancellationToken?                         CancellationToken   = null,
                                        EventTracking_Id                           EventTrackingId     = null,
@@ -231,6 +243,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        HeartbeatRequestXML.MapValueOrNullable(eMIPNS.Default + "transactionId",
                                                                               Transaction_Id.Parse),
 
+                                       HTTPRequest,
                                        Timestamp,
                                        CancellationToken,
                                        EventTrackingId,
@@ -270,6 +283,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -279,6 +293,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out HeartbeatRequest                       HeartbeatRequest,
                                        OnExceptionDelegate                        OnException         = null,
 
+                                       HTTPRequest                                HTTPRequest         = null,
                                        DateTime?                                  Timestamp           = null,
                                        CancellationToken?                         CancellationToken   = null,
                                        EventTracking_Id                           EventTrackingId     = null,
@@ -293,6 +308,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out HeartbeatRequest,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

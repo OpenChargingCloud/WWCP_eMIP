@@ -23,6 +23,7 @@ using System.Threading;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -79,6 +80,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="TransactionId">An optional transaction identification.</param>
         /// <param name="SalePartnerSessionId">An optional partner service session identification.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -92,12 +94,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                             Transaction_Id?            TransactionId          = null,
                                             PartnerServiceSession_Id?  SalePartnerSessionId   = null,
 
+                                            HTTPRequest                HTTPRequest            = null,
                                             DateTime?                  Timestamp              = null,
                                             CancellationToken?         CancellationToken      = null,
                                             EventTracking_Id           EventTrackingId        = null,
                                             TimeSpan?                  RequestTimeout         = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -176,6 +180,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -185,6 +190,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                          CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
                                                          OnExceptionDelegate                                    OnException                                    = null,
 
+                                                         HTTPRequest                                            HTTPRequest                                    = null,
                                                          DateTime?                                              Timestamp                                      = null,
                                                          CancellationToken?                                     CancellationToken                              = null,
                                                          EventTracking_Id                                       EventTrackingId                                = null,
@@ -197,6 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          CustomSessionEventParser,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -221,6 +228,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -230,6 +238,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                          CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
                                                          OnExceptionDelegate                                    OnException                                    = null,
 
+                                                         HTTPRequest                                            HTTPRequest                                    = null,
                                                          DateTime?                                              Timestamp                                      = null,
                                                          CancellationToken?                                     CancellationToken                              = null,
                                                          EventTracking_Id                                       EventTrackingId                                = null,
@@ -242,6 +251,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          CustomSessionEventParser,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -267,6 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -277,6 +288,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
                                        OnExceptionDelegate                                    OnException                                    = null,
 
+                                       HTTPRequest                                            HTTPRequest                                    = null,
                                        DateTime?                                              Timestamp                                      = null,
                                        CancellationToken?                                     CancellationToken                              = null,
                                        EventTracking_Id                                       EventTrackingId                                = null,
@@ -308,6 +320,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      SetSessionEventReportRequestXML.MapValueOrNullable("transactionId",         Transaction_Id.          Parse),
                                                      SetSessionEventReportRequestXML.MapValueOrFail    ("salePartnerSessionId",  PartnerServiceSession_Id.Parse),
 
+                                                     HTTPRequest,
                                                      Timestamp,
                                                      CancellationToken,
                                                      EventTrackingId,
@@ -348,6 +361,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -358,6 +372,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser                       = null,
                                        OnExceptionDelegate                                    OnException                                    = null,
 
+                                       HTTPRequest                                            HTTPRequest                                    = null,
                                        DateTime?                                              Timestamp                                      = null,
                                        CancellationToken?                                     CancellationToken                              = null,
                                        EventTracking_Id                                       EventTrackingId                                = null,
@@ -373,6 +388,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              CustomSessionEventParser,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

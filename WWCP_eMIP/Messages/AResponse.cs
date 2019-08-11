@@ -17,6 +17,7 @@
 
 #region Usings
 
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using System;
 using System.Collections.Generic;
 
@@ -47,6 +48,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public TRequest        Request              { get; }
 
         /// <summary>
+        /// The correlated HTTP response of this eMIP response.
+        /// </summary>
+        public HTTPResponse    HTTPResponse         { get; }
+
+        /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
         public DateTime        ResponseTimestamp    { get; }
@@ -74,16 +80,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         protected AResponse(TRequest                             Request,
                             Transaction_Id                       TransactionId,
                             RequestStatus                        RequestStatus,
-                            IReadOnlyDictionary<String, Object>  CustomData  = null)
+                            HTTPResponse                         HTTPResponse   = null,
+                            IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : this(Request,
                    TransactionId,
                    RequestStatus,
                    DateTime.UtcNow,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -99,12 +108,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         protected AResponse(TRequest                             Request,
                             Transaction_Id                       TransactionId,
                             RequestStatus                        RequestStatus,
-                            DateTime?                            ResponseTimestamp  = null,
-                            IReadOnlyDictionary<String, Object>  CustomData         = null)
+                            DateTime?                            ResponseTimestamp   = null,
+                            HTTPResponse                         HTTPResponse        = null,
+                            IReadOnlyDictionary<String, Object>  CustomData          = null)
 
             : base(CustomData)
 
@@ -114,6 +125,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             this.TransactionId      = TransactionId;
             this.RequestStatus      = RequestStatus;
             this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
+            this.HTTPResponse       = HTTPResponse;
 
         }
 

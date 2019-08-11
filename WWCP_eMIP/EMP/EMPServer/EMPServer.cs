@@ -331,6 +331,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                             out GetServiceAuthorisationRequest _GetServiceAuthorisationRequest,
                                                             OnException,
 
+                                                            HTTPRequest,
                                                             HTTPRequest.Timestamp,
                                                             HTTPRequest.CancellationToken,
                                                             HTTPRequest.EventTrackingId,
@@ -525,6 +526,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                           CustomSessionEventParser,
                                                           OnException,
 
+                                                          HTTPRequest,
                                                           HTTPRequest.Timestamp,
                                                           HTTPRequest.CancellationToken,
                                                           HTTPRequest.EventTrackingId,
@@ -721,6 +723,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                           CustomMeterReportParser,
                                                           OnException,
 
+                                                          HTTPRequest,
                                                           HTTPRequest.Timestamp,
                                                           HTTPRequest.CancellationToken,
                                                           HTTPRequest.EventTrackingId,

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -60,18 +61,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// <param name="ServiceSessionId">The GIREVE session id for this service session.</param>
+        /// 
         /// <param name="ExecPartnerOperatorId">The operator identification of the executing operator.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetServiceAuthorisationResponse(SetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
                                                RequestStatus                        RequestStatus,
                                                ServiceSession_Id                    ServiceSessionId,
+
                                                Operator_Id?                         ExecPartnerOperatorId   = null,
+                                               HTTPResponse                         HTTPResponse            = null,
                                                IReadOnlyDictionary<String, Object>  CustomData              = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -123,17 +129,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="SetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  SetServiceAuthorisationResponseXML,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
                          SetServiceAuthorisationResponseXML,
                          out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetServiceAuthorisationResponse;
@@ -153,17 +162,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
         /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             String                                                    SetServiceAuthorisationResponseText,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
                          SetServiceAuthorisationResponseText,
                          out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetServiceAuthorisationResponse;
@@ -184,12 +196,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        XElement                                                  SetServiceAuthorisationResponseXML,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try
@@ -202,7 +216,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                       SetServiceAuthorisationResponseXML.MapValueOrFail    ("transactionId",          Transaction_Id.   Parse),
                                                       SetServiceAuthorisationResponseXML.MapValueOrFail    ("requestStatus",          RequestStatus.    Parse),
                                                       SetServiceAuthorisationResponseXML.MapValueOrFail    ("serviceSessionId",       ServiceSession_Id.Parse),
-                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("execPartnerOperatorId",  Operator_Id.      Parse)
+                                                      SetServiceAuthorisationResponseXML.MapValueOrNullable("execPartnerOperatorId",  Operator_Id.      Parse),
+
+                                                      HTTPResponse
 
                                                   );
 
@@ -237,12 +253,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        String                                                    SetServiceAuthorisationResponseText,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try
@@ -252,6 +270,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              XDocument.Parse(SetServiceAuthorisationResponseText).Root,
                              out SetServiceAuthorisationResponse,
                              CustomSendSetServiceAuthorisationResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

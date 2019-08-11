@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -90,12 +91,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
                                                RequestStatus                        RequestStatus,
 
-                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                               HTTPResponse                         HTTPResponse   = null,
+                                               IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : this(Request,
                    TransactionId,
@@ -107,6 +110,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    null,
                    null,
                    null,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -124,11 +128,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServiceSessionId">The GIREVE session id for this service session.</param>
         /// <param name="IntermediateCDRRequested">Whether the eMSP wishes to receive intermediate charging session records.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
         /// <param name="SalesPartnerOperatorId">The optional sales operator identification.</param>
         /// <param name="UserContractIdAlias">An optional alias of the contract id between the end-user and the eMSP. This alias may have been anonymised by the eMSP.</param>
         /// <param name="MeterLimits">An optional meter limits for this authorisation: The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.</param>
         /// <param name="Parameter">Optional information from the CPO to the eMSP.</param>
-        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
@@ -141,11 +146,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Contract_Id?                         UserContractIdAlias      = null,
                                                IEnumerable<MeterReport>             MeterLimits              = null,
                                                String                               Parameter                = null,
+                                               HTTPResponse                         HTTPResponse             = null,
                                                IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -231,11 +238,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="GetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  GetServiceAuthorisationResponseXML,
                                                             CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
                                                             CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
+                                                            HTTPResponse                                              HTTPResponse                                     = null,
                                                             OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -244,6 +253,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out GetServiceAuthorisationResponse GetServiceAuthorisationResponse,
                          CustomSendGetServiceAuthorisationResponseParser,
                          CustomMeterReportParser,
+                         HTTPResponse,
                          OnException))
             {
                 return GetServiceAuthorisationResponse;
@@ -264,11 +274,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="GetServiceAuthorisationResponseText">The text to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             String                                                    GetServiceAuthorisationResponseText,
                                                             CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
                                                             CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
+                                                            HTTPResponse                                              HTTPResponse                                     = null,
                                                             OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -277,6 +289,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out GetServiceAuthorisationResponse GetServiceAuthorisationResponse,
                          CustomSendGetServiceAuthorisationResponseParser,
                          CustomMeterReportParser,
+                         HTTPResponse,
                          OnException))
             {
                 return GetServiceAuthorisationResponse;
@@ -298,12 +311,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="GetServiceAuthorisationResponse">The parsed GetServiceAuthorisation response.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        XElement                                                  GetServiceAuthorisationResponseXML,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,
                                        CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
                                        CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
+                                       HTTPResponse                                              HTTPResponse                                     = null,
                                        OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -329,7 +344,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                                                    CustomMeterReportParser,
                                                                                                                                    OnException)),
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    ("parameter")
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    ("parameter"),
+
+                                                      HTTPResponse
 
                                                   );
 
@@ -362,15 +379,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The GetServiceAuthorisation request leading to this response.</param>
         /// <param name="GetServiceAuthorisationResponseText">The text to parse.</param>
-        /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="GetServiceAuthorisationResponse">The parsed GetServiceAuthorisation response.</param>
+        /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        String                                                    GetServiceAuthorisationResponseText,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,
                                        CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
                                        CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
+                                       HTTPResponse                                              HTTPResponse                                     = null,
                                        OnExceptionDelegate                                       OnException                                      = null)
         {
 
@@ -382,6 +401,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out GetServiceAuthorisationResponse,
                              CustomSendGetServiceAuthorisationResponseParser,
                              CustomMeterReportParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

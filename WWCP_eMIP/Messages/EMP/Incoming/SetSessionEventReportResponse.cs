@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetSessionEventReport request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetSessionEventReportResponse(SetSessionEventReportRequest         Request,
                                              Transaction_Id                       TransactionId,
                                              RequestStatus                        RequestStatus,
-                                             IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                             HTTPResponse                         HTTPResponse   = null,
+                                             IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -101,17 +107,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetSessionEventReport request leading to this response.</param>
         /// <param name="SetSessionEventReportResponseXML">The XML to parse.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionEventReportResponse Parse(SetSessionEventReportRequest                            Request,
                                                           XElement                                                SetSessionEventReportResponseXML,
-                                                          CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser  = null,
-                                                          OnExceptionDelegate                                     OnException                                = null)
+                                                          CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser   = null,
+                                                          HTTPResponse                                            HTTPResponse                                = null,
+                                                          OnExceptionDelegate                                     OnException                                 = null)
         {
 
             if (TryParse(Request,
                          SetSessionEventReportResponseXML,
                          out SetSessionEventReportResponse SetSessionEventReportResponse,
                          CustomSetSessionEventReportResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetSessionEventReportResponse;
@@ -131,17 +140,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="Request">The SetSessionEventReport request leading to this response.</param>
         /// <param name="SetSessionEventReportResponseText">The text to parse.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetSessionEventReportResponse Parse(SetSessionEventReportRequest                            Request,
                                                           String                                                  SetSessionEventReportResponseText,
-                                                          CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser  = null,
-                                                          OnExceptionDelegate                                     OnException                                = null)
+                                                          CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser   = null,
+                                                          HTTPResponse                                            HTTPResponse                                = null,
+                                                          OnExceptionDelegate                                     OnException                                 = null)
         {
 
             if (TryParse(Request,
                          SetSessionEventReportResponseText,
                          out SetSessionEventReportResponse SetSessionEventReportResponse,
                          CustomSetSessionEventReportResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetSessionEventReportResponse;
@@ -162,12 +174,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportResponseXML">The XML to parse.</param>
         /// <param name="SetSessionEventReportResponse">The parsed SetSessionEventReport response.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetSessionEventReportRequest                            Request,
                                        XElement                                                SetSessionEventReportResponseXML,
                                        out SetSessionEventReportResponse                       SetSessionEventReportResponse,
-                                       CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser  = null,
-                                       OnExceptionDelegate                                     OnException                                = null)
+                                       CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser   = null,
+                                       HTTPResponse                                            HTTPResponse                                = null,
+                                       OnExceptionDelegate                                     OnException                                 = null)
         {
 
             try
@@ -177,9 +191,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
                                                Request,
 
-                                               SetSessionEventReportResponseXML.MapValueOrFail("transactionId",     Transaction_Id.   Parse),
+                                               SetSessionEventReportResponseXML.MapValueOrFail("transactionId",  Transaction_Id.Parse),
+                                               SetSessionEventReportResponseXML.MapValueOrFail("requestStatus",  RequestStatus. Parse),
 
-                                               SetSessionEventReportResponseXML.MapValueOrFail("requestStatus",     RequestStatus.    Parse)
+                                               HTTPResponse
 
                                            );
 
@@ -214,12 +229,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportResponseText">The text to parse.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
         /// <param name="SetSessionEventReportResponse">The parsed SetSessionEventReport response.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetSessionEventReportRequest                            Request,
                                        String                                                  SetSessionEventReportResponseText,
                                        out SetSessionEventReportResponse                       SetSessionEventReportResponse,
-                                       CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser  = null,
-                                       OnExceptionDelegate                                     OnException                                = null)
+                                       CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser   = null,
+                                       HTTPResponse                                            HTTPResponse                                = null,
+                                       OnExceptionDelegate                                     OnException                                 = null)
         {
 
             try
@@ -229,6 +246,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              XDocument.Parse(SetSessionEventReportResponseText).Root,
                              out SetSessionEventReportResponse,
                              CustomSetSessionEventReportResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;

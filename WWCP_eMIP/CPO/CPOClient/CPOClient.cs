@@ -1199,10 +1199,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  #region OnSuccess
 
                                                  OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                      (request, xml, onexception) =>
+                                                                                                      (request, xml, httpResonse, onexception) =>
                                                                                                           HeartbeatResponse.Parse(request,
                                                                                                                                   xml,
                                                                                                                                   CustomHeartbeatParser,
+                                                                                                                                  httpResonse,
                                                                                                                                   onexception)),
 
                                                  #endregion
@@ -1220,8 +1221,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                                                    RequestStatus.DataError
-                                                                    //httpresponse.Content.ToString()
+                                                                    RequestStatus.DataError,
+                                                                    httpresponse
                                                                 ),
 
                                                                 IsFault: true
@@ -1248,9 +1249,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                     new HeartbeatResponse(
                                                                                                         Request,
                                                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                        RequestStatus.HTTPError
-                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                        RequestStatus.HTTPError,
+                                                                                                        httpresponse
                                                                                                     ),
                                                                                                     IsFault: true);
 
@@ -1262,9 +1262,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                                                    RequestStatus.SystemError
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    RequestStatus.SystemError,
+                                                                    httpresponse
                                                                 ),
 
                                                                 IsFault: true
@@ -1469,11 +1468,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingPoolAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingPoolAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                              xml,
+                                                                                                                                                              CustomSetChargingPoolAvailabilityStatusParser,
+                                                                                                                                                              httpResonse,
+                                                                                                                                                              onexception)),
 
                                                      #endregion
 
@@ -1490,8 +1490,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1518,9 +1518,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingPoolAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -1532,9 +1531,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1751,11 +1749,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingStationAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingStationAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                                 xml,
+                                                                                                                                                                 CustomSetChargingStationAvailabilityStatusParser,
+                                                                                                                                                                 httpResonse,
+                                                                                                                                                                 onexception)),
 
                                                      #endregion
 
@@ -1772,8 +1771,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1800,9 +1799,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingStationAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -1814,9 +1812,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2033,11 +2030,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSEAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSEAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                      xml,
+                                                                                                                                                      CustomSetEVSEAvailabilityStatusParser,
+                                                                                                                                                      httpResonse,
+                                                                                                                                                      onexception)),
 
                                                      #endregion
 
@@ -2054,8 +2052,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2082,9 +2080,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSEAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2096,9 +2093,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2314,11 +2310,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingConnectorAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingConnectorAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                                   xml,
+                                                                                                                                                                   CustomSetChargingConnectorAvailabilityStatusParser,
+                                                                                                                                                                   httpResonse,
+                                                                                                                                                                   onexception)),
 
                                                      #endregion
 
@@ -2335,8 +2332,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2363,9 +2360,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingConnectorAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2377,9 +2373,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2596,11 +2591,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSEBusyStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSEBusyStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                              xml,
+                                                                                                                                              CustomSetEVSEBusyStatusParser,
+                                                                                                                                              httpResonse,
+                                                                                                                                              onexception)),
 
                                                      #endregion
 
@@ -2617,8 +2613,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2645,9 +2641,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSEBusyStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2659,9 +2654,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2881,11 +2875,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSESyntheticStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSESyntheticStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                   xml,
+                                                                                                                                                   CustomSetEVSESyntheticStatusParser,
+                                                                                                                                                   httpResonse,
+                                                                                                                                                   onexception)),
 
                                                      #endregion
 
@@ -2902,8 +2897,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2930,9 +2925,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSESyntheticStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2944,9 +2938,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3166,11 +3159,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               GetServiceAuthorisationResponse.Parse(request,
                                                                                                                                                     xml,
                                                                                                                                                     CustomGetServiceAuthorisationParser,
                                                                                                                                                     CustomMeterReportParser,
+                                                                                                                                                    httpResonse,
                                                                                                                                                     onexception)),
 
                                                      #endregion
@@ -3188,8 +3182,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3216,9 +3210,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new GetServiceAuthorisationResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3230,9 +3223,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3435,10 +3427,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetSessionEventReportResponse.Parse(request,
                                                                                                                                                   xml,
                                                                                                                                                   CustomSetSessionEventReportParser,
+                                                                                                                                                  httpResonse,
                                                                                                                                                   onexception)),
 
                                                      #endregion
@@ -3458,8 +3451,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.Content.ToString()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3488,9 +3481,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
                                                                                                             RequestStatus.HTTPError,
                                                                                                             ServiceSession_Id.Zero,
-                                                                                                            SessionAction_Id.Zero
-                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            SessionAction_Id.Zero,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3504,9 +3496,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3724,10 +3715,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargeDetailRecordResponse.Parse(request,
                                                                                                                                                   xml,
                                                                                                                                                   CustomSetChargeDetailRecordParser,
+                                                                                                                                                  httpResonse,
                                                                                                                                                   onexception)),
 
                                                      #endregion
@@ -3745,8 +3737,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3773,9 +3765,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargeDetailRecordResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3787,9 +3778,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true

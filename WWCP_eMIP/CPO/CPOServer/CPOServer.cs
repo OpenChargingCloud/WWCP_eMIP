@@ -296,6 +296,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                             out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                                                             OnException,
 
+                                                            HTTPRequest,
                                                             HTTPRequest.Timestamp,
                                                             HTTPRequest.CancellationToken,
                                                             HTTPRequest.EventTrackingId,
@@ -504,6 +505,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      out SetSessionActionRequest _SetSessionActionRequest,
                                                      OnException,
 
+                                                     HTTPRequest,
                                                      HTTPRequest.Timestamp,
                                                      HTTPRequest.CancellationToken,
                                                      HTTPRequest.EventTrackingId,

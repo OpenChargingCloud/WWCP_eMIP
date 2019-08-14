@@ -541,10 +541,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (Request.Parameter.IsNotNullOrEmpty())
                     response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
 
+                if (Request.HTTPRequest != null)
+                {
+
+                    response.Session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress);
+
+                    if (Request.HTTPRequest.X_Real_IP       != null)
+                        response.Session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP);
+
+                    if (Request.HTTPRequest.X_Forwarded_For != null)
+                        response.Session.SetJSON("Gireve", "forwardedFor",     Request.HTTPRequest.X_Forwarded_For);
+
+                }
+
 
                 #region Response mapping
 
-                if (response != null)
+                                                                    if (response != null)
                 {
                     switch (response.Result)
                     {

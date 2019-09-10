@@ -443,6 +443,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Request mapping
 
+                var chargingProduct = new ChargingProduct(ChargingProduct_Id.Random()
+                                                          );
+
                 //ChargingReservation_Id? ReservationId      = null;
                 //TimeSpan?               MinDuration        = null;
                 //Single?                 PlannedEnergy      = null;
@@ -511,9 +514,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 //}
 
+
                 #endregion
 
                 var response = await RoamingNetwork.
+<<<<<<< HEAD
+                                         RemoteStart(EVSEId:                    Request.EVSEId.          ToWWCP().Value,
+                                                     ChargingProduct:           chargingProduct,
+                                                     ReservationId:             Request.BookingId.       ToWWCP(),
+                                                     SessionId:                 Request.ServiceSessionId.ToWWCP(),
+                                                     ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
+                                                     eMAId:                     Request.UserId.          ToWWCP_eMAId(),
+                                                     ISendChargeDetailRecords:  this,
+=======
                                          RemoteStart(this,
                                                      ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
                                                      ChargingProduct:           null,
@@ -521,6 +534,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      SessionId:                 Request.ServiceSessionId.ToWWCP(),
                                                      ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
                                                      RemoteAuthentication:      Request.UserId.          ToWWCP(),
+>>>>>>> cb99f0130ba91a3503cc9d74533e5ff1af8b24d7
 
                                                      Timestamp:                 Request.Timestamp,
                                                      CancellationToken:         Request.CancellationToken,

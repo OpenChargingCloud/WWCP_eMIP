@@ -126,7 +126,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Random(OperatorId, Length = 12, Mapper = null)
+        #region (static) Random(OperatorId, Length = 12, Mapper = null)
 
         /// <summary>
         /// Generate a new unique identification of a charging connector identification.
@@ -143,7 +143,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(Text)
+
+        #region(static) Parse(Text)
 
         /// <summary>
         /// Parse the given string as a charging connector identification.
@@ -177,7 +178,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(OperatorId, Suffix)
+        #region (static) Parse(OperatorId, Suffix)
 
         /// <summary>
         /// Parse the given string as a charging connector identification.
@@ -203,7 +204,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Parse the given string as a charging connector identification.
@@ -221,7 +222,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out ChargingConnectorId)
+        #region (static) TryParse(Text, out ChargingConnectorId)
 
         /// <summary>
         /// Parse the given string as a charging connector identification.
@@ -238,7 +239,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                ChargingConnectorId = default(ChargingConnector_Id);
+                ChargingConnectorId = default;
                 return false;
             }
 
@@ -247,7 +248,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                ChargingConnectorId = default(ChargingConnector_Id);
+                ChargingConnectorId = default;
 
                 var MatchCollection = ChargingConnectorId_RegEx.Matches(Text);
 
@@ -268,7 +269,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             catch (Exception)
             { }
 
-            ChargingConnectorId = default(ChargingConnector_Id);
+            ChargingConnectorId = default;
             return false;
 
         }

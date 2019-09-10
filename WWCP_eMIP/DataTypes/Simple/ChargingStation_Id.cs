@@ -462,7 +462,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                ChargingStationId = default(ChargingStation_Id);
+                ChargingStationId = default;
                 return false;
             }
 
@@ -475,7 +475,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 if (MatchCollection.Count != 1)
                 {
-                    ChargingStationId = default(ChargingStation_Id);
+                    ChargingStationId = default;
                     return false;
                 }
 
@@ -493,7 +493,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             catch (Exception)
             { }
 
-            ChargingStationId = default(ChargingStation_Id);
+            ChargingStationId = default;
             return false;
 
         }

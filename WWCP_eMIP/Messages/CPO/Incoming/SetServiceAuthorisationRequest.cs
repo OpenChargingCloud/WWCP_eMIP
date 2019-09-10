@@ -99,7 +99,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The booking identification.
         /// </summary>
-        public String                     BookingId                   { get; }
+        public Booking_Id?                BookingId                   { get; }
 
         #endregion
 
@@ -144,7 +144,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                               Contract_Id?               UserContractIdAlias       = null,
                                               IEnumerable<MeterReport>   MeterLimits               = null,
                                               String                     Parameter                 = null,
-                                              String                     BookingId                 = null,
+                                              Booking_Id?                BookingId                 = null,
 
                                               DateTime?                  Timestamp                 = null,
                                               CancellationToken?         CancellationToken         = null,
@@ -378,7 +378,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("EVSEId",                   EVSE_Id.Parse),
 
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("userId",                   s => User_Id.Parse(s,
-                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType", ConversionMethods.AsUserIdFormat))),
+                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType",               ConversionMethods.AsUserIdFormat))),
 
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("requestedServiceId",       Service_Id.Parse),
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.Parse),
@@ -393,7 +393,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                                                                                   CustomMeterReportParser,
                                                                                                                                                                   OnException)),
                                                      SetServiceAuthorisationRequestXML.ElementValueOrDefault("userContractIdAlias"),
-                                                     SetServiceAuthorisationRequestXML.ElementValueOrDefault("bookingId"),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("bookingId",                Booking_Id.Parse),
 
                                                      Timestamp,
                                                      CancellationToken,
@@ -533,8 +533,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               ? new XElement("parameter",                Parameter)
                               : null,
 
-                          BookingId.IsNotNullOrEmpty()
-                              ? new XElement("bookingId",                BookingId)
+                          BookingId.HasValue
+                              ? new XElement("bookingId",                BookingId.                    ToString())
                               : null
 
                       );

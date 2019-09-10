@@ -363,6 +363,42 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+
+        #region ToWWCP(this BookingId)
+
+        public static ChargingReservation_Id? ToWWCP(this Booking_Id? BookingId)
+        {
+
+            if (!BookingId.HasValue)
+                return null;
+
+            if (ChargingReservation_Id.TryParse(BookingId.ToString(), out ChargingReservation_Id ChargingReservationId))
+                return ChargingReservationId;
+
+            throw new ArgumentException(nameof(BookingId), "The given eMIP booking identification could not be mapped to a WWCP charging reservation identification!");
+
+        }
+
+        #endregion
+
+        #region ToEMIP(this ChargingReservationId)
+
+        public static Booking_Id? ToEMIP(this ChargingReservation_Id? ChargingReservationId)
+        {
+
+            if (!ChargingReservationId.HasValue)
+                return null;
+
+            if (Booking_Id.TryParse(ChargingReservationId.ToString(), out Booking_Id BookingId))
+                return BookingId;
+
+            throw new ArgumentException(nameof(ChargingReservationId), "The given WWCP charging reservation identification could not be mapped to an eMIP booking identification!");
+
+        }
+
+        #endregion
+
+
     }
 
 }

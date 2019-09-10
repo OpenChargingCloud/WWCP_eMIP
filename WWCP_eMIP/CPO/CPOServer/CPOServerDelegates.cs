@@ -73,7 +73,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  Contract_Id?               UserContractIdAlias,
                                                  IEnumerable<MeterReport>   MeterLimits,
                                                  String                     Parameter,
-                                                 String                     BookingId,
+                                                 Booking_Id?                BookingId,
 
                                                  TimeSpan?                  RequestTimeout);
 
@@ -129,7 +129,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                   Contract_Id?                         UserContractIdAlias,
                                                   IEnumerable<MeterReport>             MeterLimits,
                                                   String                               Parameter,
-                                                  String                               BookingId,
+                                                  Booking_Id?                          BookingId,
 
                                                   TimeSpan                             RequestTimeout,
                                                   SetServiceAuthorisationResponse      Result,

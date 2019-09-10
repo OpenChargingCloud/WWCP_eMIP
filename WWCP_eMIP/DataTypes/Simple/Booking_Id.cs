@@ -77,6 +77,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
+        #region (static) Random(Length = 20)
+
+        public static Booking_Id Random(Byte Length = 20)
+            => new Booking_Id(_Random.RandomString(Length));
+
+        #endregion
+
+        #region (static) Zero
+
+        public static Booking_Id Zero
+            => new Booking_Id("0");
+
+        #endregion
+
+
         #region (static) Parse   (Text)
 
         /// <summary>

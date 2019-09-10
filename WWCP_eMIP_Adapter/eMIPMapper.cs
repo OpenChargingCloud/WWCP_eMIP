@@ -208,12 +208,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static eMobilityProvider_Id ToWWCP_ProviderId(this Partner_Id PartnerId)
             => eMobilityProvider_Id.Parse(PartnerId.ToString());
 
-        public static eMobilityAccount_Id? ToWWCP_eMAId(this User_Id UserId)
+        public static RemoteAuthentication ToWWCP(this User_Id UserId)
             => UserId.Format == UserIdFormats.eMA  ||
                UserId.Format == UserIdFormats.eMI3 ||
-               UserId.Format == UserIdFormats.EVCO
-               ? eMobilityAccount_Id.Parse(UserId.ToString())
-               : new eMobilityAccount_Id?();
+               UserId.Format == UserIdFormats.EVCO ||
+               UserId.Format == UserIdFormats.EMP_SPEC
+               ? RemoteAuthentication.FromRemoteIdentification(eMobilityAccount_Id.Parse(UserId.ToString()))
+               : null;
 
 
 

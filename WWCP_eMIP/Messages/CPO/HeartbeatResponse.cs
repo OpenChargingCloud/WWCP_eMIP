@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -59,17 +60,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public HeartbeatResponse(HeartbeatRequest                     Request,
                                  Transaction_Id                       TransactionId,
                                  RequestStatus                        RequestStatus,
-                                 IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                 HTTPResponse                         HTTPResponse   = null,
+                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : this(Request,
                    TimeSpan.FromMinutes(5),
                    DateTime.UtcNow,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -83,17 +89,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CurrentTime">The current time.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public HeartbeatResponse(HeartbeatRequest                     Request,
                                  TimeSpan                             HeartbeatPeriod,
                                  DateTime                             CurrentTime,
                                  Transaction_Id                       TransactionId,
                                  RequestStatus                        RequestStatus,
-                                 IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                 HTTPResponse                         HTTPResponse   = null,
+                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -134,17 +145,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
                                               XElement                                    HeartbeatResponseXML,
-                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
-                                              OnExceptionDelegate                         OnException = null)
+                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
+                                              HTTPResponse                                HTTPResponse                        = null,
+                                              OnExceptionDelegate                         OnException                         = null)
         {
 
             if (TryParse(Request,
                          HeartbeatResponseXML,
-                         CustomSendHeartbeatResponseParser,
                          out HeartbeatResponse HeartbeatResponse,
+                         CustomSendHeartbeatResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return HeartbeatResponse;
@@ -164,17 +178,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
                                               String                                      HeartbeatResponseText,
-                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
-                                              OnExceptionDelegate                         OnException = null)
+                                              CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
+                                              HTTPResponse                                HTTPResponse                        = null,
+                                              OnExceptionDelegate                         OnException                         = null)
         {
 
             if (TryParse(Request,
                          HeartbeatResponseText,
-                         CustomSendHeartbeatResponseParser,
                          out HeartbeatResponse HeartbeatResponse,
+                         CustomSendHeartbeatResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return HeartbeatResponse;
@@ -193,14 +210,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        XElement                                    HeartbeatResponseXML,
-                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
                                        out HeartbeatResponse                       HeartbeatResponse,
-                                       OnExceptionDelegate                         OnException  = null)
+                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
+                                       HTTPResponse                                HTTPResponse                        = null,
+                                       OnExceptionDelegate                         OnException                         = null)
         {
 
             try
@@ -220,7 +239,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                             Transaction_Id.Parse),
 
                                         HeartbeatResponseXML.MapValueOrFail("requestStatus",
-                                                                            RequestStatus.Parse)
+                                                                            RequestStatus.Parse),
+
+                                        HTTPResponse
 
                                     );
 
@@ -253,14 +274,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The Heartbeat request leading to this response.</param>
         /// <param name="HeartbeatResponseText">The text to parse.</param>
-        /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
+        /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        String                                      HeartbeatResponseText,
-                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser,
                                        out HeartbeatResponse                       HeartbeatResponse,
-                                       OnExceptionDelegate                         OnException  = null)
+                                       CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
+                                       HTTPResponse                                HTTPResponse                        = null,
+                                       OnExceptionDelegate                         OnException                         = null)
         {
 
             try
@@ -268,8 +291,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(HeartbeatResponseText).Root,
-                             CustomSendHeartbeatResponseParser,
                              out HeartbeatResponse,
+                             CustomSendHeartbeatResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -563,18 +587,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable Heartbeat response.
             /// </summary>
-            public override HeartbeatResponse ToImmutable
+            /// <param name="Builder">A Heartbeat response builder.</param>
+            public static implicit operator HeartbeatResponse(Builder Builder)
 
-                => new HeartbeatResponse(Request,
-                                         HeartbeatPeriod,
-                                         CurrentTime,
-                                         TransactionId,
-                                         RequestStatus);
+                => new HeartbeatResponse(Builder.Request,
+                                         Builder.HeartbeatPeriod,
+                                         Builder.CurrentTime,
+                                         Builder.TransactionId,
+                                         Builder.RequestStatus);
 
             #endregion
 

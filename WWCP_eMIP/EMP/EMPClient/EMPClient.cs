@@ -518,10 +518,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResponse, onexception) =>
                                                                                                               HeartbeatResponse.Parse(request,
                                                                                                                                       xml,
                                                                                                                                       CustomHeartbeatParser,
+                                                                                                                                      httpResponse,
                                                                                                                                       onexception)),
 
                                                      #endregion
@@ -539,8 +540,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                     new HeartbeatResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -567,9 +568,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                                                         new HeartbeatResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -581,9 +581,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                     new HeartbeatResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -774,11 +773,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetServiceAuthorisationResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetServiceAuthorisationParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                    xml,
+                                                                                                                                                    CustomSetServiceAuthorisationParser,
+                                                                                                                                                    httpResonse,
+                                                                                                                                                    onexception)),
 
                                                      #endregion
 
@@ -796,8 +796,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
-                                                                        ServiceSession_Id.Zero
-                                                                        //httpresponse.Content.ToString()
+                                                                        ServiceSession_Id.Zero,
+                                                                        null,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -825,9 +826,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
                                                                                                             RequestStatus.HTTPError,
-                                                                                                            ServiceSession_Id.Zero
-                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            ServiceSession_Id.Zero,
+                                                                                                            null,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -840,9 +841,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
-                                                                        ServiceSession_Id.Zero
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        ServiceSession_Id.Zero,
+                                                                        null,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1042,10 +1043,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetSessionActionResponse.Parse(request,
                                                                                                                                              xml,
                                                                                                                                              CustomSetSessionActionParser,
+                                                                                                                                             httpResonse,
                                                                                                                                              onexception)),
 
                                                      #endregion
@@ -1065,8 +1067,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.Content.ToString()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1095,9 +1097,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                                                                    Request.TransactionId ?? Transaction_Id.Zero,
                                                                                                                    RequestStatus.HTTPError,
                                                                                                                    ServiceSession_Id.Zero,
-                                                                                                                   SessionAction_Id.Zero
-                                                                                                               //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                               //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                                   SessionAction_Id.Zero,
+                                                                                                                   httpresponse
                                                                                                                ),
                                                                                                                IsFault: true);
 
@@ -1111,9 +1112,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1213,8 +1213,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         }
 
         #endregion
-
-
 
 
     }

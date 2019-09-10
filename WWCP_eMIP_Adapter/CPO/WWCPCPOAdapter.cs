@@ -31,6 +31,8 @@ using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Org.BouncyCastle.Crypto.Parameters;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
@@ -341,8 +343,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">The attached DNS service.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -371,8 +371,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Boolean                                            DisableAuthentication                           = false,
                               Boolean                                            DisableSendChargeDetailRecords                  = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                   = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                   = null,
+                              String                                             EllipticCurve                                   = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                      = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                           = null,
+
                               DNSClient                                          DNSClient                                       = null)
 
             : base(Id,
@@ -393,8 +395,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient ?? CPORoaming?.DNSClient)
 
         {
@@ -432,6 +436,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.CPORoaming.OnSetServiceAuthorisation += async (Timestamp,
                                                                 Sender,
                                                                 Request) => {
+
+                // intermediateCDRRequested
+                // meterLimitList
+                // bookingId
 
                 #region Request mapping
 
@@ -510,6 +518,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 #endregion
 
                 var response = await RoamingNetwork.
+<<<<<<< HEAD
                                          RemoteStart(EVSEId:                    Request.EVSEId.          ToWWCP().Value,
                                                      ChargingProduct:           chargingProduct,
                                                      ReservationId:             Request.BookingId.       ToWWCP(),
@@ -517,6 +526,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
                                                      eMAId:                     Request.UserId.          ToWWCP_eMAId(),
                                                      ISendChargeDetailRecords:  this,
+=======
+                                         RemoteStart(this,
+                                                     ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
+                                                     ChargingProduct:           null,
+                                                     ReservationId:             null,
+                                                     SessionId:                 Request.ServiceSessionId.ToWWCP(),
+                                                     ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
+                                                     RemoteAuthentication:      Request.UserId.          ToWWCP(),
+>>>>>>> cb99f0130ba91a3503cc9d74533e5ff1af8b24d7
 
                                                      Timestamp:                 Request.Timestamp,
                                                      CancellationToken:         Request.CancellationToken,
@@ -524,42 +542,69 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      RequestTimeout:            Request.RequestTimeout).
                                          ConfigureAwait(false);
 
+
+                var Gireve = response.Session.AddJSON("Gireve");
+
+                if (Request.UserContractIdAlias.HasValue)
+                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request);
+
+
+                if (Request.UserContractIdAlias.HasValue)
+                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias);
+
+                if (Request.Parameter.IsNotNullOrEmpty())
+                    response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
+
+                if (Request.HTTPRequest != null)
+                {
+
+                    response.Session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress);
+
+                    if (Request.HTTPRequest.X_Real_IP       != null)
+                        response.Session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP);
+
+                    if (Request.HTTPRequest.X_Forwarded_For != null)
+                        response.Session.SetJSON("Gireve", "forwardedFor",     Request.HTTPRequest.X_Forwarded_For);
+
+                }
+
+
                 #region Response mapping
 
-                if (response != null)
+                                                                    if (response != null)
                 {
                     switch (response.Result)
                     {
 
-                        case RemoteStartEVSEResultType.Success:
+                        case RemoteStartResultType.Success:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.Ok
                                    );
 
-                        //case RemoteStartEVSEResultType.InvalidSessionId:
-                        //case RemoteStartEVSEResultType.InvalidCredentials:
+                        //case RemoteStartResultType.InvalidSessionId:
+                        //case RemoteStartResultType.InvalidCredentials:
 
-                        case RemoteStartEVSEResultType.Offline:
-                        case RemoteStartEVSEResultType.Timeout:
-                        case RemoteStartEVSEResultType.OutOfService:
-                        case RemoteStartEVSEResultType.CommunicationError:
+                        case RemoteStartResultType.Offline:
+                        case RemoteStartResultType.Timeout:
+                        case RemoteStartResultType.OutOfService:
+                        case RemoteStartResultType.CommunicationError:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSENotReachable
                                    );
 
-                        case RemoteStartEVSEResultType.Reserved:
-                        case RemoteStartEVSEResultType.AlreadyInUse:
+                        case RemoteStartResultType.Reserved:
+                        case RemoteStartResultType.AlreadyInUse:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSEServiceNotAvailable
                                    );
 
-                        case RemoteStartEVSEResultType.UnknownEVSE:
+                        case RemoteStartResultType.UnknownLocation:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
@@ -676,7 +721,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              RemoteStop(SessionId:            Request.ServiceSessionId.ToWWCP(),
                                                         ReservationHandling:  ReservationHandling.Close,
                                                         ProviderId:           null,
-                                                        eMAId:                null,
+                                                        RemoteAuthentication:                null,
 
                                                         Timestamp:            Request.Timestamp,
                                                         CancellationToken:    Request.CancellationToken,
@@ -773,8 +818,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -806,8 +849,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Boolean                                            DisableAuthentication                           = false,
                               Boolean                                            DisableSendChargeDetailRecords                  = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                   = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                   = null,
+                              String                                             EllipticCurve                                   = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                      = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                           = null,
+
                               DNSClient                                          DNSClient                                       = null)
 
             : this(Id,
@@ -840,8 +885,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient ?? CPOServer?.DNSClient)
 
         { }
@@ -903,8 +950,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
@@ -914,51 +959,64 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Partner_Id                                         PartnerId,
 
                               HTTPHostname                                       RemoteHostname,
-                              IPPort?                                            RemoteTCPPort                                   = null,
-                              RemoteCertificateValidationCallback                RemoteCertificateValidator                      = null,
-                              LocalCertificateSelectionCallback                  ClientCertificateSelector                       = null,
-                              HTTPHostname?                                      RemoteHTTPVirtualHost                           = null,
-                              HTTPPath?                                          URIPrefix                                       = null,
-                              String                                             HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
-                              TimeSpan?                                          RequestTimeout                                  = null,
-                              TransmissionRetryDelayDelegate                     TransmissionRetryDelay                          = null,
-                              Byte?                                              MaxNumberOfRetries                              = CPOClient.DefaultMaxNumberOfRetries,
+                              IPPort?                                            RemoteTCPPort                                            = null,
+                              RemoteCertificateValidationCallback                RemoteCertificateValidator                               = null,
+                              LocalCertificateSelectionCallback                  ClientCertificateSelector                                = null,
+                              HTTPHostname?                                      RemoteHTTPVirtualHost                                    = null,
+                              HTTPPath?                                          URIPrefix                                                = null,
+                              String                                             HTTPUserAgent                                            = CPOClient.DefaultHTTPUserAgent,
+                              TimeSpan?                                          RequestTimeout                                           = null,
+                              TransmissionRetryDelayDelegate                     TransmissionRetryDelay                                   = null,
+                              Byte?                                              MaxNumberOfRetries                                       = CPOClient.DefaultMaxNumberOfRetries,
 
-                              String                                             ServerName                                      = CPOServer.DefaultHTTPServerName,
-                              String                                             ServiceId                                       = null,
-                              IPPort?                                            ServerTCPPort                                   = null,
-                              HTTPPath?                                          ServerURIPrefix                                 = null,
-                              String                                             ServerAuthorisationURI                          = CPOServer.DefaultAuthorisationURI,
-                              HTTPContentType                                    ServerContentType                               = null,
-                              Boolean                                            ServerRegisterHTTPRootService                   = true,
-                              Boolean                                            ServerAutoStart                                 = false,
+                              String                                             ServerName                                               = CPOServer.DefaultHTTPServerName,
+                              String                                             ServiceId                                                = null,
+                              IPPort?                                            ServerTCPPort                                            = null,
+                              HTTPPath?                                          ServerURIPrefix                                          = null,
+                              String                                             ServerAuthorisationURI                                   = CPOServer.DefaultAuthorisationURI,
+                              HTTPContentType                                    ServerContentType                                        = null,
+                              Boolean                                            ServerRegisterHTTPRootService                            = true,
+                              Boolean                                            ServerAutoStart                                          = false,
 
-                              String                                             ClientLoggingContext                            = CPOClient.CPOClientLogger.DefaultContext,
-                              String                                             ServerLoggingContext                            = CPOServerLogger.DefaultContext,
-                              LogfileCreatorDelegate                             LogfileCreator                                  = null,
+                              String                                             ClientLoggingContext                                     = CPOClient.CPOClientLogger.DefaultContext,
+                              String                                             ServerLoggingContext                                     = CPOServerLogger.DefaultContext,
+                              LogfileCreatorDelegate                             LogfileCreator                                           = null,
 
-                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
-                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
-                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
+                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                           = null,
+                              IncludeEVSEDelegate                                IncludeEVSEs                                             = null,
+                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                                       = null,
 
-                              //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
-                              //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
-                              WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
+                              //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                                      = null,
+                              //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord                        = null,
+                              WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord            = null,
 
-                              TimeSpan?                                          SendHeartbeatsEvery                             = null,
-                              TimeSpan?                                          ServiceCheckEvery                               = null,
-                              TimeSpan?                                          StatusCheckEvery                                = null,
-                              TimeSpan?                                          CDRCheckEvery                                   = null,
+                              TimeSpan?                                          SendHeartbeatsEvery                                      = null,
+                              TimeSpan?                                          ServiceCheckEvery                                        = null,
+                              TimeSpan?                                          StatusCheckEvery                                         = null,
+                              TimeSpan?                                          CDRCheckEvery                                            = null,
 
-                              Boolean                                            DisableSendHeartbeats                           = false,
-                              Boolean                                            DisablePushData                                 = false,
-                              Boolean                                            DisablePushStatus                               = false,
-                              Boolean                                            DisableAuthentication                           = false,
-                              Boolean                                            DisableSendChargeDetailRecords                  = false,
+                              Boolean                                            DisableSendHeartbeats                                    = false,
+                              Boolean                                            DisablePushData                                          = false,
+                              Boolean                                            DisablePushStatus                                        = false,
+                              Boolean                                            DisableAuthentication                                    = false,
+                              Boolean                                            DisableSendChargeDetailRecords                           = false,
 
-                              PgpPublicKeyRing                                   PublicKeyRing                                   = null,
-                              PgpSecretKeyRing                                   SecretKeyRing                                   = null,
-                              DNSClient                                          DNSClient                                       = null)
+                              String                                             EllipticCurve                                            = "P-256",
+                              ECPrivateKeyParameters                             PrivateKey                                               = null,
+                              PublicKeyCertificates                              PublicKeyCertificates                                    = null,
+
+                              CounterValues?                                     CPOClientSendHeartbeatCounter                            = null,
+                              CounterValues?                                     CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
+                              CounterValues?                                     CPOClientSetChargingStationAvailabilityStatusCounter     = null,
+                              CounterValues?                                     CPOClientSetEVSEAvailabilityStatusCounter                = null,
+                              CounterValues?                                     CPOClientSetChargingConnectorAvailabilityStatusCounter   = null,
+                              CounterValues?                                     CPOClientSetEVSEBusyStatusCounter                        = null,
+                              CounterValues?                                     CPOClientSetEVSESyntheticStatusCounter                   = null,
+                              CounterValues?                                     CPOClientGetServiceAuthorisationCounter                  = null,
+                              CounterValues?                                     CPOClientSetSessionEventReportCounter                    = null,
+                              CounterValues?                                     CPOClientSetChargeDetailRecordCounter                    = null,
+
+                              DNSClient                                          DNSClient                                                = null)
 
             : this(Id,
                    Name,
@@ -991,6 +1049,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   ServerLoggingContext,
                                   LogfileCreator,
 
+                                  CPOClientSendHeartbeatCounter,
+                                  CPOClientSetChargingPoolAvailabilityStatusCounter,
+                                  CPOClientSetChargingStationAvailabilityStatusCounter,
+                                  CPOClientSetEVSEAvailabilityStatusCounter,
+                                  CPOClientSetChargingConnectorAvailabilityStatusCounter,
+                                  CPOClientSetEVSEBusyStatusCounter,
+                                  CPOClientSetEVSESyntheticStatusCounter,
+                                  CPOClientGetServiceAuthorisationCounter,
+                                  CPOClientSetSessionEventReportCounter,
+                                  CPOClientSetChargeDetailRecordCounter,
+
                                   DNSClient),
 
                    IncludeEVSEIds,
@@ -1012,8 +1081,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    DisableAuthentication,
                    DisableSendChargeDetailRecords,
 
-                   PublicKeyRing,
-                   SecretKeyRing,
+                   EllipticCurve,
+                   PrivateKey,
+                   PublicKeyCertificates,
+
                    DNSClient)
 
         {
@@ -1510,6 +1581,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    null, //AvailabilityAdminStatusUntil
                                                                    null, //AvailabilityAdminStatusComment
 
+                                                                   null,
                                                                    Timestamp,
                                                                    CancellationToken,
                                                                    EventTrackingId,
@@ -1728,6 +1800,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            null, //BusyStatusUntil
                                                            null, //BusyStatusComment
 
+                                                           null,
                                                            Timestamp,
                                                            CancellationToken,
                                                            EventTrackingId,
@@ -4503,12 +4576,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region AuthorizeStart/-Stop  directly...
 
-        #region AuthorizeStart(AuthIdentification,                    ChargingProduct = null, SessionId = null, OperatorId = null, ...)
+        #region AuthorizeStart(LocalAuthentication,                    ChargingProduct = null, SessionId = null, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize start request.
         /// </summary>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="ChargingProduct">An optional charging product.</param>
         /// <param name="SessionId">An optional session identification.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
@@ -4519,7 +4592,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public async Task<AuthStartResult>
 
-            AuthorizeStart(AuthIdentification           AuthIdentification,
+            AuthorizeStart(LocalAuthentication          LocalAuthentication,
                            ChargingProduct              ChargingProduct     = null,
                            ChargingSession_Id?          SessionId           = null,
                            ChargingStationOperator_Id?  OperatorId          = null,
@@ -4532,8 +4605,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification),   "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication),   "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -4564,7 +4637,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                 EventTrackingId,
                                                 RoamingNetwork.Id,
                                                 OperatorId,
-                                                AuthIdentification,
+                                                LocalAuthentication,
                                                 ChargingProduct,
                                                 SessionId,
                                                 RequestTimeout);
@@ -4659,7 +4732,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  EventTrackingId,
                                                  RoamingNetwork.Id,
                                                  OperatorId,
-                                                 AuthIdentification,
+                                                 LocalAuthentication,
                                                  ChargingProduct,
                                                  SessionId,
                                                  RequestTimeout,
@@ -4680,7 +4753,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStart(AuthIdentification, EVSEId,            ChargingProduct = null, SessionId = null, OperatorId = null, ...)
+        #region AuthorizeStart(LocalAuthentication, EVSEId,            ChargingProduct = null, SessionId = null, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize start request at the given EVSE.
@@ -4697,7 +4770,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public async Task<AuthStartEVSEResult>
 
-            AuthorizeStart(AuthIdentification           AuthIdentification,
+            AuthorizeStart(LocalAuthentication          AuthIdentification,
                            WWCP.EVSE_Id                 EVSEId,
                            ChargingProduct              ChargingProduct     = null,   // [maxlength: 100]
                            ChargingSession_Id?          SessionId           = null,
@@ -4865,12 +4938,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStart(AuthIdentification, ChargingStationId, ChargingProduct = null, SessionId = null, OperatorId = null, ...)
+        #region AuthorizeStart(LocalAuthentication, ChargingStationId, ChargingProduct = null, SessionId = null, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize start request at the given charging station.
         /// </summary>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="ChargingStationId">The unique identification charging station.</param>
         /// <param name="ChargingProduct">An optional charging product.</param>
         /// <param name="SessionId">An optional session identification.</param>
@@ -4882,7 +4955,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public async Task<AuthStartChargingStationResult>
 
-            AuthorizeStart(AuthIdentification           AuthIdentification,
+            AuthorizeStart(LocalAuthentication          LocalAuthentication,
                            WWCP.ChargingStation_Id      ChargingStationId,
                            ChargingProduct              ChargingProduct     = null,   // [maxlength: 100]
                            ChargingSession_Id?          SessionId           = null,
@@ -4897,8 +4970,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -4929,7 +5002,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                EventTrackingId,
                                                                RoamingNetwork.Id,
                                                                OperatorId,
-                                                               AuthIdentification,
+                                                               LocalAuthentication,
                                                                ChargingStationId,
                                                                ChargingProduct,
                                                                SessionId,
@@ -5025,7 +5098,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 EventTrackingId,
                                                                 RoamingNetwork.Id,
                                                                 OperatorId,
-                                                                AuthIdentification,
+                                                                LocalAuthentication,
                                                                 ChargingStationId,
                                                                 ChargingProduct,
                                                                 SessionId,
@@ -5047,12 +5120,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStart(AuthIdentification, ChargingPoolId,    ChargingProduct = null, SessionId = null, OperatorId = null, ...)
+        #region AuthorizeStart(LocalAuthentication, ChargingPoolId,    ChargingProduct = null, SessionId = null, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize start request at the given charging pool.
         /// </summary>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="ChargingPoolId">The unique identification charging pool.</param>
         /// <param name="ChargingProduct">An optional charging product.</param>
         /// <param name="SessionId">An optional session identification.</param>
@@ -5064,7 +5137,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public async Task<AuthStartChargingPoolResult>
 
-            AuthorizeStart(AuthIdentification           AuthIdentification,
+            AuthorizeStart(LocalAuthentication          LocalAuthentication,
                            WWCP.ChargingPool_Id         ChargingPoolId,
                            ChargingProduct              ChargingProduct     = null,   // [maxlength: 100]
                            ChargingSession_Id?          SessionId           = null,
@@ -5079,8 +5152,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5111,7 +5184,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                             EventTrackingId,
                                                             RoamingNetwork.Id,
                                                             OperatorId,
-                                                            AuthIdentification,
+                                                            LocalAuthentication,
                                                             ChargingPoolId,
                                                             ChargingProduct,
                                                             SessionId,
@@ -5207,7 +5280,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              EventTrackingId,
                                                              RoamingNetwork.Id,
                                                              OperatorId,
-                                                             AuthIdentification,
+                                                             LocalAuthentication,
                                                              ChargingPoolId,
                                                              ChargingProduct,
                                                              SessionId,
@@ -5234,13 +5307,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //        UID than the UID which started the session!
         //        (e.g. car sharing)
 
-        #region AuthorizeStop(SessionId, AuthIdentification,                    OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, LocalAuthentication,                    OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -5250,7 +5323,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          AuthIdentification           AuthIdentification,
+                          LocalAuthentication          LocalAuthentication,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
                           DateTime?                    Timestamp           = null,
@@ -5261,8 +5334,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification),  "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication),  "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5294,7 +5367,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                RoamingNetwork.Id,
                                                OperatorId,
                                                SessionId,
-                                               AuthIdentification,
+                                               LocalAuthentication,
                                                RequestTimeout);
 
             }
@@ -5391,7 +5464,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                 RoamingNetwork.Id,
                                                 OperatorId,
                                                 SessionId,
-                                                AuthIdentification,
+                                                LocalAuthentication,
                                                 RequestTimeout,
                                                 result,
                                                 Runtime);
@@ -5410,13 +5483,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, AuthIdentification, EVSEId,            OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, LocalAuthentication, EVSEId,            OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given EVSE.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="AuthToken">A (RFID) user identification.</param>
+        /// <param name="LocalAuthentication">A (RFID) user identification.</param>
         /// <param name="EVSEId">The unique identification of an EVSE.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5427,7 +5500,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopEVSEResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          AuthIdentification           AuthIdentification,
+                          LocalAuthentication          LocalAuthentication,
                           WWCP.EVSE_Id                 EVSEId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5439,8 +5512,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification  == null)
-                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
+            if (LocalAuthentication  == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5473,7 +5546,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                    OperatorId,
                                                    EVSEId,
                                                    SessionId,
-                                                   AuthIdentification,
+                                                   LocalAuthentication,
                                                    RequestTimeout);
 
             }
@@ -5571,7 +5644,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                     OperatorId,
                                                     EVSEId,
                                                     SessionId,
-                                                    AuthIdentification,
+                                                    LocalAuthentication,
                                                     RequestTimeout,
                                                     result,
                                                     Runtime);
@@ -5590,13 +5663,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, AuthIdentification, ChargingStationId, OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, LocalAuthentication, ChargingStationId, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given charging station.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="ChargingStationId">The unique identification of a charging station.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5607,7 +5680,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopChargingStationResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          AuthIdentification           AuthIdentification,
+                          LocalAuthentication          LocalAuthentication,
                           WWCP.ChargingStation_Id      ChargingStationId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5620,8 +5693,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5654,7 +5727,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                               OperatorId,
                                                               ChargingStationId,
                                                               SessionId,
-                                                              AuthIdentification,
+                                                              LocalAuthentication,
                                                               RequestTimeout);
 
             }
@@ -5752,7 +5825,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                OperatorId,
                                                                ChargingStationId,
                                                                SessionId,
-                                                               AuthIdentification,
+                                                               LocalAuthentication,
                                                                RequestTimeout,
                                                                result,
                                                                Runtime);
@@ -5771,13 +5844,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, AuthIdentification, ChargingPoolId,    OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, LocalAuthentication, ChargingPoolId,    OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given charging pool.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="AuthIdentification">An user identification.</param>
+        /// <param name="LocalAuthentication">An user identification.</param>
         /// <param name="ChargingPoolId">The unique identification of a charging pool.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5788,7 +5861,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopChargingPoolResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          AuthIdentification           AuthIdentification,
+                          LocalAuthentication          LocalAuthentication,
                           WWCP.ChargingPool_Id         ChargingPoolId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5801,8 +5874,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
-                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
+            if (LocalAuthentication == null)
+                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5835,7 +5908,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            OperatorId,
                                                            ChargingPoolId,
                                                            SessionId,
-                                                           AuthIdentification,
+                                                           LocalAuthentication,
                                                            RequestTimeout);
 
             }
@@ -5933,7 +6006,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                             OperatorId,
                                                             ChargingPoolId,
                                                             SessionId,
-                                                            AuthIdentification,
+                                                            LocalAuthentication,
                                                             RequestTimeout,
                                                             result,
                                                             Runtime);
@@ -6138,6 +6211,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                       ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
                                                                                       Transaction_Id.Random(),
 
+                                                                                      null,
                                                                                       Timestamp,
                                                                                       CancellationToken,
                                                                                       EventTrackingId,
@@ -6288,6 +6362,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                Operator_Id.Parse("DE*BDO"),
                                                                                Transaction_Id.Random(),
 
+                                                                               null,
                                                                                DateTime.UtcNow,
                                                                                new CancellationTokenSource().Token,
                                                                                EventTracking_Id.New,
@@ -6702,6 +6777,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                        chargedetailrecord,
                                                                        Transaction_Id.Random(),
 
+                                                                       null,
                                                                        DateTime.UtcNow,
                                                                        new CancellationTokenSource().Token,
                                                                        EventTracking_Id.New,

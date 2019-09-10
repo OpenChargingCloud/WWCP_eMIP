@@ -27,6 +27,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Org.BouncyCastle.Crypto.Parameters;
 
 #endregion
 
@@ -100,8 +101,6 @@ namespace org.GraphDefined.WWCP
         /// <param name="eMIPConfigurator">An optional delegate to configure the new eMIP roaming provider after its creation.</param>
         /// <param name="Configurator">An optional delegate to configure the new roaming provider after its creation.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public static eMIPv0_7_4.CPO.WWCPCPOAdapter
 
@@ -113,54 +112,67 @@ namespace org.GraphDefined.WWCP
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
 
                                                 HTTPHostname                                                      RemoteHostname,
-                                                IPPort?                                                           RemoteTCPPort                                   = null,
-                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
-                                                RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
-                                                LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
-                                                HTTPPath?                                                         URIPrefix                                       = null,
-                                                String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
-                                                TimeSpan?                                                         RequestTimeout                                  = null,
-                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                          = null,
-                                                Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
+                                                IPPort?                                                           RemoteTCPPort                                            = null,
+                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                                    = null,
+                                                RemoteCertificateValidationCallback                               RemoteCertificateValidator                               = null,
+                                                LocalCertificateSelectionCallback                                 ClientCertificateSelector                                = null,
+                                                HTTPPath?                                                         URIPrefix                                                = null,
+                                                String                                                            HTTPUserAgent                                            = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
+                                                TimeSpan?                                                         RequestTimeout                                           = null,
+                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                                   = null,
+                                                Byte?                                                             MaxNumberOfRetries                                       = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
-                                                String                                                            ServerName                                      = eMIPv0_7_4.CPO.CPOServer.DefaultHTTPServerName,
-                                                String                                                            ServiceId                                       = null,
-                                                IPPort?                                                           ServerTCPPort                                   = null,
-                                                HTTPPath?                                                         ServerURIPrefix                                 = null,
-                                                String                                                            ServerAuthorisationURI                          = eMIPv0_7_4.CPO.CPOServer.DefaultAuthorisationURI,
-                                                HTTPContentType                                                   ServerContentType                               = null,
-                                                Boolean                                                           ServerRegisterHTTPRootService                   = true,
-                                                Boolean                                                           ServerAutoStart                                 = false,
+                                                String                                                            ServerName                                               = eMIPv0_7_4.CPO.CPOServer.DefaultHTTPServerName,
+                                                String                                                            ServiceId                                                = null,
+                                                IPPort?                                                           ServerTCPPort                                            = null,
+                                                HTTPPath?                                                         ServerURIPrefix                                          = null,
+                                                String                                                            ServerAuthorisationURI                                   = eMIPv0_7_4.CPO.CPOServer.DefaultAuthorisationURI,
+                                                HTTPContentType                                                   ServerContentType                                        = null,
+                                                Boolean                                                           ServerRegisterHTTPRootService                            = true,
+                                                Boolean                                                           ServerAutoStart                                          = false,
 
-                                                String                                                            ClientLoggingContext                            = eMIPv0_7_4.CPO.CPOClient.CPOClientLogger.DefaultContext,
-                                                String                                                            ServerLoggingContext                            = eMIPv0_7_4.CPO.CPOServerLogger.DefaultContext,
-                                                LogfileCreatorDelegate                                            LogfileCreator                                  = null,
+                                                String                                                            ClientLoggingContext                                     = eMIPv0_7_4.CPO.CPOClient.CPOClientLogger.DefaultContext,
+                                                String                                                            ServerLoggingContext                                     = eMIPv0_7_4.CPO.CPOServerLogger.DefaultContext,
+                                                LogfileCreatorDelegate                                            LogfileCreator                                           = null,
 
-                                                //EVSE2EVSEDataRecordDelegate                                       EVSE2EVSEDataRecord                             = null,
-                                                //EVSEStatusUpdate2EVSEStatusRecordDelegate                         EVSEStatusUpdate2EVSEStatusRecord               = null,
-                                                eMIPv0_7_4.CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
+                                                //EVSE2EVSEDataRecordDelegate                                       EVSE2EVSEDataRecord                                      = null,
+                                                //EVSEStatusUpdate2EVSEStatusRecordDelegate                         EVSEStatusUpdate2EVSEStatusRecord                        = null,
+                                                eMIPv0_7_4.CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord            = null,
 
-                                                IncludeEVSEIdDelegate                                             IncludeEVSEIds                                  = null,
-                                                IncludeEVSEDelegate                                               IncludeEVSEs                                    = null,
-                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                              = null,
+                                                IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
+                                                IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
-                                                TimeSpan?                                                         SendHeartbeatsEvery                             = null,
-                                                TimeSpan?                                                         ServiceCheckEvery                               = null,
-                                                TimeSpan?                                                         StatusCheckEvery                                = null,
-                                                TimeSpan?                                                         CDRCheckEvery                                   = null,
+                                                TimeSpan?                                                         SendHeartbeatsEvery                                      = null,
+                                                TimeSpan?                                                         ServiceCheckEvery                                        = null,
+                                                TimeSpan?                                                         StatusCheckEvery                                         = null,
+                                                TimeSpan?                                                         CDRCheckEvery                                            = null,
 
-                                                Boolean                                                           DisableSendHeartbeats                           = false,
-                                                Boolean                                                           DisablePushData                                 = false,
-                                                Boolean                                                           DisablePushStatus                               = false,
-                                                Boolean                                                           DisableAuthentication                           = false,
-                                                Boolean                                                           DisableSendChargeDetailRecords                  = false,
+                                                Boolean                                                           DisableSendHeartbeats                                    = false,
+                                                Boolean                                                           DisablePushData                                          = false,
+                                                Boolean                                                           DisablePushStatus                                        = false,
+                                                Boolean                                                           DisableAuthentication                                    = false,
+                                                Boolean                                                           DisableSendChargeDetailRecords                           = false,
 
-                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                = null,
-                                                Action<ICSORoamingProvider>                                       Configurator                                    = null,
+                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                         = null,
+                                                Action<ICSORoamingProvider>                                       Configurator                                             = null,
 
-                                                PgpPublicKeyRing                                                  PublicKeyRing                                   = null,
-                                                PgpSecretKeyRing                                                  SecretKeyRing                                   = null,
-                                                DNSClient                                                         DNSClient                                       = null)
+                                                String                                                            EllipticCurve                                            = "P-256",
+                                                ECPrivateKeyParameters                                            PrivateKey                                               = null,
+                                                PublicKeyCertificates                                             PublicKeyCertificates                                    = null,
+
+                                                CounterValues?                                                    CPOClientSendHeartbeatCounter                            = null,
+                                                CounterValues?                                                    CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
+                                                CounterValues?                                                    CPOClientSetChargingStationAvailabilityStatusCounter     = null,
+                                                CounterValues?                                                    CPOClientSetEVSEAvailabilityStatusCounter                = null,
+                                                CounterValues?                                                    CPOClientSetChargingConnectorAvailabilityStatusCounter   = null,
+                                                CounterValues?                                                    CPOClientSetEVSEBusyStatusCounter                        = null,
+                                                CounterValues?                                                    CPOClientSetEVSESyntheticStatusCounter                   = null,
+                                                CounterValues?                                                    CPOClientGetServiceAuthorisationCounter                  = null,
+                                                CounterValues?                                                    CPOClientSetSessionEventReportCounter                    = null,
+                                                CounterValues?                                                    CPOClientSetChargeDetailRecordCounter                    = null,
+
+                                                DNSClient                                                         DNSClient                                                = null)
 
         {
 
@@ -230,8 +242,21 @@ namespace org.GraphDefined.WWCP
                                                                        DisableAuthentication,
                                                                        DisableSendChargeDetailRecords,
 
-                                                                       PublicKeyRing,
-                                                                       SecretKeyRing,
+                                                                       EllipticCurve,
+                                                                       PrivateKey,
+                                                                       PublicKeyCertificates,
+
+                                                                       CPOClientSendHeartbeatCounter,
+                                                                       CPOClientSetChargingPoolAvailabilityStatusCounter,
+                                                                       CPOClientSetChargingStationAvailabilityStatusCounter,
+                                                                       CPOClientSetEVSEAvailabilityStatusCounter,
+                                                                       CPOClientSetChargingConnectorAvailabilityStatusCounter,
+                                                                       CPOClientSetEVSEBusyStatusCounter,
+                                                                       CPOClientSetEVSESyntheticStatusCounter,
+                                                                       CPOClientGetServiceAuthorisationCounter,
+                                                                       CPOClientSetSessionEventReportCounter,
+                                                                       CPOClientSetChargeDetailRecordCounter,
+
                                                                        DNSClient);
 
 
@@ -297,8 +322,6 @@ namespace org.GraphDefined.WWCP
         /// <param name="eMIPConfigurator">An optional delegate to configure the new eMIP roaming provider after its creation.</param>
         /// <param name="Configurator">An optional delegate to configure the new roaming provider after its creation.</param>
         /// 
-        /// <param name="PublicKeyRing">The public key ring of the entity.</param>
-        /// <param name="SecretKeyRing">The secrect key ring of the entity.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         public static eMIPv0_7_4.CPO.WWCPCPOAdapter
 
@@ -311,46 +334,59 @@ namespace org.GraphDefined.WWCP
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
 
                                                 HTTPHostname                                                      RemoteHostname,
-                                                IPPort?                                                           RemoteTCPPort                                   = null,
-                                                RemoteCertificateValidationCallback                               RemoteCertificateValidator                      = null,
-                                                LocalCertificateSelectionCallback                                 ClientCertificateSelector                       = null,
-                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                           = null,
-                                                HTTPPath?                                                         URIPrefix                                       = null,
-                                                String                                                            HTTPUserAgent                                   = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
-                                                TimeSpan?                                                         RequestTimeout                                  = null,
-                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                          = null,
-                                                Byte?                                                             MaxNumberOfRetries                              = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
+                                                IPPort?                                                           RemoteTCPPort                                            = null,
+                                                RemoteCertificateValidationCallback                               RemoteCertificateValidator                               = null,
+                                                LocalCertificateSelectionCallback                                 ClientCertificateSelector                                = null,
+                                                HTTPHostname?                                                     RemoteHTTPVirtualHost                                    = null,
+                                                HTTPPath?                                                         URIPrefix                                                = null,
+                                                String                                                            HTTPUserAgent                                            = eMIPv0_7_4.CPO.CPOClient.DefaultHTTPUserAgent,
+                                                TimeSpan?                                                         RequestTimeout                                           = null,
+                                                TransmissionRetryDelayDelegate                                    TransmissionRetryDelay                                   = null,
+                                                Byte?                                                             MaxNumberOfRetries                                       = eMIPv0_7_4.CPO.CPOClient.DefaultMaxNumberOfRetries,
 
-                                                HTTPPath?                                                         ServerURIPrefix                                 = null,
-                                                String                                                            ServiceId                                       = null,
+                                                HTTPPath?                                                         ServerURIPrefix                                          = null,
+                                                String                                                            ServiceId                                                = null,
 
-                                                String                                                            ClientLoggingContext                            = eMIPv0_7_4.CPO.CPOClient.CPOClientLogger.DefaultContext,
-                                                String                                                            ServerLoggingContext                            = eMIPv0_7_4.CPO.CPOServerLogger.DefaultContext,
-                                                LogfileCreatorDelegate                                            LogfileCreator                                  = null,
+                                                String                                                            ClientLoggingContext                                     = eMIPv0_7_4.CPO.CPOClient.CPOClientLogger.DefaultContext,
+                                                String                                                            ServerLoggingContext                                     = eMIPv0_7_4.CPO.CPOServerLogger.DefaultContext,
+                                                LogfileCreatorDelegate                                            LogfileCreator                                           = null,
 
-                                                eMIPv0_7_4.CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
+                                                eMIPv0_7_4.CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord            = null,
 
-                                                IncludeEVSEIdDelegate                                             IncludeEVSEIds                                  = null,
-                                                IncludeEVSEDelegate                                               IncludeEVSEs                                    = null,
-                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                              = null,
+                                                IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
+                                                IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
-                                                TimeSpan?                                                         SendHeartbeatsEvery                             = null,
-                                                TimeSpan?                                                         ServiceCheckEvery                               = null,
-                                                TimeSpan?                                                         StatusCheckEvery                                = null,
-                                                TimeSpan?                                                         CDRCheckEvery                                   = null,
+                                                TimeSpan?                                                         SendHeartbeatsEvery                                      = null,
+                                                TimeSpan?                                                         ServiceCheckEvery                                        = null,
+                                                TimeSpan?                                                         StatusCheckEvery                                         = null,
+                                                TimeSpan?                                                         CDRCheckEvery                                            = null,
 
-                                                Boolean                                                           DisableSendHeartbeats                           = false,
-                                                Boolean                                                           DisablePushData                                 = false,
-                                                Boolean                                                           DisablePushStatus                               = false,
-                                                Boolean                                                           DisableAuthentication                           = false,
-                                                Boolean                                                           DisableSendChargeDetailRecords                  = false,
+                                                Boolean                                                           DisableSendHeartbeats                                    = false,
+                                                Boolean                                                           DisablePushData                                          = false,
+                                                Boolean                                                           DisablePushStatus                                        = false,
+                                                Boolean                                                           DisableAuthentication                                    = false,
+                                                Boolean                                                           DisableSendChargeDetailRecords                           = false,
 
-                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                = null,
-                                                Action<ICSORoamingProvider>                                       Configurator                                    = null,
+                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>                             eMIPConfigurator                                         = null,
+                                                Action<ICSORoamingProvider>                                       Configurator                                             = null,
 
-                                                PgpPublicKeyRing                                                  PublicKeyRing                                   = null,
-                                                PgpSecretKeyRing                                                  SecretKeyRing                                   = null,
-                                                DNSClient                                                         DNSClient                                       = null)
+                                                String                                                            EllipticCurve                                            = "P-256",
+                                                ECPrivateKeyParameters                                            PrivateKey                                               = null,
+                                                PublicKeyCertificates                                             PublicKeyCertificates                                    = null,
+
+                                                CounterValues?                                                    CPOClientSendHeartbeatCounter                            = null,
+                                                CounterValues?                                                    CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
+                                                CounterValues?                                                    CPOClientSetChargingStationAvailabilityStatusCounter     = null,
+                                                CounterValues?                                                    CPOClientSetEVSEAvailabilityStatusCounter                = null,
+                                                CounterValues?                                                    CPOClientSetChargingConnectorAvailabilityStatusCounter   = null,
+                                                CounterValues?                                                    CPOClientSetEVSEBusyStatusCounter                        = null,
+                                                CounterValues?                                                    CPOClientSetEVSESyntheticStatusCounter                   = null,
+                                                CounterValues?                                                    CPOClientGetServiceAuthorisationCounter                  = null,
+                                                CounterValues?                                                    CPOClientSetSessionEventReportCounter                    = null,
+                                                CounterValues?                                                    CPOClientSetChargeDetailRecordCounter                    = null,
+
+                                                DNSClient                                                         DNSClient                                                = null)
 
         {
 
@@ -392,6 +428,18 @@ namespace org.GraphDefined.WWCP
                                                                                                     RequestTimeout,
                                                                                                     TransmissionRetryDelay,
                                                                                                     MaxNumberOfRetries,
+
+                                                                                                    CPOClientSendHeartbeatCounter,
+                                                                                                    CPOClientSetChargingPoolAvailabilityStatusCounter,
+                                                                                                    CPOClientSetChargingStationAvailabilityStatusCounter,
+                                                                                                    CPOClientSetEVSEAvailabilityStatusCounter,
+                                                                                                    CPOClientSetChargingConnectorAvailabilityStatusCounter,
+                                                                                                    CPOClientSetEVSEBusyStatusCounter,
+                                                                                                    CPOClientSetEVSESyntheticStatusCounter,
+                                                                                                    CPOClientGetServiceAuthorisationCounter,
+                                                                                                    CPOClientSetSessionEventReportCounter,
+                                                                                                    CPOClientSetChargeDetailRecordCounter,
+
                                                                                                     DNSClient,
                                                                                                     ClientLoggingContext,
                                                                                                     LogfileCreator),
@@ -422,8 +470,10 @@ namespace org.GraphDefined.WWCP
                                                                        DisableAuthentication,
                                                                        DisableSendChargeDetailRecords,
 
-                                                                       PublicKeyRing,
-                                                                       SecretKeyRing,
+                                                                       EllipticCurve,
+                                                                       PrivateKey,
+                                                                       PublicKeyCertificates,
+
                                                                        DNSClient);
 
             eMIPConfigurator?.Invoke(NewRoamingProvider);

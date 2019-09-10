@@ -123,6 +123,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public ProviderIdFormats  Format        { get; }
 
         /// <summary>
+        /// Indicates whether this identification is null or empty.
+        /// </summary>
+        public Boolean IsNullOrEmpty
+            => Suffix.IsNullOrEmpty();
+
+        /// <summary>
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length

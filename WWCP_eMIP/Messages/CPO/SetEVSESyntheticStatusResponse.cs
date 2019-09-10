@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetEVSESyntheticStatusResponse(SetEVSESyntheticStatusRequest        Request,
                                               Transaction_Id                       TransactionId,
                                               RequestStatus                        RequestStatus,
-                                              IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                              HTTPResponse                         HTTPResponse   = null,
+                                              IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -87,17 +93,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            XElement                                                 SetEVSESyntheticStatusResponseXML,
-                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
+                                                           HTTPResponse                                             HTTPResponse                                     = null,
+                                                           OnExceptionDelegate                                      OnException                                      = null)
         {
 
             if (TryParse(Request,
                          SetEVSESyntheticStatusResponseXML,
-                         CustomSendSetEVSESyntheticStatusResponseParser,
                          out SetEVSESyntheticStatusResponse SetEVSESyntheticStatusResponse,
+                         CustomSendSetEVSESyntheticStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSESyntheticStatusResponse;
@@ -117,17 +126,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            String                                                   SetEVSESyntheticStatusResponseText,
-                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser,
-                                                           OnExceptionDelegate                                      OnException = null)
+                                                           CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
+                                                           HTTPResponse                                             HTTPResponse                                     = null,
+                                                           OnExceptionDelegate                                      OnException                                      = null)
         {
 
             if (TryParse(Request,
                          SetEVSESyntheticStatusResponseText,
-                         CustomSendSetEVSESyntheticStatusResponseParser,
                          out SetEVSESyntheticStatusResponse SetEVSESyntheticStatusResponse,
+                         CustomSendSetEVSESyntheticStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSESyntheticStatusResponse;
@@ -146,14 +158,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,
                                        XElement                                                 SetEVSESyntheticStatusResponseXML,
-                                       CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser,
                                        out SetEVSESyntheticStatusResponse                       SetEVSESyntheticStatusResponse,
-                                       OnExceptionDelegate                                      OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
+                                       HTTPResponse                                             HTTPResponse                                     = null,
+                                       OnExceptionDelegate                                      OnException                                      = null)
         {
 
             try
@@ -167,7 +181,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                       Transaction_Id.Parse),
 
                                                      SetEVSESyntheticStatusResponseXML.MapValueOrFail(eMIPNS.EVCIDynamic + "requestStatus",
-                                                                                                      RequestStatus.Parse)
+                                                                                                      RequestStatus.Parse),
+
+                                                     HTTPResponse
 
                                                  );
 
@@ -200,14 +216,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSESyntheticStatus request leading to this response.</param>
         /// <param name="SetEVSESyntheticStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
+        /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,
                                        String                                                   SetEVSESyntheticStatusResponseText,
-                                       CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser,
                                        out SetEVSESyntheticStatusResponse                       SetEVSESyntheticStatusResponse,
-                                       OnExceptionDelegate                                      OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
+                                       HTTPResponse                                             HTTPResponse                                     = null,
+                                       OnExceptionDelegate                                      OnException                                      = null)
         {
 
             try
@@ -215,8 +233,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(SetEVSESyntheticStatusResponseText).Root,
-                             CustomSendSetEVSESyntheticStatusResponseParser,
                              out SetEVSESyntheticStatusResponse,
+                             CustomSendSetEVSESyntheticStatusResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -486,16 +505,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetEVSESyntheticStatusResponse response.
             /// </summary>
-            public override SetEVSESyntheticStatusResponse ToImmutable
+            /// <param name="Builder">A SetEVSESyntheticStatusResponse response builder.</param>
+            public static implicit operator SetEVSESyntheticStatusResponse(Builder Builder)
 
-                => new SetEVSESyntheticStatusResponse(Request,
-                                                      TransactionId,
-                                                      RequestStatus);
+                => new SetEVSESyntheticStatusResponse(Builder.Request,
+                                                      Builder.TransactionId,
+                                                      Builder.RequestStatus);
 
             #endregion
 

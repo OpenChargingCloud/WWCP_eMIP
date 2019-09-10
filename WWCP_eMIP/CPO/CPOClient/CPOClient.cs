@@ -23,6 +23,8 @@ using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json.Linq;
+
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
@@ -41,6 +43,80 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     public partial class CPOClient : ASOAPClient,
                                      ICPOClient
     {
+
+        public class CPOCounters
+        {
+
+            public CounterValues SendHeartbeat                             { get; }
+
+            public CounterValues SetChargingPoolAvailabilityStatus         { get; }
+            public CounterValues SetChargingStationAvailabilityStatus      { get; }
+            public CounterValues SetEVSEAvailabilityStatus                 { get; }
+            public CounterValues SetChargingConnectorAvailabilityStatus    { get; }
+
+            public CounterValues SetEVSEBusyStatus                         { get; }
+            public CounterValues SetEVSESyntheticStatus                    { get; }
+
+            public CounterValues GetServiceAuthorisation                   { get; }
+            public CounterValues SetSessionEventReport                     { get; }
+
+            public CounterValues SetChargeDetailRecord                     { get; }
+
+
+            public CPOCounters(CounterValues? SendHeartbeat                            = null,
+
+                               CounterValues? SetChargingPoolAvailabilityStatus        = null,
+                               CounterValues? SetChargingStationAvailabilityStatus     = null,
+                               CounterValues? SetEVSEAvailabilityStatus                = null,
+                               CounterValues? SetChargingConnectorAvailabilityStatus   = null,
+
+                               CounterValues? SetEVSEBusyStatus                        = null,
+                               CounterValues? SetEVSESyntheticStatus                   = null,
+
+                               CounterValues? GetServiceAuthorisation                  = null,
+                               CounterValues? SetSessionEventReport                    = null,
+
+                               CounterValues? SetChargeDetailRecord                    = null)
+            {
+
+                this.SendHeartbeat                           = SendHeartbeat                          ?? new CounterValues();
+
+                this.SetChargingPoolAvailabilityStatus       = SetChargingPoolAvailabilityStatus      ?? new CounterValues();
+                this.SetChargingStationAvailabilityStatus    = SetChargingStationAvailabilityStatus   ?? new CounterValues();
+                this.SetEVSEAvailabilityStatus               = SetEVSEAvailabilityStatus              ?? new CounterValues();
+                this.SetChargingConnectorAvailabilityStatus  = SetChargingConnectorAvailabilityStatus ?? new CounterValues();
+
+                this.SetEVSEBusyStatus                       = SetEVSEBusyStatus                      ?? new CounterValues();
+                this.SetEVSESyntheticStatus                  = SetEVSESyntheticStatus                 ?? new CounterValues();
+
+                this.GetServiceAuthorisation                 = GetServiceAuthorisation                ?? new CounterValues();
+                this.SetSessionEventReport                   = SetSessionEventReport                  ?? new CounterValues();
+
+                this.SetChargeDetailRecord                   = SetChargeDetailRecord                  ?? new CounterValues();
+
+            }
+
+            public JObject ToJSON()
+
+                => JSONObject.Create(
+                       new JProperty("SendHeartbeat",                           SendHeartbeat.                         ToJSON()),
+
+                       new JProperty("SetChargingPoolAvailabilityStatus",       SetChargingPoolAvailabilityStatus.     ToJSON()),
+                       new JProperty("SetChargingStationAvailabilityStatus",    SetChargingStationAvailabilityStatus.  ToJSON()),
+                       new JProperty("SetEVSEAvailabilityStatus",               SetEVSEAvailabilityStatus.             ToJSON()),
+                       new JProperty("SetChargingConnectorAvailabilityStatus",  SetChargingConnectorAvailabilityStatus.ToJSON()),
+
+                       new JProperty("SetEVSEBusyStatus",                       SetEVSEBusyStatus.                     ToJSON()),
+                       new JProperty("SetEVSESyntheticStatus",                  SetEVSESyntheticStatus.                ToJSON()),
+
+                       new JProperty("GetServiceAuthorisation",                 GetServiceAuthorisation.               ToJSON()),
+                       new JProperty("SetSessionEventReport",                   SetSessionEventReport.                 ToJSON()),
+
+                       new JProperty("SetChargeDetailRecord",                   SetChargeDetailRecord.                 ToJSON())
+                   );
+
+        }
+
 
         #region Data
 
@@ -70,9 +146,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         #region Properties
 
         /// <summary>
+        /// CPO client event counters.
+        /// </summary>
+        public CPOCounters      Counters    { get; }
+
+        /// <summary>
         /// The attached eMIP CPO client (HTTP/SOAP client) logger.
         /// </summary>
-        public CPOClientLogger  Logger   { get; }
+        public CPOClientLogger  Logger      { get; }
 
         #endregion
 
@@ -893,18 +974,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOClient(String                               ClientId,
                          HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                   = null,
-                         RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                            URIPrefix                    = null,
-                         String                               HTTPUserAgent                = DefaultHTTPUserAgent,
-                         TimeSpan?                            RequestTimeout               = null,
-                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
-                         Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
-                         DNSClient                            DNSClient                    = null,
-                         String                               LoggingContext               = CPOClientLogger.DefaultContext,
-                         LogfileCreatorDelegate               LogfileCreator               = null)
+                         IPPort?                              RemotePort                               = null,
+                         RemoteCertificateValidationCallback  RemoteCertificateValidator               = null,
+                         LocalCertificateSelectionCallback    ClientCertificateSelector                = null,
+                         HTTPHostname?                        HTTPVirtualHost                          = null,
+                         HTTPPath?                            URIPrefix                                = null,
+                         String                               HTTPUserAgent                            = DefaultHTTPUserAgent,
+                         TimeSpan?                            RequestTimeout                           = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay                   = null,
+                         Byte?                                MaxNumberOfRetries                       = DefaultMaxNumberOfRetries,
+
+                         CounterValues?                       SendHeartbeat                            = null,
+                         CounterValues?                       SetChargingPoolAvailabilityStatus        = null,
+                         CounterValues?                       SetChargingStationAvailabilityStatus     = null,
+                         CounterValues?                       SetEVSEAvailabilityStatus                = null,
+                         CounterValues?                       SetChargingConnectorAvailabilityStatus   = null,
+                         CounterValues?                       SetEVSEBusyStatus                        = null,
+                         CounterValues?                       SetEVSESyntheticStatus                   = null,
+                         CounterValues?                       GetServiceAuthorisation                  = null,
+                         CounterValues?                       SetSessionEventReport                    = null,
+                         CounterValues?                       SetChargeDetailRecord                    = null,
+
+                         DNSClient                            DNSClient                                = null,
+                         String                               LoggingContext                           = CPOClientLogger.DefaultContext,
+                         LogfileCreatorDelegate               LogfileCreator                           = null)
 
             : base(ClientId,
                    Hostname,
@@ -922,9 +1015,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.Logger  = new CPOClientLogger(this,
-                                               LoggingContext,
-                                               LogfileCreator);
+            this.Counters  = new CPOCounters(SendHeartbeat,
+                                             SetChargingPoolAvailabilityStatus,
+                                             SetChargingStationAvailabilityStatus,
+                                             SetEVSEAvailabilityStatus,
+                                             SetChargingConnectorAvailabilityStatus,
+                                             SetEVSEBusyStatus,
+                                             SetEVSESyntheticStatus,
+                                             GetServiceAuthorisation,
+                                             SetSessionEventReport,
+                                             SetChargeDetailRecord);
+
+            this.Logger    = new CPOClientLogger(this,
+                                                 LoggingContext,
+                                                 LogfileCreator);
 
         }
 
@@ -951,16 +1055,28 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOClient(String                               ClientId,
                          CPOClientLogger                      Logger,
                          HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                   = null,
-                         RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                            URIPrefix                    = null,
-                         String                               HTTPUserAgent                = DefaultHTTPUserAgent,
-                         TimeSpan?                            RequestTimeout               = null,
-                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
-                         Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
-                         DNSClient                            DNSClient                    = null)
+                         IPPort?                              RemotePort                                      = null,
+                         RemoteCertificateValidationCallback  RemoteCertificateValidator                      = null,
+                         LocalCertificateSelectionCallback    ClientCertificateSelector                       = null,
+                         HTTPHostname?                        HTTPVirtualHost                                 = null,
+                         HTTPPath?                            URIPrefix                                       = null,
+                         String                               HTTPUserAgent                                   = DefaultHTTPUserAgent,
+                         TimeSpan?                            RequestTimeout                                  = null,
+                         TransmissionRetryDelayDelegate       TransmissionRetryDelay                          = null,
+                         Byte?                                MaxNumberOfRetries                              = DefaultMaxNumberOfRetries,
+
+                         CounterValues?                       SendHeartbeatCounter                            = null,
+                         CounterValues?                       SetChargingPoolAvailabilityStatusCounter        = null,
+                         CounterValues?                       SetChargingStationAvailabilityStatusCounter     = null,
+                         CounterValues?                       SetEVSEAvailabilityStatusCounter                = null,
+                         CounterValues?                       SetChargingConnectorAvailabilityStatusCounter   = null,
+                         CounterValues?                       SetEVSEBusyStatusCounter                        = null,
+                         CounterValues?                       SetEVSESyntheticStatusCounter                   = null,
+                         CounterValues?                       GetServiceAuthorisationCounter                  = null,
+                         CounterValues?                       SetSessionEventReportCounter                    = null,
+                         CounterValues?                       SetChargeDetailRecordCounter                    = null,
+
+                         DNSClient                            DNSClient                                       = null)
 
             : base(ClientId,
                    Hostname,
@@ -978,7 +1094,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.Logger  = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
+            this.Counters  = new CPOCounters(SendHeartbeatCounter,
+                                             SetChargingPoolAvailabilityStatusCounter,
+                                             SetChargingStationAvailabilityStatusCounter,
+                                             SetEVSEAvailabilityStatusCounter,
+                                             SetChargingConnectorAvailabilityStatusCounter,
+                                             SetEVSEBusyStatusCounter,
+                                             SetEVSESyntheticStatusCounter,
+                                             GetServiceAuthorisationCounter,
+                                             SetSessionEventReportCounter,
+                                             SetChargeDetailRecordCounter);
+
+            this.Logger    = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
 
         }
 
@@ -1022,6 +1149,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SendHeartbeat.IncRequests();
+
                 if (OnSendHeartbeatRequest != null)
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
                                        Cast<OnSendHeartbeatRequestDelegate>().
@@ -1045,150 +1174,143 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            do
+            // No retransmissions for heartbeats!
+            using (var _eMIPClient = new SOAPClient(Hostname,
+                                                    URIPrefix,
+                                                    VirtualHostname,
+                                                    RemotePort,
+                                                    RemoteCertificateValidator,
+                                                    ClientCertificateSelector,
+                                                    UserAgent,
+                                                    RequestTimeout,
+                                                    DNSClient))
             {
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
-                                                        VirtualHostname,
-                                                        RemotePort,
-                                                        RemoteCertificateValidator,
-                                                        ClientCertificateSelector,
-                                                        UserAgent,
-                                                        RequestTimeout,
-                                                        DNSClient))
-                {
+                result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
+                                                                                   SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
+                                                 DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
+                                                 RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
+                                                 ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
+                                                 CancellationToken:    Request.CancellationToken,
+                                                 EventTrackingId:      Request.EventTrackingId,
+                                                 RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                 NumberOfRetry:        TransmissionRetry,
 
-                    result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
-                                                                                       SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
-                                                     DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
-                                                     RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
-                                                     ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
-                                                     CancellationToken:    Request.CancellationToken,
-                                                     EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
-                                                     NumberOfRetry:        TransmissionRetry,
+                                                 #region OnSuccess
 
-                                                     #region OnSuccess
+                                                 OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                      (request, xml, httpResonse, onexception) =>
+                                                                                                          HeartbeatResponse.Parse(request,
+                                                                                                                                  xml,
+                                                                                                                                  CustomHeartbeatParser,
+                                                                                                                                  httpResonse,
+                                                                                                                                  onexception)),
 
-                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
-                                                                                                              HeartbeatResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomHeartbeatParser,
-                                                                                                                                      onexception)),
+                                                 #endregion
 
-                                                     #endregion
+                                                 #region OnSOAPFault
 
-                                                     #region OnSOAPFault
+                                                 OnSOAPFault: (timestamp, soapclient, httpresponse) => {
 
-                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+                                                     SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+                                                     return new HTTPResponse<HeartbeatResponse>(
 
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
-                                                                    httpresponse,
-
-                                                                    new HeartbeatResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
-                                                                    ),
-
-                                                                    IsFault: true
-
-                                                                );
-
-                                                     },
-
-                                                     #endregion
-
-                                                     #region OnHTTPError
-
-                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
-
-                                                         SendHTTPError(timestamp, this, httpresponse);
-
-
-                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
-
-                                                             return new HTTPResponse<HeartbeatResponse>(httpresponse,
-                                                                                                        new HeartbeatResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
-                                                                                                        ),
-                                                                                                        IsFault: true);
-
-
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
-                                                                    httpresponse,
-
-                                                                    new HeartbeatResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
-                                                                    ),
-
-                                                                    IsFault: true
-
-                                                                );
-
-                                                     },
-
-                                                     #endregion
-
-                                                     #region OnException
-
-                                                     OnException: (timestamp, sender, exception) => {
-
-                                                         SendException(timestamp, sender, exception);
-
-                                                         return HTTPResponse<HeartbeatResponse>.ExceptionThrown(
+                                                                httpresponse,
 
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                                                    RequestStatus.ServiceNotAvailable
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                    RequestStatus.DataError,
+                                                                    httpresponse
                                                                 ),
 
-                                                                Exception: exception
+                                                                IsFault: true
 
                                                             );
 
-                                                     }
+                                                 },
 
-                                                     #endregion
+                                                 #endregion
 
-                                                    );
+                                                 #region OnHTTPError
 
-                }
+                                                 OnHTTPError: (timestamp, soapclient, httpresponse) => {
 
-                if (result == null)
-                    result = HTTPResponse<HeartbeatResponse>.OK(
-                                 new HeartbeatResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                                                     SendHTTPError(timestamp, this, httpresponse);
+
+
+                                                     if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                         httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
+
+                                                         return new HTTPResponse<HeartbeatResponse>(httpresponse,
+                                                                                                    new HeartbeatResponse(
+                                                                                                        Request,
+                                                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                                                        RequestStatus.HTTPError,
+                                                                                                        httpresponse
+                                                                                                    ),
+                                                                                                    IsFault: true);
+
+
+                                                     return new HTTPResponse<HeartbeatResponse>(
+
+                                                                httpresponse,
+
+                                                                new HeartbeatResponse(
+                                                                    Request,
+                                                                    Request.TransactionId ?? Transaction_Id.Zero,
+                                                                    RequestStatus.SystemError,
+                                                                    httpresponse
+                                                                ),
+
+                                                                IsFault: true
+
+                                                            );
+
+                                                 },
+
+                                                 #endregion
+
+                                                 #region OnException
+
+                                                 OnException: (timestamp, sender, exception) => {
+
+                                                     SendException(timestamp, sender, exception);
+
+                                                     return HTTPResponse<HeartbeatResponse>.ExceptionThrown(
+
+                                                            new HeartbeatResponse(
+                                                                Request,
+                                                                Request.TransactionId ?? Transaction_Id.Zero,
+                                                                RequestStatus.ServiceNotAvailable
+                                                                //httpresponse.HTTPStatusCode.ToString(),
+                                                                //httpresponse.HTTPBody.      ToUTF8String()
+                                                            ),
+
+                                                            Exception: exception
+
+                                                        );
+
+                                                 }
+
+                                                 #endregion
+
+                                                );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
-                   TransmissionRetry++ < MaxNumberOfRetries);
+
+            if (result == null)
+                result = HTTPResponse<HeartbeatResponse>.OK(
+                             new HeartbeatResponse(
+                                 Request,
+                                 Request.TransactionId ?? Transaction_Id.Zero,
+                                 RequestStatus.SystemError
+                                 //"HTTP request failed!"
+                             )
+                         );
 
 
             #region Send OnSendHeartbeatResponse event
@@ -1197,6 +1319,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SendHeartbeat.IncResponses_OK();
+                else
+                    Counters.SendHeartbeat.IncResponses_Error();
+
 
                 if (OnSendHeartbeatResponse != null)
                     await Task.WhenAll(OnSendHeartbeatResponse.GetInvocationList().
@@ -1264,6 +1393,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetChargingPoolAvailabilityStatus.IncRequests();
+
                 if (OnSetChargingPoolAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusRequestDelegate>().
@@ -1294,7 +1425,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-
             if (!Request.ChargingPoolId.ToString().StartsWith("DE*BDO*E666181358*") &&
                 !Request.ChargingPoolId.ToString().StartsWith("DE*BDO*ChargingPool*CI*TESTS"))
                     result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
@@ -1310,6 +1440,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -1335,11 +1468,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingPoolAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingPoolAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                              xml,
+                                                                                                                                                              CustomSetChargingPoolAvailabilityStatusParser,
+                                                                                                                                                              httpResonse,
+                                                                                                                                                              onexception)),
 
                                                      #endregion
 
@@ -1356,8 +1490,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1384,9 +1518,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingPoolAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -1398,9 +1531,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1450,7 +1582,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -1460,6 +1593,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetChargingPoolAvailabilityStatus.IncResponses_OK();
+                else
+                    Counters.SetChargingPoolAvailabilityStatus.IncResponses_Error();
+
 
                 if (OnSetChargingPoolAvailabilityStatusResponse != null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusResponse.GetInvocationList().
@@ -1498,6 +1638,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
+
         #region SetChargingStationAvailabilityStatus  (Request)
 
         /// <summary>
@@ -1533,6 +1674,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetChargingStationAvailabilityStatus.IncRequests();
+
                 if (OnSetChargingStationAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusRequestDelegate>().
@@ -1563,7 +1706,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-
             if (!Request.ChargingStationId.ToString().StartsWith("DE*BDO*E666181358*") &&
                 !Request.ChargingStationId.ToString().StartsWith("DE*BDO*ChargingStation*CI*TESTS"))
                     result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
@@ -1579,6 +1721,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -1604,11 +1749,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingStationAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingStationAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                                 xml,
+                                                                                                                                                                 CustomSetChargingStationAvailabilityStatusParser,
+                                                                                                                                                                 httpResonse,
+                                                                                                                                                                 onexception)),
 
                                                      #endregion
 
@@ -1625,8 +1771,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1653,9 +1799,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingStationAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -1667,9 +1812,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1719,7 +1863,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -1729,6 +1874,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetChargingStationAvailabilityStatus.IncResponses_OK();
+                else
+                    Counters.SetChargingStationAvailabilityStatus.IncResponses_Error();
+
 
                 if (OnSetChargingStationAvailabilityStatusResponse != null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusResponse.GetInvocationList().
@@ -1802,6 +1954,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetEVSEAvailabilityStatus.IncRequests();
+
                 if (OnSetEVSEAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusRequestDelegate>().
@@ -1832,22 +1986,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+            //                     new SetEVSEAvailabilityStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
-                                 new SetEVSEAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
-
-            else
+            //else
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -1873,11 +2030,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSEAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSEAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                      xml,
+                                                                                                                                                      CustomSetEVSEAvailabilityStatusParser,
+                                                                                                                                                      httpResonse,
+                                                                                                                                                      onexception)),
 
                                                      #endregion
 
@@ -1894,8 +2052,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1922,9 +2080,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSEAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -1936,9 +2093,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -1988,7 +2144,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -1998,6 +2155,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetEVSEAvailabilityStatus.IncResponses_OK();
+                else
+                    Counters.SetEVSEAvailabilityStatus.IncResponses_Error();
+
 
                 if (OnSetEVSEAvailabilityStatusResponse != null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusResponse.GetInvocationList().
@@ -2071,6 +2235,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetChargingConnectorAvailabilityStatus.IncRequests();
+
                 if (OnSetChargingConnectorAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusRequestDelegate>().
@@ -2101,7 +2267,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-
             if (!Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*E666181358*") &&
                 !Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*ChargingConnector*CI*TESTS"))
                     result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
@@ -2117,6 +2282,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -2142,11 +2310,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargingConnectorAvailabilityStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetChargingConnectorAvailabilityStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                                   xml,
+                                                                                                                                                                   CustomSetChargingConnectorAvailabilityStatusParser,
+                                                                                                                                                                   httpResonse,
+                                                                                                                                                                   onexception)),
 
                                                      #endregion
 
@@ -2163,8 +2332,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2191,9 +2360,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargingConnectorAvailabilityStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2205,9 +2373,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2257,7 +2424,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -2267,6 +2435,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetChargingConnectorAvailabilityStatus.IncResponses_OK();
+                else
+                    Counters.SetChargingConnectorAvailabilityStatus.IncResponses_Error();
+
 
                 if (OnSetChargingConnectorAvailabilityStatusResponse != null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusResponse.GetInvocationList().
@@ -2341,6 +2516,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetEVSEBusyStatus.IncRequests();
+
                 if (OnSetEVSEBusyStatusRequest != null)
                     await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusRequestDelegate>().
@@ -2371,21 +2548,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
-                                 new SetEVSEBusyStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+            //                     new SetEVSEBusyStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -2411,11 +2591,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSEBusyStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSEBusyStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                              xml,
+                                                                                                                                              CustomSetEVSEBusyStatusParser,
+                                                                                                                                              httpResonse,
+                                                                                                                                              onexception)),
 
                                                      #endregion
 
@@ -2432,8 +2613,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2460,9 +2641,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSEBusyStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2474,9 +2654,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2526,7 +2705,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -2536,6 +2716,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetEVSEBusyStatus.IncResponses_OK();
+                else
+                    Counters.SetEVSEBusyStatus.IncResponses_Error();
+
 
                 if (OnSetEVSEBusyStatusResponse != null)
                     await Task.WhenAll(OnSetEVSEBusyStatusResponse.GetInvocationList().
@@ -2609,6 +2796,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetEVSESyntheticStatus.IncRequests();
+
                 if (OnSetEVSESyntheticStatusRequest != null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusRequestDelegate>().
@@ -2659,6 +2848,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -2683,11 +2875,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetEVSESyntheticStatusResponse.Parse(request,
-                                                                                                                                      xml,
-                                                                                                                                      CustomSetEVSESyntheticStatusParser,
-                                                                                                                                      onexception)),
+                                                                                                                                                   xml,
+                                                                                                                                                   CustomSetEVSESyntheticStatusParser,
+                                                                                                                                                   httpResonse,
+                                                                                                                                                   onexception)),
 
                                                      #endregion
 
@@ -2704,8 +2897,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2732,9 +2925,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetEVSESyntheticStatusResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -2746,9 +2938,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -2798,7 +2989,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -2808,6 +3000,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetEVSESyntheticStatus.IncResponses_OK();
+                else
+                    Counters.SetEVSESyntheticStatus.IncResponses_Error();
+
 
                 if (OnSetEVSESyntheticStatusResponse != null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusResponse.GetInvocationList().
@@ -2886,6 +3085,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.GetServiceAuthorisation.IncRequests();
+
                 if (OnGetServiceAuthorisationRequest != null)
                     await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationRequestDelegate>().
@@ -2931,6 +3132,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -2955,11 +3159,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               GetServiceAuthorisationResponse.Parse(request,
                                                                                                                                                     xml,
                                                                                                                                                     CustomGetServiceAuthorisationParser,
                                                                                                                                                     CustomMeterReportParser,
+                                                                                                                                                    httpResonse,
                                                                                                                                                     onexception)),
 
                                                      #endregion
@@ -2977,8 +3182,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3005,9 +3210,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new GetServiceAuthorisationResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3019,9 +3223,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3071,7 +3274,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -3081,6 +3285,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.GetServiceAuthorisation.IncResponses_OK();
+                else
+                    Counters.GetServiceAuthorisation.IncResponses_Error();
+
 
                 if (OnGetServiceAuthorisationResponse != null)
                     await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
@@ -3155,6 +3366,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetSessionEventReport.IncRequests();
+
                 if (OnSetSessionEventReportRequest != null)
                     await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                        Cast<OnSetSessionEventReportRequestDelegate>().
@@ -3184,23 +3397,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-            //        result = HTTPResponse<SetSessionEventReportResponse>.OK(
-            //                     new SetSessionEventReportResponse(
-            //                         Request,
-            //                         Request.TransactionId ?? Transaction_Id.Zero,
-            //                         RequestStatus.ServiceNotAvailable,
-            //                         ServiceSession_Id.Zero,
-            //                         SessionAction_Id.Zero
-            //                     //"HTTP request failed!"
-            //                     )
-            //                 );
-
-            //else
-
             do
             {
+
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
@@ -3226,10 +3427,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetSessionEventReportResponse.Parse(request,
                                                                                                                                                   xml,
                                                                                                                                                   CustomSetSessionEventReportParser,
+                                                                                                                                                  httpResonse,
                                                                                                                                                   onexception)),
 
                                                      #endregion
@@ -3249,8 +3451,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.Content.ToString()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3279,9 +3481,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
                                                                                                             RequestStatus.HTTPError,
                                                                                                             ServiceSession_Id.Zero,
-                                                                                                            SessionAction_Id.Zero
-                                                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            SessionAction_Id.Zero,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3295,9 +3496,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         ServiceSession_Id.Zero,
-                                                                        SessionAction_Id.Zero
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        SessionAction_Id.Zero,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3351,7 +3551,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -3361,6 +3562,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetSessionEventReport.IncResponses_OK();
+                else
+                    Counters.SetSessionEventReport.IncResponses_Error();
+
 
                 if (OnSetSessionEventReportResponse != null)
                     await Task.WhenAll(OnSetSessionEventReportResponse.GetInvocationList().
@@ -3434,6 +3642,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
+                Counters.SetChargeDetailRecord.IncRequests();
+
                 if (OnSetChargeDetailRecordRequest != null)
                     await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordRequestDelegate>().
@@ -3476,6 +3686,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             do
             {
 
+                if (TransmissionRetry > 0)
+                    await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
+
                 using (var _eMIPClient = new SOAPClient(Hostname,
                                                         URIPrefix,
                                                         VirtualHostname,
@@ -3502,10 +3715,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      #region OnSuccess
 
                                                      OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, onexception) =>
+                                                                                                          (request, xml, httpResonse, onexception) =>
                                                                                                               SetChargeDetailRecordResponse.Parse(request,
                                                                                                                                                   xml,
                                                                                                                                                   CustomSetChargeDetailRecordParser,
+                                                                                                                                                  httpResonse,
                                                                                                                                                   onexception)),
 
                                                      #endregion
@@ -3523,8 +3737,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError
-                                                                        //httpresponse.Content.ToString()
+                                                                        RequestStatus.DataError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3551,9 +3765,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                                         new SetChargeDetailRecordResponse(
                                                                                                             Request,
                                                                                                             Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError
-                                                                                                            //httpresponse.HTTPStatusCode.ToString(),
-                                                                                                            //httpresponse.HTTPBody.      ToUTF8String()
+                                                                                                            RequestStatus.HTTPError,
+                                                                                                            httpresponse
                                                                                                         ),
                                                                                                         IsFault: true);
 
@@ -3565,9 +3778,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError
-                                                                        //httpresponse.HTTPStatusCode.ToString(),
-                                                                        //httpresponse.HTTPBody.      ToUTF8String()
+                                                                        RequestStatus.SystemError,
+                                                                        httpresponse
                                                                     ),
 
                                                                     IsFault: true
@@ -3617,7 +3829,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              );
 
             }
-            while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
+            while ((result.HTTPStatusCode.IsServerError ||
+                    result.HTTPStatusCode == HTTPStatusCode.RequestTimeout) &&
                    TransmissionRetry++ < MaxNumberOfRetries);
 
 
@@ -3627,6 +3840,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             try
             {
+
+                // Update counters
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                    Counters.SetChargeDetailRecord.IncResponses_OK();
+                else
+                    Counters.SetChargeDetailRecord.IncResponses_Error();
+
 
                 if (OnSetChargeDetailRecordResponse != null)
                     await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().

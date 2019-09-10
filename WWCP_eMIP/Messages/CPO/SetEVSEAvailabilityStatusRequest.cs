@@ -23,6 +23,7 @@ using System.Threading;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -83,6 +84,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="AvailabilityStatusUntil">An optional timestamp until which the given availability status is valid.</param>
         /// <param name="AvailabilityStatusComment">An optional comment about the availability status.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -96,12 +98,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                 DateTime?                    AvailabilityStatusUntil     = null,
                                                 String                       AvailabilityStatusComment   = null,
 
+                                                HTTPRequest                  HTTPRequest                 = null,
                                                 DateTime?                    Timestamp                   = null,
                                                 CancellationToken?           CancellationToken           = null,
                                                 EventTracking_Id             EventTrackingId             = null,
                                                 TimeSpan?                    RequestTimeout              = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -169,6 +173,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -177,6 +182,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                                              OnExceptionDelegate                                        OnException         = null,
 
+                                                             HTTPRequest                                                HTTPRequest         = null,
                                                              DateTime?                                                  Timestamp           = null,
                                                              CancellationToken?                                         CancellationToken   = null,
                                                              EventTracking_Id                                           EventTrackingId     = null,
@@ -188,6 +194,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetEVSEAvailabilityStatusRequest _SetEVSEAvailabilityStatusRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -211,6 +218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetEVSEAvailabilityStatusRequestParser">An optional delegate to parse custom SetEVSEAvailabilityStatusRequest XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -219,6 +227,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              CustomXMLParserDelegate<SetEVSEAvailabilityStatusRequest>  CustomSendSetEVSEAvailabilityStatusRequestParser,
                                                              OnExceptionDelegate                                        OnException         = null,
 
+                                                             HTTPRequest                                                HTTPRequest         = null,
                                                              DateTime?                                                  Timestamp           = null,
                                                              CancellationToken?                                         CancellationToken   = null,
                                                              EventTracking_Id                                           EventTrackingId     = null,
@@ -230,6 +239,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetEVSEAvailabilityStatusRequest _SetEVSEAvailabilityStatusRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -254,6 +264,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -263,6 +274,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out SetEVSEAvailabilityStatusRequest                       SetEVSEAvailabilityStatusRequest,
                                        OnExceptionDelegate                                        OnException         = null,
 
+                                       HTTPRequest                                                HTTPRequest         = null,
                                        DateTime?                                                  Timestamp           = null,
                                        CancellationToken?                                         CancellationToken   = null,
                                        EventTracking_Id                                           EventTrackingId     = null,
@@ -289,6 +301,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                        SetEVSEAvailabilityStatusRequestXML.MapValueOrNullable("availabilityStatusUntil",  DateTime.Parse),
                                                        SetEVSEAvailabilityStatusRequestXML.MapValueOrNull    ("availabilityStatusComment"),
 
+                                                       HTTPRequest,
                                                        Timestamp,
                                                        CancellationToken,
                                                        EventTrackingId,
@@ -328,6 +341,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusRequest">The parsed heartbeat request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -337,6 +351,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        out SetEVSEAvailabilityStatusRequest                       SetEVSEAvailabilityStatusRequest,
                                        OnExceptionDelegate                                        OnException         = null,
 
+                                       HTTPRequest                                                HTTPRequest         = null,
                                        DateTime?                                                  Timestamp           = null,
                                        CancellationToken?                                         CancellationToken   = null,
                                        EventTracking_Id                                           EventTrackingId     = null,
@@ -351,6 +366,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out SetEVSEAvailabilityStatusRequest,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

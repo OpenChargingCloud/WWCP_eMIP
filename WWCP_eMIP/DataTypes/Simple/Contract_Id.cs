@@ -49,6 +49,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
+        /// Indicates whether this identification is null or empty.
+        /// </summary>
+        public Boolean IsNullOrEmpty
+            => InternalId.IsNullOrEmpty();
+
+        /// <summary>
         /// The length of the contract identificator.
         /// </summary>
         public UInt64 Length
@@ -179,7 +185,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (ContractId1, ContractId2)
+        #region Operator == (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -204,7 +210,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider != (ContractId1, ContractId2)
+        #region Operator != (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -217,7 +223,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <  (ContractId1, ContractId2)
+        #region Operator <  (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -237,7 +243,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <= (ContractId1, ContractId2)
+        #region Operator <= (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -250,7 +256,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >  (ContractId1, ContractId2)
+        #region Operator >  (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -270,7 +276,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >= (ContractId1, ContractId2)
+        #region Operator >= (ContractId1, ContractId2)
 
         /// <summary>
         /// Compares two instances of this object.

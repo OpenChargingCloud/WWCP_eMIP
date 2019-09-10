@@ -49,6 +49,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
+        /// Indicates whether this identification is null or empty.
+        /// </summary>
+        public Boolean IsNullOrEmpty
+            => InternalId.IsNullOrEmpty();
+
+        /// <summary>
         /// The length of the partner service session identificator.
         /// </summary>
         public UInt64 Length
@@ -186,7 +192,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator == (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -211,7 +217,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider != (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator != (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -224,7 +230,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator <  (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -244,7 +250,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator <= (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -257,7 +263,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >  (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator >  (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -277,7 +283,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >= (PartnerServiceSessionId1, PartnerServiceSessionId2)
+        #region Operator >= (PartnerServiceSessionId1, PartnerServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.

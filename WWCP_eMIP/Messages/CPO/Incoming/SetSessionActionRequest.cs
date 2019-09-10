@@ -23,6 +23,7 @@ using System.Threading;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -78,6 +79,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">An optional transaction identification.</param>
         /// <param name="ExecPartnerSessionId">The partner service session identification.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -88,15 +90,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        ServiceSession_Id          ServiceSessionId,
                                        SessionAction              SessionAction,
 
-                                       Transaction_Id?            TransactionId            = null,
-                                       PartnerServiceSession_Id?  ExecPartnerSessionId     = null,
+                                       Transaction_Id?            TransactionId          = null,
+                                       PartnerServiceSession_Id?  ExecPartnerSessionId   = null,
 
-                                       DateTime?                  Timestamp                = null,
-                                       CancellationToken?         CancellationToken        = null,
-                                       EventTracking_Id           EventTrackingId          = null,
-                                       TimeSpan?                  RequestTimeout           = null)
+                                       HTTPRequest                HTTPRequest            = null,
+                                       DateTime?                  Timestamp              = null,
+                                       CancellationToken?         CancellationToken      = null,
+                                       EventTracking_Id           EventTrackingId        = null,
+                                       TimeSpan?                  RequestTimeout         = null)
 
-            : base(PartnerId,
+            : base(HTTPRequest,
+                   PartnerId,
                    TransactionId,
                    Timestamp,
                    CancellationToken,
@@ -173,6 +177,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -180,12 +185,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public static SetSessionActionRequest Parse(XElement                                          SetSessionActionRequestXML,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException        = null,
+                                                    OnExceptionDelegate                               OnException         = null,
 
-                                                    DateTime?                                         Timestamp          = null,
-                                                    CancellationToken?                                CancellationToken  = null,
-                                                    EventTracking_Id                                  EventTrackingId    = null,
-                                                    TimeSpan?                                         RequestTimeout     = null)
+                                                    HTTPRequest                                       HTTPRequest         = null,
+                                                    DateTime?                                         Timestamp           = null,
+                                                    CancellationToken?                                CancellationToken   = null,
+                                                    EventTracking_Id                                  EventTrackingId     = null,
+                                                    TimeSpan?                                         RequestTimeout      = null)
         {
 
             if (TryParse(SetSessionActionRequestXML,
@@ -194,6 +200,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetSessionActionRequest _SetSessionActionRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -218,6 +225,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -225,12 +233,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public static SetSessionActionRequest Parse(String                                            SetSessionActionRequestText,
                                                     CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException        = null,
+                                                    OnExceptionDelegate                               OnException         = null,
 
-                                                    DateTime?                                         Timestamp          = null,
-                                                    CancellationToken?                                CancellationToken  = null,
-                                                    EventTracking_Id                                  EventTrackingId    = null,
-                                                    TimeSpan?                                         RequestTimeout     = null)
+                                                    HTTPRequest                                       HTTPRequest         = null,
+                                                    DateTime?                                         Timestamp           = null,
+                                                    CancellationToken?                                CancellationToken   = null,
+                                                    EventTracking_Id                                  EventTrackingId     = null,
+                                                    TimeSpan?                                         RequestTimeout      = null)
         {
 
             if (TryParse(SetSessionActionRequestText,
@@ -239,6 +248,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          out SetSessionActionRequest _SetSessionActionRequest,
                          OnException,
 
+                         HTTPRequest,
                          Timestamp,
                          CancellationToken,
                          EventTrackingId,
@@ -264,6 +274,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionRequest">The parsed SetSessionAction request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -272,19 +283,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                        CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                        out SetSessionActionRequest                       SetSessionActionRequest,
-                                       OnExceptionDelegate                               OnException        = null,
+                                       OnExceptionDelegate                               OnException         = null,
 
-                                       DateTime?                                         Timestamp          = null,
-                                       CancellationToken?                                CancellationToken  = null,
-                                       EventTracking_Id                                  EventTrackingId    = null,
-                                       TimeSpan?                                         RequestTimeout     = null)
+                                       HTTPRequest                                       HTTPRequest         = null,
+                                       DateTime?                                         Timestamp           = null,
+                                       CancellationToken?                                CancellationToken   = null,
+                                       EventTracking_Id                                  EventTrackingId     = null,
+                                       TimeSpan?                                         RequestTimeout      = null)
         {
 
             try
             {
-
-                var SessionActionXML = SetSessionActionRequestXML.ElementOrFail("sessionAction");
-
 
                 SetSessionActionRequest = new SetSessionActionRequest(
 
@@ -299,7 +308,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                      SetSessionActionRequestXML.MapValueOrFail    ("serviceSessionId",         ServiceSession_Id.       Parse),
 
-                                                     SessionActionXML.          MapElementOrFail  ("sessionAction",
+                                                     SetSessionActionRequestXML.MapElementOrFail  ("sessionAction",
                                                                                                    (s, e) => SessionAction.Parse(s,
                                                                                                                                  CustomSessionActionParser,
                                                                                                                                  e),
@@ -307,9 +316,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                      SetSessionActionRequestXML.MapValueOrNullable("transactionId",            Transaction_Id.          Parse),
 
-                                                     SetSessionActionRequestXML.MapValueOrFail    ("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
+                                                     SetSessionActionRequestXML.MapValueOrNullable("execPartnerSessionId",     PartnerServiceSession_Id.Parse),
 
 
+                                                     HTTPRequest,
                                                      Timestamp,
                                                      CancellationToken,
                                                      EventTrackingId,
@@ -350,6 +360,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionRequest">The parsed SetSessionAction request.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         /// 
+        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
@@ -358,12 +369,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
                                        CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                        out SetSessionActionRequest                       SetSessionActionRequest,
-                                       OnExceptionDelegate                               OnException        = null,
+                                       OnExceptionDelegate                               OnException         = null,
 
-                                       DateTime?                                         Timestamp          = null,
-                                       CancellationToken?                                CancellationToken  = null,
-                                       EventTracking_Id                                  EventTrackingId    = null,
-                                       TimeSpan?                                         RequestTimeout     = null)
+                                       HTTPRequest                                       HTTPRequest         = null,
+                                       DateTime?                                         Timestamp           = null,
+                                       CancellationToken?                                CancellationToken   = null,
+                                       EventTracking_Id                                  EventTrackingId     = null,
+                                       TimeSpan?                                         RequestTimeout      = null)
         {
 
             try
@@ -375,6 +387,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                              out SetSessionActionRequest,
                              OnException,
 
+                             HTTPRequest,
                              Timestamp,
                              CancellationToken,
                              EventTrackingId,

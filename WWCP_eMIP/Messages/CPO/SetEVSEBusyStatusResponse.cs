@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -45,15 +46,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEBusyStatus request leading to this response.</param>
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public SetEVSEBusyStatusResponse(SetEVSEBusyStatusRequest             Request,
                                          Transaction_Id                       TransactionId,
                                          RequestStatus                        RequestStatus,
-                                         IReadOnlyDictionary<String, Object>  CustomData  = null)
+
+                                         HTTPResponse                         HTTPResponse   = null,
+                                         IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -87,17 +93,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEBusyStatus request leading to this response.</param>
         /// <param name="SetEVSEBusyStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEBusyStatusResponse Parse(SetEVSEBusyStatusRequest                            Request,
                                                       XElement                                            SetEVSEBusyStatusResponseXML,
-                                                      CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser,
-                                                      OnExceptionDelegate                                 OnException = null)
+                                                      CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
+                                                      HTTPResponse                                        HTTPResponse                                = null,
+                                                      OnExceptionDelegate                                 OnException                                 = null)
         {
 
             if (TryParse(Request,
                          SetEVSEBusyStatusResponseXML,
-                         CustomSendSetEVSEBusyStatusResponseParser,
                          out SetEVSEBusyStatusResponse SetEVSEBusyStatusResponse,
+                         CustomSendSetEVSEBusyStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSEBusyStatusResponse;
@@ -117,17 +126,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="Request">The SetEVSEBusyStatus request leading to this response.</param>
         /// <param name="SetEVSEBusyStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetEVSEBusyStatusResponse Parse(SetEVSEBusyStatusRequest                            Request,
                                                       String                                              SetEVSEBusyStatusResponseText,
-                                                      CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser,
-                                                      OnExceptionDelegate                                 OnException = null)
+                                                      CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
+                                                      HTTPResponse                                        HTTPResponse                                = null,
+                                                      OnExceptionDelegate                                 OnException                                 = null)
         {
 
             if (TryParse(Request,
                          SetEVSEBusyStatusResponseText,
-                         CustomSendSetEVSEBusyStatusResponseParser,
                          out SetEVSEBusyStatusResponse SetEVSEBusyStatusResponse,
+                         CustomSendSetEVSEBusyStatusResponseParser,
+                         HTTPResponse,
                          OnException))
             {
                 return SetEVSEBusyStatusResponse;
@@ -146,14 +158,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSEBusyStatus request leading to this response.</param>
         /// <param name="SetEVSEBusyStatusResponseXML">The XML to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="SetEVSEBusyStatusResponse">The parsed SetEVSEBusyStatus response.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSEBusyStatusRequest                            Request,
                                        XElement                                            SetEVSEBusyStatusResponseXML,
-                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser,
                                        out SetEVSEBusyStatusResponse                       SetEVSEBusyStatusResponse,
-                                       OnExceptionDelegate                                 OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
+                                       HTTPResponse                                        HTTPResponse                                = null,
+                                       OnExceptionDelegate                                 OnException                                 = null)
         {
 
             try
@@ -162,7 +176,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 SetEVSEBusyStatusResponse = new SetEVSEBusyStatusResponse(
                                                 Request,
                                                 SetEVSEBusyStatusResponseXML.MapValueOrFail("transactionId",  Transaction_Id.Parse),
-                                                SetEVSEBusyStatusResponseXML.MapValueOrFail("requestStatus",  RequestStatus.Parse)
+                                                SetEVSEBusyStatusResponseXML.MapValueOrFail("requestStatus",  RequestStatus.Parse),
+                                                HTTPResponse
                                             );
 
 
@@ -194,14 +209,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="Request">The SetEVSEBusyStatus request leading to this response.</param>
         /// <param name="SetEVSEBusyStatusResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="SetEVSEBusyStatusResponse">The parsed SetEVSEBusyStatus response.</param>
+        /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(SetEVSEBusyStatusRequest                            Request,
                                        String                                              SetEVSEBusyStatusResponseText,
-                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser,
                                        out SetEVSEBusyStatusResponse                       SetEVSEBusyStatusResponse,
-                                       OnExceptionDelegate                                 OnException  = null)
+                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
+                                       HTTPResponse                                        HTTPResponse                                = null,
+                                       OnExceptionDelegate                                 OnException                                 = null)
         {
 
             try
@@ -209,8 +226,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 if (TryParse(Request,
                              XDocument.Parse(SetEVSEBusyStatusResponseText).Root,
-                             CustomSendSetEVSEBusyStatusResponseParser,
                              out SetEVSEBusyStatusResponse,
+                             CustomSendSetEVSEBusyStatusResponseParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -480,16 +498,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable SetEVSEBusyStatusResponse response.
             /// </summary>
-            public override SetEVSEBusyStatusResponse ToImmutable
+            /// <param name="Builder">A SetEVSEBusyStatusResponse response builder.</param>
+            public static implicit operator SetEVSEBusyStatusResponse(Builder Builder)
 
-                => new SetEVSEBusyStatusResponse(Request,
-                                                 TransactionId,
-                                                 RequestStatus);
+                => new SetEVSEBusyStatusResponse(Builder.Request,
+                                                 Builder.TransactionId,
+                                                 Builder.RequestStatus);
 
             #endregion
 

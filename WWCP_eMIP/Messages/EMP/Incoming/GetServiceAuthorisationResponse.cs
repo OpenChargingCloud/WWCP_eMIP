@@ -24,6 +24,7 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -85,12 +86,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="TransactionId">A transaction identification.</param>
         /// <param name="RequestStatus">The status of the request.</param>
         /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
                                                RequestStatus                        RequestStatus,
 
-                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                               HTTPResponse                         HTTPResponse   = null,
+                                               IReadOnlyDictionary<String, Object>  CustomData     = null)
 
             : this(Request,
                    TransactionId,
@@ -101,6 +104,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                    null,
                    null,
                    null,
+                   HTTPResponse,
                    CustomData)
 
         { }
@@ -118,10 +122,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="PartnerServiceSessionId">The partner session id for this service session.</param>
         /// <param name="IntermediateCDRRequested">Whether the eMSP wishes to receive intermediate charging session records.</param>
         /// <param name="RequestStatus">The status of the request.</param>
+        /// 
         /// <param name="UserContractIdAlias">An optional alias of the contract id between the end-user and the eMSP. This alias may have been anonymised by the eMSP.</param>
         /// <param name="MeterLimits">An optional meter limits for this authorisation: The eMSP can authorise the charge but for less than x kWh or y minutes, or z euros.</param>
         /// <param name="Parameter">Optional information from the CPO to the eMSP.</param>
-        /// 
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
                                                Transaction_Id                       TransactionId,
@@ -133,11 +138,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Contract_Id?                         UserContractIdAlias      = null,
                                                IEnumerable<MeterReport>             MeterLimits              = null,
                                                String                               Parameter                = null,
+                                               HTTPResponse                         HTTPResponse             = null,
                                                IReadOnlyDictionary<String, Object>  CustomData               = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
+                   HTTPResponse,
                    CustomData)
 
         {
@@ -215,12 +222,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  GetServiceAuthorisationResponseXML,
-                                                            CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
-                                                            CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
+                                                            CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                           = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
@@ -228,6 +237,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          out GetServiceAuthorisationResponse GetServiceAuthorisationResponse,
                          CustomSendGetServiceAuthorisationResponseParser,
                          CustomMeterReportParser,
+                         HTTPResponse,
                          OnException))
             {
                 return GetServiceAuthorisationResponse;
@@ -248,12 +258,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationResponseText">The text to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             String                                                    GetServiceAuthorisationResponseText,
-                                                            CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
-                                                            CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
+                                                            CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                           = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
@@ -261,6 +273,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                          out GetServiceAuthorisationResponse GetServiceAuthorisationResponse,
                          CustomSendGetServiceAuthorisationResponseParser,
                          CustomMeterReportParser,
+                         HTTPResponse,
                          OnException))
             {
                 return GetServiceAuthorisationResponse;
@@ -282,13 +295,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationResponse">The parsed GetServiceAuthorisation response.</param>
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        XElement                                                  GetServiceAuthorisationResponseXML,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
-                                       CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
+                                       CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                           = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try
@@ -312,7 +327,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                                                                                                    CustomMeterReportParser,
                                                                                                                                    OnException)),
 
-                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    ("parameter")
+                                                      GetServiceAuthorisationResponseXML.MapValueOrNull    ("parameter"),
+
+                                                      HTTPResponse
 
                                                   );
 
@@ -348,13 +365,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="GetServiceAuthorisationResponse">The parsed GetServiceAuthorisation response.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
+        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        String                                                    GetServiceAuthorisationResponseText,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser  = null,
-                                       CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                          = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
+                                       CustomXMLParserDelegate<MeterReport>                      CustomMeterReportParser                           = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try
@@ -365,6 +384,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                              out GetServiceAuthorisationResponse,
                              CustomSendGetServiceAuthorisationResponseParser,
                              CustomMeterReportParser,
+                             HTTPResponse,
                              OnException))
                 {
                     return true;
@@ -716,23 +736,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #endregion
 
-            #region ToImmutable
+            #region (implicit) "ToImmutable()"
 
             /// <summary>
-            /// Return an immutable representation.
+            /// Return an immutable GetServiceAuthorisationResponse.
             /// </summary>
-            public override GetServiceAuthorisationResponse ToImmutable
+            /// <param name="Builder">A GetServiceAuthorisationResponse builder.</param>
+            public static implicit operator GetServiceAuthorisationResponse(Builder Builder)
 
-                => new GetServiceAuthorisationResponse(Request,
-                                                       TransactionId,
-                                                       AuthorisationValue,
-                                                       PartnerServiceSessionId,
-                                                       IntermediateCDRRequested,
-                                                       RequestStatus,
+                => new GetServiceAuthorisationResponse(Builder.Request,
+                                                       Builder.TransactionId,
+                                                       Builder.AuthorisationValue,
+                                                       Builder.PartnerServiceSessionId,
+                                                       Builder.IntermediateCDRRequested,
+                                                       Builder.RequestStatus,
 
-                                                       UserContractIdAlias,
-                                                       MeterLimits,
-                                                       Parameter);
+                                                       Builder.UserContractIdAlias,
+                                                       Builder.MeterLimits,
+                                                       Builder.Parameter);
 
             #endregion
 

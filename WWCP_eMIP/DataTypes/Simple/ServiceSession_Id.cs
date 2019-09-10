@@ -49,6 +49,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Properties
 
         /// <summary>
+        /// Indicates whether this identification is null or empty.
+        /// </summary>
+        public Boolean IsNullOrEmpty
+            => InternalId.IsNullOrEmpty();
+
+        /// <summary>
         /// The length of the service session identificator.
         /// </summary>
         public UInt64 Length
@@ -59,8 +65,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new service session identification.
-        /// based on the given string.
+        /// Create a new service session identification based on the given string.
         /// </summary>
         /// <param name="Text">The text representation of a service session identification.</param>
         private ServiceSession_Id(String Text)
@@ -186,7 +191,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Operator overloading
 
-        #region Provider == (ServiceSessionId1, ServiceSessionId2)
+        #region Operator == (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -211,7 +216,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider != (ServiceSessionId1, ServiceSessionId2)
+        #region Operator != (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -224,7 +229,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <  (ServiceSessionId1, ServiceSessionId2)
+        #region Operator <  (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -244,7 +249,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider <= (ServiceSessionId1, ServiceSessionId2)
+        #region Operator <= (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -257,7 +262,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >  (ServiceSessionId1, ServiceSessionId2)
+        #region Operator >  (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -277,7 +282,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Provider >= (ServiceSessionId1, ServiceSessionId2)
+        #region Operator >= (ServiceSessionId1, ServiceSessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
@@ -306,11 +311,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is ServiceSession_Id))
+            if (!(Object is ServiceSession_Id ServiceSessionId))
                 throw new ArgumentException("The given object is not a service session identification!",
                                             nameof(Object));
 
-            return CompareTo((ServiceSession_Id) Object);
+            return CompareTo(ServiceSessionId);
 
         }
 
@@ -328,7 +333,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ServiceSessionId == null)
                 throw new ArgumentNullException(nameof(ServiceSessionId),  "The given service session identification must not be null!");
 
-            return String.Compare(InternalId, ServiceSessionId.InternalId, StringComparison.Ordinal);
+            return String.Compare(InternalId, ServiceSessionId.InternalId, StringComparison.OrdinalIgnoreCase);
 
         }
 
@@ -351,10 +356,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object == null)
                 return false;
 
-            if (!(Object is ServiceSession_Id))
+            if (!(Object is ServiceSession_Id ServiceSessionId))
                 return false;
 
-            return Equals((ServiceSession_Id) Object);
+            return Equals(ServiceSessionId);
 
         }
 
@@ -373,7 +378,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) ServiceSessionId == null)
                 return false;
 
-            return InternalId.Equals(ServiceSessionId.InternalId);
+            return InternalId.ToLower().Equals(ServiceSessionId.InternalId.ToLower());
 
         }
 

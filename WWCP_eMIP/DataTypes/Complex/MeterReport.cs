@@ -66,10 +66,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Unit">The unit of the meter value.</param>
         /// <param name="Type">The type of the meter value.</param>
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
-        public MeterReport(String                               Value,
-                           String                               Unit,
-                           MeterTypes                           Type,
-                           IReadOnlyDictionary<String, Object>  CustomData    = null)
+        private MeterReport(String                               Value,
+                            String                               Unit,
+                            MeterTypes                           Type,
+                            IReadOnlyDictionary<String, Object>  CustomData    = null)
 
             : base(CustomData)
 
@@ -106,7 +106,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static MeterReport Create(String                               Value,
                                          String                               Unit,
                                          MeterTypes                           Type,
-                                         IReadOnlyDictionary<String, Object>  CustomData    = null)
+                                         IReadOnlyDictionary<String, Object>  CustomData  = null)
 
             => new MeterReport(Value,
                                Unit,
@@ -444,11 +444,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            var MeterReport = Object as MeterReport;
-            if ((Object) MeterReport == null)
+            if (!(Object is MeterReport MeterReport))
                 throw new ArgumentException("The given object is not an meter report identification!", nameof(Object));
 
             return CompareTo(MeterReport);
@@ -469,10 +468,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) MeterReport == null)
                 throw new ArgumentNullException(nameof(MeterReport), "The given meter report must not be null!");
 
-            var _Result = String.Compare(Value, MeterReport.Value, StringComparison.Ordinal);
+            var _Result = String.Compare(Value, MeterReport.Value, StringComparison.OrdinalIgnoreCase);
 
             if (_Result == 0)
-                _Result = String.Compare(Unit,  MeterReport.Unit,  StringComparison.Ordinal);
+                _Result = String.Compare(Unit,  MeterReport.Unit,  StringComparison.OrdinalIgnoreCase);
 
             if (_Result == 0)
                 _Result = Type.CompareTo(MeterReport.Type);
@@ -497,11 +496,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
-            var MeterReport = Object as MeterReport;
-            if ((Object) MeterReport == null)
+            if (!(Object is MeterReport MeterReport))
                 return false;
 
             return Equals(MeterReport);
@@ -523,9 +521,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if ((Object) MeterReport == null)
                 return false;
 
-            return Value.Equals(MeterReport.Value) &&
-                   Unit. Equals(MeterReport.Type)  &&
-                   Type. Equals(MeterReport.Unit);
+            return Value.ToLower().Equals(MeterReport.Value.ToLower()) &&
+                   Unit. ToLower().Equals(MeterReport.Unit. ToLower()) &&
+                   Type.           Equals(MeterReport.Type);
 
         }
 

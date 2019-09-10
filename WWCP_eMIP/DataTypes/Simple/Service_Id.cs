@@ -37,7 +37,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private readonly static Random _Random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
 
         /// <summary>
         /// The internal identification.

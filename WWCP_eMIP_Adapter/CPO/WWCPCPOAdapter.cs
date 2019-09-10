@@ -435,6 +435,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #region Request mapping
 
+                var chargingProduct = new ChargingProduct(ChargingProduct_Id.Random()
+                                                          );
+
                 //ChargingReservation_Id? ReservationId      = null;
                 //TimeSpan?               MinDuration        = null;
                 //Single?                 PlannedEnergy      = null;
@@ -503,15 +506,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 //}
 
+
                 #endregion
 
                 var response = await RoamingNetwork.
-                                         RemoteStart(EVSEId:                    Request.EVSEId.ToWWCP().Value,
-                                                     ChargingProduct:           null,
-                                                     ReservationId:             null,
+                                         RemoteStart(EVSEId:                    Request.EVSEId.          ToWWCP().Value,
+                                                     ChargingProduct:           chargingProduct,
+                                                     ReservationId:             Request.BookingId.       ToWWCP(),
                                                      SessionId:                 Request.ServiceSessionId.ToWWCP(),
-                                                     ProviderId:                Request.PartnerId.ToWWCP_ProviderId(),
-                                                     eMAId:                     Request.UserId.ToWWCP_eMAId(),
+                                                     ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
+                                                     eMAId:                     Request.UserId.          ToWWCP_eMAId(),
                                                      ISendChargeDetailRecords:  this,
 
                                                      Timestamp:                 Request.Timestamp,

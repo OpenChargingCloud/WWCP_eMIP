@@ -37,7 +37,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private readonly static Random _Random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
 
         /// <summary>
         /// The internal identification.
@@ -71,7 +71,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse   (Text)
+        #region (static) Random(Length = 20)
+
+        public static Contract_Id Random(Byte Length = 20)
+            => new Contract_Id(_Random.RandomString(Length));
+
+        #endregion
+
+
+        #region (static) Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a contract identification.
@@ -90,13 +98,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             #endregion
 
-            return new Contract_Id(Text);
+            if (TryParse(Text, out Contract_Id PartnerServiceSessionId))
+                return PartnerServiceSessionId;
+
+            throw new ArgumentNullException(nameof(Text), "The given text representation of a contract identification is invalid!");
 
         }
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a contract identification.
@@ -105,18 +116,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public static Contract_Id? TryParse(String Text)
         {
 
-            if (Text != null)
-                Text = Text.Trim();
+            if (TryParse(Text, out Contract_Id PartnerServiceSessionId))
+                return PartnerServiceSessionId;
 
-            return Text.IsNullOrEmpty()
-                       ? new Contract_Id?()
-                       : new Contract_Id(Text);
+            return new Contract_Id?();
 
         }
 
         #endregion
 
-        #region TryParse(Text, out ContractId)
+        #region (static) TryParse(Text, out ContractId)
 
         /// <summary>
         /// Try to parse the given string as a contract identification.
@@ -133,7 +142,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                ContractId = default(Contract_Id);
+                ContractId = default;
                 return false;
             }
 
@@ -141,16 +150,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             try
             {
-
                 ContractId = new Contract_Id(Text);
-
                 return true;
-
             }
             catch (Exception)
             { }
 
-            ContractId = default(Contract_Id);
+            ContractId = default;
             return false;
 
         }
@@ -169,10 +175,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                );
 
         #endregion
-
-
-        public static Contract_Id Random(Byte Length = 20)
-            => new Contract_Id(_Random.RandomString(Length));
 
 
         #region Operator overloading

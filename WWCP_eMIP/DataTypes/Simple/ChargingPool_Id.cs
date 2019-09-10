@@ -152,7 +152,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Generate(EVSEOperatorId, Address, GeoLocation, Lenght = 50, Mapper = null)
+        #region (static) Generate(EVSEOperatorId, Address, GeoLocation, Lenght = 50, Mapper = null)
 
         /// <summary>
         /// Create a valid charging pool identification based on the given parameters.
@@ -198,7 +198,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Random(OperatorId, Length = 6, Mapper = null)
+        #region (static) Random(OperatorId, Length = 6, Mapper = null)
 
         /// <summary>
         /// Generate a new unique identification of a charging pool identification.
@@ -215,7 +215,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(Text)
+
+        #region (static) Parse(Text)
 
         /// <summary>
         /// Parse the given string as a charging pool identification.
@@ -249,7 +250,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(OperatorId, Suffix)
+        #region (static) Parse(OperatorId, Suffix)
 
         /// <summary>
         /// Parse the given string as a charging pool identification.
@@ -275,7 +276,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Parse the given string as a charging pool identification.
@@ -293,7 +294,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out ChargingPoolId)
+        #region (static) TryParse(Text, out ChargingPoolId)
 
         /// <summary>
         /// Parse the given string as a charging pool identification.
@@ -310,7 +311,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                ChargingPoolId = default(ChargingPool_Id);
+                ChargingPoolId = default;
                 return false;
             }
 
@@ -323,7 +324,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 if (MatchCollection.Count != 1)
                 {
-                    ChargingPoolId = default(ChargingPool_Id);
+                    ChargingPoolId = default;
                     return false;
                 }
 
@@ -341,7 +342,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             catch (Exception)
             { }
 
-            ChargingPoolId = default(ChargingPool_Id);
+            ChargingPoolId = default;
             return false;
 
         }

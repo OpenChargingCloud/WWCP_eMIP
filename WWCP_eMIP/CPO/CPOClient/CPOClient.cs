@@ -3120,7 +3120,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         // eMIP_ToIOP_GetAuthenticationDataRequest
 
-        #region SetSessionEventReport               (Request)
+        #region SetSessionEventReport                 (Request)
 
         /// <summary>
         /// Send a session event report.

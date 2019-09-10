@@ -236,7 +236,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                EVSEId = default(EVSE_Id);
+                EVSEId = default;
                 return false;
             }
 
@@ -249,7 +249,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                 if (MatchCollection.Count != 1)
                 {
-                    EVSEId = default(EVSE_Id);
+                    EVSEId = default;
                     return false;
                 }
 
@@ -267,7 +267,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             catch (Exception)
             { }
 
-            EVSEId = default(EVSE_Id);
+            EVSEId = default;
             return false;
 
         }

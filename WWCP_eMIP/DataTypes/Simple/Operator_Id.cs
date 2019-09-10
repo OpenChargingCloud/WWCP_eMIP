@@ -166,7 +166,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region Parse(Text)
+        #region (static) Parse(Text)
 
         /// <summary>
         /// Parse the given text representation of an operator identification.
@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region Parse(CountryCode, Suffix, IdFormat = IdFormatType.eMI3_STAR)
+        #region (static) Parse(CountryCode, Suffix, IdFormat = IdFormatType.eMI3_STAR)
 
         /// <summary>
         /// Parse the given string as an charging operator identification.
@@ -241,7 +241,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text)
+        #region (static) TryParse(Text)
 
         /// <summary>
         /// Try to parse the given text representation of an operator identification.
@@ -259,7 +259,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(Text, out OperatorId)
+        #region (static) TryParse(Text, out OperatorId)
 
         /// <summary>
         /// Try to parse the given text representation of an operator identification.
@@ -277,7 +277,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                OperatorId = default(Operator_Id);
+                OperatorId = default;
                 return false;
             }
 
@@ -309,14 +309,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 #pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
-            OperatorId = default(Operator_Id);
+            OperatorId = default;
             return false;
 
         }
 
         #endregion
 
-        #region TryParse(CountryCode, Suffix, IdFormat = OperatorIdFormats.eMI3_STAR)
+        #region (static) TryParse(CountryCode, Suffix, IdFormat = OperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.
@@ -338,7 +338,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region TryParse(CountryCode, Suffix, out OperatorId, IdFormat = OperatorIdFormats.eMI3_STAR)
+        #region (static) TryParse(CountryCode, Suffix, out OperatorId, IdFormat = OperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.
@@ -357,7 +357,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (CountryCode == null || Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
             {
-                OperatorId = default(Operator_Id);
+                OperatorId = default;
                 return false;
             }
 
@@ -380,6 +380,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
+        #region Clone
+
+        /// <summary>
+        /// Clone this charging operator identification.
+        /// </summary>
+        public Operator_Id Clone
+
+            => new Operator_Id(CountryCode,
+                               new String(Suffix.ToCharArray()),
+                               Format);
+
+        #endregion
+
+
         #region ChangeFormat(NewFormat)
 
         /// <summary>
@@ -391,19 +405,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             => new Operator_Id(CountryCode,
                                Suffix,
                                NewFormat);
-
-        #endregion
-
-        #region Clone
-
-        /// <summary>
-        /// Clone this charging operator identification.
-        /// </summary>
-        public Operator_Id Clone
-
-            => new Operator_Id(CountryCode,
-                               new String(Suffix.ToCharArray()),
-                               Format);
 
         #endregion
 

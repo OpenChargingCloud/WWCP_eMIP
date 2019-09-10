@@ -36,7 +36,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private readonly static Random _Random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
 
         /// <summary>
         /// The internal identification.
@@ -69,6 +69,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
+
+        #region (static) Random(Length = 20)
+
+        public static SessionAction_Id Random(Byte Length = 20)
+            => new SessionAction_Id(_Random.RandomString(Length));
+
+        #endregion
 
         #region (static) Zero
 

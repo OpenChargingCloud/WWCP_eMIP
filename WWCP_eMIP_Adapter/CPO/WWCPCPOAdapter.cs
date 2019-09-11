@@ -413,20 +413,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            this.PartnerId                                        = PartnerId;
-            this.CPORoaming                                       = CPORoaming;
+            this.PartnerId                                       = PartnerId;
+            this.CPORoaming                                      = CPORoaming;
 
-            //this._EVSE2EVSEDataRecord                             = EVSE2EVSEDataRecord;
-            //this._EVSEStatusUpdate2EVSEStatusRecord               = EVSEStatusUpdate2EVSEStatusRecord;
-            this._WWCPChargeDetailRecord2eMIPChargeDetailRecord   = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
+            //this._EVSE2EVSEDataRecord                            = EVSE2EVSEDataRecord;
+            //this._EVSEStatusUpdate2EVSEStatusRecord              = EVSEStatusUpdate2EVSEStatusRecord;
+            this._WWCPChargeDetailRecord2eMIPChargeDetailRecord  = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
 
-            this.eMIP_ChargeDetailRecords_Queue                   = new List<ChargeDetailRecord>();
+            this.eMIP_ChargeDetailRecords_Queue                  = new List<ChargeDetailRecord>();
 
-            this.SendHeartbeatsEvery                              = SendHeartbeatsEvery ?? DefaultSendHeartbeatsEvery;
-            this.SendHeartbeatsTimer                              = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
-            this.DisableSendHeartbeats                            = DisableSendHeartbeats;
+            this.SendHeartbeatsEvery                             = SendHeartbeatsEvery ?? DefaultSendHeartbeatsEvery;
+            this.SendHeartbeatsTimer                             = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
+            this.DisableSendHeartbeats                           = DisableSendHeartbeats;
 
-            this.CustomEVSEIdMapper                               = CustomEVSEIdMapper;
+            this.CustomEVSEIdMapper                              = CustomEVSEIdMapper;
 
 
             // Link incoming eMIP events...
@@ -437,14 +437,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 Sender,
                                                                 Request) => {
 
-                // intermediateCDRRequested
-                // meterLimitList
                 // bookingId
+                // meterLimitList
 
                 #region Request mapping
 
-                var chargingProduct = new ChargingProduct(ChargingProduct_Id.Random()
-                                                          );
+                var chargingProduct = new ChargingProduct(Id:                ChargingProduct_Id.Random(),
+                                                          IntermediateCDRs:  Request.IntermediateCDRRequested);
 
                 //ChargingReservation_Id? ReservationId      = null;
                 //TimeSpan?               MinDuration        = null;
@@ -519,45 +518,49 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 var response = await RoamingNetwork.
                                          RemoteStart(this,
-                                                     ChargingLocation:          ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
-                                                     ChargingProduct:           null,
-                                                     ReservationId:             null,
-                                                     SessionId:                 Request.ServiceSessionId.ToWWCP(),
-                                                     ProviderId:                Request.PartnerId.       ToWWCP_ProviderId(),
-                                                     RemoteAuthentication:      Request.UserId.          ToWWCP(),
+                                                     ChargingLocation:      ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
+                                                     ChargingProduct:       chargingProduct,
+                                                     ReservationId:         null,
+                                                     SessionId:             Request.ServiceSessionId.ToWWCP(),
+                                                     ProviderId:            Request.PartnerId.       ToWWCP_ProviderId(),
+                                                     RemoteAuthentication:  Request.UserId.          ToWWCP(),
 
-                                                     Timestamp:                 Request.Timestamp,
-                                                     CancellationToken:         Request.CancellationToken,
-                                                     EventTrackingId:           Request.EventTrackingId,
-                                                     RequestTimeout:            Request.RequestTimeout).
+                                                     Timestamp:             Request.Timestamp,
+                                                     CancellationToken:     Request.CancellationToken,
+                                                     EventTrackingId:       Request.EventTrackingId,
+                                                     RequestTimeout:        Request.RequestTimeout).
                                          ConfigureAwait(false);
 
 
-                var Gireve = response.Session.AddJSON("Gireve");
-
-                if (Request.UserContractIdAlias.HasValue)
-                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request);
-
-
-                if (Request.UserContractIdAlias.HasValue)
-                    response.Session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias);
-
-                if (Request.Parameter.IsNotNullOrEmpty())
-                    response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
-
-                if (Request.HTTPRequest != null)
+                if (response.Session != null)
                 {
 
-                    response.Session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress);
+                    var Gireve = response.Session.AddJSON("Gireve");
 
-                    if (Request.HTTPRequest.X_Real_IP       != null)
-                        response.Session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP);
+                    if (Request.UserContractIdAlias.HasValue)
+                        response.Session.SetJSON("Gireve", "userContractIdAlias",  Request);
 
-                    if (Request.HTTPRequest.X_Forwarded_For != null)
-                        response.Session.SetJSON("Gireve", "forwardedFor",     Request.HTTPRequest.X_Forwarded_For);
+
+                    if (Request.UserContractIdAlias.HasValue)
+                        response.Session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias);
+
+                    if (Request.Parameter.IsNotNullOrEmpty())
+                        response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
+
+                    if (Request.HTTPRequest != null)
+                    {
+
+                        response.Session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
+
+                        if (Request.HTTPRequest.X_Real_IP       != null)
+                            response.Session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP.ToString());
+
+                        if (Request.HTTPRequest.X_Forwarded_For != null)
+                            response.Session.SetJSON("Gireve", "forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
+
+                    }
 
                 }
-
 
                 #region Response mapping
 
@@ -598,7 +601,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                       RequestStatus.UnknownEntity
+                                       RequestStatus.EVSEServiceNotAvailable
                                    );
 
                     }
@@ -708,15 +711,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     var response = await RoamingNetwork.
-                                             RemoteStop(SessionId:            Request.ServiceSessionId.ToWWCP(),
-                                                        ReservationHandling:  ReservationHandling.Close,
-                                                        ProviderId:           null,
-                                                        RemoteAuthentication:                null,
+                                             RemoteStop(SessionId:             Request.ServiceSessionId.ToWWCP(),
+                                                        ReservationHandling:   ReservationHandling.Close,
+                                                        ProviderId:            null,
+                                                        RemoteAuthentication:  null,
 
-                                                        Timestamp:            Request.Timestamp,
-                                                        CancellationToken:    Request.CancellationToken,
-                                                        EventTrackingId:      Request.EventTrackingId,
-                                                        RequestTimeout:       Request.RequestTimeout).
+                                                        Timestamp:             Request.Timestamp,
+                                                        CancellationToken:     Request.CancellationToken,
+                                                        EventTrackingId:       Request.EventTrackingId,
+                                                        RequestTimeout:        Request.RequestTimeout).
                                              ConfigureAwait(false);
 
                     #region Response mapping
@@ -727,14 +730,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         {
 
                             case RemoteStopResultType.Success:
-                                return new SetSessionActionResponse(
+                                return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.Ok
                                        );
 
                             case RemoteStopResultType.InvalidSessionId:
-                                return new SetSessionActionResponse(
+                                return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.SessionNotFound
@@ -744,7 +747,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                             case RemoteStopResultType.Timeout:
                             case RemoteStopResultType.OutOfService:
                             case RemoteStopResultType.CommunicationError:
-                                return new SetSessionActionResponse(
+                                return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.EVSENotReachable
@@ -757,11 +760,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 }
 
-                // ServiceNotAvailable
-                return new SetSessionActionResponse(
+                // CPOorEMSP_DoesNotRecogniseActionOrEventNature
+                return new SetSessionActionRequestResponse(
                            Request,
                            Request.TransactionId ?? Transaction_Id.Zero,
-                           RequestStatus.ServiceNotAvailable
+                           RequestStatus.CPOorEMSP_DoesNotRecogniseActionOrEventNature
                        );
 
             };

@@ -1,5 +1,5 @@
-WWCP eMIP
-=========
+WWCP eMIP Adapter
+=================
 
 This software will allow the communication between World Wide Charging Protocol
 (WWCP) entities and entities implementing the _eMIP protocol_,

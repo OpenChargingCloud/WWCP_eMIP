@@ -33,7 +33,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// <summary>
     /// A SetSessionActionRequest request.
     /// </summary>
-    public class SetSessionActionRequest : ARequest<SetSessionActionRequest>
+    public class SetSessionActionRequestRequest : ARequest<SetSessionActionRequestRequest>
     {
 
         #region Properties
@@ -84,7 +84,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public SetSessionActionRequest(Partner_Id                 PartnerId,
+        public SetSessionActionRequestRequest(Partner_Id                 PartnerId,
                                        Operator_Id                OperatorId,
                                        Operator_Id                TargetOperatorId,
                                        ServiceSession_Id          ServiceSessionId,
@@ -182,8 +182,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetSessionActionRequest Parse(XElement                                          SetSessionActionRequestXML,
-                                                    CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+        public static SetSessionActionRequestRequest Parse(XElement                                          SetSessionActionRequestXML,
+                                                    CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                                     OnExceptionDelegate                               OnException         = null,
 
@@ -197,7 +197,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TryParse(SetSessionActionRequestXML,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
-                         out SetSessionActionRequest _SetSessionActionRequest,
+                         out SetSessionActionRequestRequest _SetSessionActionRequest,
                          OnException,
 
                          HTTPRequest,
@@ -230,8 +230,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetSessionActionRequest Parse(String                                            SetSessionActionRequestText,
-                                                    CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+        public static SetSessionActionRequestRequest Parse(String                                            SetSessionActionRequestText,
+                                                    CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
                                                     CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
                                                     OnExceptionDelegate                               OnException         = null,
 
@@ -245,7 +245,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TryParse(SetSessionActionRequestText,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
-                         out SetSessionActionRequest _SetSessionActionRequest,
+                         out SetSessionActionRequestRequest _SetSessionActionRequest,
                          OnException,
 
                          HTTPRequest,
@@ -280,9 +280,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                          SetSessionActionRequestXML,
-                                       CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
                                        CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                       out SetSessionActionRequest                       SetSessionActionRequest,
+                                       out SetSessionActionRequestRequest                       SetSessionActionRequest,
                                        OnExceptionDelegate                               OnException         = null,
 
                                        HTTPRequest                                       HTTPRequest         = null,
@@ -295,7 +295,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                SetSessionActionRequest = new SetSessionActionRequest(
+                SetSessionActionRequest = new SetSessionActionRequestRequest(
 
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
                                                      SetSessionActionRequestXML.MapValueOrFail    ("partnerId",                Partner_Id.              Parse),
@@ -366,9 +366,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(String                                            SetSessionActionRequestText,
-                                       CustomXMLParserDelegate<SetSessionActionRequest>  CustomSendSetSessionActionRequestParser,
+                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
                                        CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                       out SetSessionActionRequest                       SetSessionActionRequest,
+                                       out SetSessionActionRequestRequest                       SetSessionActionRequest,
                                        OnExceptionDelegate                               OnException         = null,
 
                                        HTTPRequest                                       HTTPRequest         = null,
@@ -415,7 +415,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetSessionActionRequestSerializer">A delegate to serialize custom set EVSE busy status request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequest> CustomSetSessionActionRequestSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequestRequest> CustomSetSessionActionRequestSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequest",
@@ -463,7 +463,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionRequest1">A SetSessionAction request.</param>
         /// <param name="SetSessionActionRequest2">Another SetSessionAction request.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (SetSessionActionRequest SetSessionActionRequest1, SetSessionActionRequest SetSessionActionRequest2)
+        public static Boolean operator == (SetSessionActionRequestRequest SetSessionActionRequest1, SetSessionActionRequestRequest SetSessionActionRequest2)
         {
 
             // If both are null, or both are same instance, return true.
@@ -488,7 +488,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionRequest1">A SetSessionAction request.</param>
         /// <param name="SetSessionActionRequest2">Another SetSessionAction request.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (SetSessionActionRequest SetSessionActionRequest1, SetSessionActionRequest SetSessionActionRequest2)
+        public static Boolean operator != (SetSessionActionRequestRequest SetSessionActionRequest1, SetSessionActionRequestRequest SetSessionActionRequest2)
 
             => !(SetSessionActionRequest1 == SetSessionActionRequest2);
 
@@ -511,7 +511,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object is null)
                 return false;
 
-            if (!(Object is SetSessionActionRequest SetSessionActionRequest))
+            if (!(Object is SetSessionActionRequestRequest SetSessionActionRequest))
                 return false;
 
             return Equals(SetSessionActionRequest);
@@ -527,7 +527,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetSessionActionRequest">A SetSessionAction request to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(SetSessionActionRequest SetSessionActionRequest)
+        public override Boolean Equals(SetSessionActionRequestRequest SetSessionActionRequest)
         {
 
             if (SetSessionActionRequest is null)

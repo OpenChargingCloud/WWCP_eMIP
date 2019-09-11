@@ -79,5 +79,13 @@
       <Name>WWCP_eMIP</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <None Include="Tests\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tests\SetServiceAuthorisationRequest001.xml" />
+    <Content Include="Tests\SetSessionActionRequestRequest001.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

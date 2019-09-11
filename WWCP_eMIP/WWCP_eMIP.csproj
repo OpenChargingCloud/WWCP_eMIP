@@ -145,8 +145,8 @@
     <Compile Include="Messages\EMP\SetSessionActionRequest.cs" />
     <Compile Include="Messages\CPO\SetSessionEventReportResponse.cs" />
     <Compile Include="Messages\EMP\SetSessionActionResponse.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequest.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetSessionActionResponse.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequestRequest.cs" />
+    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequestResponse.cs" />
     <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationResponse.cs" />
     <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationRequest.cs" />
     <Compile Include="Messages\IRequest.cs" />

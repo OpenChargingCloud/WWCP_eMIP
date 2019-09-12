@@ -736,6 +736,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                            RequestStatus.Ok
                                        );
 
+                            case RemoteStopResultType.AlreadyStopped:
+                                return new SetSessionActionRequestResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.Ok
+                                       );
+
                             case RemoteStopResultType.InvalidSessionId:
                                 return new SetSessionActionRequestResponse(
                                            Request,
@@ -1570,7 +1577,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    evseAdminStatus.Value.Value.EVSEId,
                                                                    evseAdminStatus.Value.Value.StatusEventDate,
                                                                    evseAdminStatus.Value.Value.AvailabilityStatus,
-                                                                   null, //Transaction_Id.Random(),
+                                                                   Transaction_Id.Random(),
                                                                    null, //AvailabilityAdminStatusUntil
                                                                    null, //AvailabilityAdminStatusComment
 
@@ -1789,7 +1796,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            evseStatus.Value.Value.EVSEId,
                                                            evseStatus.Value.Value.StatusEventDate,
                                                            evseStatus.Value.Value.BusyStatus,
-                                                           null, //Transaction_Id.Random(),
+                                                           Transaction_Id.Random(),
                                                            null, //BusyStatusUntil
                                                            null, //BusyStatusComment
 

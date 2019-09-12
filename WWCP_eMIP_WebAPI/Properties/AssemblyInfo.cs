@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WWCP eMIP Adapter")]
+[assembly: AssemblyTitle("WWCP eMIP WebAPI")]
 [assembly: AssemblyDescription("Communication between the World Wide Charging Protocol (WWCP) and the Gireve eMIP Protocol.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GraphDefined GmbH")]
-[assembly: AssemblyProduct("WWCP_eMIP_Adapter")]
+[assembly: AssemblyProduct("WWCP_eMIP_WebAPI")]
 [assembly: AssemblyCopyright("Copyright © 2016-2019 GraphDefined GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5582fb6f-14b2-497e-9b00-08a871ee6d52")]
+[assembly: Guid("afd7e626-8595-4c30-8449-03ac127e0616")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -324,8 +324,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="PartnerId">The unique identification of an eMIP communication partner.</param>
         /// <param name="CPORoaming">A eMIP CPO roaming object to be mapped to WWCP.</param>
         /// 
-        /// <param name="IncludeEVSEIds">Only include the EVSE matching the given delegate.</param>
-        /// <param name="IncludeEVSEs">Only include the EVSEs matching the given delegate.</param>
+        /// <param name="IncludeEVSEIds">Only include EVSE identificators matching the given delegate.</param>
+        /// <param name="IncludeEVSEs">Only include EVSEs matching the given delegate.</param>
         /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -384,7 +384,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
-                   //CustomEVSEIdMapper,
 
                    ServiceCheckEvery,
                    StatusCheckEvery,
@@ -2095,8 +2094,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    if (_IncludeEVSEs == null ||
-                       (_IncludeEVSEs != null && _IncludeEVSEs(EVSE)))
+                    if (IncludeEVSEs == null ||
+                       (IncludeEVSEs != null && IncludeEVSEs(EVSE)))
                     {
 
                         if (EVSEsUpdateLog.TryGetValue(EVSE, out List<PropertyUpdateInfos> PropertyUpdateInfo))
@@ -2203,8 +2202,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    if (_IncludeEVSEs == null ||
-                       (_IncludeEVSEs != null && _IncludeEVSEs(EVSE)))
+                    if (IncludeEVSEs == null ||
+                       (IncludeEVSEs != null && IncludeEVSEs(EVSE)))
                     {
 
                         EVSEsToRemoveQueue.Add(EVSE);
@@ -2300,8 +2299,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    var FilteredEVSEs = EVSEs.Where(evse => _IncludeEVSEs(evse) &&
-                                                            _IncludeEVSEIds(evse.Id)).
+                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
+                                                            IncludeEVSEIds(evse.Id)).
                                               ToArray();
 
                     if (FilteredEVSEs.Any())
@@ -2403,8 +2402,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    var FilteredEVSEs = EVSEs.Where(evse => _IncludeEVSEs(evse) &&
-                                                            _IncludeEVSEIds(evse.Id)).
+                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
+                                                            IncludeEVSEIds(evse.Id)).
                                               ToArray();
 
                     if (FilteredEVSEs.Any())
@@ -2505,8 +2504,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    var FilteredEVSEs = EVSEs.Where(evse => _IncludeEVSEs(evse) &&
-                                                            _IncludeEVSEIds(evse.Id)).
+                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
+                                                            IncludeEVSEIds(evse.Id)).
                                               ToArray();
 
                     if (FilteredEVSEs.Any())
@@ -2607,8 +2606,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 try
                 {
 
-                    var FilteredEVSEs = EVSEs.Where(evse => _IncludeEVSEs(evse) &&
-                                                            _IncludeEVSEIds(evse.Id)).
+                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
+                                                            IncludeEVSEIds(evse.Id)).
                                               ToArray();
 
                     if (FilteredEVSEs.Any())
@@ -2853,8 +2852,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     foreach (var evse in ChargingStation)
                     {
 
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
 
                             EVSEsToAddQueue.Add(evse);
@@ -2950,8 +2949,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     foreach (var evse in ChargingStation)
                     {
 
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
 
                             EVSEsToAddQueue.Add(evse);
@@ -3054,8 +3053,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     foreach (var evse in ChargingStation)
                     {
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
                             EVSEsToUpdateQueue.Add(evse);
                             AddData = true;
@@ -3440,8 +3439,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     foreach (var evse in ChargingPool.EVSEs)
                     {
 
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
 
                             EVSEsToAddQueue.Add(evse);
@@ -3537,8 +3536,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     foreach (var evse in ChargingPool.EVSEs)
                     {
 
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
 
                             EVSEsToAddQueue.Add(evse);
@@ -3641,8 +3640,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     foreach (var evse in ChargingPool.EVSEs)
                     {
-                        if (_IncludeEVSEs == null ||
-                           (_IncludeEVSEs != null && _IncludeEVSEs(evse)))
+                        if (IncludeEVSEs == null ||
+                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
                         {
                             EVSEsToUpdateQueue.Add(evse);
                             AddData = true;

@@ -305,7 +305,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                              if (Adapter != null)
                                              {
 
-                                                 var AllEVSEs = Adapter.RoamingNetwork.EVSEs.ToArray();
+                                                 var AllEVSEs = Adapter.RoamingNetwork.EVSEs.Where(evse => Adapter.IncludeEVSEIds(evse.Id) && Adapter.IncludeEVSEs(evse)).ToArray();
 
                                                  foreach (var evse in AllEVSEs)
                                                  {

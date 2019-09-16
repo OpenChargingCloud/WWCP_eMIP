@@ -344,7 +344,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               : null,
 
                           new XElement("serviceSessionId",                 ServiceSessionId.                   ToString()),
-                          new XElement("requestStatus",                    RequestStatus.                      ToString())
+                          new XElement("requestStatus",                    RequestStatus.Code.                 ToString())
 
                       );
 

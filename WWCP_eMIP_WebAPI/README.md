@@ -1,8 +1,8 @@
-WWCP eMIP
-=========
+WWCP eMIP WebAPI
+================
 
 This software will allow the communication between World Wide Charging Protocol
-(WWCP) entities and entities implementing the _eMobility Protocol Inter-Operation protocol (eMIP)_,
+(WWCP) entities and entities implementing the _eMIP protocol_,
 which is defined and used by [Gireve](http://www.gireve.com). The focus
 of this protocol are the communication aspects between a central clearing house,
 charge point operators (CPOs) and e-mobility providers (EMPs). For more details
@@ -10,7 +10,7 @@ on this protocol please visit http://www.gireve.com.
 
 ### Requirements & Configuration
 
-1. You need .NET 4.7.1+
+1. You need .NET 4.7+
 
 ### Your participation
 

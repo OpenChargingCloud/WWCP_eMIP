@@ -32,10 +32,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A SetSessionAction response.
+    /// A SetSessionActionRequest response.
     /// </summary>
-    public class SetSessionActionResponse : AResponse<SetSessionActionRequest,
-                                                      SetSessionActionResponse>
+    public class SetSessionActionRequestResponse : AResponse<SetSessionActionRequestRequest,
+                                                             SetSessionActionRequestResponse>
     {
 
         #region Constructor(s)
@@ -49,7 +49,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetSessionActionResponse(SetSessionActionRequest              Request,
+        public SetSessionActionRequestResponse(SetSessionActionRequestRequest              Request,
                                         Transaction_Id                       TransactionId,
                                         RequestStatus                        RequestStatus,
 
@@ -73,7 +73,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //                xmlns:aut  = "https://api-iop.gireve.com/schemas/AuthorisationV1/">
         //    <soap:Header/>
         //    <soap:Body>
-        //       <aut:eMIP_FromIOP_SetSessionActionResponse>
+        //       <aut:eMIP_FromIOP_SetSessionActionRequestResponse>
         //
         //          <transactionId>?</transactionId>
         //
@@ -85,7 +85,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>?</requestStatus>
         //
-        //       </aut:eMIP_FromIOP_SetSessionActionResponse>
+        //       </aut:eMIP_FromIOP_SetSessionActionRequestResponse>
         //    </soap:Body>
         // </soap:Envelope>
 
@@ -100,16 +100,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
+        public static SetSessionActionRequestResponse Parse(SetSessionActionRequestRequest                            Request,
                                                      XElement                                           SetSessionActionResponseXML,
-                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                                     CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser  = null,
                                                      HTTPResponse                                       HTTPResponse                              = null,
                                                      OnExceptionDelegate                                OnException                               = null)
         {
 
             if (TryParse(Request,
                          SetSessionActionResponseXML,
-                         out SetSessionActionResponse SetSessionActionResponse,
+                         out SetSessionActionRequestResponse SetSessionActionResponse,
                          CustomSendSetSessionActionResponseParser,
                          HTTPResponse,
                          OnException))
@@ -133,16 +133,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
+        public static SetSessionActionRequestResponse Parse(SetSessionActionRequestRequest                            Request,
                                                      String                                             SetSessionActionResponseText,
-                                                     CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                                     CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser  = null,
                                                      HTTPResponse                                       HTTPResponse                              = null,
                                                      OnExceptionDelegate                                OnException                               = null)
         {
 
             if (TryParse(Request,
                          SetSessionActionResponseText,
-                         out SetSessionActionResponse SetSessionActionResponse,
+                         out SetSessionActionRequestResponse SetSessionActionResponse,
                          CustomSendSetSessionActionResponseParser,
                          HTTPResponse,
                          OnException))
@@ -167,10 +167,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetSessionActionRequest                            Request,
+        public static Boolean TryParse(SetSessionActionRequestRequest                            Request,
                                        XElement                                           SetSessionActionResponseXML,
-                                       out SetSessionActionResponse                       SetSessionActionResponse,
-                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                       out SetSessionActionRequestResponse                       SetSessionActionResponse,
+                                       CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser  = null,
                                        HTTPResponse                                       HTTPResponse                              = null,
                                        OnExceptionDelegate                                OnException                               = null)
         {
@@ -178,7 +178,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                SetSessionActionResponse = new SetSessionActionResponse(
+                SetSessionActionResponse = new SetSessionActionRequestResponse(
 
                                                       Request,
 
@@ -222,10 +222,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetSessionActionRequest                            Request,
+        public static Boolean TryParse(SetSessionActionRequestRequest                            Request,
                                        String                                             SetSessionActionResponseText,
-                                       out SetSessionActionResponse                       SetSessionActionResponse,
-                                       CustomXMLParserDelegate<SetSessionActionResponse>  CustomSendSetSessionActionResponseParser  = null,
+                                       out SetSessionActionRequestResponse                       SetSessionActionResponse,
+                                       CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser  = null,
                                        HTTPResponse                                       HTTPResponse                              = null,
                                        OnExceptionDelegate                                OnException                               = null)
         {
@@ -262,13 +262,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetSessionActionResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionResponse> CustomSetSessionActionResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequestResponse> CustomSetSessionActionResponseSerializer = null)
         {
 
-            var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetSessionActionResponse",
+            var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestResponse",
 
-                          new XElement("transactionId",  TransactionId.ToString()),
-                          new XElement("requestStatus",  RequestStatus.ToString())
+                          new XElement("transactionId",  TransactionId.     ToString()),
+                          new XElement("requestStatus",  RequestStatus.Code.ToString())
 
                       );
 
@@ -291,12 +291,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">The transaction identification.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional custom data.</param>
-        public static SetSessionActionResponse SystemError(SetSessionActionRequest              Request,
+        public static SetSessionActionRequestResponse SystemError(SetSessionActionRequestRequest              Request,
                                                            Transaction_Id                       TransactionId,
                                                            HTTPResponse                         HTTPResponse   = null,
                                                            IReadOnlyDictionary<String, Object>  CustomData     = null)
 
-            => new SetSessionActionResponse(Request,
+            => new SetSessionActionRequestResponse(Request,
                                             TransactionId,
                                             RequestStatus.SystemError,
                                             HTTPResponse,
@@ -315,7 +315,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponse1">A SetSessionAction response.</param>
         /// <param name="SetSessionActionResponse2">Another SetSessionAction response.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (SetSessionActionResponse SetSessionActionResponse1, SetSessionActionResponse SetSessionActionResponse2)
+        public static Boolean operator == (SetSessionActionRequestResponse SetSessionActionResponse1, SetSessionActionRequestResponse SetSessionActionResponse2)
         {
 
             // If both are null, or both are same instance, return true.
@@ -340,7 +340,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponse1">A SetSessionAction response.</param>
         /// <param name="SetSessionActionResponse2">Another SetSessionAction response.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (SetSessionActionResponse SetSessionActionResponse1, SetSessionActionResponse SetSessionActionResponse2)
+        public static Boolean operator != (SetSessionActionRequestResponse SetSessionActionResponse1, SetSessionActionRequestResponse SetSessionActionResponse2)
             => !(SetSessionActionResponse1 == SetSessionActionResponse2);
 
         #endregion
@@ -362,7 +362,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (Object == null)
                 return false;
 
-            if (!(Object is SetSessionActionResponse SetSessionActionResponse))
+            if (!(Object is SetSessionActionRequestResponse SetSessionActionResponse))
                 return false;
 
             return Equals(SetSessionActionResponse);
@@ -378,7 +378,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetSessionActionResponse">A SetSessionAction response to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(SetSessionActionResponse SetSessionActionResponse)
+        public override Boolean Equals(SetSessionActionRequestResponse SetSessionActionResponse)
         {
 
             if (SetSessionActionResponse is null)
@@ -441,8 +441,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetSessionAction response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetSessionActionRequest,
-                                                SetSessionActionResponse>
+        public class Builder : AResponseBuilder<SetSessionActionRequestRequest,
+                                                SetSessionActionRequestResponse>
         {
 
             #region Constructor(s)
@@ -454,7 +454,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetSessionAction request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionRequest              Request,
+            public Builder(SetSessionActionRequestRequest              Request,
                            IReadOnlyDictionary<String, Object>  CustomData  = null)
 
                 : base(Request,
@@ -471,7 +471,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionResponse             SetSessionActionResponse  = null,
+            public Builder(SetSessionActionRequestResponse             SetSessionActionResponse  = null,
                            IReadOnlyDictionary<String, Object>  CustomData                = null)
 
                 : base(SetSessionActionResponse?.Request,
@@ -503,7 +503,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionActionResponse">A SetSessionAction response to compare with.</param>
             /// <returns>True if both match; False otherwise.</returns>
-            public override Boolean Equals(SetSessionActionResponse SetSessionActionResponse)
+            public override Boolean Equals(SetSessionActionRequestResponse SetSessionActionResponse)
             {
 
                 if (SetSessionActionResponse is null)
@@ -522,9 +522,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// Return an immutable SetSessionActionResponse response.
             /// </summary>
             /// <param name="Builder">A SetSessionActionResponse response builder.</param>
-            public static implicit operator SetSessionActionResponse(Builder Builder)
+            public static implicit operator SetSessionActionRequestResponse(Builder Builder)
 
-                => new SetSessionActionResponse(Builder.Request,
+                => new SetSessionActionRequestResponse(Builder.Request,
                                                 Builder.TransactionId,
                                                 Builder.RequestStatus);
 

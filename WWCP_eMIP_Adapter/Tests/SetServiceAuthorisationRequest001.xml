@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+  <soapenv:Body>
+    <ns:eMIP_FromIOP_SetServiceAuthorisationRequest xmlns:ns="https://api-iop.gireve.com/schemas/AuthorisationV1/">
+	  <transactionId>IOP-TID-GIR-V-IOPPPFT02-00f655a5-7b73-4caa-87c6-4662a160cef8</transactionId>
+	  <partnerIdType>eMI3</partnerIdType>
+	  <partnerId>FR*107</partnerId>
+	  <operatorIdType>eMI3</operatorIdType>
+	  <operatorId>FR*MSP</operatorId>
+	  <targetOperatorIdType>eMI3</targetOperatorIdType>
+	  <targetOperatorId>DE*BDO</targetOperatorId>
+	  <EVSEIdType>eMI3</EVSEIdType>
+	  <EVSEId>DE*BDO*EVSE*CI*TESTS*A*1</EVSEId>
+	  <userIdType>RFID-UID</userIdType>
+	  <userId>04B4162AE56285</userId>
+	  <requestedServiceId>1</requestedServiceId>
+	  <serviceSessionId>7e4bede2-da7d-4747-a84d-027aca1d458c</serviceSessionId>
+	  <authorisationValue>1</authorisationValue>
+	  <intermediateCDRRequested>0</intermediateCDRRequested>
+	</ns:eMIP_FromIOP_SetServiceAuthorisationRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

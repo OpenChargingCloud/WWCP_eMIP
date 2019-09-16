@@ -1,0 +1,20 @@
+﻿{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "system",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "allowJs": false
+  },
+  "files": [
+    "../../UsersAPI/HTTPROOT/defaults/defaults.ts",
+    "../../OpenChargingCloudAPI/HTTPROOT/defaults/defaults.ts",
+    "HTTPRoot/defaults/defaults.ts",
+    "../../UsersAPI/HTTPROOT/login/SignInOut.ts",
+    "../../UsersAPI/HTTPROOT/defaults/views.ts",
+    "../../OpenChargingCloudAPI/HTTPROOT/defaults/WWCPDatatypes.ts",
+    "../../OpenChargingCloudAPI/HTTPROOT/defaults/WWCPEntities.ts",
+    "HTTPRoot/index.ts"
+  ]
+}

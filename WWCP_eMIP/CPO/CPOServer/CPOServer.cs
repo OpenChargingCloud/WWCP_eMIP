@@ -95,11 +95,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>  CustomSetServiceAuthorisationResponseSerializer   { get; set; }
 
 
-        public CustomXMLParserDelegate<SetSessionActionRequest>              CustomSetSessionActionRequestParser               { get; set; }
+        public CustomXMLParserDelegate<SetSessionActionRequestRequest>              CustomSetSessionActionRequestParser               { get; set; }
 
         public CustomXMLParserDelegate<SessionAction>                        CustomSessionActionParser                         { get; set; }
 
-        public CustomXMLSerializerDelegate<SetSessionActionResponse>         CustomSetSessionActionResponseSerializer          { get; set; }
+        public CustomXMLSerializerDelegate<SetSessionActionRequestResponse>         CustomSetSessionActionResponseSerializer          { get; set; }
 
 
         public OnExceptionDelegate                                           OnException                                       { get; set; }
@@ -257,6 +257,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region ~/ - SetServiceAuthorisation
 
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
                                             URIPrefix + AuthorisationURI,
                                             "SetServiceAuthorisationRequest",
@@ -466,6 +469,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             //  2  Suspend current operation
             //  3  Restart current operation
 
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetSessionActionRequestRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
                                             URIPrefix + AuthorisationURI,
                                             "SetSessionActionRequest",
@@ -473,7 +479,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                             async (HTTPRequest, SetSessionActionXML) => {
 
 
-                SetSessionActionResponse Response  = null;
+                SetSessionActionRequestResponse Response  = null;
 
                 #region Send OnSetSessionActionSOAPRequest event
 
@@ -499,10 +505,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 #endregion
 
 
-                if (SetSessionActionRequest.TryParse(SetSessionActionXML,
+                if (SetSessionActionRequestRequest.TryParse(SetSessionActionXML,
                                                      CustomSetSessionActionRequestParser,
                                                      CustomSessionActionParser,
-                                                     out SetSessionActionRequest _SetSessionActionRequest,
+                                                     out SetSessionActionRequestRequest _SetSessionActionRequest,
                                                      OnException,
 
                                                      HTTPRequest,
@@ -563,7 +569,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     // "Could not process the incoming SetSessionAction request!",
                     if (Response == null)
-                        Response = SetSessionActionResponse.SystemError(
+                        Response = SetSessionActionRequestResponse.SystemError(
                                        _SetSessionActionRequest,
                                        _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
                                    );
@@ -610,7 +616,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 // "Could not process the incoming SetSessionAction request!"
                 else
-                    Response = SetSessionActionResponse.SystemError(
+                    Response = SetSessionActionRequestResponse.SystemError(
                                    _SetSessionActionRequest,
                                    _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
                                );

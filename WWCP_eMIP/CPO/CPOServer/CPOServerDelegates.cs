@@ -73,7 +73,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  Contract_Id?               UserContractIdAlias,
                                                  IEnumerable<MeterReport>   MeterLimits,
                                                  String                     Parameter,
-                                                 String                     BookingId,
+                                                 Booking_Id?                BookingId,
 
                                                  TimeSpan?                  RequestTimeout);
 
@@ -129,7 +129,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                   Contract_Id?                         UserContractIdAlias,
                                                   IEnumerable<MeterReport>             MeterLimits,
                                                   String                               Parameter,
-                                                  String                               BookingId,
+                                                  Booking_Id?                          BookingId,
 
                                                   TimeSpan                             RequestTimeout,
                                                   SetServiceAuthorisationResponse      Result,
@@ -182,11 +182,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// <param name="Timestamp">The timestamp of the request.</param>
     /// <param name="Sender">The sender of the request.</param>
     /// <param name="Request">A 'set service authorisation' request.</param>
-    public delegate Task<SetSessionActionResponse>
+    public delegate Task<SetSessionActionRequestResponse>
 
         OnSetSessionActionDelegate(DateTime                 Timestamp,
                                    CPOServer                Sender,
-                                   SetSessionActionRequest  Request);
+                                   SetSessionActionRequestRequest  Request);
 
 
     /// <summary>
@@ -224,7 +224,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                            PartnerServiceSession_Id?  ExecPartnerSessionId,
 
                                            TimeSpan                   RequestTimeout,
-                                           SetSessionActionResponse   Result,
+                                           SetSessionActionRequestResponse   Result,
                                            TimeSpan                   Duration);
 
     #endregion

@@ -1,5 +1,5 @@
-WWCP eMIP
-=========
+WWCP eMIP Adapter
+=================
 
 This software will allow the communication between World Wide Charging Protocol
 (WWCP) entities and entities implementing the _eMIP protocol_,
@@ -10,8 +10,7 @@ on this protocol please visit http://www.gireve.com.
 
 ### Requirements & Configuration
 
-1. You must be a client of Gireve.
-2. You need .NET 4.7+
+1. You need .NET 4.7+
 
 ### Your participation
 

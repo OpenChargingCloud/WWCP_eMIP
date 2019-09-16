@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\..\..\ChargeITMobilityEMP\libs\WWCP_Core\WWCP.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\WWCP_Core\WWCP.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Debug\org.GraphDefined.WWCP.eMIP.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

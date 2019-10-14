@@ -1425,18 +1425,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.ChargingPoolId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.ChargingPoolId.ToString().StartsWith("DE*BDO*ChargingPool*CI*TESTS"))
-                    result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
-                                 new SetChargingPoolAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.ChargingPoolId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.ChargingPoolId.ToString().StartsWith("DE*BDO*ChargingPool*CI*TESTS"))
+            //        result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
+            //                     new SetChargingPoolAvailabilityStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -1706,18 +1706,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.ChargingStationId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.ChargingStationId.ToString().StartsWith("DE*BDO*ChargingStation*CI*TESTS"))
-                    result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
-                                 new SetChargingStationAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.ChargingStationId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.ChargingStationId.ToString().StartsWith("DE*BDO*ChargingStation*CI*TESTS"))
+            //        result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
+            //                     new SetChargingStationAvailabilityStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -2267,18 +2267,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*ChargingConnector*CI*TESTS"))
-                    result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
-                                 new SetChargingConnectorAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.ChargingConnectorId.ToString().StartsWith("DE*BDO*ChargingConnector*CI*TESTS"))
+            //        result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
+            //                     new SetChargingConnectorAvailabilityStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -2832,18 +2832,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
-                                 new SetEVSESyntheticStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
+            //                     new SetEVSESyntheticStatusResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -3116,18 +3116,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
-                                 new GetServiceAuthorisationResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
+            //                     new GetServiceAuthorisationResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {
@@ -3670,18 +3670,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
 
-            if (!Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
-                !Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
-                    result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
-                                 new SetChargeDetailRecordResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.ServiceNotAvailable
-                                     //"HTTP request failed!"
-                                 )
-                             );
+            //if (!Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*E666181358*") &&
+            //    !Request.ChargeDetailRecord.EVSEId.ToString().StartsWith("DE*BDO*EVSE*CI*TESTS"))
+            //        result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
+            //                     new SetChargeDetailRecordResponse(
+            //                         Request,
+            //                         Request.TransactionId ?? Transaction_Id.Zero,
+            //                         RequestStatus.ServiceNotAvailable
+            //                         //"HTTP request failed!"
+            //                     )
+            //                 );
 
-            else
+            //else
 
             do
             {

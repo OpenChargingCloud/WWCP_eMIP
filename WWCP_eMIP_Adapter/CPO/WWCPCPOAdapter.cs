@@ -5307,13 +5307,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         //        UID than the UID which started the session!
         //        (e.g. car sharing)
 
-        #region AuthorizeStop(SessionId, LocalAuthentication,                    OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, AuthIdentification,                    OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="LocalAuthentication">An user identification.</param>
+        /// <param name="AuthIdentification">An user identification.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -5323,7 +5323,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          LocalAuthentication          LocalAuthentication,
+                          LocalAuthentication          AuthIdentification,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
                           DateTime?                    Timestamp           = null,
@@ -5334,8 +5334,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (LocalAuthentication == null)
-                throw new ArgumentNullException(nameof(LocalAuthentication),  "The given authentication token must not be null!");
+            if (AuthIdentification == null)
+                throw new ArgumentNullException(nameof(AuthIdentification),  "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5367,7 +5367,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                RoamingNetwork.Id,
                                                OperatorId,
                                                SessionId,
-                                               LocalAuthentication,
+                                               AuthIdentification,
                                                RequestTimeout);
 
             }
@@ -5464,7 +5464,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                 RoamingNetwork.Id,
                                                 OperatorId,
                                                 SessionId,
-                                                LocalAuthentication,
+                                                AuthIdentification,
                                                 RequestTimeout,
                                                 result,
                                                 Runtime);
@@ -5483,13 +5483,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, LocalAuthentication, EVSEId,            OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, AuthIdentification, EVSEId,            OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given EVSE.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="LocalAuthentication">A (RFID) user identification.</param>
+        /// <param name="AuthIdentification">A (RFID) user identification.</param>
         /// <param name="EVSEId">The unique identification of an EVSE.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5500,7 +5500,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopEVSEResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          LocalAuthentication          LocalAuthentication,
+                          LocalAuthentication          AuthIdentification,
                           WWCP.EVSE_Id                 EVSEId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5512,8 +5512,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (LocalAuthentication  == null)
-                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
+            if (AuthIdentification  == null)
+                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5546,7 +5546,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                    OperatorId,
                                                    EVSEId,
                                                    SessionId,
-                                                   LocalAuthentication,
+                                                   AuthIdentification,
                                                    RequestTimeout);
 
             }
@@ -5562,8 +5562,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             TimeSpan            Runtime;
             AuthStopEVSEResult  result;
 
-            //if (DisableAuthentication)
-            //{
+            if (DisableAuthentication)
+            {
 
                 Endtime  = DateTime.UtcNow;
                 Runtime  = Endtime - StartTime;
@@ -5572,62 +5572,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         SessionId,
                                                         Runtime);
 
-            //}
+            }
 
-            //else
-            //{
+            else
+            {
 
-            //    var response  = await CPORoaming.AuthorizeStop(OperatorId.HasValue
-            //                                                      ? OperatorId.Value.ToeMIP(DefaultOperatorIdFormat)
-            //                                                      : DefaultOperatorId,
-            //                                                   SessionId.         ToeMIP(),
-            //                                                   AuthIdentification.ToeMIP().RFIDId.Value,
-            //                                                   EVSEId.            ToeMIP(),
-            //                                                   null,
+                var response  = await CPORoaming.
+                                          GetServiceAuthorisation(PartnerId:                this.PartnerId,
+                                                                  OperatorId:               EVSEId.OperatorId.ToEMIP(),//Operator_Id.Parse("DE*BDO"),
+                                                                  EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(EVSEId.ToString())).ToEMIP().Value,
+                                                                  UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
+                                                                  RequestedServiceId:       Service_Id. Parse("1"),
+                                                                  TransactionId:            Transaction_Id.Random(),
+                                                                  PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
 
-            //                                                   Timestamp,
-            //                                                   CancellationToken,
-            //                                                   EventTrackingId,
-            //                                                   RequestTimeout);
+                                                                  Timestamp:                Timestamp,
+                                                                  CancellationToken:        CancellationToken,
+                                                                  EventTrackingId:          EventTrackingId,
+                                                                  RequestTimeout:           RequestTimeout);
 
 
-            //    Endtime  = DateTime.UtcNow;
-            //    Runtime  = Endtime - StartTime;
+                Endtime  = DateTime.UtcNow;
+                Runtime  = Endtime - StartTime;
 
-            //    if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
-            //        response.Content                     != null              &&
-            //        response.Content.AuthorisationStatus == AuthorisationStatusTypes.Authorized)
-            //    {
+                if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
+                    response.Content                     != null              &&
+                    response.Content.RequestStatus.Code  == 1                 &&
+                    response.Content.AuthorisationValue  == AuthorisationValues.OK)
+                {
 
-            //        result = AuthStopEVSEResult.Authorized(
-            //                     Id,
-            //                     this,
-            //                     SessionId,
-            //                     response.Content?.ProviderId?.ToWWCP(),
-            //                     response.Content.StatusCode.HasResult
-            //                         ? response.Content.StatusCode.Description
-            //                         : null,
-            //                     response.Content.StatusCode.HasResult
-            //                         ? response.Content.StatusCode.AdditionalInfo
-            //                         : null
-            //                 );
+                    result = AuthStopEVSEResult.Authorized(
+                                 Id,
+                                 this,
+                                 ChargingSession_Id.Parse(response.Content.ServiceSessionId.ToString()),
+                                 ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                 //Description:      response.Content.StatusCode.Description,
+                                 //AdditionalInfo:   response.Content.StatusCode.AdditionalInfo,
+                                 //NumberOfRetries:  response.NumberOfRetries,
+                                 Runtime:          Runtime
+                             );
 
-            //    }
-            //    else
-            //        result = AuthStopEVSEResult.NotAuthorized(
-            //                     Id,
-            //                     this,
-            //                     SessionId,
-            //                     response.Content?.ProviderId?.ToWWCP(),
-            //                     response.Content.StatusCode.HasResult
-            //                         ? response.Content.StatusCode.Description
-            //                         : null,
-            //                     response.Content.StatusCode.HasResult
-            //                         ? response.Content.StatusCode.AdditionalInfo
-            //                         : null
-            //                 );
+                }
 
-            //}
+                else
+                    result = AuthStopEVSEResult.NotAuthorized(
+                                 Id,
+                                 this,
+                                 SessionId,
+                                 ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                 //response.Content.StatusCode.Description,
+                                 //response.Content.StatusCode.AdditionalInfo,
+                                 Runtime:          Runtime
+                             );
+
+            }
 
 
             #region Send OnAuthorizeEVSEStopResponse event
@@ -5644,7 +5642,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                     OperatorId,
                                                     EVSEId,
                                                     SessionId,
-                                                    LocalAuthentication,
+                                                    AuthIdentification,
                                                     RequestTimeout,
                                                     result,
                                                     Runtime);
@@ -5663,13 +5661,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, LocalAuthentication, ChargingStationId, OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, AuthIdentification, ChargingStationId, OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given charging station.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="LocalAuthentication">An user identification.</param>
+        /// <param name="AuthIdentification">An user identification.</param>
         /// <param name="ChargingStationId">The unique identification of a charging station.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5680,7 +5678,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopChargingStationResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          LocalAuthentication          LocalAuthentication,
+                          LocalAuthentication          AuthIdentification,
                           WWCP.ChargingStation_Id      ChargingStationId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5693,8 +5691,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (LocalAuthentication == null)
-                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
+            if (AuthIdentification == null)
+                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5727,7 +5725,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                               OperatorId,
                                                               ChargingStationId,
                                                               SessionId,
-                                                              LocalAuthentication,
+                                                              AuthIdentification,
                                                               RequestTimeout);
 
             }
@@ -5825,7 +5823,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                OperatorId,
                                                                ChargingStationId,
                                                                SessionId,
-                                                               LocalAuthentication,
+                                                               AuthIdentification,
                                                                RequestTimeout,
                                                                result,
                                                                Runtime);
@@ -5844,13 +5842,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region AuthorizeStop(SessionId, LocalAuthentication, ChargingPoolId,    OperatorId = null, ...)
+        #region AuthorizeStop(SessionId, AuthIdentification, ChargingPoolId,    OperatorId = null, ...)
 
         /// <summary>
         /// Create an authorize stop request at the given charging pool.
         /// </summary>
         /// <param name="SessionId">The session identification from the AuthorizeStart request.</param>
-        /// <param name="LocalAuthentication">An user identification.</param>
+        /// <param name="AuthIdentification">An user identification.</param>
         /// <param name="ChargingPoolId">The unique identification of a charging pool.</param>
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
@@ -5861,7 +5859,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public async Task<AuthStopChargingPoolResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
-                          LocalAuthentication          LocalAuthentication,
+                          LocalAuthentication          AuthIdentification,
                           WWCP.ChargingPool_Id         ChargingPoolId,
                           ChargingStationOperator_Id?  OperatorId          = null,
 
@@ -5874,8 +5872,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (LocalAuthentication == null)
-                throw new ArgumentNullException(nameof(LocalAuthentication), "The given authentication token must not be null!");
+            if (AuthIdentification == null)
+                throw new ArgumentNullException(nameof(AuthIdentification), "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
@@ -5908,7 +5906,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            OperatorId,
                                                            ChargingPoolId,
                                                            SessionId,
-                                                           LocalAuthentication,
+                                                           AuthIdentification,
                                                            RequestTimeout);
 
             }
@@ -6006,7 +6004,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                             OperatorId,
                                                             ChargingPoolId,
                                                             SessionId,
-                                                            LocalAuthentication,
+                                                            AuthIdentification,
                                                             RequestTimeout,
                                                             result,
                                                             Runtime);

@@ -9,12 +9,12 @@
   },
   "files": [
     "../../UsersAPI/HTTPROOT/defaults/defaults.ts",
-    "../../OpenChargingCloudAPI/HTTPROOT/defaults/defaults.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/defaults.ts",
     "HTTPRoot/defaults/defaults.ts",
     "../../UsersAPI/HTTPROOT/login/SignInOut.ts",
     "../../UsersAPI/HTTPROOT/defaults/views.ts",
-    "../../OpenChargingCloudAPI/HTTPROOT/defaults/WWCPDatatypes.ts",
-    "../../OpenChargingCloudAPI/HTTPROOT/defaults/WWCPEntities.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPDatatypes.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPEntities.ts",
     "HTTPRoot/index.ts"
   ]
 }

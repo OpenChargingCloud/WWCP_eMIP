@@ -8,11 +8,11 @@
     "allowJs": false
   },
   "files": [
-    "../../UsersAPI/HTTPROOT/defaults/defaults.ts",
+    "../../UsersAPI/UsersAPI/HTTPROOT/defaults/defaults.ts",
     "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/defaults.ts",
     "HTTPRoot/defaults/defaults.ts",
-    "../../UsersAPI/HTTPROOT/login/SignInOut.ts",
-    "../../UsersAPI/HTTPROOT/defaults/views.ts",
+    "../../UsersAPI/UsersAPI/HTTPROOT/login/SignInOut.ts",
+    "../../UsersAPI/UsersAPI/HTTPROOT/defaults/views.ts",
     "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPDatatypes.ts",
     "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPEntities.ts",
     "HTTPRoot/index.ts"

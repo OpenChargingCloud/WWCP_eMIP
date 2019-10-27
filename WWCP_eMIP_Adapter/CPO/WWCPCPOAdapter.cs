@@ -42,7 +42,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// A WWCP wrapper for the eMIP CPO Roaming client which maps
     /// WWCP data structures onto eMIP data structures and vice versa.
     /// </summary>
-    public class WWCPCPOAdapter : AWWCPCSOAdapter,
+    public class WWCPCPOAdapter : AWWCPCSOAdapter<ChargeDetailRecord>,
                                   ICSORoamingProvider,
                                   IEquatable <WWCPCPOAdapter>,
                                   IComparable<WWCPCPOAdapter>,
@@ -288,12 +288,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region SendHeartbeat
 
-        public delegate void SendHeartbeatStartedDelegate(AWWCPCSOAdapter Sender, DateTime StartTime, TimeSpan Every, UInt64 RunId);
+        public delegate void SendHeartbeatStartedDelegate(WWCPCPOAdapter Sender, DateTime StartTime, TimeSpan Every, UInt64 RunId);
 
         public event SendHeartbeatStartedDelegate SendHeartbeatStartedEvent;
 
 
-        public delegate void SendHeartbeatFinishedDelegate(AWWCPCSOAdapter Sender, DateTime StartTime, DateTime EndTime, TimeSpan Runtime, TimeSpan Every, UInt64 RunId);
+        public delegate void SendHeartbeatFinishedDelegate(WWCPCPOAdapter Sender, DateTime StartTime, DateTime EndTime, TimeSpan Runtime, TimeSpan Every, UInt64 RunId);
 
         public event SendHeartbeatFinishedDelegate SendHeartbeatFinishedEvent;
 
@@ -6154,7 +6154,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                 try
                                 {
 
-                                    ChargeDetailRecordsQueue.Add(ChargeDetailRecord);
+                                    ChargeDetailRecordsQueue.Add(ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
                                     SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
                                                                           SendCDRResultTypes.Enqueued));
 
@@ -6767,7 +6767,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Make a thread local copy of all data
 
             var LockTaken                    = await FlushChargeDetailRecordsLock.WaitAsync(MaxLockWaitingTime);
-            var ChargeDetailRecordQueueCopy  = new List<WWCP.ChargeDetailRecord>();
+            var ChargeDetailRecordQueueCopy  = new List<ChargeDetailRecord>();
 
             try
             {
@@ -6808,23 +6808,60 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (ChargeDetailRecordQueueCopy.Count > 0)
             {
 
-                var sendCDRsResult = await SendChargeDetailRecords(ChargeDetailRecordQueueCopy,
-                                                                   TransmissionTypes.Direct,
+                var SendCDRsResults = new List<SendCDRResult>();
+                HTTPResponse<SetChargeDetailRecordResponse> response;
 
-                                                                   DateTime.UtcNow,
-                                                                   new CancellationTokenSource().Token,
-                                                                   EventTracking_Id.New,
-                                                                   DefaultRequestTimeout);
-
-                if (sendCDRsResult.Warnings.Any())
+                foreach (var chargeDetailRecord in ChargeDetailRecordQueueCopy)
                 {
 
-                    SendOnWarnings(DateTime.UtcNow,
-                                   nameof(WWCPCPOAdapter) + Id,
-                                   "SendChargeDetailRecords",
-                                   sendCDRsResult.Warnings);
+                    try
+                    {
+
+                        response = await CPORoaming.SetChargeDetailRecord(PartnerId,
+                                                                          chargeDetailRecord.EVSEId.OperatorId,
+                                                                          chargeDetailRecord,
+                                                                          Transaction_Id.Random(),
+
+                                                                          null,
+                                                                          DateTime.UtcNow,
+                                                                          new CancellationTokenSource().Token,
+                                                                          EventTracking_Id.New,
+                                                                          DefaultRequestTimeout);
+
+                        if (response.HTTPStatusCode == HTTPStatusCode.OK &&
+                            response.Content        != null              &&
+                            response.Content.RequestStatus == RequestStatus.Ok)
+                        {
+                            SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                                                                  SendCDRResultTypes.Success));
+                        }
+
+                        else
+                            SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                                                                  SendCDRResultTypes.Error,
+                                                                  response.HTTPBodyAsUTF8String));
+
+                    }
+                    catch (Exception e)
+                    {
+                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                                                              SendCDRResultTypes.CouldNotConvertCDRFormat,
+                                                              e.Message));
+                    }
 
                 }
+
+
+
+                //if (sendCDRsResult.Warnings.Any())
+                //{
+
+                //    SendOnWarnings(DateTime.UtcNow,
+                //                   nameof(WWCPCPOAdapter) + Id,
+                //                   "SendChargeDetailRecords",
+                //                   sendCDRsResult.Warnings);
+
+                //}
 
             }
 

@@ -57,8 +57,6 @@
     <Compile Include="CPO\CPOServer\CPOServer.cs" />
     <Compile Include="CPO\CPOServer\CPOServerDelegates.cs" />
     <Compile Include="CPO\CPOServer\CPOServerLogger.cs" />
-    <Compile Include="DataTypes\ACustomData.cs" />
-    <Compile Include="DataTypes\ACustomDataBuilder.cs" />
     <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
     <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
     <Compile Include="DataTypes\Complex\SessionEvent.cs" />
@@ -79,8 +77,6 @@
     <Compile Include="DataTypes\Enums\AuthorisationValues.cs" />
     <Compile Include="DataTypes\Enums\EVSEBusyStatusTypes.cs" />
     <Compile Include="DataTypes\Enums\EVSEAvailabilityStatusTypes.cs" />
-    <Compile Include="DataTypes\ICustomDataBuilder.cs" />
-    <Compile Include="DataTypes\ICustomData.cs" />
     <Compile Include="DataTypes\Simple\ChargingPool_Id.cs" />
     <Compile Include="DataTypes\Simple\Provider_Id.cs" />
     <Compile Include="DataTypes\Simple\ServiceSession_Id.cs" />

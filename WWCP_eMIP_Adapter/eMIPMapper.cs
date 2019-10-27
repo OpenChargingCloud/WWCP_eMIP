@@ -266,7 +266,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                            ServiceSessionId:        ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
                            RequestedServiceId:      Service_Id.Parse("1"),
                            EVSEId:                  ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
-                           UserId:                  User_Id.Parse(ChargeDetailRecord.IdentificationStart.ToString()),
+                           UserId:                  User_Id.Parse(ChargeDetailRecord.AuthenticationStart.ToString()),
                            StartTime:               ChargeDetailRecord.SessionTime.StartTime,
                            EndTime:                 ChargeDetailRecord.SessionTime.EndTime.Value,
                            UserContractIdAlias:     null,

@@ -31,7 +31,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// A session event.
     /// </summary>
-    public class SessionEvent
+    public class SessionEvent: IEquatable<SessionEvent>
     {
 
         #region Properties

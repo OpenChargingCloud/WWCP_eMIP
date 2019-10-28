@@ -31,7 +31,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// A session action.
     /// </summary>
-    public class SessionAction
+    public class SessionAction: IEquatable<SessionAction>
     {
 
         #region Properties

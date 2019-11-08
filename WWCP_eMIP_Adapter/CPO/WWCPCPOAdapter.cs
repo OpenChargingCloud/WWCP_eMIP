@@ -2735,13 +2735,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (StatusUpdates == null || !StatusUpdates.Any())
-                return PushEVSEStatusResult.NoOperation(Id,
-                                                        this);
+                return PushEVSEStatusResult.NoOperation(Id, this);
 
-            if (DisablePushStatus)
-                return PushEVSEStatusResult.AdminDown(Id,
-                                                      this,
-                                                      StatusUpdates);
+            PushEVSEStatusResult result = null;
 
             #endregion
 
@@ -2750,15 +2746,79 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             if (TransmissionType == TransmissionTypes.Enqueue)
             {
 
-                return await UpdateStatus(this,
-                                          StatusUpdates,
+                #region Send OnEnqueueSendCDRRequest event
 
-                                          Timestamp,
-                                          CancellationToken,
-                                          EventTrackingId,
-                                          RequestTimeout).
+                //try
+                //{
 
-                             ConfigureAwait(false);
+                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
+                //                                    Timestamp.Value,
+                //                                    this,
+                //                                    EventTrackingId,
+                //                                    RoamingNetwork.Id,
+                //                                    ChargeDetailRecord,
+                //                                    RequestTimeout);
+
+                //}
+                //catch (Exception e)
+                //{
+                //    e.Log(nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
+                //}
+
+                #endregion
+
+                var invokeTimer  = false;
+                var LockTaken    = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime);
+
+                try
+                {
+
+                    if (LockTaken)
+                    {
+
+                        var FilteredUpdates = StatusUpdates.Where(statusupdate => IncludeEVSEs  (statusupdate.EVSE) &&
+                                                                                  IncludeEVSEIds(statusupdate.EVSE.Id)).
+                                                            ToArray();
+
+                        if (FilteredUpdates.Length > 0)
+                        {
+
+                            foreach (var Update in FilteredUpdates)
+                            {
+
+                                // Delay the status update until the EVSE data had been uploaded!
+                                if (EVSEsToAddQueue.Any(evse => evse == Update.EVSE))
+                                    EVSEStatusChangesDelayedQueue.Add(Update);
+
+                                else
+                                    EVSEStatusChangesFastQueue.Add(Update);
+
+                            }
+
+                            invokeTimer = true;
+
+                            result = PushEVSEStatusResult.Enqueued(Id, this);
+
+                        }
+
+                        result = PushEVSEStatusResult.NoOperation(Id, this);
+
+                    }
+
+                }
+                finally
+                {
+                    if (LockTaken)
+                        DataAndStatusLock.Release();
+                }
+
+                if (!LockTaken)
+                    return PushEVSEStatusResult.Error(Id, this, Description: "Could not acquire DataAndStatusLock!");
+
+                if (invokeTimer)
+                    FlushEVSEFastStatusTimer.Change(FlushEVSEFastStatusEvery, TimeSpan.FromMilliseconds(-1));
+
+                return result;
 
             }
 
@@ -3595,7 +3655,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (ChargingPool == null)
-                throw new ArgumentNullException(nameof(ChargingPool), "The given charging pool must not be null!");
+                return PushEVSEDataResult.NoOperation(Id,
+                                                      this);
+
+            if (DisablePushData)
+                return PushEVSEDataResult.AdminDown(Id,
+                                                    this);
+
+            PushEVSEDataResult result = null;
 
             #endregion
 
@@ -3625,41 +3692,81 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 #endregion
 
-                await DataAndStatusLock.WaitAsync();
+                var invokeTimer = false;
+                var LockTaken = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime);
+
+                try
                 {
 
-                    var AddData = false;
-
-                    foreach (var evse in ChargingPool.EVSEs)
-                    {
-                        if (IncludeEVSEs == null ||
-                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
-                        {
-                            EVSEsToUpdateQueue.Add(evse);
-                            AddData = true;
-                        }
-                    }
-
-                    if (AddData)
+                    if (LockTaken)
                     {
 
-                        if (ChargingPoolsUpdateLog.TryGetValue(ChargingPool, out List<PropertyUpdateInfos> PropertyUpdateInfo))
-                            PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
+                        var AddData = false;
 
-                        else
+                        foreach (var evse in ChargingPool.EVSEs)
                         {
-                            var List = new List<PropertyUpdateInfos>();
-                            List.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-                            ChargingPoolsUpdateLog.Add(ChargingPool, List);
+                            if (IncludeEVSEs == null ||
+                               (IncludeEVSEs != null && IncludeEVSEs(evse)))
+                            {
+                                EVSEsToUpdateQueue.Add(evse);
+                                AddData = true;
+                            }
                         }
 
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
+                        if (AddData)
+                        {
+
+                            if (ChargingPoolsUpdateLog.TryGetValue(ChargingPool, out List<PropertyUpdateInfos> PropertyUpdateInfo))
+                                PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
+
+                            else
+                            {
+                                var List = new List<PropertyUpdateInfos>();
+                                List.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
+                                ChargingPoolsUpdateLog.Add(ChargingPool, List);
+                            }
+
+                            invokeTimer = true;
+
+                        }
+
+                        result = PushEVSEDataResult.Enqueued(Id, this);
 
                     }
+
+                    #region Could not get the lock for toooo long!
+
+                    else
+                    {
+
+                        //Endtime  = DateTime.UtcNow;
+                        //Runtime  = Endtime - StartTime;
+                        result   = PushEVSEDataResult.Timeout(Id,
+                                                              this,
+                                                              new EVSE[0],// ChargeDetailRecords,
+                                                              "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!"
+                                                              //ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
+                                                              //Runtime: Runtime
+                                                              );
+
+                    }
+
+                    #endregion
 
                 }
+                finally
+                {
+                    if (LockTaken)
+                        DataAndStatusLock.Release();
+                }
 
-                return PushEVSEDataResult.Enqueued(Id, this);
+                if (!LockTaken)
+                    return PushEVSEDataResult.Error(Id, this, Description: "Could not acquire DataAndStatusLock!");
+
+                if (invokeTimer)
+                    FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
+
+                return result;
 
             }
 
@@ -6111,7 +6218,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 var invokeTimer  = false;
-                var LockTaken    = await FlushChargeDetailRecordsLock.WaitAsync(TimeSpan.FromSeconds(60));
+                var LockTaken    = await FlushChargeDetailRecordsLock.WaitAsync(MaxLockWaitingTime);
 
                 try
                 {

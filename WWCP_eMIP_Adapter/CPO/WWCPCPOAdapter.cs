@@ -6871,70 +6871,63 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected override Boolean SkipFlushChargeDetailRecordsQueues()
             => ChargeDetailRecordsQueue.Count == 0;
 
-        protected override async Task FlushChargeDetailRecordsQueues()
+        protected override async Task FlushChargeDetailRecordsQueues(IEnumerable<ChargeDetailRecord> ChargeDetailRecords)
         {
 
-            var ChargeDetailRecordsQueueCopy = ChargeDetailRecordsQueue.ToArray();
+            var SendCDRsResults = new List<SendCDRResult>();
+            HTTPResponse<SetChargeDetailRecordResponse> response;
 
-            if (ChargeDetailRecordsQueueCopy.Length > 0)
+            foreach (var chargeDetailRecord in ChargeDetailRecords)
             {
 
-                var SendCDRsResults = new List<SendCDRResult>();
-                HTTPResponse<SetChargeDetailRecordResponse> response;
-
-                foreach (var chargeDetailRecord in ChargeDetailRecordsQueueCopy)
+                try
                 {
 
-                    try
-                    {
+                    response = await CPORoaming.SetChargeDetailRecord(PartnerId,
+                                                                      chargeDetailRecord.EVSEId.OperatorId,
+                                                                      chargeDetailRecord,
+                                                                      Transaction_Id.Random(),
 
-                        response = await CPORoaming.SetChargeDetailRecord(PartnerId,
-                                                                          chargeDetailRecord.EVSEId.OperatorId,
-                                                                          chargeDetailRecord,
-                                                                          Transaction_Id.Random(),
+                                                                      null,
+                                                                      DateTime.UtcNow,
+                                                                      new CancellationTokenSource().Token,
+                                                                      EventTracking_Id.New,
+                                                                      DefaultRequestTimeout);
 
-                                                                          null,
-                                                                          DateTime.UtcNow,
-                                                                          new CancellationTokenSource().Token,
-                                                                          EventTracking_Id.New,
-                                                                          DefaultRequestTimeout);
-
-                        if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-                            response.Content        != null              &&
-                            response.Content.RequestStatus == RequestStatus.Ok)
-                        {
-                            SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
-                                                                  SendCDRResultTypes.Success));
-                        }
-
-                        else
-                            SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
-                                                                  SendCDRResultTypes.Error,
-                                                                  response.HTTPBodyAsUTF8String));
-
-                    }
-                    catch (Exception e)
+                    if (response.HTTPStatusCode == HTTPStatusCode.OK &&
+                        response.Content        != null              &&
+                        response.Content.RequestStatus == RequestStatus.Ok)
                     {
                         SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
-                                                              SendCDRResultTypes.CouldNotConvertCDRFormat,
-                                                              e.Message));
+                                                              SendCDRResultTypes.Success));
                     }
 
+                    else
+                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                                                              SendCDRResultTypes.Error,
+                                                              response.HTTPBodyAsUTF8String));
+
+                }
+                catch (Exception e)
+                {
+                    SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
+                                                          e.Message));
                 }
 
-
-
-                //if (sendCDRsResult.Warnings.Any())
-                //{
-
-                //    SendOnWarnings(DateTime.UtcNow,
-                //                   nameof(WWCPCPOAdapter) + Id,
-                //                   "SendChargeDetailRecords",
-                //                   sendCDRsResult.Warnings);
-
-                //}
-
             }
+
+
+
+            //if (sendCDRsResult.Warnings.Any())
+            //{
+
+            //    SendOnWarnings(DateTime.UtcNow,
+            //                   nameof(WWCPCPOAdapter) + Id,
+            //                   "SendChargeDetailRecords",
+            //                   sendCDRsResult.Warnings);
+
+            //}
 
             //ToDo: Send FlushChargeDetailRecordsQueues result event...
             //ToDo: Re-add to queue if it could not be send...

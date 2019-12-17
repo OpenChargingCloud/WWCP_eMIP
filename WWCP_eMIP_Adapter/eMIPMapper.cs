@@ -174,8 +174,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
         public static Operator_Id ToEMIP(this ChargingStationOperator_Id  OperatorId,
-                                         WWCP.OperatorIdFormats           Format = WWCP.OperatorIdFormats.ISO_STAR)
-            => Operator_Id.Parse(OperatorId.ToString(Format));
+                                         CustomOperatorIdMapperDelegate   CustomOperatorIdMapper = null)
+
+            => Operator_Id.Parse(CustomOperatorIdMapper != null
+                                     ? CustomOperatorIdMapper(OperatorId.ToString())
+                                     : OperatorId.ToString());
 
         public static ChargingStationOperator_Id? ToWWCP(this Operator_Id OperatorId)
         {

@@ -202,6 +202,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public IEnumerable<WWCPCPOAdapter> CPOAdapters
             => _CPOAdapters;
 
+
+        protected readonly CustomEVSEIdMapperDelegate      CustomEVSEIdMapper;
+
+        protected readonly CustomOperatorIdMapperDelegate  CustomOperatorIdMapper;
+
         #endregion
 
         #region Events
@@ -245,20 +250,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                       IEnumerable<KeyValuePair<String, String>>    HTTPLogins                          = null,
 
                       XMLNamespacesDelegate                        XMLNamespaces                       = null,
-                      XMLPostProcessingDelegate                    XMLPostProcessing                   = null)
+                      XMLPostProcessingDelegate                    XMLPostProcessing                   = null,
+
+                      CustomOperatorIdMapperDelegate               CustomOperatorIdMapper              = null,
+                      CustomEVSEIdMapperDelegate                   CustomEVSEIdMapper                  = null)
 
         {
 
-            this.HTTPServer         = HTTPServer    ?? throw new ArgumentNullException(nameof(HTTPServer), "The given HTTP server must not be null!");
-            this.URLPathPrefix      = URLPathPrefix ?? DefaultURLPathPrefix;
-            this.HTTPRealm          = HTTPRealm.IsNotNullOrEmpty() ? HTTPRealm : DefaultHTTPRealm;
-            this.HTTPLogins         = HTTPLogins    ?? new KeyValuePair<String, String>[0];
-            this.DNSClient          = HTTPServer.DNSClient;
+            this.HTTPServer              = HTTPServer    ?? throw new ArgumentNullException(nameof(HTTPServer), "The given HTTP server must not be null!");
+            this.URLPathPrefix           = URLPathPrefix ?? DefaultURLPathPrefix;
+            this.HTTPRealm               = HTTPRealm.IsNotNullOrEmpty() ? HTTPRealm : DefaultHTTPRealm;
+            this.HTTPLogins              = HTTPLogins    ?? new KeyValuePair<String, String>[0];
+            this.DNSClient               = HTTPServer.DNSClient;
 
-            this.XMLNamespaces      = XMLNamespaces;
-            this.XMLPostProcessing  = XMLPostProcessing;
+            this.XMLNamespaces           = XMLNamespaces;
+            this.XMLPostProcessing       = XMLPostProcessing;
 
-            this._CPOAdapters        = new List<WWCPCPOAdapter>();
+            this.CustomOperatorIdMapper  = CustomOperatorIdMapper;
+            this.CustomEVSEIdMapper      = CustomEVSEIdMapper;
+
+            this._CPOAdapters            = new List<WWCPCPOAdapter>();
 
             // Link HTTP events...
             HTTPServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
@@ -316,14 +327,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                                      {
 
                                                          await Adapter.CPORoaming.SetEVSEAvailabilityStatus(PartnerId:           Adapter.PartnerId,
-                                                                                                            OperatorId:          evse.Id.OperatorId.ToEMIP(),
+                                                                                                            OperatorId:          evse.Id.OperatorId.ToEMIP(CustomOperatorIdMapper),
                                                                                                             EVSEId:              evseId.Value,
                                                                                                             StatusEventDate:     evse.AdminStatus.Timestamp,
                                                                                                             AvailabilityStatus:  evse.AdminStatus.Value.ToEMIP(),
                                                                                                             TransactionId:       Transaction_Id.Random());
 
                                                          await Adapter.CPORoaming.SetEVSEBusyStatus        (PartnerId:           Adapter.PartnerId,
-                                                                                                            OperatorId:          evse.Id.OperatorId.ToEMIP(),
+                                                                                                            OperatorId:          evse.Id.OperatorId.ToEMIP(CustomOperatorIdMapper),
                                                                                                             EVSEId:              evseId.Value,
                                                                                                             StatusEventDate:     evse.Status.Timestamp,
                                                                                                             BusyStatus:          evse.Status.Value.ToEMIP(),

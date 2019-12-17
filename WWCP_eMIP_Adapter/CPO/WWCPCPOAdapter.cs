@@ -135,7 +135,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public TimeSpan    SendHeartbeatsEvery               { get; }
 
 
-        protected readonly CustomEVSEIdMapperDelegate CustomEVSEIdMapper;
+        protected readonly CustomOperatorIdMapperDelegate  CustomOperatorIdMapper;
+
+        protected readonly CustomEVSEIdMapperDelegate      CustomEVSEIdMapper;
 
         #endregion
 
@@ -318,6 +320,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="IncludeEVSEIds">Only include EVSE identificators matching the given delegate.</param>
         /// <param name="IncludeEVSEs">Only include EVSEs matching the given delegate.</param>
+        /// <param name="CustomOperatorIdMapper">A delegate to customize the mapping of operator identifications.</param>
         /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
         /// 
         /// <param name="EVSE2EVSEDataRecord">A delegate to process an EVSE data record, e.g. before pushing it to the roaming provider.</param>
@@ -346,6 +349,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                          = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
@@ -417,6 +421,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             this.SendHeartbeatsTimer                             = new Timer(SendHeartbeat, null, this.SendHeartbeatsEvery, this.SendHeartbeatsEvery);
             this.DisableSendHeartbeats                           = DisableSendHeartbeats;
 
+            this.CustomOperatorIdMapper                          = CustomOperatorIdMapper;
             this.CustomEVSEIdMapper                              = CustomEVSEIdMapper;
 
 
@@ -823,6 +828,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                          = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
@@ -859,6 +865,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   CustomOperatorIdMapper,
                    CustomEVSEIdMapper,
 
                    //EVSE2EVSEDataRecord,
@@ -975,6 +982,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                           = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                             = null,
+                              CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                                   = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                                       = null,
 
                               //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                                      = null,
@@ -1055,6 +1063,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   CustomOperatorIdMapper,
                    CustomEVSEIdMapper,
 
                    //EVSE2EVSEDataRecord,
@@ -4952,8 +4961,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 var response  = await CPORoaming.
-                                          GetServiceAuthorisation(PartnerId:                this.PartnerId,
-                                                                  OperatorId:               EVSEId.OperatorId.ToEMIP(),//Operator_Id.Parse("DE*BDO"),
+                                          GetServiceAuthorisation(PartnerId:                PartnerId,
+                                                                  OperatorId:               EVSEId.OperatorId.ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
                                                                   RequestedServiceId:       Service_Id. Parse("1"),
@@ -5677,8 +5686,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             {
 
                 var response  = await CPORoaming.
-                                          GetServiceAuthorisation(PartnerId:                this.PartnerId,
-                                                                  OperatorId:               EVSEId.OperatorId.ToEMIP(),//Operator_Id.Parse("DE*BDO"),
+                                          GetServiceAuthorisation(PartnerId:                PartnerId,
+                                                                  OperatorId:               EVSEId.OperatorId.ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
                                                                   RequestedServiceId:       Service_Id. Parse("1"),
@@ -6304,7 +6313,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                 {
 
                                     response = await CPORoaming.SetChargeDetailRecord(PartnerId,
-                                                                                      ChargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(),
+                                                                                      ChargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
                                                                                       ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
                                                                                       Transaction_Id.Random(),
 

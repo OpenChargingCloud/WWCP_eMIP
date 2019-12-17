@@ -141,6 +141,7 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                CustomOperatorIdMapperDelegate                                    CustomOperatorIdMapper                                   = null,
                                                 CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
                                                 TimeSpan?                                                         SendHeartbeatsEvery                                      = null,
@@ -225,6 +226,7 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       CustomOperatorIdMapper,
                                                                        CustomEVSEIdMapper,
 
                                                                        //EVSE2EVSEDataRecord,
@@ -355,6 +357,7 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                CustomOperatorIdMapperDelegate                                    CustomOperatorIdMapper                                   = null,
                                                 CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
                                                 TimeSpan?                                                         SendHeartbeatsEvery                                      = null,
@@ -453,6 +456,7 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       CustomOperatorIdMapper,
                                                                        CustomEVSEIdMapper,
 
                                                                        //EVSE2EVSEDataRecord,

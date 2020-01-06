@@ -509,12 +509,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 //}
 
-
                 #endregion
+
+                var EVSEId = Request.EVSEId.ToWWCP();
+
+                if (!EVSEId.HasValue)
+                    return new SetServiceAuthorisationResponse(
+                               Request,
+                               Request.TransactionId ?? Transaction_Id.Zero,
+                               RequestStatus.EVSENotReachable
+                           );
 
                 var response = await RoamingNetwork.
                                          RemoteStart(this,
-                                                     ChargingLocation:      ChargingLocation.FromEVSEId(Request.EVSEId.ToWWCP().Value),
+                                                     ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
                                                      ChargingProduct:       chargingProduct,
                                                      ReservationId:         null,
                                                      SessionId:             Request.ServiceSessionId.ToWWCP(),
@@ -773,7 +781,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             };
 
             #endregion
-
 
         }
 

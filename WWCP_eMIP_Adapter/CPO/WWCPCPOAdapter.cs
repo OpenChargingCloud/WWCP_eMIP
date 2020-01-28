@@ -573,7 +573,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     switch (response.Result)
                     {
 
-                        case RemoteStartResultType.Success:
+                        case RemoteStartResultTypes.Success:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
@@ -583,25 +583,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         //case RemoteStartResultType.InvalidSessionId:
                         //case RemoteStartResultType.InvalidCredentials:
 
-                        case RemoteStartResultType.Offline:
-                        case RemoteStartResultType.Timeout:
-                        case RemoteStartResultType.OutOfService:
-                        case RemoteStartResultType.CommunicationError:
+                        case RemoteStartResultTypes.Offline:
+                        case RemoteStartResultTypes.Timeout:
+                        case RemoteStartResultTypes.OutOfService:
+                        case RemoteStartResultTypes.CommunicationError:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSENotReachable
                                    );
 
-                        case RemoteStartResultType.Reserved:
-                        case RemoteStartResultType.AlreadyInUse:
+                        case RemoteStartResultTypes.Reserved:
+                        case RemoteStartResultTypes.AlreadyInUse:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
                                        RequestStatus.EVSEServiceNotAvailable
                                    );
 
-                        case RemoteStartResultType.UnknownLocation:
+                        case RemoteStartResultTypes.UnknownLocation:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
@@ -733,31 +733,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         switch (response.Result)
                         {
 
-                            case RemoteStopResultType.Success:
+                            case RemoteStopResultTypes.Success:
                                 return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.Ok
                                        );
 
-                            case RemoteStopResultType.AlreadyStopped:
+                            case RemoteStopResultTypes.AlreadyStopped:
                                 return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.Ok
                                        );
 
-                            case RemoteStopResultType.InvalidSessionId:
+                            case RemoteStopResultTypes.InvalidSessionId:
                                 return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,
                                            RequestStatus.SessionNotFound
                                        );
 
-                            case RemoteStopResultType.Offline:
-                            case RemoteStopResultType.Timeout:
-                            case RemoteStopResultType.OutOfService:
-                            case RemoteStopResultType.CommunicationError:
+                            case RemoteStopResultTypes.Offline:
+                            case RemoteStopResultTypes.Timeout:
+                            case RemoteStopResultTypes.OutOfService:
+                            case RemoteStopResultTypes.CommunicationError:
                                 return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,

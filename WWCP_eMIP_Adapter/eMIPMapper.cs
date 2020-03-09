@@ -287,7 +287,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                                         MeterReport.Create(ChargeDetailRecord.ConsumedEnergy.HasValue
                                                                                ?  ChargeDetailRecord.ConsumedEnergy.Value.ToString("0.##").Replace(',', '.')
                                                                                : (ChargeDetailRecord.EnergyMeteringValues.Last().Value - ChargeDetailRecord.EnergyMeteringValues.First().Value).ToString("0.##").Replace(',', '.'),
-                                                                           "Wh",
+                                                                           "kWh",
                                                                            MeterTypes.TotalEnergy),
                                                     },
                            CustomData:              new Dictionary<String, Object> {

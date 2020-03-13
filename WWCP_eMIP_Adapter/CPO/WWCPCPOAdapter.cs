@@ -6915,19 +6915,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         response.Content        != null              &&
                         response.Content.RequestStatus == RequestStatus.Ok)
                     {
-                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                               SendCDRResultTypes.Success));
                     }
 
                     else
-                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                               SendCDRResultTypes.Error,
                                                               I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
 
                 }
                 catch (Exception e)
                 {
-                    SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.CustomData[eMIPMapper.WWCP_CDR] as WWCP.ChargeDetailRecord,
+                    SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                           SendCDRResultTypes.CouldNotConvertCDRFormat,
                                                           I18NString.Create(Languages.eng, e.Message)));
                 }

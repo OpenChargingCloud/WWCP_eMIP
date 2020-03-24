@@ -139,6 +139,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         protected readonly CustomEVSEIdMapperDelegate      CustomEVSEIdMapper;
 
+        public Func<WWCP.ChargeDetailRecord, ChargeDetailRecordFilters> ChargeDetailRecordFilter { get; set; }
+
         #endregion
 
         #region Events
@@ -207,17 +209,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a charge detail record was enqueued for later sending upstream.
         /// </summary>
-        public event OnSendCDRRequestDelegate   OnEnqueueSendCDRsRequest;
+        public event OnSendCDRsRequestDelegate   OnEnqueueSendCDRsRequest;
 
         /// <summary>
         /// An event fired whenever a charge detail record will be send upstream.
         /// </summary>
-        public event OnSendCDRRequestDelegate   OnSendCDRsRequest;
+        public event OnSendCDRsRequestDelegate   OnSendCDRsRequest;
 
         /// <summary>
         /// An event fired whenever a charge detail record had been sent upstream.
         /// </summary>
-        public event OnSendCDRResponseDelegate  OnSendCDRsResponse;
+        public event OnSendCDRsResponseDelegate  OnSendCDRsResponse;
 
         #endregion
 
@@ -1467,7 +1469,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                       catch (Exception e)
                                       {
                                           DebugX.  Log(e.Message);
-                                          Warnings.Add(Warning.Create(e.Message, evsestatusupdate));
+                                          Warnings.Add(Warning.Create(I18NString.Create(Languages.eng, e.Message), evsestatusupdate));
                                       }
 
                                       return null;
@@ -1565,8 +1567,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            new EVSEAdminStatusUpdate[] { evseAdminStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
                                                            response.HTTPBody != null
-                                                               ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
-                                                               : Warnings.AddAndReturnList("No HTTP body received!"),
+                                                               ? Warnings.AddAndReturnList(I18NString.Create(Languages.eng, response.HTTPBody.ToUTF8String()))
+                                                               : Warnings.AddAndReturnList(I18NString.Create(Languages.eng, "No HTTP body received!")),
                                                            Runtime));
 
             }
@@ -1686,7 +1688,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                       catch (Exception e)
                                       {
                                           DebugX.  Log(e.Message);
-                                          Warnings.Add(Warning.Create(e.Message, evsestatusupdate));
+                                          Warnings.Add(Warning.Create(I18NString.Create(Languages.eng, e.Message), evsestatusupdate));
                                       }
 
                                       return null;
@@ -1784,8 +1786,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                            new EVSEStatusUpdate[] { evseStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
                                                            response.HTTPBody != null
-                                                               ? Warnings.AddAndReturnList(response.HTTPBody.ToUTF8String())
-                                                               : Warnings.AddAndReturnList("No HTTP body received!"),
+                                                               ? Warnings.AddAndReturnList(I18NString.Create(Languages.eng, response.HTTPBody.ToUTF8String()))
+                                                               : Warnings.AddAndReturnList(I18NString.Create(Languages.eng, "No HTTP body received!")),
                                                            Runtime));
 
             }
@@ -5064,6 +5066,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
+            #region Filter charge detail records
+
+            var ForwardedCDRs  = new List<WWCP.ChargeDetailRecord>();
+            var FilteredCDRs   = new List<SendCDRResult>();
+
+            foreach (var cdr in ChargeDetailRecords)
+            {
+
+                if (ChargeDetailRecordFilter(cdr) == ChargeDetailRecordFilters.forward)
+                    ForwardedCDRs.Add(cdr);
+
+                else
+                    FilteredCDRs.Add(SendCDRResult.Filtered(cdr,
+                                                            Warning.Create(I18NString.Create(Languages.eng, "This charge detail record was filtered!"))));
+
+            }
+
+            #endregion
+
             #region Send OnSendCDRsRequest event
 
             var StartTime = DateTime.UtcNow;
@@ -5077,7 +5098,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                           Id.ToString(),
                                           EventTrackingId,
                                           RoamingNetwork.Id,
-                                          new WWCP.ChargeDetailRecord[0],
                                           ChargeDetailRecords,
                                           RequestTimeout);
 
@@ -5094,17 +5114,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             DateTime        Endtime;
             TimeSpan        Runtime;
-            SendCDRsResult  result;
+            SendCDRsResult  results;
 
             if (DisableSendChargeDetailRecords)
             {
 
-              Endtime  = DateTime.UtcNow;
-              Runtime  = Endtime - StartTime;
-              result   = SendCDRsResult.AdminDown(Id,
-                                                  this,
-                                                  ChargeDetailRecords,
-                                                  Runtime: Runtime);
+                Endtime  = DateTime.UtcNow;
+                Runtime  = Endtime - StartTime;
+                results  = SendCDRsResult.AdminDown(Id,
+                                                    this,
+                                                    ChargeDetailRecords,
+                                                    Runtime: Runtime);
 
             }
 
@@ -5140,7 +5160,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                  Id.ToString(),
                                                                  EventTrackingId,
                                                                  RoamingNetwork.Id,
-                                                                 new WWCP.ChargeDetailRecord[0],
                                                                  ChargeDetailRecords,
                                                                  RequestTimeout);
 
@@ -5152,29 +5171,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                             #endregion
 
-                            foreach (var ChargeDetailRecord in ChargeDetailRecords)
+                            foreach (var chargeDetailRecord in ChargeDetailRecords)
                             {
 
                                 try
                                 {
 
-                                    ChargeDetailRecordsQueue.Add(ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
-                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-                                                                          SendCDRResultTypes.Enqueued));
+                                    ChargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
+                                    SendCDRsResults.Add(SendCDRResult.Enqueued(chargeDetailRecord));
 
                                 }
                                 catch (Exception e)
                                 {
-                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-                                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
-                                                                          I18NString.Create(Languages.eng, e.Message)));
+                                    SendCDRsResults.Add(SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord,
+                                                                                               Warning.Create(I18NString.Create(Languages.eng, e.Message))));
                                 }
 
                             }
 
                             Endtime      = DateTime.UtcNow;
                             Runtime      = Endtime - StartTime;
-                            result       = SendCDRsResult.Enqueued(Id,
+                            results      = SendCDRsResult.Enqueued(Id,
                                                                    this,
                                                                    ChargeDetailRecords,
                                                                    "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!",
@@ -5192,16 +5209,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         {
 
                             HTTPResponse<SetChargeDetailRecordResponse> response;
+                            SendCDRResult result;
 
-                            foreach (var ChargeDetailRecord in ChargeDetailRecords)
+                            foreach (var chargeDetailRecord in ChargeDetailRecords)
                             {
 
                                 try
                                 {
 
                                     response = await CPORoaming.SetChargeDetailRecord(PartnerId,
-                                                                                      ChargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
-                                                                                      ChargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                                                                      chargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
+                                                                                      chargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
                                                                                       Transaction_Id.Random(),
 
                                                                                       null,
@@ -5210,46 +5228,47 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                                       EventTrackingId,
                                                                                       RequestTimeout);
 
-                                    if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-                                        response.Content        != null              &&
+                                    if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
+                                        response.Content               != null              &&
                                         response.Content.RequestStatus == RequestStatus.Ok)
                                     {
-                                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-                                                                              SendCDRResultTypes.Success));
+
+                                        result = SendCDRResult.Success(chargeDetailRecord);
+
                                     }
 
                                     else
-                                        SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-                                                                              SendCDRResultTypes.Error,
-                                                                              I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
+                                        result = SendCDRResult.Error(chargeDetailRecord,
+                                                                     Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
 
                                 }
                                 catch (Exception e)
                                 {
-                                    SendCDRsResults.Add(new SendCDRResult(ChargeDetailRecord,
-                                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
-                                                                          I18NString.Create(Languages.eng, e.Message)));
+                                    result = SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord,
+                                                                                    I18NString.Create(Languages.eng, e.Message));
                                 }
+
+                                SendCDRsResults.Add(result);
+                                RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.SessionId, result);
 
                             }
 
                             Endtime  = DateTime.UtcNow;
                             Runtime  = Endtime - StartTime;
 
-                            if      (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
-                                result = SendCDRsResult.Success(Id,
-                                                                this,
-                                                                ChargeDetailRecords,
-                                                                Runtime: Runtime);
+                            if (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
+                                results = SendCDRsResult.Success(Id,
+                                                                 this,
+                                                                 ChargeDetailRecords,
+                                                                 Runtime: Runtime);
 
                             else
-                                result = SendCDRsResult.Error(Id,
-                                                              this,
-                                                              SendCDRsResults.
-                                                                  Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
-                                                                  Select(cdrresult => cdrresult.ChargeDetailRecord),
-                                                              Runtime: Runtime);
-
+                                results = SendCDRsResult.Error(Id,
+                                                               this,
+                                                               SendCDRsResults.
+                                                                   Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
+                                                                   Select(cdrresult => cdrresult.ChargeDetailRecord),
+                                                               Runtime: Runtime);
 
                         }
 
@@ -5264,7 +5283,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                         Endtime  = DateTime.UtcNow;
                         Runtime  = Endtime - StartTime;
-                        result   = SendCDRsResult.Timeout(Id,
+                        results  = SendCDRsResult.Timeout(Id,
                                                           this,
                                                           ChargeDetailRecords,
                                                           "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!",
@@ -5299,10 +5318,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                            Id.ToString(),
                                            EventTrackingId,
                                            RoamingNetwork.Id,
-                                           new WWCP.ChargeDetailRecord[0],
                                            ChargeDetailRecords,
                                            RequestTimeout,
-                                           result,
+                                           results,
                                            Runtime);
 
             }
@@ -5313,7 +5331,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             #endregion
 
-            return result;
+            return results;
 
         }
 
@@ -5769,8 +5787,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         protected override async Task FlushChargeDetailRecordsQueues(IEnumerable<ChargeDetailRecord> ChargeDetailRecords)
         {
 
-            var SendCDRsResults = new List<SendCDRResult>();
             HTTPResponse<SetChargeDetailRecordResponse> response;
+            SendCDRResult result;
 
             foreach (var chargeDetailRecord in ChargeDetailRecords)
             {
@@ -5789,42 +5807,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                       EventTracking_Id.New,
                                                                       DefaultRequestTimeout);
 
-                    if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-                        response.Content        != null              &&
+                    if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
+                        response.Content               != null              &&
                         response.Content.RequestStatus == RequestStatus.Ok)
                     {
-                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                              SendCDRResultTypes.Success));
+
+                        result = SendCDRResult.Success(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR));
+
                     }
 
                     else
-                        SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                              SendCDRResultTypes.Error,
-                                                              I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
+                        result = SendCDRResult.Error(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                                     Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
 
                 }
                 catch (Exception e)
                 {
-                    SendCDRsResults.Add(new SendCDRResult(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                          SendCDRResultTypes.CouldNotConvertCDRFormat,
-                                                          I18NString.Create(Languages.eng, e.Message)));
+                    result = SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                                                    Warning.Create(I18NString.Create(Languages.eng, e.Message)));
                 }
+
+                RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.ServiceSessionId.ToWWCP(), result);
 
             }
 
-
-
-            //if (sendCDRsResult.Warnings.Any())
-            //{
-
-            //    SendOnWarnings(DateTime.UtcNow,
-            //                   nameof(WWCPCPOAdapter) + Id,
-            //                   "SendChargeDetailRecords",
-            //                   sendCDRsResult.Warnings);
-
-            //}
-
-            //ToDo: Send FlushChargeDetailRecordsQueues result event...
             //ToDo: Re-add to queue if it could not be send...
 
         }

@@ -457,7 +457,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                            );
 
                 var response = await RoamingNetwork.
-                                         RemoteStart(CSORoamingProvider:    this,
+                                         RemoteStart(EMPRoamingProvider:    this,
                                                      ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
                                                      ChargingProduct:       chargingProduct,
                                                      ReservationId:         null,
@@ -651,7 +651,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 {
 
                     var response = await RoamingNetwork.
-                                             RemoteStop(CSORoamingProvider:    this,
+                                             RemoteStop(EMPRoamingProvider:    this,
                                                         SessionId:             Request.ServiceSessionId.ToWWCP(),
                                                         ReservationHandling:   ReservationHandling.Close,
                                                         ProviderId:            null,

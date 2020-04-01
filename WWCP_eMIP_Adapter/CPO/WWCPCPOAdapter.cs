@@ -139,8 +139,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         protected readonly CustomEVSEIdMapperDelegate      CustomEVSEIdMapper;
 
-        public Func<WWCP.ChargeDetailRecord, ChargeDetailRecordFilters> ChargeDetailRecordFilter { get; set; }
-
         #endregion
 
         #region Events
@@ -285,6 +283,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              IncludeChargingStationIdDelegate                   IncludeChargingStationIds                       = null,
+                              IncludeChargingStationDelegate                     IncludeChargingStations                         = null,
+                              IncludeChargingPoolIdDelegate                      IncludeChargingPoolIds                          = null,
+                              IncludeChargingPoolDelegate                        IncludeChargingPools                            = null,
+                              ChargeDetailRecordFilterDelegate                   ChargeDetailRecordFilter                        = null,
                               CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                          = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
@@ -316,6 +319,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   IncludeChargingStationIds,
+                   IncludeChargingStations,
+                   IncludeChargingPoolIds,
+                   IncludeChargingPools,
+                   ChargeDetailRecordFilter,
 
                    ServiceCheckEvery,
                    StatusCheckEvery,
@@ -772,6 +780,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
+                              IncludeChargingStationIdDelegate                   IncludeChargingStationIds                       = null,
+                              IncludeChargingStationDelegate                     IncludeChargingStations                         = null,
+                              IncludeChargingPoolIdDelegate                      IncludeChargingPoolIds                          = null,
+                              IncludeChargingPoolDelegate                        IncludeChargingPools                            = null,
+                              ChargeDetailRecordFilterDelegate                   ChargeDetailRecordFilter                        = null,
                               CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                          = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
 
@@ -809,6 +822,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   IncludeChargingStationIds,
+                   IncludeChargingStations,
+                   IncludeChargingPoolIds,
+                   IncludeChargingPools,
+                   ChargeDetailRecordFilter,
                    CustomOperatorIdMapper,
                    CustomEVSEIdMapper,
 
@@ -926,6 +944,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                           = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                             = null,
+                              IncludeChargingStationIdDelegate                   IncludeChargingStationIds                                = null,
+                              IncludeChargingStationDelegate                     IncludeChargingStations                                  = null,
+                              IncludeChargingPoolIdDelegate                      IncludeChargingPoolIds                                   = null,
+                              IncludeChargingPoolDelegate                        IncludeChargingPools                                     = null,
+                              ChargeDetailRecordFilterDelegate                   ChargeDetailRecordFilter                                 = null,
                               CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                                   = null,
                               CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                                       = null,
 
@@ -1007,6 +1030,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
+                   IncludeChargingStationIds,
+                   IncludeChargingStations,
+                   IncludeChargingPoolIds,
+                   IncludeChargingPools,
+                   ChargeDetailRecordFilter,
                    CustomOperatorIdMapper,
                    CustomEVSEIdMapper,
 
@@ -5788,7 +5816,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             HTTPResponse<SetChargeDetailRecordResponse> response;
-            SendCDRResult result;
+            SendCDRResult                               result;
 
             foreach (var chargeDetailRecord in ChargeDetailRecords)
             {
@@ -5812,19 +5840,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         response.Content.RequestStatus == RequestStatus.Ok)
                     {
 
-                        result = SendCDRResult.Success(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR));
+                        result = SendCDRResult.Success(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                                       Runtime: response.Runtime);
 
                     }
 
                     else
                         result = SendCDRResult.Error(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                     Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
+                                                     Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)),
+                                                     Runtime: response.Runtime);
 
                 }
                 catch (Exception e)
                 {
                     result = SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                                    Warning.Create(I18NString.Create(Languages.eng, e.Message)));
+                                                                    Warning.Create(I18NString.Create(Languages.eng, e.Message)),
+                                                                    Runtime: TimeSpan.Zero);
                 }
 
                 RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.ServiceSessionId.ToWWCP(), result);

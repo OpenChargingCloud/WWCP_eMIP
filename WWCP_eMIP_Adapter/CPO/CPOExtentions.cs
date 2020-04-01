@@ -141,6 +141,11 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                IncludeChargingStationIdDelegate                                  IncludeChargingStationIds                                = null,
+                                                IncludeChargingStationDelegate                                    IncludeChargingStations                                  = null,
+                                                IncludeChargingPoolIdDelegate                                     IncludeChargingPoolIds                                   = null,
+                                                IncludeChargingPoolDelegate                                       IncludeChargingPools                                     = null,
+                                                ChargeDetailRecordFilterDelegate                                  ChargeDetailRecordFilter                                 = null,
                                                 CustomOperatorIdMapperDelegate                                    CustomOperatorIdMapper                                   = null,
                                                 CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
@@ -226,6 +231,11 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       IncludeChargingStationIds,
+                                                                       IncludeChargingStations,
+                                                                       IncludeChargingPoolIds,
+                                                                       IncludeChargingPools,
+                                                                       ChargeDetailRecordFilter,
                                                                        CustomOperatorIdMapper,
                                                                        CustomEVSEIdMapper,
 
@@ -357,6 +367,11 @@ namespace org.GraphDefined.WWCP
 
                                                 IncludeEVSEIdDelegate                                             IncludeEVSEIds                                           = null,
                                                 IncludeEVSEDelegate                                               IncludeEVSEs                                             = null,
+                                                IncludeChargingStationIdDelegate                                  IncludeChargingStationIds                                = null,
+                                                IncludeChargingStationDelegate                                    IncludeChargingStations                                  = null,
+                                                IncludeChargingPoolIdDelegate                                     IncludeChargingPoolIds                                   = null,
+                                                IncludeChargingPoolDelegate                                       IncludeChargingPools                                     = null,
+                                                ChargeDetailRecordFilterDelegate                                  ChargeDetailRecordFilter                                 = null,
                                                 CustomOperatorIdMapperDelegate                                    CustomOperatorIdMapper                                   = null,
                                                 CustomEVSEIdMapperDelegate                                        CustomEVSEIdMapper                                       = null,
 
@@ -456,6 +471,11 @@ namespace org.GraphDefined.WWCP
 
                                                                        IncludeEVSEIds,
                                                                        IncludeEVSEs,
+                                                                       IncludeChargingStationIds,
+                                                                       IncludeChargingStations,
+                                                                       IncludeChargingPoolIds,
+                                                                       IncludeChargingPools,
+                                                                       ChargeDetailRecordFilter,
                                                                        CustomOperatorIdMapper,
                                                                        CustomEVSEIdMapper,
 

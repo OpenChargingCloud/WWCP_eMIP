@@ -5106,7 +5106,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     ForwardedCDRs.Add(cdr);
 
                 else
-                    FilteredCDRs.Add(SendCDRResult.Filtered(cdr,
+                    FilteredCDRs.Add(SendCDRResult.Filtered(DateTime.UtcNow,
+                                                            cdr,
                                                             Warning.Create(I18NString.Create(Languages.eng, "This charge detail record was filtered!"))));
 
             }
@@ -5149,7 +5150,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 Endtime  = DateTime.UtcNow;
                 Runtime  = Endtime - StartTime;
-                results  = SendCDRsResult.AdminDown(Id,
+                results  = SendCDRsResult.AdminDown(DateTime.UtcNow,
+                                                    Id,
                                                     this,
                                                     ChargeDetailRecords,
                                                     Runtime: Runtime);
@@ -5206,12 +5208,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                 {
 
                                     ChargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
-                                    SendCDRsResults.Add(SendCDRResult.Enqueued(chargeDetailRecord));
+                                    SendCDRsResults.Add(SendCDRResult.Enqueued(DateTime.UtcNow,
+                                                                               chargeDetailRecord));
 
                                 }
                                 catch (Exception e)
                                 {
-                                    SendCDRsResults.Add(SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord,
+                                    SendCDRsResults.Add(SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
+                                                                                               chargeDetailRecord,
                                                                                                Warning.Create(I18NString.Create(Languages.eng, e.Message))));
                                 }
 
@@ -5219,7 +5223,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                             Endtime      = DateTime.UtcNow;
                             Runtime      = Endtime - StartTime;
-                            results      = SendCDRsResult.Enqueued(Id,
+                            results      = SendCDRsResult.Enqueued(DateTime.UtcNow,
+                                                                   Id,
                                                                    this,
                                                                    ChargeDetailRecords,
                                                                    "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!",
@@ -5261,18 +5266,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                         response.Content.RequestStatus == RequestStatus.Ok)
                                     {
 
-                                        result = SendCDRResult.Success(chargeDetailRecord);
+                                        result = SendCDRResult.Success(DateTime.UtcNow,
+                                                                       chargeDetailRecord);
 
                                     }
 
                                     else
-                                        result = SendCDRResult.Error(chargeDetailRecord,
+                                        result = SendCDRResult.Error(DateTime.UtcNow,
+                                                                     chargeDetailRecord,
                                                                      Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)));
 
                                 }
                                 catch (Exception e)
                                 {
-                                    result = SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord,
+                                    result = SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
+                                                                                    chargeDetailRecord,
                                                                                     I18NString.Create(Languages.eng, e.Message));
                                 }
 
@@ -5285,13 +5293,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                             Runtime  = Endtime - StartTime;
 
                             if (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
-                                results = SendCDRsResult.Success(Id,
+                                results = SendCDRsResult.Success(DateTime.UtcNow,
+                                                                 Id,
                                                                  this,
                                                                  ChargeDetailRecords,
                                                                  Runtime: Runtime);
 
                             else
-                                results = SendCDRsResult.Error(Id,
+                                results = SendCDRsResult.Error(DateTime.UtcNow,
+                                                               Id,
                                                                this,
                                                                SendCDRsResults.
                                                                    Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
@@ -5311,7 +5321,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                         Endtime  = DateTime.UtcNow;
                         Runtime  = Endtime - StartTime;
-                        results  = SendCDRsResult.Timeout(Id,
+                        results  = SendCDRsResult.Timeout(DateTime.UtcNow,
+                                                          Id,
                                                           this,
                                                           ChargeDetailRecords,
                                                           "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!",
@@ -5840,20 +5851,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         response.Content.RequestStatus == RequestStatus.Ok)
                     {
 
-                        result = SendCDRResult.Success(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                        result = SendCDRResult.Success(DateTime.UtcNow,
+                                                       chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                        Runtime: response.Runtime);
 
                     }
 
                     else
-                        result = SendCDRResult.Error(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                        result = SendCDRResult.Error(DateTime.UtcNow,
+                                                     chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                      Warning.Create(I18NString.Create(Languages.eng, response.HTTPBodyAsUTF8String)),
                                                      Runtime: response.Runtime);
 
                 }
                 catch (Exception e)
                 {
-                    result = SendCDRResult.CouldNotConvertCDRFormat(chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                    result = SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
+                                                                    chargeDetailRecord.GetCustomDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
                                                                     Warning.Create(I18NString.Create(Languages.eng, e.Message)),
                                                                     Runtime: TimeSpan.Zero);
                 }

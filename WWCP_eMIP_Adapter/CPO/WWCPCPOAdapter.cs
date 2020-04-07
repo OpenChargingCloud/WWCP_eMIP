@@ -518,6 +518,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     {
 
                         case RemoteStartResultTypes.Success:
+                        case RemoteStartResultTypes.AsyncOperation:
                             return new SetServiceAuthorisationResponse(
                                        Request,
                                        Request.TransactionId ?? Transaction_Id.Zero,
@@ -679,6 +680,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                         {
 
                             case RemoteStopResultTypes.Success:
+                            case RemoteStopResultTypes.AsyncOperation:
                                 return new SetSessionActionRequestResponse(
                                            Request,
                                            Request.TransactionId ?? Transaction_Id.Zero,

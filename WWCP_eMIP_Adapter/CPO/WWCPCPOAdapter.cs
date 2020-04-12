@@ -5229,7 +5229,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                    Id,
                                                                    this,
                                                                    ChargeDetailRecords,
-                                                                   "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!",
+                                                                   I18NString.Create(Languages.eng, "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!"),
                                                                    //SendCDRsResults.SafeWhere(cdrresult => cdrresult.Result != SendCDRResultTypes.Enqueued),
                                                                    Runtime: Runtime);
                             invokeTimer  = true;
@@ -5327,7 +5327,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                           Id,
                                                           this,
                                                           ChargeDetailRecords,
-                                                          "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!",
+                                                          I18NString.Create(Languages.eng, "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!"),
                                                           //ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
                                                           Runtime: Runtime);
 

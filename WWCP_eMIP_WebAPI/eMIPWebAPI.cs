@@ -18,9 +18,12 @@
 #region Usings
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+
+using Newtonsoft.Json.Linq;
 
 using org.GraphDefined.WWCP.eMIPv0_7_4.EMP;
 using org.GraphDefined.WWCP.eMIPv0_7_4.CPO;
@@ -143,28 +146,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The default HTTP URI prefix.
         /// </summary>
-        public static readonly HTTPPath                DefaultURLPathPrefix     = HTTPPath.Parse("/ext/eMIPPlus");
+        public static readonly HTTPPath             DefaultURLPathPrefix        = HTTPPath.Parse("/ext/eMIPPlus");
 
         /// <summary>
         /// The default HTTP realm, if HTTP Basic Authentication is used.
         /// </summary>
-        public const           String                  DefaultHTTPRealm         = "Open Charging Cloud eMIP+ WebAPI";
+        public const           String               DefaultHTTPRealm            = "Open Charging Cloud eMIP+ WebAPI";
 
         //ToDo: http://www.iana.org/form/media-types
 
         /// <summary>
         /// The HTTP content type for serving eMIP+ XML data.
         /// </summary>
-        public static readonly HTTPContentType         eMIPPlusXMLContentType   = new HTTPContentType("application", "vnd.eMIPPlus+xml", "utf-8", null, null);
+        public static readonly HTTPContentType      eMIPPlusXMLContentType      = new HTTPContentType("application", "vnd.eMIPPlus+xml", "utf-8", null, null);
 
         /// <summary>
         /// The HTTP content type for serving eMIP+ HTML data.
         /// </summary>
-        public static readonly HTTPContentType         eMIPPlusHTMLContentType  = new HTTPContentType("application", "vnd.eMIPPlus+html", "utf-8", null, null);
+        public static readonly HTTPContentType      eMIPPlusHTMLContentType     = new HTTPContentType("application", "vnd.eMIPPlus+html", "utf-8", null, null);
 
 
-        private readonly XMLNamespacesDelegate         XMLNamespaces;
-        private readonly XMLPostProcessingDelegate     XMLPostProcessing;
+        private readonly XMLNamespacesDelegate      XMLNamespaces;
+        private readonly XMLPostProcessingDelegate  XMLPostProcessing;
+
+        public static readonly HTTPEventSource_Id   DebugLogId                  = HTTPEventSource_Id.Parse("eMIPDebugLog");
 
         #endregion
 
@@ -189,6 +194,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// An enumeration of logins for an optional HTTP Basic Authentication.
         /// </summary>
         public IEnumerable<KeyValuePair<String, String>>    HTTPLogins       { get; }
+
+
+        /// <summary>
+        /// Send debug information via HTTP Server Sent Events.
+        /// </summary>
+        public HTTPEventSource<JObject>                     DebugLog         { get; }
 
 
         /// <summary>
@@ -275,6 +286,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             HTTPServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
             HTTPServer.ResponseLog  += (HTTPProcessor, ServerTimestamp, Request, Response)                       => ResponseLog.WhenAll(HTTPProcessor, ServerTimestamp, Request, Response);
             HTTPServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
+
+            var LogfilePrefix            = "HTTPSSEs" + Path.DirectorySeparatorChar;
+
+            this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
+                                                                         URLTemplate:              this.URLPathPrefix + "/DebugLog",
+                                                                         MaxNumberOfCachedEvents:  10000,
+                                                                         RetryIntervall:           TimeSpan.FromSeconds(5),
+                                                                         EnableLogging:            true,
+                                                                         LogfilePrefix:            LogfilePrefix);
 
             RegisterURITemplates();
 

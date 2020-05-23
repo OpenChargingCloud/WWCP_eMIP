@@ -417,7 +417,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region ToXML(XName = null, CustomChargeDetailRecordSerializer = null, CustomMeterReportSerializer = null)
 
         /// <summary>
-        /// Return an XML representation of this EVSE data record.
+        /// Return a XML representation of this EVSE data record.
         /// </summary>
         /// <param name="XName">The XML name to use.</param>
         /// <param name="CustomChargeDetailRecordSerializer">A delegate to serialize custom ChargeDetailRecord XML elements.</param>

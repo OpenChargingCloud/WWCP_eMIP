@@ -23,6 +23,8 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using Newtonsoft.Json.Linq;
+using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 
@@ -299,7 +301,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region ToXML(XName = null, CustomMeterReportSerializer = null)
 
         /// <summary>
-        /// Return an XML representation of this EVSE data record.
+        /// Return a XML representation of this EVSE data record.
         /// </summary>
         /// <param name="XName">The XML name to use.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
@@ -308,16 +310,38 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             var XML = new XElement(XName ?? "meterReport",
-
                           new XElement("meterTypeId",  Type.Code),
                           new XElement("meterValue",   Value),
                           new XElement("meterUnit",    Unit)
-
                       );
 
             return CustomMeterReportSerializer != null
                        ? CustomMeterReportSerializer(this, XML)
                        : XML;
+
+        }
+
+        #endregion
+
+
+        #region ToJSON(CustomMeterReportSerializer = null)
+
+        /// <summary>
+        /// Return a JSON representation of this EVSE data record.
+        /// </summary>
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport JSON objects.</param>
+        public JObject ToJSON(CustomJObjectSerializerDelegate<MeterReport> CustomMeterReportSerializer   = null)
+        {
+
+            var JSON = JSONObject.Create(
+                           new JProperty("meterTypeId",  Type.Code),
+                           new JProperty("meterValue",   Value),
+                           new JProperty("meterUnit",    Unit)
+                       );
+
+            return CustomMeterReportSerializer != null
+                       ? CustomMeterReportSerializer(this, JSON)
+                       : JSON;
 
         }
 

@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
+using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 
@@ -467,6 +469,59 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             return CustomGetServiceAuthorisationResponseSerializer != null
                        ? CustomGetServiceAuthorisationResponseSerializer(this, XML)
                        : XML;
+
+        }
+
+        #endregion
+
+
+        #region ToJSON(CustomGetServiceAuthorisationResponseSerializer = null, CustomMeterReportSerializer = null)
+
+        /// <summary>
+        /// Return a JSON representation of this object.
+        /// </summary>
+        /// <param name="CustomGetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response JSON objects.</param>
+        /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport JSON objects.</param>
+        public JObject ToJSON(CustomJObjectSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer   = null,
+                              CustomJObjectSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                       = null)
+        {
+
+            var JSON = JSONObject.Create(
+
+                          new JProperty("transactionId",                      TransactionId.                      ToString()),
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new JProperty("salePartnerOperatorIdType",    SalesPartnerOperatorId.Value.Format.AsText())
+                              : null,
+
+                          SalesPartnerOperatorId.HasValue
+                              ? new JProperty("salePartnerOperatorId",        SalesPartnerOperatorId.       Value.ToString())
+                              : null,
+
+                          new JProperty("authorisationValue",                 AuthorisationValue.                 AsNumber()),
+                          new JProperty("serviceSessionId",                   ServiceSessionId.                   ToString()),
+                          new JProperty("intermediateCDRRequested",           IntermediateCDRRequested ? "1" : "0"),
+
+                          UserContractIdAlias.HasValue
+                              ? new JProperty("userContractIdAlias",          UserContractIdAlias.          Value.ToString())
+                              : null,
+
+                          MeterLimits.Any()
+                              ? new JProperty("meterLimitList",
+                                    MeterLimits.Select(meterreport => meterreport.ToJSON(CustomMeterReportSerializer: CustomMeterReportSerializer))
+                                )
+                              : null,
+
+                          new JProperty("parameter",                          Parameter),
+
+                          new JProperty("requestStatus",                      RequestStatus.ToString())
+
+                      );
+
+
+            return CustomGetServiceAuthorisationResponseSerializer != null
+                       ? CustomGetServiceAuthorisationResponseSerializer(this, JSON)
+                       : JSON;
 
         }
 

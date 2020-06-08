@@ -110,6 +110,7 @@ namespace org.GraphDefined.WWCP
                                                 I18NString                                                        Description,
 
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
+                                                ChargingStationOperator                                           DefaultOperator,
 
                                                 HTTPHostname                                                      RemoteHostname,
                                                 IPPort?                                                           RemoteTCPPort                                            = null,
@@ -204,6 +205,7 @@ namespace org.GraphDefined.WWCP
                                                                        RoamingNetwork,
 
                                                                        PartnerId,
+                                                                       DefaultOperator,
 
                                                                        RemoteHostname,
                                                                        RemoteTCPPort,
@@ -344,6 +346,8 @@ namespace org.GraphDefined.WWCP
                                                 SOAPServer                                                        SOAPServer,
 
                                                 eMIPv0_7_4.Partner_Id                                             PartnerId,
+                                                ChargingStationOperator                                           DefaultOperator,
+
 
                                                 HTTPHostname                                                      RemoteHostname,
                                                 IPPort?                                                           RemoteTCPPort                                            = null,
@@ -434,6 +438,7 @@ namespace org.GraphDefined.WWCP
                                                                        RoamingNetwork,
 
                                                                        PartnerId,
+                                                                       DefaultOperator,
 
                                                                        new eMIPv0_7_4.CPO.CPOClient(Id.ToString(),
                                                                                                     RemoteHostname,

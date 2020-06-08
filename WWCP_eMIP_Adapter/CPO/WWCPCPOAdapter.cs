@@ -134,6 +134,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         public TimeSpan    SendHeartbeatsEvery               { get; }
 
+        /// <summary>
+        /// An optional default charging station operator identification.
+        /// </summary>
+        public ChargingStationOperator  DefaultOperator     { get; }
+
 
         protected readonly CustomOperatorIdMapperDelegate  CustomOperatorIdMapper;
 
@@ -279,6 +284,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               RoamingNetwork                                     RoamingNetwork,
 
                               Partner_Id                                         PartnerId,
+                              ChargingStationOperator                            DefaultOperator,
                               CPORoaming                                         CPORoaming,
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
@@ -353,7 +359,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #endregion
 
             this.PartnerId                                       = PartnerId;
-            this.CPORoaming                                      = CPORoaming;
+            this.DefaultOperator                                 = DefaultOperator ?? throw new ArgumentNullException(nameof(DefaultOperator),  "The given charging station operator must not be null!");
+            this.CPORoaming                                      = CPORoaming      ?? throw new ArgumentNullException(nameof(CPORoaming),       "The given charging station operator roaming must not be null!");
 
             //this._EVSE2EVSEDataRecord                            = EVSE2EVSEDataRecord;
             //this._EVSEStatusUpdate2EVSEStatusRecord              = EVSEStatusUpdate2EVSEStatusRecord;
@@ -775,6 +782,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               RoamingNetwork                                     RoamingNetwork,
 
                               Partner_Id                                         PartnerId,
+                              ChargingStationOperator                            DefaultOperator,
                               CPOClient                                          CPOClient,
                               CPOServer                                          CPOServer,
                               String                                             ServerLoggingContext                            = CPOServerLogger.DefaultContext,
@@ -817,6 +825,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RoamingNetwork,
 
                    PartnerId,
+                   DefaultOperator,
                    new CPORoaming(CPOClient,
                                   CPOServer,
                                   ServerLoggingContext,
@@ -919,6 +928,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               RoamingNetwork                                     RoamingNetwork,
 
                               Partner_Id                                         PartnerId,
+                              ChargingStationOperator                            DefaultOperator,
 
                               HTTPHostname                                       RemoteHostname,
                               IPPort?                                            RemoteTCPPort                                            = null,
@@ -992,6 +1002,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RoamingNetwork,
 
                    PartnerId,
+                   DefaultOperator,
                    new CPORoaming(Id.ToString(),
                                   RemoteHostname,
                                   RemoteTCPPort,
@@ -4771,7 +4782,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 var response  = await CPORoaming.
                                           GetServiceAuthorisation(PartnerId:                PartnerId,
-                                                                  OperatorId:               OperatorId.Value.ToEMIP(CustomOperatorIdMapper),
+                                                                  OperatorId:               (OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(ChargingLocation.EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
                                                                   RequestedServiceId:       Service_Id. Parse("1"),
@@ -4787,10 +4798,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 Endtime  = DateTime.UtcNow;
                 Runtime  = Endtime - StartTime;
 
-                if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
-                    response.Content                     != null              &&
-                    response.Content.RequestStatus.Code  == 1                 &&
-                    response.Content.AuthorisationValue  == AuthorisationValues.OK)
+                if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
+                    response?.Content                     != null              &&
+                    response?.Content.RequestStatus.Code  == 1                 &&
+                    response?.Content.AuthorisationValue  == AuthorisationValues.OK)
                 {
 
                     result = AuthStartResult.Authorized(
@@ -4967,7 +4978,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 var response  = await CPORoaming.
                                           GetServiceAuthorisation(PartnerId:                PartnerId,
-                                                                  OperatorId:               OperatorId.Value.ToEMIP(CustomOperatorIdMapper),
+                                                                  OperatorId:               (OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(ChargingLocation.EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
                                                                   RequestedServiceId:       Service_Id. Parse("1"),
@@ -4983,10 +4994,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 Endtime  = DateTime.UtcNow;
                 Runtime  = Endtime - StartTime;
 
-                if (response.HTTPStatusCode              == HTTPStatusCode.OK &&
-                    response.Content                     != null              &&
-                    response.Content.RequestStatus.Code  == 1                 &&
-                    response.Content.AuthorisationValue  == AuthorisationValues.OK)
+                if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
+                    response?.Content                     != null              &&
+                    response?.Content.RequestStatus.Code  == 1                 &&
+                    response?.Content.AuthorisationValue  == AuthorisationValues.OK)
                 {
 
                     result = AuthStopResult.Authorized(

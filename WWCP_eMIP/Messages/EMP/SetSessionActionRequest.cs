@@ -454,7 +454,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(SetSessionActionRequest1, SetSessionActionRequest2))
+            if (ReferenceEquals(SetSessionActionRequest1, SetSessionActionRequest2))
                 return true;
 
             // If one is null, but not both, return false.

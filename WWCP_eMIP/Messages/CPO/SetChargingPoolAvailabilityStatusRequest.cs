@@ -463,7 +463,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(SetChargingPoolAvailabilityStatusRequest1, SetChargingPoolAvailabilityStatusRequest2))
+            if (ReferenceEquals(SetChargingPoolAvailabilityStatusRequest1, SetChargingPoolAvailabilityStatusRequest2))
                 return true;
 
             // If one is null, but not both, return false.

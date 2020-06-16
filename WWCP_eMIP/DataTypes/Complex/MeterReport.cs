@@ -362,7 +362,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(MeterReport1, MeterReport2))
+            if (ReferenceEquals(MeterReport1, MeterReport2))
                 return true;
 
             // If one is null, but not both, return false.

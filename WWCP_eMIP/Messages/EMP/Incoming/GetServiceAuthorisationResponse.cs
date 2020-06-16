@@ -461,7 +461,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(GetServiceAuthorisationResponse1, GetServiceAuthorisationResponse2))
+            if (ReferenceEquals(GetServiceAuthorisationResponse1, GetServiceAuthorisationResponse2))
                 return true;
 
             // If one is null, but not both, return false.

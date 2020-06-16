@@ -203,7 +203,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(SessionActionId1, SessionActionId2))
+            if (ReferenceEquals(SessionActionId1, SessionActionId2))
                 return true;
 
             // If one is null, but not both, return false.

@@ -335,7 +335,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(SetSessionEventReportResponse1, SetSessionEventReportResponse2))
+            if (ReferenceEquals(SetSessionEventReportResponse1, SetSessionEventReportResponse2))
                 return true;
 
             // If one is null, but not both, return false.

@@ -197,7 +197,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(ContractId1, ContractId2))
+            if (ReferenceEquals(ContractId1, ContractId2))
                 return true;
 
             // If one is null, but not both, return false.

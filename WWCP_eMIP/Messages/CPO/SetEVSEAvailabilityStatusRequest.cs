@@ -449,7 +449,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             // If both are null, or both are same instance, return true.
-            if (Object.ReferenceEquals(SetEVSEAvailabilityStatusRequest1, SetEVSEAvailabilityStatusRequest2))
+            if (ReferenceEquals(SetEVSEAvailabilityStatusRequest1, SetEVSEAvailabilityStatusRequest2))
                 return true;
 
             // If one is null, but not both, return false.

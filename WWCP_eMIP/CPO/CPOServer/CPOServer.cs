@@ -53,12 +53,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new static readonly HTTPPath         DefaultURIPrefix           = HTTPPath.Parse("/");
+        public new static readonly HTTPPath         DefaultURLPrefix           = HTTPPath.Parse("/");
 
         /// <summary>
         /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public     const           String           DefaultAuthorisationURI    = "";
+        public     const           String           DefaultAuthorisationURL    = "";
 
         /// <summary>
         /// The default HTTP/SOAP/XML content type.
@@ -82,7 +82,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public String  AuthorisationURI    { get; }
+        public String  AuthorisationURL    { get; }
 
         #endregion
 
@@ -170,7 +170,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
-        #region CPOServer(HTTPServerName, ServiceId = null, TCPPort = default, URIPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
+        #region CPOServer(HTTPServerName, ServiceId = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
 
         /// <summary>
         /// Initialize an new HTTP server for the eMIP HTTP/SOAP/XML CPO API.
@@ -178,8 +178,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HTTPServerName">An optional identification string for the HTTP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
+        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
@@ -187,8 +187,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
                          String           ServiceId                 = null,
                          IPPort?          TCPPort                   = null,
-                         HTTPPath?        URIPrefix                 = null,
-                         String           AuthorisationURI          = DefaultAuthorisationURI,
+                         HTTPPath?        URLPrefix                 = null,
+                         String           AuthorisationURL          = DefaultAuthorisationURL,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -196,7 +196,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
                    TCPPort     ?? DefaultHTTPServerPort,
-                   URIPrefix   ?? DefaultURIPrefix,
+                   URLPrefix   ?? DefaultURLPrefix,
                    ContentType ?? DefaultContentType,
                    RegisterHTTPRootService,
                    DNSClient,
@@ -205,7 +205,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         {
 
             this.ServiceId         = ServiceId        ?? nameof(CPOServer);
-            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
+            this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
 
@@ -216,27 +216,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region CPOServer(SOAPServer, ServiceId = null, URIPrefix = default)
+        #region CPOServer(SOAPServer, ServiceId = null, URLPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML CPO API.
         /// </summary>
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
-        /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
+        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
                          String      ServiceId         = null,
-                         HTTPPath?   URIPrefix         = null,
-                         String      AuthorisationURI  = DefaultAuthorisationURI)
+                         HTTPPath?   URLPrefix         = null,
+                         String      AuthorisationURL  = DefaultAuthorisationURL)
 
             : base(SOAPServer,
-                   URIPrefix ?? DefaultURIPrefix)
+                   URLPrefix ?? DefaultURLPrefix)
 
         {
 
             this.ServiceId         = ServiceId        ?? nameof(CPOServer);
-            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
+            this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
 
@@ -261,7 +261,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix + AuthorisationURI,
+                                            URLPrefix + AuthorisationURL,
                                             "SetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetServiceAuthorisationXML) => {
@@ -473,7 +473,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetSessionActionRequestRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix + AuthorisationURI,
+                                            URLPrefix + AuthorisationURL,
                                             "SetSessionActionRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetSessionActionXML) => {

@@ -53,12 +53,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new static readonly HTTPPath         DefaultURIPrefix           = HTTPPath.Parse("/");
+        public new static readonly HTTPPath         DefaultURLPrefix           = HTTPPath.Parse("/");
 
         /// <summary>
         /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public     const           String           DefaultAuthorisationURI    = "";
+        public     const           String           DefaultAuthorisationURL    = "";
 
         /// <summary>
         /// The default HTTP/SOAP/XML content type.
@@ -82,7 +82,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public String  AuthorisationURI    { get; }
+        public String  AuthorisationURL    { get; }
 
         #endregion
 
@@ -206,7 +206,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Constructor(s)
 
-        #region EMPServer(HTTPServerName, ServiceId = null, TCPPort = default, URIPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
+        #region EMPServer(HTTPServerName, ServiceId = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
 
         /// <summary>
         /// Initialize an new HTTP server for the eMIP HTTP/SOAP/XML EMP API.
@@ -214,8 +214,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="HTTPServerName">An optional identification string for the HTTP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
+        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
@@ -223,8 +223,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         public EMPServer(String           HTTPServerName            = DefaultHTTPServerName,
                          String           ServiceId                 = null,
                          IPPort?          TCPPort                   = null,
-                         HTTPPath?        URIPrefix                 = null,
-                         String           AuthorisationURI          = DefaultAuthorisationURI,
+                         HTTPPath?        URLPrefix                 = null,
+                         String           AuthorisationURL          = DefaultAuthorisationURL,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
                          DNSClient        DNSClient                 = null,
@@ -232,7 +232,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
                    TCPPort     ?? DefaultHTTPServerPort,
-                   URIPrefix   ?? DefaultURIPrefix,
+                   URLPrefix   ?? DefaultURLPrefix,
                    ContentType ?? DefaultContentType,
                    RegisterHTTPRootService,
                    DNSClient,
@@ -241,7 +241,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         {
 
             this.ServiceId         = ServiceId        ?? nameof(EMPServer);
-            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
+            this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
 
@@ -252,27 +252,27 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #endregion
 
-        #region EMPServer(SOAPServer, ServiceId = null, URIPrefix = default)
+        #region EMPServer(SOAPServer, ServiceId = null, URLPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML EMP API.
         /// </summary>
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
-        /// <param name="URIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="AuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
+        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public EMPServer(SOAPServer  SOAPServer,
                          String      ServiceId         = null,
-                         HTTPPath?   URIPrefix         = null,
-                         String      AuthorisationURI  = DefaultAuthorisationURI)
+                         HTTPPath?   URLPrefix         = null,
+                         String      AuthorisationURL  = DefaultAuthorisationURL)
 
             : base(SOAPServer,
-                   URIPrefix ?? DefaultURIPrefix)
+                   URLPrefix ?? DefaultURLPrefix)
 
         {
 
             this.ServiceId         = ServiceId        ?? nameof(EMPServer);
-            this.AuthorisationURI  = AuthorisationURI ?? DefaultAuthorisationURI;
+            this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
 
@@ -294,7 +294,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             #region ~/ - GetServiceAuthorisation
 
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix + AuthorisationURI,
+                                            URLPrefix + AuthorisationURL,
                                             "GetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_GetServiceAuthorisationRequest").FirstOrDefault(),
                                             async (HTTPRequest, GetServiceAuthorisationXML) => {
@@ -488,7 +488,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             #region ~/ - SetSessionEventReport
 
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix + AuthorisationURI,
+                                            URLPrefix + AuthorisationURL,
                                             "SetSessionEventReportRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionEventReportRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetSessionEventReportXML) => {
@@ -684,7 +684,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             #region ~/ - SetChargeDetailRecord
 
             SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
-                                            URIPrefix + AuthorisationURI,
+                                            URLPrefix + AuthorisationURL,
                                             "SetChargeDetailRecordRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetChargeDetailRecordRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetChargeDetailRecordXML) => {

@@ -133,7 +133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public new static readonly HTTPPath  DefaultURIPrefix            = HTTPPath.Parse("/api/emip");
+        public new static readonly HTTPPath  DefaultURLPrefix            = HTTPPath.Parse("/api/emip");
 
 
         /// <summary>
@@ -964,7 +964,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
         /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URIPrefix">An default URI prefix.</param>
+        /// <param name="URLPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
@@ -978,7 +978,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          RemoteCertificateValidationCallback  RemoteCertificateValidator               = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector                = null,
                          HTTPHostname?                        HTTPVirtualHost                          = null,
-                         HTTPPath?                            URIPrefix                                = null,
+                         HTTPPath?                            URLPrefix                                = null,
                          String                               HTTPUserAgent                            = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout                           = null,
                          TransmissionRetryDelayDelegate       TransmissionRetryDelay                   = null,
@@ -1005,7 +1005,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    HTTPVirtualHost,
-                   URIPrefix ?? DefaultURIPrefix,
+                   URLPrefix ?? DefaultURLPrefix,
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
@@ -1046,7 +1046,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
         /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URIPrefix">An default URI prefix.</param>
+        /// <param name="URLPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
@@ -1059,7 +1059,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          RemoteCertificateValidationCallback  RemoteCertificateValidator                      = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector                       = null,
                          HTTPHostname?                        HTTPVirtualHost                                 = null,
-                         HTTPPath?                            URIPrefix                                       = null,
+                         HTTPPath?                            URLPrefix                                       = null,
                          String                               HTTPUserAgent                                   = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout                                  = null,
                          TransmissionRetryDelayDelegate       TransmissionRetryDelay                          = null,
@@ -1084,7 +1084,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    HTTPVirtualHost,
-                   URIPrefix ?? DefaultURIPrefix,
+                   URLPrefix ?? DefaultURLPrefix,
                    null,
                    HTTPUserAgent,
                    RequestTimeout,
@@ -1176,7 +1176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             // No retransmissions for heartbeats!
             using (var _eMIPClient = new SOAPClient(Hostname,
-                                                    URIPrefix,
+                                                    URLPrefix,
                                                     VirtualHostname,
                                                     RemotePort,
                                                     RemoteCertificateValidator,
@@ -1445,7 +1445,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -1726,7 +1726,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2007,7 +2007,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2287,7 +2287,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2568,7 +2568,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2852,7 +2852,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3136,7 +3136,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3404,7 +3404,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3690,7 +3690,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URIPrefix,
+                                                        URLPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,

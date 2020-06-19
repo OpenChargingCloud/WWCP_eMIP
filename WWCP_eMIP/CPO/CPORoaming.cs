@@ -1585,7 +1585,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
         /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
         /// <param name="RemoteHTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URIPrefix">An default URI prefix.</param>
+        /// <param name="URLPrefix">An default URI prefix.</param>
         /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
         /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
@@ -1594,8 +1594,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="ServerName">An optional identification string for the HTTP server.</param>
         /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="ServerURIPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="ServerAuthorisationURI">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
+        /// <param name="ServerURLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="ServerAuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ServerContentType">An optional HTTP content type to use.</param>
         /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
@@ -1611,7 +1611,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           RemoteCertificateValidationCallback  RemoteCertificateValidator                      = null,
                           LocalCertificateSelectionCallback    ClientCertificateSelector                       = null,
                           HTTPHostname?                        RemoteHTTPVirtualHost                           = null,
-                          HTTPPath?                            URIPrefix                                       = null,
+                          HTTPPath?                            URLPrefix                                       = null,
                           String                               HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
                           TimeSpan?                            RequestTimeout                                  = null,
                           TransmissionRetryDelayDelegate       TransmissionRetryDelay                          = null,
@@ -1620,8 +1620,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                           String                               ServerName                                      = CPOServer.DefaultHTTPServerName,
                           String                               ServiceId                                       = null,
                           IPPort?                              ServerTCPPort                                   = null,
-                          HTTPPath?                            ServerURIPrefix                                 = null,
-                          String                               ServerAuthorisationURI                          = CPOServer.DefaultAuthorisationURI,
+                          HTTPPath?                            ServerURLPrefix                                 = null,
+                          String                               ServerAuthorisationURL                          = CPOServer.DefaultAuthorisationURL,
                           HTTPContentType                      ServerContentType                               = null,
                           Boolean                              ServerRegisterHTTPRootService                   = true,
                           Boolean                              ServerAutoStart                                 = false,
@@ -1649,7 +1649,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                  RemoteCertificateValidator,
                                  ClientCertificateSelector,
                                  RemoteHTTPVirtualHost,
-                                 URIPrefix ?? CPOClient.DefaultURIPrefix,
+                                 URLPrefix ?? CPOClient.DefaultURLPrefix,
                                  HTTPUserAgent,
                                  RequestTimeout,
                                  TransmissionRetryDelay,
@@ -1673,8 +1673,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    new CPOServer(ServerName,
                                  ServiceId,
                                  ServerTCPPort,
-                                 ServerURIPrefix        ?? CPOServer.DefaultURIPrefix,
-                                 ServerAuthorisationURI ?? CPOServer.DefaultAuthorisationURI,
+                                 ServerURLPrefix        ?? CPOServer.DefaultURLPrefix,
+                                 ServerAuthorisationURL ?? CPOServer.DefaultAuthorisationURL,
                                  ServerContentType,
                                  ServerRegisterHTTPRootService,
                                  DNSClient,

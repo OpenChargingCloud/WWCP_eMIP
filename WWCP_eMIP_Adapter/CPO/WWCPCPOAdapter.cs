@@ -384,193 +384,217 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                                 Sender,
                                                                 Request) => {
 
-                // bookingId
-                // meterLimitList
+                try
+                {
 
-                #region Request mapping
+                    // bookingId
+                    // meterLimitList
 
-                var chargingProduct = new ChargingProduct(Id:                ChargingProduct_Id.Random(),
-                                                          IntermediateCDRs:  Request.IntermediateCDRRequested);
+                    #region Request mapping
 
-                //ChargingReservation_Id? ReservationId      = null;
-                //TimeSpan?               MinDuration        = null;
-                //Single?                 PlannedEnergy      = null;
-                //ChargingProduct_Id?     ProductId          = ChargingProduct_Id.Parse("AC1");
-                //ChargingProduct         ChargingProduct    = null;
-                //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
+                    var chargingProduct = new ChargingProduct(Id:                ChargingProduct_Id.Random(),
+                                                              IntermediateCDRs:  Request.IntermediateCDRRequested);
 
-                //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
-                //{
+                    //ChargingReservation_Id? ReservationId      = null;
+                    //TimeSpan?               MinDuration        = null;
+                    //Single?                 PlannedEnergy      = null;
+                    //ChargingProduct_Id?     ProductId          = ChargingProduct_Id.Parse("AC1");
+                    //ChargingProduct         ChargingProduct    = null;
+                    //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
 
-                //    // The PartnerProductId is a simple string...
-                //    if (!PartnerProductId.Value.ToString().Contains("="))
-                //    {
-                //        ChargingProduct = new ChargingProduct(
-                //                              ChargingProduct_Id.Parse(PartnerProductId.Value.ToString())
-                //                          );
-                //    }
+                    //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
+                    //{
 
-                //    else
-                //    {
+                    //    // The PartnerProductId is a simple string...
+                    //    if (!PartnerProductId.Value.ToString().Contains("="))
+                    //    {
+                    //        ChargingProduct = new ChargingProduct(
+                    //                              ChargingProduct_Id.Parse(PartnerProductId.Value.ToString())
+                    //                          );
+                    //    }
 
-                //        var ProductIdElements = PartnerProductId.ToString().DoubleSplit('|', '=');
+                    //    else
+                    //    {
 
-                //        if (ProductIdElements.Any())
-                //        {
+                    //        var ProductIdElements = PartnerProductId.ToString().DoubleSplit('|', '=');
 
-                //            if (ProductIdElements.ContainsKey("R") &&
-                //                ChargingReservation_Id.TryParse(Request.EVSEId.OperatorId.ToWWCP().Value,
-                //                                                ProductIdElements["R"],
-                //                                                out ChargingReservation_Id _ReservationId))
-                //                ReservationId = _ReservationId;
+                    //        if (ProductIdElements.Any())
+                    //        {
 
-
-                //            if (ProductIdElements.ContainsKey("D"))
-                //            {
-
-                //                var MinDurationText = ProductIdElements["D"];
-
-                //                if (MinDurationText.EndsWith("sec", StringComparison.InvariantCulture))
-                //                    MinDuration = TimeSpan.FromSeconds(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
-
-                //                if (MinDurationText.EndsWith("min", StringComparison.InvariantCulture))
-                //                    MinDuration = TimeSpan.FromMinutes(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
-
-                //            }
+                    //            if (ProductIdElements.ContainsKey("R") &&
+                    //                ChargingReservation_Id.TryParse(Request.EVSEId.OperatorId.ToWWCP().Value,
+                    //                                                ProductIdElements["R"],
+                    //                                                out ChargingReservation_Id _ReservationId))
+                    //                ReservationId = _ReservationId;
 
 
-                //            if (ProductIdElements.ContainsKey("E") &&
-                //                Single.TryParse(ProductIdElements["E"], out Single _PlannedEnergy))
-                //                PlannedEnergy = _PlannedEnergy;
+                    //            if (ProductIdElements.ContainsKey("D"))
+                    //            {
+
+                    //                var MinDurationText = ProductIdElements["D"];
+
+                    //                if (MinDurationText.EndsWith("sec", StringComparison.InvariantCulture))
+                    //                    MinDuration = TimeSpan.FromSeconds(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
+
+                    //                if (MinDurationText.EndsWith("min", StringComparison.InvariantCulture))
+                    //                    MinDuration = TimeSpan.FromMinutes(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
+
+                    //            }
 
 
-                //            if (ProductIdElements.ContainsKey("P") &&
-                //                ChargingProduct_Id.TryParse(ProductIdElements["P"], out ChargingProduct_Id _ProductId))
-                //                ProductId = _ProductId;
+                    //            if (ProductIdElements.ContainsKey("E") &&
+                    //                Single.TryParse(ProductIdElements["E"], out Single _PlannedEnergy))
+                    //                PlannedEnergy = _PlannedEnergy;
 
 
-                //            ChargingProduct = new ChargingProduct(
-                //                                      ProductId.Value,
-                //                                      MinDuration
-                //                                  );
+                    //            if (ProductIdElements.ContainsKey("P") &&
+                    //                ChargingProduct_Id.TryParse(ProductIdElements["P"], out ChargingProduct_Id _ProductId))
+                    //                ProductId = _ProductId;
 
-                //        }
 
-                //    }
+                    //            ChargingProduct = new ChargingProduct(
+                    //                                      ProductId.Value,
+                    //                                      MinDuration
+                    //                                  );
 
-                //}
+                    //        }
 
-                #endregion
+                    //    }
 
-                var EVSEId = Request.EVSEId.ToWWCP();
+                    //}
 
-                if (!EVSEId.HasValue)
+                    #endregion
+
+                    var EVSEId = Request.EVSEId.ToWWCP();
+
+                    if (!EVSEId.HasValue)
+                        return new SetServiceAuthorisationResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.EVSENotReachable
+                               );
+
+                    var response = await RoamingNetwork.
+                                             RemoteStart(EMPRoamingProvider:    this,
+                                                         ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
+                                                         ChargingProduct:       chargingProduct,
+                                                         ReservationId:         null,
+                                                         SessionId:             Request.ServiceSessionId.ToWWCP(),
+                                                         ProviderId:            Request.PartnerId.       ToWWCP_ProviderId(),
+                                                         RemoteAuthentication:  Request.UserId.          ToWWCP(),
+
+                                                         Timestamp:             Request.Timestamp,
+                                                         CancellationToken:     Request.CancellationToken,
+                                                         EventTrackingId:       Request.EventTrackingId,
+                                                         RequestTimeout:        Request.RequestTimeout).
+                                             ConfigureAwait(false);
+
+
+                    #region Add additional Gireve session infos
+
+                    if (response.Session != null)
+                    {
+
+                        RoamingNetwork.SessionsStore.Update(response.Session.Id,
+                                                            session => {
+
+                            var Gireve = session.AddJSON("Gireve");
+
+                            session.SetJSON("Gireve", "request",              Request.ToXML().ToString());
+
+
+                            if (Request.UserContractIdAlias.HasValue)
+                                session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias.Value.ToString());
+
+                            if (Request.Parameter.IsNotNullOrEmpty())
+                                session.SetJSON("Gireve", "parameter",            Request.Parameter);
+
+                            if (Request.HTTPRequest != null)
+                            {
+
+                                session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
+
+                                if (Request.HTTPRequest.X_Real_IP       != null)
+                                    session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP.ToString());
+
+                                if (Request.HTTPRequest.X_Forwarded_For != null)
+                                    session.SetJSON("Gireve", "forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
+
+                            }
+
+                        });
+
+                    }
+
+                    #endregion
+
+                    #region Response mapping
+
+                    if (response != null)
+                    {
+                        switch (response.Result)
+                        {
+
+                            case RemoteStartResultTypes.Success:
+                            case RemoteStartResultTypes.AsyncOperation:
+                                return new SetServiceAuthorisationResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.Ok
+                                       );
+
+                            //case RemoteStartResultType.InvalidSessionId:
+                            //case RemoteStartResultType.InvalidCredentials:
+
+                            case RemoteStartResultTypes.Offline:
+                            case RemoteStartResultTypes.Timeout:
+                            case RemoteStartResultTypes.OutOfService:
+                            case RemoteStartResultTypes.CommunicationError:
+                                return new SetServiceAuthorisationResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.EVSENotReachable
+                                       );
+
+                            case RemoteStartResultTypes.Reserved:
+                            case RemoteStartResultTypes.AlreadyInUse:
+                                return new SetServiceAuthorisationResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.EVSEServiceNotAvailable
+                                       );
+
+                            case RemoteStartResultTypes.UnknownLocation:
+                                return new SetServiceAuthorisationResponse(
+                                           Request,
+                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                           RequestStatus.EVSEServiceNotAvailable
+                                       );
+
+                        }
+                    }
+
+                    // ServiceNotAvailable
                     return new SetServiceAuthorisationResponse(
                                Request,
                                Request.TransactionId ?? Transaction_Id.Zero,
-                               RequestStatus.EVSENotReachable
+                               RequestStatus.ServiceNotAvailable
                            );
 
-                var response = await RoamingNetwork.
-                                         RemoteStart(EMPRoamingProvider:    this,
-                                                     ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
-                                                     ChargingProduct:       chargingProduct,
-                                                     ReservationId:         null,
-                                                     SessionId:             Request.ServiceSessionId.ToWWCP(),
-                                                     ProviderId:            Request.PartnerId.       ToWWCP_ProviderId(),
-                                                     RemoteAuthentication:  Request.UserId.          ToWWCP(),
+                    #endregion
 
-                                                     Timestamp:             Request.Timestamp,
-                                                     CancellationToken:     Request.CancellationToken,
-                                                     EventTrackingId:       Request.EventTrackingId,
-                                                     RequestTimeout:        Request.RequestTimeout).
-                                         ConfigureAwait(false);
-
-
-                if (response.Session != null)
-                {
-
-                    var Gireve = response.Session.AddJSON("Gireve");
-
-                    if (Request.UserContractIdAlias.HasValue)
-                        response.Session.SetJSON("Gireve", "userContractIdAlias",  Request);
-
-
-                    if (Request.UserContractIdAlias.HasValue)
-                        response.Session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias);
-
-                    if (Request.Parameter.IsNotNullOrEmpty())
-                        response.Session.SetJSON("Gireve", "parameter",            Request.Parameter);
-
-                    if (Request.HTTPRequest != null)
-                    {
-
-                        response.Session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
-
-                        if (Request.HTTPRequest.X_Real_IP       != null)
-                            response.Session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP.ToString());
-
-                        if (Request.HTTPRequest.X_Forwarded_For != null)
-                            response.Session.SetJSON("Gireve", "forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
-
-                    }
 
                 }
-
-                #region Response mapping
-
-                                                                    if (response != null)
+                catch (Exception e)
                 {
-                    switch (response.Result)
-                    {
 
-                        case RemoteStartResultTypes.Success:
-                        case RemoteStartResultTypes.AsyncOperation:
-                            return new SetServiceAuthorisationResponse(
-                                       Request,
-                                       Request.TransactionId ?? Transaction_Id.Zero,
-                                       RequestStatus.Ok
-                                   );
+                    return new SetServiceAuthorisationResponse(
+                               Request,
+                               Request.TransactionId ?? Transaction_Id.Zero,
+                               RequestStatus.DataError
+                           );
 
-                        //case RemoteStartResultType.InvalidSessionId:
-                        //case RemoteStartResultType.InvalidCredentials:
-
-                        case RemoteStartResultTypes.Offline:
-                        case RemoteStartResultTypes.Timeout:
-                        case RemoteStartResultTypes.OutOfService:
-                        case RemoteStartResultTypes.CommunicationError:
-                            return new SetServiceAuthorisationResponse(
-                                       Request,
-                                       Request.TransactionId ?? Transaction_Id.Zero,
-                                       RequestStatus.EVSENotReachable
-                                   );
-
-                        case RemoteStartResultTypes.Reserved:
-                        case RemoteStartResultTypes.AlreadyInUse:
-                            return new SetServiceAuthorisationResponse(
-                                       Request,
-                                       Request.TransactionId ?? Transaction_Id.Zero,
-                                       RequestStatus.EVSEServiceNotAvailable
-                                   );
-
-                        case RemoteStartResultTypes.UnknownLocation:
-                            return new SetServiceAuthorisationResponse(
-                                       Request,
-                                       Request.TransactionId ?? Transaction_Id.Zero,
-                                       RequestStatus.EVSEServiceNotAvailable
-                                   );
-
-                    }
                 }
-
-                // ServiceNotAvailable
-                return new SetServiceAuthorisationResponse(
-                           Request,
-                           Request.TransactionId ?? Transaction_Id.Zero,
-                           RequestStatus.ServiceNotAvailable
-                       );
-
-                #endregion
 
             };
 
@@ -582,155 +606,171 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                          Sender,
                                                          Request) => {
 
-                #region Request mapping
-
-                //ChargingReservation_Id? ReservationId      = null;
-                //TimeSpan?               MinDuration        = null;
-                //Single?                 PlannedEnergy      = null;
-                //ChargingProduct_Id?     ProductId          = ChargingProduct_Id.Parse("AC1");
-                //ChargingProduct         ChargingProduct    = null;
-                //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
-
-                //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
-                //{
-
-                //    // The PartnerProductId is a simple string...
-                //    if (!PartnerProductId.Value.ToString().Contains("="))
-                //    {
-                //        ChargingProduct = new ChargingProduct(
-                //                              ChargingProduct_Id.Parse(PartnerProductId.Value.ToString())
-                //                          );
-                //    }
-
-                //    else
-                //    {
-
-                //        var ProductIdElements = PartnerProductId.ToString().DoubleSplit('|', '=');
-
-                //        if (ProductIdElements.Any())
-                //        {
-
-                //            if (ProductIdElements.ContainsKey("R") &&
-                //                ChargingReservation_Id.TryParse(Request.EVSEId.OperatorId.ToWWCP().Value,
-                //                                                ProductIdElements["R"],
-                //                                                out ChargingReservation_Id _ReservationId))
-                //                ReservationId = _ReservationId;
-
-
-                //            if (ProductIdElements.ContainsKey("D"))
-                //            {
-
-                //                var MinDurationText = ProductIdElements["D"];
-
-                //                if (MinDurationText.EndsWith("sec", StringComparison.InvariantCulture))
-                //                    MinDuration = TimeSpan.FromSeconds(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
-
-                //                if (MinDurationText.EndsWith("min", StringComparison.InvariantCulture))
-                //                    MinDuration = TimeSpan.FromMinutes(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
-
-                //            }
-
-
-                //            if (ProductIdElements.ContainsKey("E") &&
-                //                Single.TryParse(ProductIdElements["E"], out Single _PlannedEnergy))
-                //                PlannedEnergy = _PlannedEnergy;
-
-
-                //            if (ProductIdElements.ContainsKey("P") &&
-                //                ChargingProduct_Id.TryParse(ProductIdElements["P"], out ChargingProduct_Id _ProductId))
-                //                ProductId = _ProductId;
-
-
-                //            ChargingProduct = new ChargingProduct(
-                //                                      ProductId.Value,
-                //                                      MinDuration
-                //                                  );
-
-                //        }
-
-                //    }
-
-                //}
-
-                #endregion
-
-                var ServiceSessionId      = Request.ServiceSessionId;
-                var execPartnerSessionId  = Request.ExecPartnerSessionId;
-                var SessionAction         = Request.SessionAction;
-
-                // Nature 0: Emergency Stop
-                // Nature 1: Stop and terminate current operation
-                // Nature 2: Suspend current operation
-                // Nature 3: Restart current operation
-                if (Request.SessionAction.Nature == SessionActionNatures.EmergencyStop ||
-                    Request.SessionAction.Nature == SessionActionNatures.Stop)
+                try
                 {
 
-                    var response = await RoamingNetwork.
-                                             RemoteStop(EMPRoamingProvider:    this,
-                                                        SessionId:             Request.ServiceSessionId.ToWWCP(),
-                                                        ReservationHandling:   ReservationHandling.Close,
-                                                        ProviderId:            null,
-                                                        RemoteAuthentication:  null,
+                    #region Request mapping
 
-                                                        Timestamp:             Request.Timestamp,
-                                                        CancellationToken:     Request.CancellationToken,
-                                                        EventTrackingId:       Request.EventTrackingId,
-                                                        RequestTimeout:        Request.RequestTimeout).
-                                             ConfigureAwait(false);
+                    //ChargingReservation_Id? ReservationId      = null;
+                    //TimeSpan?               MinDuration        = null;
+                    //Single?                 PlannedEnergy      = null;
+                    //ChargingProduct_Id?     ProductId          = ChargingProduct_Id.Parse("AC1");
+                    //ChargingProduct         ChargingProduct    = null;
+                    //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
 
-                    #region Response mapping
+                    //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
+                    //{
 
-                    if (response != null)
-                    {
-                        switch (response.Result)
-                        {
+                    //    // The PartnerProductId is a simple string...
+                    //    if (!PartnerProductId.Value.ToString().Contains("="))
+                    //    {
+                    //        ChargingProduct = new ChargingProduct(
+                    //                              ChargingProduct_Id.Parse(PartnerProductId.Value.ToString())
+                    //                          );
+                    //    }
 
-                            case RemoteStopResultTypes.Success:
-                            case RemoteStopResultTypes.AsyncOperation:
-                                return new SetSessionActionRequestResponse(
-                                           Request,
-                                           Request.TransactionId ?? Transaction_Id.Zero,
-                                           RequestStatus.Ok
-                                       );
+                    //    else
+                    //    {
 
-                            case RemoteStopResultTypes.AlreadyStopped:
-                                return new SetSessionActionRequestResponse(
-                                           Request,
-                                           Request.TransactionId ?? Transaction_Id.Zero,
-                                           RequestStatus.Ok
-                                       );
+                    //        var ProductIdElements = PartnerProductId.ToString().DoubleSplit('|', '=');
 
-                            case RemoteStopResultTypes.InvalidSessionId:
-                                return new SetSessionActionRequestResponse(
-                                           Request,
-                                           Request.TransactionId ?? Transaction_Id.Zero,
-                                           RequestStatus.SessionNotFound
-                                       );
+                    //        if (ProductIdElements.Any())
+                    //        {
 
-                            case RemoteStopResultTypes.Offline:
-                            case RemoteStopResultTypes.Timeout:
-                            case RemoteStopResultTypes.OutOfService:
-                            case RemoteStopResultTypes.CommunicationError:
-                                return new SetSessionActionRequestResponse(
-                                           Request,
-                                           Request.TransactionId ?? Transaction_Id.Zero,
-                                           RequestStatus.EVSENotReachable
-                                       );
+                    //            if (ProductIdElements.ContainsKey("R") &&
+                    //                ChargingReservation_Id.TryParse(Request.EVSEId.OperatorId.ToWWCP().Value,
+                    //                                                ProductIdElements["R"],
+                    //                                                out ChargingReservation_Id _ReservationId))
+                    //                ReservationId = _ReservationId;
 
-                        }
-                    }
+
+                    //            if (ProductIdElements.ContainsKey("D"))
+                    //            {
+
+                    //                var MinDurationText = ProductIdElements["D"];
+
+                    //                if (MinDurationText.EndsWith("sec", StringComparison.InvariantCulture))
+                    //                    MinDuration = TimeSpan.FromSeconds(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
+
+                    //                if (MinDurationText.EndsWith("min", StringComparison.InvariantCulture))
+                    //                    MinDuration = TimeSpan.FromMinutes(UInt32.Parse(MinDurationText.Substring(0, MinDurationText.Length - 3)));
+
+                    //            }
+
+
+                    //            if (ProductIdElements.ContainsKey("E") &&
+                    //                Single.TryParse(ProductIdElements["E"], out Single _PlannedEnergy))
+                    //                PlannedEnergy = _PlannedEnergy;
+
+
+                    //            if (ProductIdElements.ContainsKey("P") &&
+                    //                ChargingProduct_Id.TryParse(ProductIdElements["P"], out ChargingProduct_Id _ProductId))
+                    //                ProductId = _ProductId;
+
+
+                    //            ChargingProduct = new ChargingProduct(
+                    //                                      ProductId.Value,
+                    //                                      MinDuration
+                    //                                  );
+
+                    //        }
+
+                    //    }
+
+                    //}
 
                     #endregion
 
-                }
+                    var ServiceSessionId      = Request.ServiceSessionId;
+                    var execPartnerSessionId  = Request.ExecPartnerSessionId;
+                    var SessionAction         = Request.SessionAction;
 
-                // CPOorEMSP_DoesNotRecogniseActionOrEventNature
-                return new SetSessionActionRequestResponse(
-                           Request,
-                           Request.TransactionId ?? Transaction_Id.Zero,
-                           RequestStatus.CPOorEMSP_DoesNotRecogniseActionOrEventNature
-                       );
+                    // Nature 0: Emergency Stop
+                    // Nature 1: Stop and terminate current operation
+                    // Nature 2: Suspend current operation
+                    // Nature 3: Restart current operation
+                    if (Request.SessionAction.Nature == SessionActionNatures.EmergencyStop ||
+                        Request.SessionAction.Nature == SessionActionNatures.Stop)
+                    {
+
+                        var response = await RoamingNetwork.
+                                                 RemoteStop(EMPRoamingProvider:    this,
+                                                            SessionId:             Request.ServiceSessionId.ToWWCP(),
+                                                            ReservationHandling:   ReservationHandling.Close,
+                                                            ProviderId:            null,
+                                                            RemoteAuthentication:  null,
+
+                                                            Timestamp:             Request.Timestamp,
+                                                            CancellationToken:     Request.CancellationToken,
+                                                            EventTrackingId:       Request.EventTrackingId,
+                                                            RequestTimeout:        Request.RequestTimeout).
+                                                 ConfigureAwait(false);
+
+
+                        #region Response mapping
+
+                        if (response != null)
+                        {
+                            switch (response.Result)
+                            {
+
+                                case RemoteStopResultTypes.Success:
+                                case RemoteStopResultTypes.AsyncOperation:
+                                    return new SetSessionActionRequestResponse(
+                                               Request,
+                                               Request.TransactionId ?? Transaction_Id.Zero,
+                                               RequestStatus.Ok
+                                           );
+
+                                case RemoteStopResultTypes.AlreadyStopped:
+                                    return new SetSessionActionRequestResponse(
+                                               Request,
+                                               Request.TransactionId ?? Transaction_Id.Zero,
+                                               RequestStatus.Ok
+                                           );
+
+                                case RemoteStopResultTypes.InvalidSessionId:
+                                    return new SetSessionActionRequestResponse(
+                                               Request,
+                                               Request.TransactionId ?? Transaction_Id.Zero,
+                                               RequestStatus.SessionNotFound
+                                           );
+
+                                case RemoteStopResultTypes.Offline:
+                                case RemoteStopResultTypes.Timeout:
+                                case RemoteStopResultTypes.OutOfService:
+                                case RemoteStopResultTypes.CommunicationError:
+                                    return new SetSessionActionRequestResponse(
+                                               Request,
+                                               Request.TransactionId ?? Transaction_Id.Zero,
+                                               RequestStatus.EVSENotReachable
+                                           );
+
+                            }
+                        }
+
+                        #endregion
+
+                    }
+
+                    // CPOorEMSP_DoesNotRecogniseActionOrEventNature
+                    return new SetSessionActionRequestResponse(
+                               Request,
+                               Request.TransactionId ?? Transaction_Id.Zero,
+                               RequestStatus.CPOorEMSP_DoesNotRecogniseActionOrEventNature
+                           );
+
+                }
+                catch (Exception e)
+                {
+
+                    return new SetSessionActionRequestResponse(
+                               Request,
+                               Request.TransactionId ?? Transaction_Id.Zero,
+                               RequestStatus.DataError
+                           );
+
+                }
 
             };
 

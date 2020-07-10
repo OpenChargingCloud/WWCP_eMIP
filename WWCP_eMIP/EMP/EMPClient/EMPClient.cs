@@ -501,6 +501,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
+                                                        true,
                                                         RequestTimeout,
                                                         DNSClient))
                 {
@@ -756,6 +757,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
+                                                        true,
                                                         RequestTimeout,
                                                         DNSClient))
                 {
@@ -1026,6 +1028,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         UserAgent,
+                                                        true,
                                                         RequestTimeout,
                                                         DNSClient))
                 {

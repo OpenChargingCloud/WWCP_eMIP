@@ -506,16 +506,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
                 if (SetSessionActionRequestRequest.TryParse(SetSessionActionXML,
-                                                     CustomSetSessionActionRequestParser,
-                                                     CustomSessionActionParser,
-                                                     out SetSessionActionRequestRequest _SetSessionActionRequest,
-                                                     OnException,
+                                                            out SetSessionActionRequestRequest setSessionActionRequest,
+                                                            CustomSetSessionActionRequestParser,
+                                                            CustomSessionActionParser,
+                                                            OnException,
 
-                                                     HTTPRequest,
-                                                     HTTPRequest.Timestamp,
-                                                     HTTPRequest.CancellationToken,
-                                                     HTTPRequest.EventTrackingId,
-                                                     HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                                                            HTTPRequest,
+                                                            HTTPRequest.Timestamp,
+                                                            HTTPRequest.CancellationToken,
+                                                            HTTPRequest.EventTrackingId,
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
                 {
 
                     #region Send OnSetSessionActionRequest event
@@ -527,20 +527,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                             await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
                                                Cast<OnSetSessionActionRequestDelegate>().
                                                Select(e => e(StartTime,
-                                                             _SetSessionActionRequest.Timestamp.Value,
+                                                             setSessionActionRequest.Timestamp.Value,
                                                              this,
                                                              ServiceId,
-                                                             _SetSessionActionRequest.EventTrackingId,
+                                                             setSessionActionRequest.EventTrackingId,
 
-                                                             _SetSessionActionRequest.PartnerId,
-                                                             _SetSessionActionRequest.OperatorId,
-                                                             _SetSessionActionRequest.TargetOperatorId,
-                                                             _SetSessionActionRequest.ServiceSessionId,
-                                                             _SetSessionActionRequest.SessionAction,
-                                                             _SetSessionActionRequest.TransactionId,
-                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+                                                             setSessionActionRequest.PartnerId,
+                                                             setSessionActionRequest.OperatorId,
+                                                             setSessionActionRequest.TargetOperatorId,
+                                                             setSessionActionRequest.ServiceSessionId,
+                                                             setSessionActionRequest.SessionAction,
+                                                             setSessionActionRequest.TransactionId,
+                                                             setSessionActionRequest.ExecPartnerSessionId,
 
-                                                             _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                                             setSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout))).
                                                ConfigureAwait(false);
 
                     }
@@ -560,7 +560,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                              Cast<OnSetSessionActionDelegate>().
                                                              Select(e => e(DateTime.UtcNow,
                                                                            this,
-                                                                           _SetSessionActionRequest))).
+                                                                           setSessionActionRequest))).
                                                              ConfigureAwait(false);
 
                         Response = results.FirstOrDefault();
@@ -570,8 +570,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     // "Could not process the incoming SetSessionAction request!",
                     if (Response == null)
                         Response = SetSessionActionRequestResponse.SystemError(
-                                       _SetSessionActionRequest,
-                                       _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
+                                       setSessionActionRequest,
+                                       setSessionActionRequest.TransactionId ?? Transaction_Id.Zero
                                    );
 
                     #endregion
@@ -589,17 +589,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Select(e => e(EndTime,
                                                              this,
                                                              ServiceId,
-                                                             _SetSessionActionRequest.EventTrackingId,
+                                                             setSessionActionRequest.EventTrackingId,
 
-                                                             _SetSessionActionRequest.PartnerId,
-                                                             _SetSessionActionRequest.OperatorId,
-                                                             _SetSessionActionRequest.TargetOperatorId,
-                                                             _SetSessionActionRequest.ServiceSessionId,
-                                                             _SetSessionActionRequest.SessionAction,
-                                                             _SetSessionActionRequest.TransactionId,
-                                                             _SetSessionActionRequest.ExecPartnerSessionId,
+                                                             setSessionActionRequest.PartnerId,
+                                                             setSessionActionRequest.OperatorId,
+                                                             setSessionActionRequest.TargetOperatorId,
+                                                             setSessionActionRequest.ServiceSessionId,
+                                                             setSessionActionRequest.SessionAction,
+                                                             setSessionActionRequest.TransactionId,
+                                                             setSessionActionRequest.ExecPartnerSessionId,
 
-                                                             _SetSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             setSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout,
                                                              Response,
                                                              EndTime - StartTime))).
                                                ConfigureAwait(false);
@@ -617,8 +617,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 // "Could not process the incoming SetSessionAction request!"
                 else
                     Response = SetSessionActionRequestResponse.SystemError(
-                                   _SetSessionActionRequest,
-                                   _SetSessionActionRequest.TransactionId ?? Transaction_Id.Zero
+                                   setSessionActionRequest,
+                                   setSessionActionRequest.TransactionId ?? Transaction_Id.Zero
                                );
 
 

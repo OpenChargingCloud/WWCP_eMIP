@@ -121,19 +121,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  SetServiceAuthorisationResponseXML,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                                            HTTPResponse                                              HTTPResponse                                     = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
                          SetServiceAuthorisationResponseXML,
-                         out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
+                         out SetServiceAuthorisationResponse setServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
                          HTTPResponse,
                          OnException))
             {
-                return SetServiceAuthorisationResponse;
+                return setServiceAuthorisationResponse;
             }
 
             return null;
@@ -154,19 +154,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
                                                             String                                                    SetServiceAuthorisationResponseText,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                                            HTTPResponse                                              HTTPResponse                                     = null,
-                                                            OnExceptionDelegate                                       OnException                                      = null)
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                                            HTTPResponse                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
                          SetServiceAuthorisationResponseText,
-                         out SetServiceAuthorisationResponse SetServiceAuthorisationResponse,
+                         out SetServiceAuthorisationResponse setServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
                          HTTPResponse,
                          OnException))
             {
-                return SetServiceAuthorisationResponse;
+                return setServiceAuthorisationResponse;
             }
 
             return null;
@@ -189,9 +189,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        XElement                                                  SetServiceAuthorisationResponseXML,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                       HTTPResponse                                              HTTPResponse                                     = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try
@@ -245,9 +245,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
                                        String                                                    SetServiceAuthorisationResponseText,
                                        out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser  = null,
-                                       HTTPResponse                                              HTTPResponse                                     = null,
-                                       OnExceptionDelegate                                       OnException                                      = null)
+                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                       HTTPResponse                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate                                       OnException                                       = null)
         {
 
             try

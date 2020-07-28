@@ -182,22 +182,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetSessionActionRequestRequest Parse(XElement                                          SetSessionActionRequestXML,
-                                                    CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
-                                                    CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException         = null,
+        public static SetSessionActionRequestRequest Parse(XElement                                                 SetSessionActionRequestXML,
+                                                           CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser   = null,
+                                                           CustomXMLParserDelegate<SessionAction>                   CustomSessionActionParser                 = null,
+                                                           OnExceptionDelegate                                      OnException                               = null,
 
-                                                    HTTPRequest                                       HTTPRequest         = null,
-                                                    DateTime?                                         Timestamp           = null,
-                                                    CancellationToken?                                CancellationToken   = null,
-                                                    EventTracking_Id                                  EventTrackingId     = null,
-                                                    TimeSpan?                                         RequestTimeout      = null)
+                                                           HTTPRequest                                              HTTPRequest                               = null,
+                                                           DateTime?                                                Timestamp                                 = null,
+                                                           CancellationToken?                                       CancellationToken                         = null,
+                                                           EventTracking_Id                                         EventTrackingId                           = null,
+                                                           TimeSpan?                                                RequestTimeout                            = null)
         {
 
             if (TryParse(SetSessionActionRequestXML,
+                         out SetSessionActionRequestRequest setSessionActionRequest,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
-                         out SetSessionActionRequestRequest _SetSessionActionRequest,
                          OnException,
 
                          HTTPRequest,
@@ -206,7 +206,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          EventTrackingId,
                          RequestTimeout))
             {
-                return _SetSessionActionRequest;
+                return setSessionActionRequest;
             }
 
             return null;
@@ -230,22 +230,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetSessionActionRequestRequest Parse(String                                            SetSessionActionRequestText,
-                                                    CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
-                                                    CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
-                                                    OnExceptionDelegate                               OnException         = null,
+        public static SetSessionActionRequestRequest Parse(String                                                   SetSessionActionRequestText,
+                                                           CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser   = null,
+                                                           CustomXMLParserDelegate<SessionAction>                   CustomSessionActionParser                 = null,
+                                                           OnExceptionDelegate                                      OnException                               = null,
 
-                                                    HTTPRequest                                       HTTPRequest         = null,
-                                                    DateTime?                                         Timestamp           = null,
-                                                    CancellationToken?                                CancellationToken   = null,
-                                                    EventTracking_Id                                  EventTrackingId     = null,
-                                                    TimeSpan?                                         RequestTimeout      = null)
+                                                           HTTPRequest                                              HTTPRequest                               = null,
+                                                           DateTime?                                                Timestamp                                 = null,
+                                                           CancellationToken?                                       CancellationToken                         = null,
+                                                           EventTracking_Id                                         EventTrackingId                           = null,
+                                                           TimeSpan?                                                RequestTimeout                            = null)
         {
 
             if (TryParse(SetSessionActionRequestText,
+                         out SetSessionActionRequestRequest setSessionActionRequest,
                          CustomSendSetSessionActionRequestParser,
                          CustomSessionActionParser,
-                         out SetSessionActionRequestRequest _SetSessionActionRequest,
                          OnException,
 
                          HTTPRequest,
@@ -254,7 +254,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          EventTrackingId,
                          RequestTimeout))
             {
-                return _SetSessionActionRequest;
+                return setSessionActionRequest;
             }
 
             return null;
@@ -279,17 +279,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(XElement                                          SetSessionActionRequestXML,
-                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
-                                       CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
+        public static Boolean TryParse(XElement                                                 SetSessionActionRequestXML,
                                        out SetSessionActionRequestRequest                       SetSessionActionRequest,
-                                       OnExceptionDelegate                               OnException         = null,
+                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser   = null,
+                                       CustomXMLParserDelegate<SessionAction>                   CustomSessionActionParser                 = null,
+                                       OnExceptionDelegate                                      OnException                               = null,
 
-                                       HTTPRequest                                       HTTPRequest         = null,
-                                       DateTime?                                         Timestamp           = null,
-                                       CancellationToken?                                CancellationToken   = null,
-                                       EventTracking_Id                                  EventTrackingId     = null,
-                                       TimeSpan?                                         RequestTimeout      = null)
+                                       HTTPRequest                                              HTTPRequest                               = null,
+                                       DateTime?                                                Timestamp                                 = null,
+                                       CancellationToken?                                       CancellationToken                         = null,
+                                       EventTracking_Id                                         EventTrackingId                           = null,
+                                       TimeSpan?                                                RequestTimeout                            = null)
         {
 
             try
@@ -365,26 +365,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(String                                            SetSessionActionRequestText,
-                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser,
-                                       CustomXMLParserDelegate<SessionAction>            CustomSessionActionParser,
+        public static Boolean TryParse(String                                                   SetSessionActionRequestText,
                                        out SetSessionActionRequestRequest                       SetSessionActionRequest,
-                                       OnExceptionDelegate                               OnException         = null,
+                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>  CustomSendSetSessionActionRequestParser   = null,
+                                       CustomXMLParserDelegate<SessionAction>                   CustomSessionActionParser                 = null,
+                                       OnExceptionDelegate                                      OnException                               = null,
 
-                                       HTTPRequest                                       HTTPRequest         = null,
-                                       DateTime?                                         Timestamp           = null,
-                                       CancellationToken?                                CancellationToken   = null,
-                                       EventTracking_Id                                  EventTrackingId     = null,
-                                       TimeSpan?                                         RequestTimeout      = null)
+                                       HTTPRequest                                              HTTPRequest                               = null,
+                                       DateTime?                                                Timestamp                                 = null,
+                                       CancellationToken?                                       CancellationToken                         = null,
+                                       EventTracking_Id                                         EventTrackingId                           = null,
+                                       TimeSpan?                                                RequestTimeout                            = null)
         {
 
             try
             {
 
                 if (TryParse(XDocument.Parse(SetSessionActionRequestText).Root,
+                             out SetSessionActionRequest,
                              CustomSendSetSessionActionRequestParser,
                              CustomSessionActionParser,
-                             out SetSessionActionRequest,
                              OnException,
 
                              HTTPRequest,

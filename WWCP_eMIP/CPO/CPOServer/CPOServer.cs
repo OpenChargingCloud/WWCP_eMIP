@@ -77,7 +77,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The identification of this HTTP/SOAP service.
         /// </summary>
-        public String  ServiceId           { get; }
+        public String  ServiceName           { get; }
 
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
@@ -170,14 +170,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
-        #region CPOServer(HTTPServerName, ServiceId = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
+        #region CPOServer(HTTPServerName, ServiceName = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
 
         /// <summary>
         /// Initialize an new HTTP server for the eMIP HTTP/SOAP/XML CPO API.
         /// </summary>
         /// <param name="HTTPServerName">An optional identification string for the HTTP server.</param>
-        /// <param name="ServiceId">An optional identification for this SOAP service.</param>
-        /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
+        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
+        /// <param name="HTTPServerPort">An optional TCP port for the HTTP server.</param>
         /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
@@ -185,8 +185,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="DNSClient">An optional DNS client to use.</param>
         /// <param name="AutoStart">Start the server immediately.</param>
         public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
-                         String           ServiceId                 = null,
-                         IPPort?          TCPPort                   = null,
+                         IPPort?          HTTPServerPort            = null,
+                         String           ServiceName               = null,
                          HTTPPath?        URLPrefix                 = null,
                          String           AuthorisationURL          = DefaultAuthorisationURL,
                          HTTPContentType  ContentType               = null,
@@ -195,16 +195,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          Boolean          AutoStart                 = false)
 
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
-                   TCPPort     ?? DefaultHTTPServerPort,
-                   URLPrefix   ?? DefaultURLPrefix,
-                   ContentType ?? DefaultContentType,
+                   HTTPServerPort ?? DefaultHTTPServerPort,
+                   ServiceName    ?? "eMIP " + Version.Number + " " + nameof(CPOServer),
+                   URLPrefix      ?? DefaultURLPrefix,
+                   ContentType    ?? DefaultContentType,
                    RegisterHTTPRootService,
                    DNSClient,
                    AutoStart: false)
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.ServiceName       = ServiceName      ?? "eMIP " + Version.Number + " " + nameof(CPOServer);
             this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
@@ -216,17 +217,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region CPOServer(SOAPServer, ServiceId = null, URLPrefix = default)
+        #region CPOServer(SOAPServer, ServiceName = null, URLPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML CPO API.
         /// </summary>
         /// <param name="SOAPServer">A SOAP server.</param>
-        /// <param name="ServiceId">An optional identification for this SOAP service.</param>
+        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
-                         String      ServiceId         = null,
+                         String      ServiceName       = null,
                          HTTPPath?   URLPrefix         = null,
                          String      AuthorisationURL  = DefaultAuthorisationURL)
 
@@ -235,7 +236,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(CPOServer);
+            this.ServiceName       = ServiceName      ?? "eMIP " + Version.Number + " " + nameof(CPOServer);
             this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
@@ -317,7 +318,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Select(e => e(StartTime,
                                                              _SetServiceAuthorisationRequest.Timestamp.Value,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _SetServiceAuthorisationRequest.EventTrackingId,
                                                              _SetServiceAuthorisationRequest.PartnerId,
                                                              _SetServiceAuthorisationRequest.OperatorId,
@@ -381,7 +382,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Cast<OnSetServiceAuthorisationResponseDelegate>().
                                                Select(e => e(EndTime,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _SetServiceAuthorisationRequest.EventTrackingId,
                                                              _SetServiceAuthorisationRequest.PartnerId,
                                                              _SetServiceAuthorisationRequest.OperatorId,
@@ -529,7 +530,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Select(e => e(StartTime,
                                                              setSessionActionRequest.Timestamp.Value,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
 
                                                              setSessionActionRequest.PartnerId,
@@ -588,7 +589,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                Cast<OnSetSessionActionResponseDelegate>().
                                                Select(e => e(EndTime,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
 
                                                              setSessionActionRequest.PartnerId,

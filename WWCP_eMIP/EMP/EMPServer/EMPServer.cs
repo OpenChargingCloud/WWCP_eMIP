@@ -77,7 +77,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The identification of this HTTP/SOAP service.
         /// </summary>
-        public String  ServiceId           { get; }
+        public String  ServiceName           { get; }
 
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
@@ -206,14 +206,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Constructor(s)
 
-        #region EMPServer(HTTPServerName, ServiceId = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
+        #region EMPServer(HTTPServerName, ServiceName = null, TCPPort = default, URLPrefix = default, ContentType = default, DNSClient = null, AutoStart = false)
 
         /// <summary>
         /// Initialize an new HTTP server for the eMIP HTTP/SOAP/XML EMP API.
         /// </summary>
         /// <param name="HTTPServerName">An optional identification string for the HTTP server.</param>
-        /// <param name="ServiceId">An optional identification for this SOAP service.</param>
         /// <param name="TCPPort">An optional TCP port for the HTTP server.</param>
+        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
@@ -221,8 +221,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="DNSClient">An optional DNS client to use.</param>
         /// <param name="AutoStart">Start the server immediately.</param>
         public EMPServer(String           HTTPServerName            = DefaultHTTPServerName,
-                         String           ServiceId                 = null,
                          IPPort?          TCPPort                   = null,
+                         String           ServiceName               = null,
                          HTTPPath?        URLPrefix                 = null,
                          String           AuthorisationURL          = DefaultAuthorisationURL,
                          HTTPContentType  ContentType               = null,
@@ -232,6 +232,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
                    TCPPort     ?? DefaultHTTPServerPort,
+                   ServiceName ?? "eMIP " + Version.Number + " " + nameof(EMPServer),
                    URLPrefix   ?? DefaultURLPrefix,
                    ContentType ?? DefaultContentType,
                    RegisterHTTPRootService,
@@ -240,7 +241,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(EMPServer);
+            this.ServiceName       = ServiceName      ?? "eMIP " + Version.Number + " " + nameof(EMPServer);
             this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
@@ -252,17 +253,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #endregion
 
-        #region EMPServer(SOAPServer, ServiceId = null, URLPrefix = default)
+        #region EMPServer(SOAPServer, ServiceName = null, URLPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML EMP API.
         /// </summary>
         /// <param name="SOAPServer">A SOAP server.</param>
-        /// <param name="ServiceId">An optional identification for this SOAP service.</param>
+        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public EMPServer(SOAPServer  SOAPServer,
-                         String      ServiceId         = null,
+                         String      ServiceName       = null,
                          HTTPPath?   URLPrefix         = null,
                          String      AuthorisationURL  = DefaultAuthorisationURL)
 
@@ -271,7 +272,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         {
 
-            this.ServiceId         = ServiceId        ?? nameof(EMPServer);
+            this.ServiceName       = ServiceName      ?? "eMIP " + Version.Number + " " + nameof(EMPServer);
             this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
 
             RegisterURITemplates();
@@ -349,7 +350,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Select(e => e(StartTime,
                                                               _GetServiceAuthorisationRequest.Timestamp.Value,
                                                               this,
-                                                              ServiceId,
+                                                              ServiceName,
                                                               _GetServiceAuthorisationRequest.EventTrackingId,
                                                               _GetServiceAuthorisationRequest.TransactionId.Value,
                                                               _GetServiceAuthorisationRequest.PartnerId,
@@ -411,7 +412,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Cast<OnGetServiceAuthorisationResponseDelegate>().
                                                Select(e => e(EndTime,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _GetServiceAuthorisationRequest.EventTrackingId,
                                                              _GetServiceAuthorisationRequest.TransactionId.Value,
                                                              _GetServiceAuthorisationRequest.PartnerId,
@@ -544,7 +545,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Select(e => e(StartTime,
                                                              _SetSessionEventReportRequest.Timestamp.Value,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _SetSessionEventReportRequest.EventTrackingId,
 
                                                              _SetSessionEventReportRequest.PartnerId,
@@ -606,7 +607,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Cast<OnSetSessionEventReportResponseDelegate>().
                                                Select(e => e(EndTime,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _SetSessionEventReportRequest.EventTrackingId,
 
                                                              _SetSessionEventReportRequest.PartnerId,
@@ -741,7 +742,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Select(e => e(StartTime,
                                                               _SetChargeDetailRecordRequest.Timestamp.Value,
                                                               this,
-                                                              ServiceId,
+                                                              ServiceName,
                                                               _SetChargeDetailRecordRequest.EventTrackingId,
 
                                                               _SetChargeDetailRecordRequest.PartnerId,
@@ -799,7 +800,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                Cast<OnSetChargeDetailRecordResponseDelegate>().
                                                Select(e => e(EndTime,
                                                              this,
-                                                             ServiceId,
+                                                             ServiceName,
                                                              _SetChargeDetailRecordRequest.EventTrackingId,
 
                                                              _SetChargeDetailRecordRequest.PartnerId,

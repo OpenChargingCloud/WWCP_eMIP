@@ -930,7 +930,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
         /// 
         /// <param name="ServerName">An optional identification string for the HTTP server.</param>
-        /// <param name="ServiceId">An optional identification for this SOAP service.</param>
+        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="ServerTCPPort">An optional TCP port for the HTTP server.</param>
         /// <param name="ServerURLPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="ServerAuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
@@ -982,7 +982,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               Byte?                                              MaxNumberOfRetries                                       = CPOClient.DefaultMaxNumberOfRetries,
 
                               String                                             ServerName                                               = CPOServer.DefaultHTTPServerName,
-                              String                                             ServiceId                                                = null,
+                              String                                             ServiceName                                                = null,
                               IPPort?                                            ServerTCPPort                                            = null,
                               HTTPPath?                                          ServerURLPrefix                                          = null,
                               String                                             ServerAuthorisationURL                                   = CPOServer.DefaultAuthorisationURL,
@@ -1056,9 +1056,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                   MaxNumberOfRetries,
 
                                   ServerName,
-                                  ServiceId,
                                   ServerTCPPort,
-                                  ServerURLPrefix        ?? CPOServer.DefaultURLPrefix,
+                                  ServiceName,
+                                  ServerURLPrefix ?? CPOServer.DefaultURLPrefix,
                                   ServerAuthorisationURL ?? CPOServer.DefaultAuthorisationURL,
                                   ServerContentType,
                                   ServerRegisterHTTPRootService,

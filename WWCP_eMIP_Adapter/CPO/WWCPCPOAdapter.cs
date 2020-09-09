@@ -697,7 +697,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  RemoteStop(EMPRoamingProvider:    this,
                                                             SessionId:             Request.ServiceSessionId.ToWWCP(),
                                                             ReservationHandling:   ReservationHandling.Close,
-                                                            ProviderId:            eMobilityProvider_Id.Parse(Request.PartnerId.ToString()),
+                                                            ProviderId:            Request.PartnerId.ToWWCP_ProviderId(),
                                                             RemoteAuthentication:  null,
 
                                                             Timestamp:             Request.Timestamp,

@@ -196,8 +196,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Value">The value of the user identification.</param>
         /// <param name="Format">The format of the user identification.</param>
-        private User_Id(String         Value,
-                        UserIdFormats  Format = UserIdFormats.RFID_UID)
+        public User_Id(String         Value,
+                       UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
             this.InternalId  = Value;

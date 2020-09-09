@@ -250,6 +250,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                    : new eMobilityProvider_Id?();
 
 
+        public static User_Id? ToEMIP(this AAuthentication Authentication)
+        {
+
+            if (Authentication.AuthToken.HasValue)
+                return new User_Id(Authentication.ToString(),
+                                   UserIdFormats.RFID_UID);
+
+            // Might be a DIN or ISO!!!
+            if (Authentication.RemoteIdentification.HasValue)
+                return new User_Id(Authentication.ToString(),
+                                   UserIdFormats.eMA);
+
+            return null;
+
+        }
+
+
+
         #region ToEMIP(this ChargeDetailRecord, WWCPChargeDetailRecord2ChargeDetailRecord = null)
 
         public static String WWCP_CDR = "WWCP.CDR";
@@ -269,7 +287,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                            ServiceSessionId:        ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
                            RequestedServiceId:      Service_Id.Parse("1"),
                            EVSEId:                  ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
-                           UserId:                  User_Id.Parse(ChargeDetailRecord.AuthenticationStart.ToString()),
+                           UserId:                  ChargeDetailRecord.AuthenticationStart.ToEMIP().Value,
                            StartTime:               ChargeDetailRecord.SessionTime.StartTime,
                            EndTime:                 ChargeDetailRecord.SessionTime.EndTime.Value,
                            UserContractIdAlias:     null,

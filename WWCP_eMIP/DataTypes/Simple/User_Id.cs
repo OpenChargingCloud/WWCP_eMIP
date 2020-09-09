@@ -29,74 +29,44 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// eMIP data conversion methods.
+    /// Extentions methods for user identification formats.
     /// </summary>
-    public static partial class ConversionMethods
+    public static class UserIdFormatsExtentions
     {
 
-        #region AsText        (this UserIdFormat)
+        #region Parse (Text)
+
+        /// <summary>
+        /// Parse the given text representation of an user identification format.
+        /// </summary>
+        /// <param name="Text">A text-representation of an user identification format.</param>
+        public static UserIdFormats Parse(String Text)
+
+            => Text switch {
+                "RFID-UID" => UserIdFormats.RFID_UID,
+                "eMI3"     => UserIdFormats.eMI3,
+                "eMA"      => UserIdFormats.eMA,
+                "EVCO"     => UserIdFormats.EVCO,
+                _          => UserIdFormats.EMP_SPEC,
+            };
+
+        #endregion
+
+        #region AsText(this UserIdFormat)
 
         /// <summary>
         /// Return a text representation of the given user identification format.
         /// </summary>
         /// <param name="UserIdFormat">A user identification format.</param>
         public static String AsText(this UserIdFormats UserIdFormat)
-        {
 
-            switch (UserIdFormat)
-            {
-
-                case UserIdFormats.RFID_UID:
-                    return "RFID-UID";
-
-                case UserIdFormats.eMI3:
-                    return "eMI3";
-
-                case UserIdFormats.eMA:
-                    return "eMA";
-
-                case UserIdFormats.EVCO:
-                    return "EVCO";
-
-                default:
-                    return "EMP-SPEC";
-
-            }
-
-        }
-
-        #endregion
-
-        #region AsUserIdFormat(this Text)
-
-        /// <summary>
-        /// Parse the given text representation of an user identification format.
-        /// </summary>
-        /// <param name="Text">A text-representation of an user identification format.</param>
-        public static UserIdFormats AsUserIdFormat(String Text)
-        {
-
-            switch (Text)
-            {
-
-                case "RFID-UID":
-                    return UserIdFormats.RFID_UID;
-
-                case "eMI3":
-                    return UserIdFormats.eMI3;
-
-                case "eMA":
-                    return UserIdFormats.eMA;
-
-                case "EVCO":
-                    return UserIdFormats.EVCO;
-
-                default:
-                    return UserIdFormats.EMP_SPEC;
-
-            }
-
-        }
+            => UserIdFormat switch {
+                UserIdFormats.RFID_UID  => "RFID-UID",
+                UserIdFormats.eMI3      => "eMI3",
+                UserIdFormats.eMA       => "eMA",
+                UserIdFormats.EVCO      => "EVCO",
+                _                       => "EMP-SPEC",
+            };
 
         #endregion
 
@@ -140,9 +110,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// The unique identification of an user.
     /// </summary>
     [DebuggerDisplay("{InternalId} ({Format})")]
-    public struct User_Id : IId,
-                            IEquatable<User_Id>,
-                            IComparable<User_Id>
+    public readonly struct User_Id : IId<User_Id>
 
     {
 

@@ -313,7 +313,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      GetServiceAuthorisationRequestXML.MapValueOrFail    ("EVSEId",              EVSE_Id.Parse),
 
                                                      GetServiceAuthorisationRequestXML.MapValueOrFail    ("userId",              s => User_Id.Parse(s,
-                                                         GetServiceAuthorisationRequestXML.MapValueOrFail("userIdType",          ConversionMethods.AsUserIdFormat))),
+                                                         GetServiceAuthorisationRequestXML.MapValueOrFail("userIdType",          UserIdFormatsExtentions.Parse))),
 
                                                      GetServiceAuthorisationRequestXML.MapValueOrFail    ("requestedServiceId",  Service_Id.Parse),
 

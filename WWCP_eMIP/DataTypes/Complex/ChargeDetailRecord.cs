@@ -332,8 +332,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                          ChargeDetailRecordXML.MapValueOrFail     ("requestedServiceId",     Service_Id.       Parse),
                                          ChargeDetailRecordXML.MapValueOrFail     ("EVSEId",                 EVSE_Id.          Parse),
 
-                                         ChargeDetailRecordXML.MapValueOrFail     ("userId", s => User_Id.Parse(s,
-                                             ChargeDetailRecordXML.MapValueOrFail("userIdType", ConversionMethods.AsUserIdFormat))),
+                                         ChargeDetailRecordXML.MapValueOrFail     ("userId",                 s => User_Id.Parse(s,
+                                             ChargeDetailRecordXML.MapValueOrFail("userIdType",              UserIdFormatsExtentions.Parse))),
 
                                          ChargeDetailRecordXML.MapValueOrFail     ("startTime",              DateTime.         Parse),
                                          ChargeDetailRecordXML.MapValueOrFail     ("endTime",                DateTime.         Parse),

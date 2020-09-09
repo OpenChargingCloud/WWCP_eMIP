@@ -377,7 +377,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("EVSEId",                   EVSE_Id.Parse),
 
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("userId",                   s => User_Id.Parse(s,
-                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType", ConversionMethods.AsUserIdFormat))),
+                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType",               UserIdFormatsExtentions.Parse))),
 
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("requestedServiceId",       Service_Id.Parse),
                                                      SetServiceAuthorisationRequestXML.MapValueOrFail       ("authorisationValue",       ConversionMethods.AsRemoteStartStopValue),

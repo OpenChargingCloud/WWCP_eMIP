@@ -109,7 +109,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                              TimeSpan                                    RequestTimeout,
                                                                              SetChargingPoolAvailabilityStatusResponse   Result,
-                                                                             TimeSpan                                    Duration);
+                                                                             TimeSpan                                    Runtime);
 
     #endregion
 
@@ -155,7 +155,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                                 TimeSpan                                       RequestTimeout,
                                                                                 SetChargingStationAvailabilityStatusResponse   Result,
-                                                                                TimeSpan                                       Duration);
+                                                                                TimeSpan                                       Runtime);
 
     #endregion
 
@@ -201,7 +201,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                      TimeSpan                            RequestTimeout,
                                                                      SetEVSEAvailabilityStatusResponse   Result,
-                                                                     TimeSpan                            Duration);
+                                                                     TimeSpan                            Runtime);
 
     #endregion
 
@@ -247,7 +247,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                                   TimeSpan                                         RequestTimeout,
                                                                                   SetChargingConnectorAvailabilityStatusResponse   Result,
-                                                                                  TimeSpan                                         Duration);
+                                                                                  TimeSpan                                         Runtime);
 
     #endregion
 
@@ -294,7 +294,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                              TimeSpan                                 RequestTimeout,
                                                              SetEVSEBusyStatusResponse                Result,
-                                                             TimeSpan                                 Duration);
+                                                             TimeSpan                                 Runtime);
 
     #endregion
 
@@ -348,7 +348,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                   TimeSpan                                 RequestTimeout,
                                                                   SetEVSESyntheticStatusResponse           Result,
-                                                                  TimeSpan                                 Duration);
+                                                                  TimeSpan                                 Runtime);
 
     #endregion
 
@@ -393,7 +393,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                    TimeSpan                                 RequestTimeout,
                                                                    GetServiceAuthorisationResponse          Result,
-                                                                   TimeSpan                                 Duration);
+                                                                   TimeSpan                                 Runtime);
 
     #endregion
 
@@ -437,7 +437,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                  TimeSpan                        RequestTimeout,
                                                                  SetSessionEventReportResponse   Result,
-                                                                 TimeSpan                        Duration);
+                                                                 TimeSpan                        Runtime);
 
     #endregion
 
@@ -476,7 +476,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                                  TimeSpan                                 RequestTimeout,
                                                                  SetChargeDetailRecordResponse            Result,
-                                                                 TimeSpan                                 Duration);
+                                                                 TimeSpan                                 Runtime);
 
     #endregion
 

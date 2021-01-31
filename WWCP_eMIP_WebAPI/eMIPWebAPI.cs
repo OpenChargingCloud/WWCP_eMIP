@@ -78,7 +78,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                               RoamingNetwork    = null;
                               HTTPResponse      = null;
 
-            if (HTTPRequest.ParsedURIParameters.Length < 1)
+            if (HTTPRequest.ParsedURLParameters.Length < 1)
             {
 
                 HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
@@ -91,7 +91,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             }
 
-            if (!RoamingNetwork_Id.TryParse(HTTPRequest.ParsedURIParameters[0], out RoamingNetworkId))
+            if (!RoamingNetwork_Id.TryParse(HTTPRequest.ParsedURLParameters[0], out RoamingNetworkId))
             {
 
                 HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
@@ -369,7 +369,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                                         Connection      = "close"
                                                     };
 
-                                   }, AllowReplacement: URIReplacement.Fail);
+                                   }, AllowReplacement: URLReplacement.Fail);
 
             #endregion
 

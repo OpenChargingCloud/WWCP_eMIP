@@ -1176,7 +1176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             // No retransmissions for heartbeats!
             using (var _eMIPClient = new SOAPClient(Hostname,
-                                                    URLPrefix,
+                                                    URLPathPrefix,
                                                     VirtualHostname,
                                                     RemotePort,
                                                     RemoteCertificateValidator,
@@ -1446,7 +1446,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -1728,7 +1728,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2010,7 +2010,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2291,7 +2291,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2573,7 +2573,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -2858,7 +2858,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3143,7 +3143,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3412,7 +3412,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -3699,7 +3699,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,

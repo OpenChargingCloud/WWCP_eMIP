@@ -495,7 +495,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -751,7 +751,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,
@@ -1022,7 +1022,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             {
 
                 using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPrefix,
+                                                        URLPathPrefix,
                                                         VirtualHostname,
                                                         RemotePort,
                                                         RemoteCertificateValidator,

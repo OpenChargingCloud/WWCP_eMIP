@@ -37,7 +37,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
     /// A GetServiceAuthorisation response.
     /// </summary>
     public class GetServiceAuthorisationResponse : AResponse<GetServiceAuthorisationRequest,
-                                                   GetServiceAuthorisationResponse>
+                                                             GetServiceAuthorisationResponse>
     {
 
         #region Properties
@@ -693,8 +693,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A GetServiceAuthorisation response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<GetServiceAuthorisationRequest,
-                                                GetServiceAuthorisationResponse>
+        public new class Builder : AResponseBuilder<GetServiceAuthorisationRequest,
+                                                    GetServiceAuthorisationResponse>
         {
 
             #region Properties
@@ -774,14 +774,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="GetServiceAuthorisationResponse">A GetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(GetServiceAuthorisationResponse      GetServiceAuthorisationResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                       = null)
+            public Builder(GetServiceAuthorisationResponse      GetServiceAuthorisationResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                        = null)
 
                 : base(GetServiceAuthorisationResponse?.Request,
-                       GetServiceAuthorisationResponse.HasCustomData
+                       GetServiceAuthorisationResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? GetServiceAuthorisationResponse.CustomData.Concat(CustomData)
-                                 : GetServiceAuthorisationResponse.CustomData
+                                 ? GetServiceAuthorisationResponse.InternalData.Concat(CustomData)
+                                 : GetServiceAuthorisationResponse.InternalData
                            : CustomData)
 
             {

@@ -469,8 +469,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// A SetServiceAuthorisation response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetServiceAuthorisationRequest,
-                                                SetServiceAuthorisationResponse>
+        public new class Builder : AResponseBuilder<SetServiceAuthorisationRequest,
+                                                    SetServiceAuthorisationResponse>
         {
 
             #region Properties
@@ -513,14 +513,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="SetServiceAuthorisationResponse">A SetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetServiceAuthorisationResponse      SetServiceAuthorisationResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                       = null)
+            public Builder(SetServiceAuthorisationResponse      SetServiceAuthorisationResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                        = null)
 
                 : base(SetServiceAuthorisationResponse?.Request,
-                       SetServiceAuthorisationResponse.HasCustomData
+                       SetServiceAuthorisationResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetServiceAuthorisationResponse.CustomData.Concat(CustomData)
-                                 : SetServiceAuthorisationResponse.CustomData
+                                 ? SetServiceAuthorisationResponse.InternalData.Concat(CustomData)
+                                 : SetServiceAuthorisationResponse.InternalData
                            : CustomData)
 
             {

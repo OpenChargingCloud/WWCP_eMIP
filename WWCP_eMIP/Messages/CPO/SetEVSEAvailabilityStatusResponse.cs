@@ -409,8 +409,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetEVSEAvailabilityStatus response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetEVSEAvailabilityStatusRequest,
-                                                SetEVSEAvailabilityStatusResponse>
+        public new class Builder : AResponseBuilder<SetEVSEAvailabilityStatusRequest,
+                                                    SetEVSEAvailabilityStatusResponse>
         {
 
             #region Properties
@@ -453,14 +453,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetEVSEAvailabilityStatusResponse">A SetEVSEAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSEAvailabilityStatusResponse    SetEVSEAvailabilityStatusResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                         = null)
+            public Builder(SetEVSEAvailabilityStatusResponse    SetEVSEAvailabilityStatusResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                          = null)
 
                 : base(SetEVSEAvailabilityStatusResponse?.Request,
-                       SetEVSEAvailabilityStatusResponse.HasCustomData
+                       SetEVSEAvailabilityStatusResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetEVSEAvailabilityStatusResponse.CustomData.Concat(CustomData)
-                                 : SetEVSEAvailabilityStatusResponse.CustomData
+                                 ? SetEVSEAvailabilityStatusResponse.InternalData.Concat(CustomData)
+                                 : SetEVSEAvailabilityStatusResponse.InternalData
                            : CustomData)
 
             {

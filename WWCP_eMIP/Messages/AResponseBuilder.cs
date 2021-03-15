@@ -33,7 +33,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// </summary>
     /// <typeparam name="TRequest">The type of the eMIP request.</typeparam>
     /// <typeparam name="TResponse">The type of the eMIP response.</typeparam>
-    public abstract class AResponseBuilder<TRequest, TResponse> : ACustomData.Builder,
+    public abstract class AResponseBuilder<TRequest, TResponse> : AInternalData.Builder,
                                                                   IResponse,
                                                                   IEquatable<TResponse>
 

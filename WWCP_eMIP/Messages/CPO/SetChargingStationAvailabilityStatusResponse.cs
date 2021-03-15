@@ -416,8 +416,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetChargingStationAvailabilityStatus response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetChargingStationAvailabilityStatusRequest,
-                                                SetChargingStationAvailabilityStatusResponse>
+        public new class Builder : AResponseBuilder<SetChargingStationAvailabilityStatusRequest,
+                                                    SetChargingStationAvailabilityStatusResponse>
         {
 
             #region Properties
@@ -460,14 +460,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetChargingStationAvailabilityStatusResponse">A SetChargingStationAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargingStationAvailabilityStatusResponse  SetChargingStationAvailabilityStatusResponse  = null,
-                           IReadOnlyDictionary<String, Object>           CustomData                                    = null)
+            public Builder(SetChargingStationAvailabilityStatusResponse  SetChargingStationAvailabilityStatusResponse   = null,
+                           IReadOnlyDictionary<String, Object>           CustomData                                     = null)
 
                 : base(SetChargingStationAvailabilityStatusResponse?.Request,
-                       SetChargingStationAvailabilityStatusResponse.HasCustomData
+                       SetChargingStationAvailabilityStatusResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetChargingStationAvailabilityStatusResponse.CustomData.Concat(CustomData)
-                                 : SetChargingStationAvailabilityStatusResponse.CustomData
+                                 ? SetChargingStationAvailabilityStatusResponse.InternalData.Concat(CustomData)
+                                 : SetChargingStationAvailabilityStatusResponse.InternalData
                            : CustomData)
 
             {

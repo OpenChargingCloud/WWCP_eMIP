@@ -22,6 +22,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 using Newtonsoft.Json.Linq;
 
@@ -38,7 +39,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// An eMIP CPO client.
+    /// The eMIP CPO client.
     /// </summary>
     public partial class CPOClient : ASOAPClient,
                                      ICPOClient
@@ -151,9 +152,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOCounters      Counters    { get; }
 
         /// <summary>
-        /// The attached eMIP CPO client (HTTP/SOAP client) logger.
+        /// The attached HTTP client logger.
         /// </summary>
-        public CPOClientLogger  Logger      { get; }
+        public new Logger HTTPLogger
+        {
+            get
+            {
+                return base.HTTPLogger as Logger;
+            }
+            set
+            {
+                base.HTTPLogger = value;
+            }
+        }
 
         #endregion
 
@@ -953,36 +964,32 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
-        #region CPOClient(ClientId, Hostname, ..., LoggingContext = CPOClientLogger.DefaultContext, ...)
-
         /// <summary>
-        /// Create a new eMIP CPO Client.
+        /// Create a new CPO client.
         /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="Hostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="RemoteURL">The remote URL of the OICP HTTP endpoint to connect to.</param>
+        /// <param name="VirtualHostname">An optional HTTP virtual hostname.</param>
+        /// <param name="Description">An optional description of this CPO client.</param>
+        /// <param name="RemoteCertificateValidator">The remote SSL/TLS certificate validator.</param>
+        /// <param name="ClientCert">The SSL/TLS client certificate to use of HTTP authentication.</param>
+        /// <param name="HTTPUserAgent">The HTTP user agent identification.</param>
+        /// <param name="RequestTimeout">An optional request timeout.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        /// <param name="LoggingContext">An optional context for logging client methods.</param>
+        /// <param name="MaxNumberOfRetries">The maximum number of transmission retries for HTTP request.</param>
+        /// <param name="DisableLogging">Disable all logging.</param>
+        /// <param name="LoggingContext">An optional context for logging.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        public CPOClient(String                               ClientId,
-                         HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                               = null,
+        /// <param name="DNSClient">The DNS client to use.</param>
+        public CPOClient(URL?                                 RemoteURL                                = null,
+                         HTTPHostname?                        VirtualHostname                          = null,
+                         String                               Description                              = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator               = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector                = null,
-                         HTTPHostname?                        HTTPVirtualHost                          = null,
-                         HTTPPath?                            URLPrefix                                = null,
+                         X509Certificate                      ClientCert                               = null,
                          String                               HTTPUserAgent                            = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout                           = null,
                          TransmissionRetryDelayDelegate       TransmissionRetryDelay                   = null,
-                         Byte?                                MaxNumberOfRetries                       = DefaultMaxNumberOfRetries,
+                         UInt16?                              MaxNumberOfRetries                       = DefaultMaxNumberOfRetries,
 
                          CounterValues?                       SendHeartbeat                            = null,
                          CounterValues?                       SetChargingPoolAvailabilityStatus        = null,
@@ -995,22 +1002,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          CounterValues?                       SetSessionEventReport                    = null,
                          CounterValues?                       SetChargeDetailRecord                    = null,
 
-                         DNSClient                            DNSClient                                = null,
-                         String                               LoggingContext                           = CPOClientLogger.DefaultContext,
-                         LogfileCreatorDelegate               LogfileCreator                           = null)
+                         Boolean                              DisableLogging                           = false,
+                         String                               LoggingContext                           = Logger.DefaultContext,
+                         LogfileCreatorDelegate               LogfileCreator                           = null,
+                         DNSClient                            DNSClient                                = null)
 
-            : base(ClientId,
-                   Hostname,
-                   RemotePort ?? DefaultRemotePort,
+            : base(RemoteURL           ?? URL.Parse("???"),
+                   VirtualHostname,
+                   Description,
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
-                   HTTPVirtualHost,
-                   URLPrefix ?? DefaultURLPrefix,
+                   ClientCert,
+                   HTTPUserAgent       ?? DefaultHTTPUserAgent,
                    null,
-                   HTTPUserAgent,
+                   null,
                    RequestTimeout,
                    TransmissionRetryDelay,
-                   MaxNumberOfRetries,
+                   MaxNumberOfRetries  ?? DefaultMaxNumberOfRetries,
+                   false,
+                   null,
                    DNSClient)
 
         {
@@ -1026,90 +1036,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              SetSessionEventReport,
                                              SetChargeDetailRecord);
 
-            this.Logger    = new CPOClientLogger(this,
-                                                 LoggingContext,
-                                                 LogfileCreator);
+            base.HTTPLogger  = DisableLogging == false
+                                   ? new Logger(this,
+                                                LoggingContext,
+                                                LogfileCreator)
+                                   : null;
 
         }
-
-        #endregion
-
-        #region CPOClient(ClientId, Logger, Hostname, ...)
-
-        /// <summary>
-        /// Create a new eMIP CPO Client.
-        /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="Logger">A CPO client logger.</param>
-        /// <param name="Hostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
-        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        public CPOClient(String                               ClientId,
-                         CPOClientLogger                      Logger,
-                         HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                                      = null,
-                         RemoteCertificateValidationCallback  RemoteCertificateValidator                      = null,
-                         LocalCertificateSelectionCallback    ClientCertificateSelector                       = null,
-                         HTTPHostname?                        HTTPVirtualHost                                 = null,
-                         HTTPPath?                            URLPrefix                                       = null,
-                         String                               HTTPUserAgent                                   = DefaultHTTPUserAgent,
-                         TimeSpan?                            RequestTimeout                                  = null,
-                         TransmissionRetryDelayDelegate       TransmissionRetryDelay                          = null,
-                         Byte?                                MaxNumberOfRetries                              = DefaultMaxNumberOfRetries,
-
-                         CounterValues?                       SendHeartbeatCounter                            = null,
-                         CounterValues?                       SetChargingPoolAvailabilityStatusCounter        = null,
-                         CounterValues?                       SetChargingStationAvailabilityStatusCounter     = null,
-                         CounterValues?                       SetEVSEAvailabilityStatusCounter                = null,
-                         CounterValues?                       SetChargingConnectorAvailabilityStatusCounter   = null,
-                         CounterValues?                       SetEVSEBusyStatusCounter                        = null,
-                         CounterValues?                       SetEVSESyntheticStatusCounter                   = null,
-                         CounterValues?                       GetServiceAuthorisationCounter                  = null,
-                         CounterValues?                       SetSessionEventReportCounter                    = null,
-                         CounterValues?                       SetChargeDetailRecordCounter                    = null,
-
-                         DNSClient                            DNSClient                                       = null)
-
-            : base(ClientId,
-                   Hostname,
-                   RemotePort ?? DefaultRemotePort,
-                   RemoteCertificateValidator,
-                   ClientCertificateSelector,
-                   HTTPVirtualHost,
-                   URLPrefix ?? DefaultURLPrefix,
-                   null,
-                   HTTPUserAgent,
-                   RequestTimeout,
-                   TransmissionRetryDelay,
-                   MaxNumberOfRetries,
-                   DNSClient)
-
-        {
-
-            this.Counters  = new CPOCounters(SendHeartbeatCounter,
-                                             SetChargingPoolAvailabilityStatusCounter,
-                                             SetChargingStationAvailabilityStatusCounter,
-                                             SetEVSEAvailabilityStatusCounter,
-                                             SetChargingConnectorAvailabilityStatusCounter,
-                                             SetEVSEBusyStatusCounter,
-                                             SetEVSESyntheticStatusCounter,
-                                             GetServiceAuthorisationCounter,
-                                             SetSessionEventReportCounter,
-                                             SetChargeDetailRecordCounter);
-
-            this.Logger    = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
-
-        }
-
-        #endregion
 
         #endregion
 
@@ -1157,12 +1090,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
                                                      Request.TransactionId,
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -1175,15 +1108,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
 
             // No retransmissions for heartbeats!
-            using (var _eMIPClient = new SOAPClient(Hostname,
-                                                    URLPathPrefix,
+            using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                     VirtualHostname,
-                                                    RemotePort,
+                                                    false,
+                                                    Description,
                                                     RemoteCertificateValidator,
                                                     ClientCertificateSelector,
-                                                    UserAgent,
-                                                    false,
+                                                    ClientCert,
+                                                    HTTPUserAgent,
+                                                    URLPathPrefix,
+                                                    null,
                                                     RequestTimeout,
+                                                    TransmissionRetryDelay,
+                                                    MaxNumberOfRetries,
+                                                    false,
+                                                    null,
                                                     DNSClient))
             {
 
@@ -1194,7 +1133,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                  ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
                                                  CancellationToken:    Request.CancellationToken,
                                                  EventTrackingId:      Request.EventTrackingId,
-                                                 RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                 RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                  NumberOfRetry:        TransmissionRetry,
 
                                                  #region OnSuccess
@@ -1334,12 +1273,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
                                                      Request.TransactionId,
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -1402,7 +1341,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1414,7 +1353,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -1445,15 +1384,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -1464,7 +1409,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetChargingPoolAvailabilityStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -1609,7 +1554,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1621,7 +1566,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -1684,7 +1629,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1696,7 +1641,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -1727,15 +1672,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -1746,7 +1697,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetChargingStationAvailabilityStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -1891,7 +1842,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1903,7 +1854,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -1965,7 +1916,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1977,7 +1928,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -2009,15 +1960,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -2028,7 +1985,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetEVSEAvailabilityStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -2173,7 +2130,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2185,7 +2142,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -2247,7 +2204,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2259,7 +2216,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -2290,15 +2247,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -2309,7 +2272,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetChargingConnectorAvailabilityStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -2454,7 +2417,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2466,7 +2429,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.AvailabilityStatusUntil,
                                                      Request.AvailabilityStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -2529,7 +2492,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2541,7 +2504,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.BusyStatusUntil,
                                                      Request.BusyStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -2572,15 +2535,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -2591,7 +2560,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetEVSEBusyStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -2736,7 +2705,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2748,7 +2717,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.BusyStatusUntil,
                                                      Request.BusyStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -2810,7 +2779,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2826,7 +2795,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.BusyStatusUntil,
                                                      Request.BusyStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -2857,15 +2826,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -2876,7 +2851,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetEVSESyntheticStatusSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -3021,7 +2996,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3037,7 +3012,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.BusyStatusUntil,
                                                      Request.BusyStatusComment,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -3100,7 +3075,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3111,7 +3086,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.TransactionId,
                                                      Request.PartnerServiceSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -3142,15 +3117,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -3161,7 +3142,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnGetServiceAuthorisationSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -3307,7 +3288,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3318,7 +3299,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.TransactionId,
                                                      Request.PartnerServiceSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -3382,7 +3363,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3393,7 +3374,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.TransactionId,
                                                      Request.ExecPartnerSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -3411,15 +3392,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -3430,7 +3417,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetSessionEventReportSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -3585,7 +3572,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3596,7 +3583,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.TransactionId,
                                                      Request.ExecPartnerSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -3659,7 +3646,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3667,7 +3654,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.ChargeDetailRecord,
                                                      Request.TransactionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -3698,15 +3685,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -3719,7 +3712,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      ResponseLogDelegate:  OnSetChargeDetailRecordSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -3864,7 +3857,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3872,7 +3865,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                      Request.ChargeDetailRecord,
                                                      Request.TransactionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);

@@ -21,8 +21,8 @@ using System;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
-using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
@@ -44,41 +44,126 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <summary>
         /// The EMP client.
         /// </summary>
-        public EMPClient        EMPClient         { get; }
+        public EMPClient  EMPClient    { get; }
 
-        public HTTPHostname Hostname
-            => EMPClient.Hostname;
+        #region IEMPClient
 
-        public HTTPHostname? VirtualHostname
+        /// <summary>
+        /// The remote URL of the OICP HTTP endpoint to connect to.
+        /// </summary>
+        URL                                  IHTTPClient.RemoteURL
+            => EMPClient.RemoteURL;
+
+        /// <summary>
+        /// The virtual HTTP hostname to connect to.
+        /// </summary>
+        HTTPHostname?                        IHTTPClient.VirtualHostname
             => EMPClient.VirtualHostname;
 
-        public IPPort RemotePort
-            => EMPClient.RemotePort;
+        /// <summary>
+        /// An optional description of this CPO client.
+        /// </summary>
+        String                               IHTTPClient.Description
+        {
 
-        public RemoteCertificateValidationCallback RemoteCertificateValidator
-            => EMPClient?.RemoteCertificateValidator;
+            get
+            {
+                return EMPClient.Description;
+            }
+
+            set
+            {
+                EMPClient.Description = value;
+            }
+
+        }
 
         /// <summary>
-        /// The EMP server.
+        /// The remote SSL/TLS certificate validator.
         /// </summary>
-        public EMPServer        EMPServer         { get; }
+        RemoteCertificateValidationCallback  IHTTPClient.RemoteCertificateValidator
+            => EMPClient.RemoteCertificateValidator;
 
         /// <summary>
-        /// The EMP server logger.
+        /// The SSL/TLS client certificate to use of HTTP authentication.
         /// </summary>
-        public EMPServerLogger  EMPServerLogger   { get; }
+        X509Certificate                      IHTTPClient.ClientCert
+            => EMPClient.ClientCert;
 
         /// <summary>
-        /// The default request timeout for this client.
+        /// The HTTP user agent identification.
         /// </summary>
-        public TimeSpan?        RequestTimeout    { get; }
+        String                               IHTTPClient.HTTPUserAgent
+            => EMPClient.HTTPUserAgent;
 
+        /// <summary>
+        /// The timeout for upstream requests.
+        /// </summary>
+        TimeSpan                             IHTTPClient.RequestTimeout
+        {
+
+            get
+            {
+                return EMPClient.RequestTimeout;
+            }
+
+            set
+            {
+                EMPClient.RequestTimeout = value;
+            }
+
+        }
+
+        /// <summary>
+        /// The delay between transmission retries.
+        /// </summary>
+        TransmissionRetryDelayDelegate       IHTTPClient.TransmissionRetryDelay
+            => EMPClient.TransmissionRetryDelay;
+
+        /// <summary>
+        /// The maximum number of retries when communicationg with the remote OICP service.
+        /// </summary>
+        UInt16                               IHTTPClient.MaxNumberOfRetries
+            => EMPClient.MaxNumberOfRetries;
+
+        /// <summary>
+        /// Make use of HTTP pipelining.
+        /// </summary>
+        Boolean                              IHTTPClient.UseHTTPPipelining
+            => EMPClient.UseHTTPPipelining;
+
+        /// <summary>
+        /// The CPO client (HTTP client) logger.
+        /// </summary>
+        HTTPClientLogger                     IHTTPClient.HTTPLogger
+        {
+
+            get
+            {
+                return EMPClient.HTTPLogger;
+            }
+
+            set
+            {
+                if (value is EMPClient.Logger logger)
+                    EMPClient.HTTPLogger = logger;
+            }
+
+        }
 
         /// <summary>
         /// The DNS client defines which DNS servers to use.
         /// </summary>
-        public DNSClient DNSClient
+        DNSClient                            IHTTPClient.DNSClient
             => EMPClient.DNSClient;
+
+        #endregion
+
+
+        /// <summary>
+        /// The EMP server.
+        /// </summary>
+        public EMPServer  EMPServer    { get; }
 
         #endregion
 
@@ -404,27 +489,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Constructor(s)
 
-        #region EMPRoaming(EMPClient, EMPServer, ServerLoggingContext = EMPServerLogger.DefaultContext, LogfileCreator = null)
-
         /// <summary>
         /// Create a new eMIP roaming client for EMPs.
         /// </summary>
         /// <param name="EMPClient">A EMP client.</param>
         /// <param name="EMPServer">A EMP sever.</param>
-        /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
-        /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        public EMPRoaming(EMPClient               EMPClient,
-                          EMPServer               EMPServer,
-                          String                  ServerLoggingContext  = EMPServerLogger.DefaultContext,
-                          LogfileCreatorDelegate  LogfileCreator        = null)
+        public EMPRoaming(EMPClient  EMPClient,
+                          EMPServer  EMPServer)
         {
 
             this.EMPClient        = EMPClient;
             this.EMPServer        = EMPServer;
-
-            this.EMPServerLogger  = new EMPServerLogger(EMPServer,
-                                                        ServerLoggingContext,
-                                                        LogfileCreator);
 
             // Link HTTP events...
             EMPServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
@@ -432,103 +507,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             EMPServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
 
         }
-
-        #endregion
-
-        #region EMPRoaming(ClientId, RemoteHostname, RemoteTCPPort = null, RemoteHTTPVirtualHost = null, ... )
-
-        /// <summary>
-        /// Create a new eMIP roaming client for EMPs.
-        /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="RemoteHostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemoteTCPPort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="RemoteHTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
-        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// 
-        /// <param name="ServerName">An optional identification string for the HTTP server.</param>
-        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
-        /// <param name="HTTPServerPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="ServerURLPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="ServerAuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
-        /// <param name="ServerContentType">An optional HTTP content type to use.</param>
-        /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
-        /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
-        /// 
-        /// <param name="ClientLoggingContext">An optional context for logging client methods.</param>
-        /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
-        /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        /// 
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        public EMPRoaming(String                               ClientId,
-                          HTTPHostname                         RemoteHostname,
-                          IPPort?                              RemoteTCPPort                   = null,
-                          RemoteCertificateValidationCallback  RemoteCertificateValidator      = null,
-                          LocalCertificateSelectionCallback    ClientCertificateSelector       = null,
-                          HTTPHostname?                        RemoteHTTPVirtualHost           = null,
-                          HTTPPath?                            URLPrefix                       = null,
-                          String                               HTTPUserAgent                   = EMPClient.DefaultHTTPUserAgent,
-                          TimeSpan?                            RequestTimeout                  = null,
-                          TransmissionRetryDelayDelegate       TransmissionRetryDelay          = null,
-                          Byte?                                MaxNumberOfRetries              = EMPClient.DefaultMaxNumberOfRetries,
-
-                          String                               ServerName                      = EMPServer.DefaultHTTPServerName,
-                          IPPort?                              HTTPServerPort                  = null,
-                          String                               ServiceName                     = null,
-                          HTTPPath?                            ServerURLPrefix                 = null,
-                          String                               ServerAuthorisationURL          = EMPServer.DefaultAuthorisationURL,
-                          HTTPContentType                      ServerContentType               = null,
-                          Boolean                              ServerRegisterHTTPRootService   = true,
-                          Boolean                              ServerAutoStart                 = false,
-
-                          String                               ClientLoggingContext            = EMPClient.EMPClientLogger.DefaultContext,
-                          String                               ServerLoggingContext            = EMPServerLogger.DefaultContext,
-                          LogfileCreatorDelegate               LogfileCreator                  = null,
-
-                          DNSClient                            DNSClient                       = null)
-
-            : this(new EMPClient(ClientId,
-                                 RemoteHostname,
-                                 RemoteTCPPort,
-                                 RemoteCertificateValidator,
-                                 ClientCertificateSelector,
-                                 RemoteHTTPVirtualHost,
-                                 URLPrefix              ?? EMPClient.DefaultURLPrefix,
-                                 HTTPUserAgent,
-                                 RequestTimeout,
-                                 TransmissionRetryDelay,
-                                 MaxNumberOfRetries,
-                                 DNSClient,
-                                 ClientLoggingContext,
-                                 LogfileCreator),
-
-                   new EMPServer(ServerName,
-                                 HTTPServerPort,
-                                 ServiceName,
-                                 ServerURLPrefix        ?? EMPServer.DefaultURLPrefix,
-                                 ServerAuthorisationURL ?? EMPServer.DefaultAuthorisationURL,
-                                 ServerContentType,
-                                 ServerRegisterHTTPRootService,
-                                 DNSClient,
-                                 false),
-
-                   ServerLoggingContext,
-                   LogfileCreator)
-
-        {
-
-            if (ServerAutoStart)
-                Start();
-
-        }
-
-        #endregion
 
         #endregion
 

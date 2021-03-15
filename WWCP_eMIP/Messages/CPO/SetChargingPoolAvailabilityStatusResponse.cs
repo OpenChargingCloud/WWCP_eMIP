@@ -416,8 +416,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetChargingPoolAvailabilityStatus response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetChargingPoolAvailabilityStatusRequest,
-                                                SetChargingPoolAvailabilityStatusResponse>
+        public new class Builder : AResponseBuilder<SetChargingPoolAvailabilityStatusRequest,
+                                                    SetChargingPoolAvailabilityStatusResponse>
         {
 
             #region Properties
@@ -460,14 +460,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetChargingPoolAvailabilityStatusResponse">A SetChargingPoolAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargingPoolAvailabilityStatusResponse  SetChargingPoolAvailabilityStatusResponse  = null,
-                           IReadOnlyDictionary<String, Object>        CustomData                                 = null)
+            public Builder(SetChargingPoolAvailabilityStatusResponse  SetChargingPoolAvailabilityStatusResponse   = null,
+                           IReadOnlyDictionary<String, Object>        CustomData                                  = null)
 
                 : base(SetChargingPoolAvailabilityStatusResponse?.Request,
-                       SetChargingPoolAvailabilityStatusResponse.HasCustomData
+                       SetChargingPoolAvailabilityStatusResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetChargingPoolAvailabilityStatusResponse.CustomData.Concat(CustomData)
-                                 : SetChargingPoolAvailabilityStatusResponse.CustomData
+                                 ? SetChargingPoolAvailabilityStatusResponse.InternalData.Concat(CustomData)
+                                 : SetChargingPoolAvailabilityStatusResponse.InternalData
                            : CustomData)
 
             {

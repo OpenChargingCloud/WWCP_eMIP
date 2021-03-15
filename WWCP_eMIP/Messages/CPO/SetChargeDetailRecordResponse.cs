@@ -504,8 +504,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetChargeDetailRecord response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetChargeDetailRecordRequest,
-                                                SetChargeDetailRecordResponse>
+        public new class Builder : AResponseBuilder<SetChargeDetailRecordRequest,
+                                                    SetChargeDetailRecordResponse>
         {
 
             #region Properties
@@ -562,10 +562,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                            IReadOnlyDictionary<String, Object>  CustomData                      = null)
 
                 : base(SetChargeDetailRecordResponse?.Request,
-                       SetChargeDetailRecordResponse.HasCustomData
+                       SetChargeDetailRecordResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetChargeDetailRecordResponse.CustomData.Concat(CustomData)
-                                 : SetChargeDetailRecordResponse.CustomData
+                                 ? SetChargeDetailRecordResponse.InternalData.Concat(CustomData)
+                                 : SetChargeDetailRecordResponse.InternalData
                            : CustomData)
 
             {

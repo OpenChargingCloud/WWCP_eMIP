@@ -482,8 +482,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A Heartbeat response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<HeartbeatRequest,
-                                                HeartbeatResponse>
+        public new class Builder : AResponseBuilder<HeartbeatRequest,
+                                                    HeartbeatResponse>
         {
 
             #region Properties
@@ -536,14 +536,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="HeartbeatResponse">A Heartbeat response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(HeartbeatResponse                    HeartbeatResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData         = null)
+            public Builder(HeartbeatResponse                    HeartbeatResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData          = null)
 
                 : base(HeartbeatResponse?.Request,
-                       HeartbeatResponse.HasCustomData
+                       HeartbeatResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? HeartbeatResponse.CustomData.Concat(CustomData)
-                                 : HeartbeatResponse.CustomData
+                                 ? HeartbeatResponse.InternalData.Concat(CustomData)
+                                 : HeartbeatResponse.InternalData
                            : CustomData)
 
             {

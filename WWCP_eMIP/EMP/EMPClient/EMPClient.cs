@@ -22,6 +22,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
@@ -36,7 +37,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
-    /// An eMIP EMP client.
+    /// The eMIP EMP client.
     /// </summary>
     public partial class EMPClient : ASOAPClient,
                                      IEMPClient
@@ -70,9 +71,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         #region Properties
 
         /// <summary>
-        /// The attached eMIP EMP client (HTTP/SOAP client) logger.
+        /// The attached HTTP client logger.
         /// </summary>
-        public EMPClientLogger  Logger   { get; }
+        public new Logger HTTPLogger
+        {
+            get
+            {
+                return base.HTTPLogger as Logger;
+            }
+            set
+            {
+                base.HTTPLogger = value;
+            }
+        }
 
         #endregion
 
@@ -318,117 +329,62 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
         #region Constructor(s)
 
-        #region EMPClient(ClientId, Hostname, ..., LoggingContext = EMPClientLogger.DefaultContext, ...)
-
         /// <summary>
-        /// Create a new eMIP EMP Client.
+        /// Create a new EMP client.
         /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="Hostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
+        /// <param name="RemoteURL">The remote URL of the OICP HTTP endpoint to connect to.</param>
+        /// <param name="VirtualHostname">An optional HTTP virtual hostname.</param>
+        /// <param name="Description">An optional description of this CPO client.</param>
+        /// <param name="RemoteCertificateValidator">The remote SSL/TLS certificate validator.</param>
+        /// <param name="ClientCert">The SSL/TLS client certificate to use of HTTP authentication.</param>
+        /// <param name="HTTPUserAgent">The HTTP user agent identification.</param>
+        /// <param name="RequestTimeout">An optional request timeout.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        /// <param name="LoggingContext">An optional context for logging client methods.</param>
+        /// <param name="MaxNumberOfRetries">The maximum number of transmission retries for HTTP request.</param>
+        /// <param name="DisableLogging">Disable all logging.</param>
+        /// <param name="LoggingContext">An optional context for logging.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        public EMPClient(String                               ClientId,
-                         HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                   = null,
+        /// <param name="DNSClient">The DNS client to use.</param>
+        public EMPClient(URL?                                 RemoteURL                    = null,
+                         HTTPHostname?                        VirtualHostname              = null,
+                         String                               Description                  = null,
                          RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
                          LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                            URLPrefix                    = null,
+                         X509Certificate                      ClientCert                   = null,
                          String                               HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                            RequestTimeout               = null,
                          TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
-                         Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
-                         DNSClient                            DNSClient                    = null,
-                         String                               LoggingContext               = EMPClientLogger.DefaultContext,
-                         LogfileCreatorDelegate               LogfileCreator               = null)
-
-            : base(ClientId,
-                   Hostname,
-                   RemotePort ?? DefaultRemotePort,
-                   RemoteCertificateValidator,
-                   ClientCertificateSelector,
-                   HTTPVirtualHost,
-                   URLPrefix ?? DefaultURLPrefix,
-                   null,
-                   HTTPUserAgent,
-                   RequestTimeout,
-                   TransmissionRetryDelay,
-                   MaxNumberOfRetries,
-                   DNSClient)
-
-        {
-
-            this.Logger  = new EMPClientLogger(this,
-                                               LoggingContext,
-                                               LogfileCreator);
-
-        }
-
-        #endregion
-
-        #region EMPClient(ClientId, Logger, Hostname, ...)
-
-        /// <summary>
-        /// Create a new eMIP EMP Client.
-        /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="Logger">A EMP client logger.</param>
-        /// <param name="Hostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemotePort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="HTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
-        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        public EMPClient(String                               ClientId,
-                         EMPClientLogger                      Logger,
-                         HTTPHostname                         Hostname,
-                         IPPort?                              RemotePort                   = null,
-                         RemoteCertificateValidationCallback  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionCallback    ClientCertificateSelector    = null,
-                         HTTPHostname?                        HTTPVirtualHost              = null,
-                         HTTPPath?                            URLPrefix                    = null,
-                         String                               HTTPUserAgent                = DefaultHTTPUserAgent,
-                         TimeSpan?                            RequestTimeout               = null,
-                         TransmissionRetryDelayDelegate       TransmissionRetryDelay       = null,
-                         Byte?                                MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
+                         UInt16?                              MaxNumberOfRetries           = DefaultMaxNumberOfRetries,
+                         Boolean                              DisableLogging               = false,
+                         String                               LoggingContext               = Logger.DefaultContext,
+                         LogfileCreatorDelegate               LogfileCreator               = null,
                          DNSClient                            DNSClient                    = null)
 
-            : base(ClientId,
-                   Hostname,
-                   RemotePort ?? DefaultRemotePort,
+            : base(RemoteURL           ?? URL.Parse("???"),
+                   VirtualHostname,
+                   Description,
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
-                   HTTPVirtualHost,
-                   URLPrefix ?? DefaultURLPrefix,
+                   ClientCert,
+                   HTTPUserAgent       ?? DefaultHTTPUserAgent,
                    null,
-                   HTTPUserAgent,
+                   null,
                    RequestTimeout,
                    TransmissionRetryDelay,
-                   MaxNumberOfRetries,
+                   MaxNumberOfRetries  ?? DefaultMaxNumberOfRetries,
+                   false,
+                   null,
                    DNSClient)
 
         {
 
-            this.Logger  = Logger ?? throw new ArgumentNullException(nameof(Logger), "The given mobile client logger must not be null!");
+            base.HTTPLogger  = DisableLogging == false
+                                   ? new Logger(this,
+                                                LoggingContext,
+                                                LogfileCreator)
+                                   : null;
 
         }
-
-        #endregion
 
         #endregion
 
@@ -474,12 +430,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
                                                      Request.TransactionId,
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -494,15 +450,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -513,7 +475,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      ResponseLogDelegate:  OnSendHeartbeatSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -650,12 +612,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
                                                      Request.TransactionId,
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -716,7 +678,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -735,7 +697,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      Request.BookingId,
                                                      Request.SalePartnerBookingId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -750,15 +712,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -769,7 +737,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      ResponseLogDelegate:  OnSetServiceAuthorisationSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -914,7 +882,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -933,7 +901,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      Request.BookingId,
                                                      Request.SalePartnerBookingId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);
@@ -995,7 +963,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(StartTime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1006,7 +974,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      Request.TransactionId,
                                                      Request.SalePartnerSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value))).
+                                                     Request.RequestTimeout ?? RequestTimeout))).
                                        ConfigureAwait(false);
 
             }
@@ -1021,15 +989,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(Hostname,
-                                                        URLPathPrefix,
+                using (var _eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
-                                                        RemotePort,
+                                                        false,
+                                                        Description,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
-                                                        UserAgent,
-                                                        false,
+                                                        ClientCert,
+                                                        HTTPUserAgent,
+                                                        URLPathPrefix,
+                                                        null,
                                                         RequestTimeout,
+                                                        TransmissionRetryDelay,
+                                                        MaxNumberOfRetries,
+                                                        false,
+                                                        null,
                                                         DNSClient))
                 {
 
@@ -1040,7 +1014,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      ResponseLogDelegate:  OnSetSessionActionSOAPResponse,
                                                      CancellationToken:    Request.CancellationToken,
                                                      EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
                                                      NumberOfRetry:        TransmissionRetry,
 
                                                      #region OnSuccess
@@ -1187,7 +1161,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                        Select(e => e(Endtime,
                                                      Request.Timestamp.Value,
                                                      this,
-                                                     ClientId,
+                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1198,7 +1172,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                                      Request.TransactionId,
                                                      Request.SalePartnerSessionId,
 
-                                                     Request.RequestTimeout ?? RequestTimeout.Value,
+                                                     Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
                                                      Endtime - StartTime))).
                                        ConfigureAwait(false);

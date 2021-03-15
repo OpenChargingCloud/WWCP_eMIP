@@ -416,8 +416,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetChargingConnectorAvailabilityStatus response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetChargingConnectorAvailabilityStatusRequest,
-                                                SetChargingConnectorAvailabilityStatusResponse>
+        public new class Builder : AResponseBuilder<SetChargingConnectorAvailabilityStatusRequest,
+                                                    SetChargingConnectorAvailabilityStatusResponse>
         {
 
             #region Properties
@@ -460,14 +460,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetChargingConnectorAvailabilityStatusResponse">A SetChargingConnectorAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargingConnectorAvailabilityStatusResponse  SetChargingConnectorAvailabilityStatusResponse  = null,
-                           IReadOnlyDictionary<String, Object>             CustomData                                      = null)
+            public Builder(SetChargingConnectorAvailabilityStatusResponse  SetChargingConnectorAvailabilityStatusResponse   = null,
+                           IReadOnlyDictionary<String, Object>             CustomData                                       = null)
 
                 : base(SetChargingConnectorAvailabilityStatusResponse?.Request,
-                       SetChargingConnectorAvailabilityStatusResponse.HasCustomData
+                       SetChargingConnectorAvailabilityStatusResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetChargingConnectorAvailabilityStatusResponse.CustomData.Concat(CustomData)
-                                 : SetChargingConnectorAvailabilityStatusResponse.CustomData
+                                 ? SetChargingConnectorAvailabilityStatusResponse.InternalData.Concat(CustomData)
+                                 : SetChargingConnectorAvailabilityStatusResponse.InternalData
                            : CustomData)
 
             {

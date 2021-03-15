@@ -441,8 +441,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetSessionAction response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetSessionActionRequestRequest,
-                                                SetSessionActionRequestResponse>
+        public new class Builder : AResponseBuilder<SetSessionActionRequestRequest,
+                                                    SetSessionActionRequestResponse>
         {
 
             #region Constructor(s)
@@ -471,14 +471,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionRequestResponse             SetSessionActionResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                = null)
+            public Builder(SetSessionActionRequestResponse      SetSessionActionResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                 = null)
 
                 : base(SetSessionActionResponse?.Request,
-                       SetSessionActionResponse.HasCustomData
+                       SetSessionActionResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetSessionActionResponse.CustomData.Concat(CustomData)
-                                 : SetSessionActionResponse.CustomData
+                                 ? SetSessionActionResponse.InternalData.Concat(CustomData)
+                                 : SetSessionActionResponse.InternalData
                            : CustomData)
 
             {

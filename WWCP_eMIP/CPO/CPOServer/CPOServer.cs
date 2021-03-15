@@ -53,7 +53,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new static readonly HTTPPath         DefaultURLPrefix           = HTTPPath.Parse("/");
+        public new static readonly HTTPPath         DefaultURLPathPrefix           = HTTPPath.Parse("/");
 
         /// <summary>
         /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
@@ -178,7 +178,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="HTTPServerName">An optional identification string for the HTTP server.</param>
         /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="HTTPServerPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="URLPathPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         /// <param name="ContentType">An optional HTTP content type to use.</param>
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
@@ -187,7 +187,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
                          IPPort?          HTTPServerPort            = null,
                          String           ServiceName               = null,
-                         HTTPPath?        URLPrefix                 = null,
+                         HTTPPath?        URLPathPrefix             = null,
                          String           AuthorisationURL          = DefaultAuthorisationURL,
                          HTTPContentType  ContentType               = null,
                          Boolean          RegisterHTTPRootService   = true,
@@ -197,7 +197,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
                    HTTPServerPort ?? DefaultHTTPServerPort,
                    ServiceName    ?? "eMIP " + Version.Number + " " + nameof(CPOServer),
-                   URLPrefix      ?? DefaultURLPrefix,
+                   URLPathPrefix  ?? DefaultURLPathPrefix,
                    ContentType    ?? DefaultContentType,
                    RegisterHTTPRootService,
                    DNSClient,
@@ -217,22 +217,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region CPOServer(SOAPServer, ServiceName = null, URLPrefix = default)
+        #region CPOServer(SOAPServer, ServiceName = null, URLPathPrefix = default)
 
         /// <summary>
         /// Use the given SOAP server for the eMIP HTTP/SOAP/XML CPO API.
         /// </summary>
         /// <param name="SOAPServer">A SOAP server.</param>
         /// <param name="ServiceName">An optional identification for this SOAP service.</param>
-        /// <param name="URLPrefix">An optional prefix for the HTTP URIs.</param>
+        /// <param name="URLPathPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
         public CPOServer(SOAPServer  SOAPServer,
                          String      ServiceName       = null,
-                         HTTPPath?   URLPrefix         = null,
+                         HTTPPath?   URLPathPrefix     = null,
                          String      AuthorisationURL  = DefaultAuthorisationURL)
 
             : base(SOAPServer,
-                   URLPrefix ?? DefaultURLPrefix)
+                   URLPathPrefix ?? DefaultURLPathPrefix)
 
         {
 

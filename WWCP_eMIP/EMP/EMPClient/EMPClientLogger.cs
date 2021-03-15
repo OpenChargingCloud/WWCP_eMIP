@@ -29,15 +29,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
-    /// An eMIP EMP Client.
+    /// The eMIP EMP Client.
     /// </summary>
     public partial class EMPClient : ASOAPClient
     {
 
         /// <summary>
-        /// An eMIP EMP client (HTTP/SOAP client) logger.
+        /// The eMIP EMP HTTP/SOAP client logger.
         /// </summary>
-        public class EMPClientLogger : HTTPClientLogger
+        public class Logger : HTTPClientLogger
         {
 
             #region Data
@@ -68,7 +68,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// <param name="EMPClient">A eMIP EMP client.</param>
             /// <param name="Context">A context of this API.</param>
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public EMPClientLogger(EMPClient               EMPClient,
+            public Logger(EMPClient               EMPClient,
                                    String                  Context         = DefaultContext,
                                    LogfileCreatorDelegate  LogfileCreator  = null)
 
@@ -109,7 +109,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// <param name="LogHTTPError_toHTTPSSE">A delegate to log HTTP errors to a HTTP client sent events source.</param>
             /// 
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public EMPClientLogger(IEMPClient                  EMPClient,
+            public Logger(IEMPClient                  EMPClient,
                                    String                      Context,
 
                                    HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,

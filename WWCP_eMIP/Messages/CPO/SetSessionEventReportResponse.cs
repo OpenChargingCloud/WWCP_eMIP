@@ -462,8 +462,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetSessionEventReport response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetSessionEventReportRequest,
-                                                SetSessionEventReportResponse>
+        public new class Builder : AResponseBuilder<SetSessionEventReportRequest,
+                                                    SetSessionEventReportResponse>
         {
 
             #region Properties
@@ -506,14 +506,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionEventReportResponse">A SetSessionEventReport response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionEventReportResponse             SetSessionEventReportResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                = null)
+            public Builder(SetSessionEventReportResponse        SetSessionEventReportResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                      = null)
 
                 : base(SetSessionEventReportResponse?.Request,
-                       SetSessionEventReportResponse.HasCustomData
+                       SetSessionEventReportResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetSessionEventReportResponse.CustomData.Concat(CustomData)
-                                 : SetSessionEventReportResponse.CustomData
+                                 ? SetSessionEventReportResponse.InternalData.Concat(CustomData)
+                                 : SetSessionEventReportResponse.InternalData
                            : CustomData)
 
             {

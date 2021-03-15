@@ -21,8 +21,8 @@ using System;
 using System.Xml.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
-using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
@@ -44,41 +44,126 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The CPO client.
         /// </summary>
-        public CPOClient        CPOClient         { get; }
+        public CPOClient  CPOClient    { get; }
 
-        public HTTPHostname Hostname
-            => CPOClient.Hostname;
+        #region ICPOClient
 
-        public HTTPHostname? VirtualHostname
+        /// <summary>
+        /// The remote URL of the OICP HTTP endpoint to connect to.
+        /// </summary>
+        URL                                  IHTTPClient.RemoteURL
+            => CPOClient.RemoteURL;
+
+        /// <summary>
+        /// The virtual HTTP hostname to connect to.
+        /// </summary>
+        HTTPHostname?                        IHTTPClient.VirtualHostname
             => CPOClient.VirtualHostname;
 
-        public IPPort RemotePort
-            => CPOClient.RemotePort;
+        /// <summary>
+        /// An optional description of this CPO client.
+        /// </summary>
+        String                               IHTTPClient.Description
+        {
 
-        public RemoteCertificateValidationCallback RemoteCertificateValidator
-            => CPOClient?.RemoteCertificateValidator;
+            get
+            {
+                return CPOClient.Description;
+            }
+
+            set
+            {
+                CPOClient.Description = value;
+            }
+
+        }
 
         /// <summary>
-        /// The CPO server.
+        /// The remote SSL/TLS certificate validator.
         /// </summary>
-        public CPOServer        CPOServer         { get; }
+        RemoteCertificateValidationCallback  IHTTPClient.RemoteCertificateValidator
+            => CPOClient.RemoteCertificateValidator;
 
         /// <summary>
-        /// The CPO server logger.
+        /// The SSL/TLS client certificate to use of HTTP authentication.
         /// </summary>
-        public CPOServerLogger  CPOServerLogger   { get; }
+        X509Certificate                      IHTTPClient.ClientCert
+            => CPOClient.ClientCert;
 
         /// <summary>
-        /// The default request timeout for this client.
+        /// The HTTP user agent identification.
         /// </summary>
-        public TimeSpan?        RequestTimeout    { get; }
+        String                               IHTTPClient.HTTPUserAgent
+            => CPOClient.HTTPUserAgent;
 
+        /// <summary>
+        /// The timeout for upstream requests.
+        /// </summary>
+        TimeSpan                             IHTTPClient.RequestTimeout
+        {
+
+            get
+            {
+                return CPOClient.RequestTimeout;
+            }
+
+            set
+            {
+                CPOClient.RequestTimeout = value;
+            }
+
+        }
+
+        /// <summary>
+        /// The delay between transmission retries.
+        /// </summary>
+        TransmissionRetryDelayDelegate       IHTTPClient.TransmissionRetryDelay
+            => CPOClient.TransmissionRetryDelay;
+
+        /// <summary>
+        /// The maximum number of retries when communicationg with the remote OICP service.
+        /// </summary>
+        UInt16                               IHTTPClient.MaxNumberOfRetries
+            => CPOClient.MaxNumberOfRetries;
+
+        /// <summary>
+        /// Make use of HTTP pipelining.
+        /// </summary>
+        Boolean                              IHTTPClient.UseHTTPPipelining
+            => CPOClient.UseHTTPPipelining;
+
+        /// <summary>
+        /// The CPO client (HTTP client) logger.
+        /// </summary>
+        HTTPClientLogger                     IHTTPClient.HTTPLogger
+        {
+
+            get
+            {
+                return CPOClient.HTTPLogger;
+            }
+
+            set
+            {
+                if (value is CPOClient.Logger logger)
+                    CPOClient.HTTPLogger = logger;
+            }
+
+        }
 
         /// <summary>
         /// The DNS client defines which DNS servers to use.
         /// </summary>
-        public DNSClient DNSClient
+        DNSClient                            IHTTPClient.DNSClient
             => CPOClient.DNSClient;
+
+        #endregion
+
+
+        /// <summary>
+        /// The CPO server.
+        /// </summary>
+        public CPOServer  CPOServer    { get; }
 
         #endregion
 
@@ -1543,27 +1628,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
         #region Constructor(s)
 
-        #region CPORoaming(CPOClient, CPOServer, ServerLoggingContext = CPOServerLogger.DefaultContext, LogfileCreator = null)
-
         /// <summary>
         /// Create a new eMIP roaming client for CPOs.
         /// </summary>
         /// <param name="CPOClient">A CPO client.</param>
-        /// <param name="CPOServer">A CPO sever.</param>
-        /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
-        /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        public CPORoaming(CPOClient               CPOClient,
-                          CPOServer               CPOServer,
-                          String                  ServerLoggingContext  = CPOServerLogger.DefaultContext,
-                          LogfileCreatorDelegate  LogfileCreator        = null)
+        /// <param name="CPOServer">A CPO server.</param>
+        public CPORoaming(CPOClient  CPOClient,
+                          CPOServer  CPOServer)
         {
 
-            this.CPOClient        = CPOClient;
-            this.CPOServer        = CPOServer;
-
-            this.CPOServerLogger  = new CPOServerLogger(CPOServer,
-                                                        ServerLoggingContext,
-                                                        LogfileCreator);
+            this.CPOClient  = CPOClient;
+            this.CPOServer  = CPOServer;
 
             // Link HTTP events...
             CPOServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
@@ -1571,126 +1646,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             CPOServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
 
         }
-
-        #endregion
-
-        #region CPORoaming(ClientId, RemoteHostname, RemoteTCPPort = null, RemoteHTTPVirtualHost = null, ... )
-
-        /// <summary>
-        /// Create a new eMIP roaming client for CPOs.
-        /// </summary>
-        /// <param name="ClientId">A unqiue identification of this client.</param>
-        /// <param name="RemoteHostname">The hostname of the remote eMIP service.</param>
-        /// <param name="RemoteTCPPort">An optional TCP port of the remote eMIP service.</param>
-        /// <param name="RemoteCertificateValidator">A delegate to verify the remote TLS certificate.</param>
-        /// <param name="ClientCertificateSelector">A delegate to select a TLS client certificate.</param>
-        /// <param name="RemoteHTTPVirtualHost">An optional HTTP virtual hostname of the remote eMIP service.</param>
-        /// <param name="URLPrefix">An default URI prefix.</param>
-        /// <param name="HTTPUserAgent">An optional HTTP user agent identification string for this HTTP client.</param>
-        /// <param name="RequestTimeout">An optional timeout for upstream queries.</param>
-        /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
-        /// <param name="MaxNumberOfRetries">The default number of maximum transmission retries.</param>
-        /// 
-        /// <param name="ServerName">An optional identification string for the HTTP server.</param>
-        /// <param name="ServiceName">An optional identification for this SOAP service.</param>
-        /// <param name="HTTPServerPort">An optional TCP port for the HTTP server.</param>
-        /// <param name="ServerURLPrefix">An optional prefix for the HTTP URIs.</param>
-        /// <param name="ServerAuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
-        /// <param name="ServerContentType">An optional HTTP content type to use.</param>
-        /// <param name="ServerRegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
-        /// <param name="ServerAutoStart">Whether to start the server immediately or not.</param>
-        /// 
-        /// <param name="ClientLoggingContext">An optional context for logging client methods.</param>
-        /// <param name="ServerLoggingContext">An optional context for logging server methods.</param>
-        /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-        /// 
-        /// <param name="DNSClient">An optional DNS client to use.</param>
-        public CPORoaming(String                               ClientId,
-                          HTTPHostname                         RemoteHostname,
-                          IPPort?                              RemoteTCPPort                                   = null,
-                          RemoteCertificateValidationCallback  RemoteCertificateValidator                      = null,
-                          LocalCertificateSelectionCallback    ClientCertificateSelector                       = null,
-                          HTTPHostname?                        RemoteHTTPVirtualHost                           = null,
-                          HTTPPath?                            URLPrefix                                       = null,
-                          String                               HTTPUserAgent                                   = CPOClient.DefaultHTTPUserAgent,
-                          TimeSpan?                            RequestTimeout                                  = null,
-                          TransmissionRetryDelayDelegate       TransmissionRetryDelay                          = null,
-                          Byte?                                MaxNumberOfRetries                              = CPOClient.DefaultMaxNumberOfRetries,
-
-                          String                               ServerName                                      = CPOServer.DefaultHTTPServerName,
-                          IPPort?                              HTTPServerPort                                  = null,
-                          String                               ServiceName                                     = null,
-                          HTTPPath?                            ServerURLPrefix                                 = null,
-                          String                               ServerAuthorisationURL                          = CPOServer.DefaultAuthorisationURL,
-                          HTTPContentType                      ServerContentType                               = null,
-                          Boolean                              ServerRegisterHTTPRootService                   = true,
-                          Boolean                              ServerAutoStart                                 = false,
-
-                          String                               ClientLoggingContext                            = CPOClient.CPOClientLogger.DefaultContext,
-                          String                               ServerLoggingContext                            = CPOServerLogger.DefaultContext,
-                          LogfileCreatorDelegate               LogfileCreator                                  = null,
-
-                          CounterValues?                       SendHeartbeatCounter                            = null,
-                          CounterValues?                       SetChargingPoolAvailabilityStatusCounter        = null,
-                          CounterValues?                       SetChargingStationAvailabilityStatusCounter     = null,
-                          CounterValues?                       SetEVSEAvailabilityStatusCounter                = null,
-                          CounterValues?                       SetChargingConnectorAvailabilityStatusCounter   = null,
-                          CounterValues?                       SetEVSEBusyStatusCounter                        = null,
-                          CounterValues?                       SetEVSESyntheticStatusCounter                   = null,
-                          CounterValues?                       GetServiceAuthorisationCounter                  = null,
-                          CounterValues?                       SetSessionEventReportCounter                    = null,
-                          CounterValues?                       SetChargeDetailRecordCounter                    = null,
-
-                          DNSClient                            DNSClient                                       = null)
-
-            : this(new CPOClient(ClientId,
-                                 RemoteHostname,
-                                 RemoteTCPPort,
-                                 RemoteCertificateValidator,
-                                 ClientCertificateSelector,
-                                 RemoteHTTPVirtualHost,
-                                 URLPrefix              ?? CPOClient.DefaultURLPrefix,
-                                 HTTPUserAgent,
-                                 RequestTimeout,
-                                 TransmissionRetryDelay,
-                                 MaxNumberOfRetries,
-
-                                 SendHeartbeatCounter,
-                                 SetChargingPoolAvailabilityStatusCounter,
-                                 SetChargingStationAvailabilityStatusCounter,
-                                 SetEVSEAvailabilityStatusCounter,
-                                 SetChargingConnectorAvailabilityStatusCounter,
-                                 SetEVSEBusyStatusCounter,
-                                 SetEVSESyntheticStatusCounter,
-                                 GetServiceAuthorisationCounter,
-                                 SetSessionEventReportCounter,
-                                 SetChargeDetailRecordCounter,
-
-                                 DNSClient,
-                                 ClientLoggingContext,
-                                 LogfileCreator),
-
-                   new CPOServer(ServerName,
-                                 HTTPServerPort,
-                                 ServiceName,
-                                 ServerURLPrefix        ?? CPOServer.DefaultURLPrefix,
-                                 ServerAuthorisationURL ?? CPOServer.DefaultAuthorisationURL,
-                                 ServerContentType,
-                                 ServerRegisterHTTPRootService,
-                                 DNSClient,
-                                 false),
-
-                   ServerLoggingContext,
-                   LogfileCreator)
-
-        {
-
-            if (ServerAutoStart)
-                Start();
-
-        }
-
-        #endregion
 
         #endregion
 

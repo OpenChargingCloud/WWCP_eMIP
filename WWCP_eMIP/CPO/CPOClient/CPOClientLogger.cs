@@ -29,15 +29,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// An eMIP CPO Client.
+    /// The eMIP CPO client.
     /// </summary>
     public partial class CPOClient : ASOAPClient
     {
 
         /// <summary>
-        /// An eMIP CPO client (HTTP/SOAP client) logger.
+        /// The eMIP CPO HTTP/SOAP client logger.
         /// </summary>
-        public class CPOClientLogger : HTTPClientLogger
+        public class Logger : HTTPClientLogger
         {
 
             #region Data
@@ -68,7 +68,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <param name="CPOClient">A eMIP CPO client.</param>
             /// <param name="Context">A context of this API.</param>
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public CPOClientLogger(CPOClient               CPOClient,
+            public Logger(CPOClient               CPOClient,
                                    String                  Context         = DefaultContext,
                                    LogfileCreatorDelegate  LogfileCreator  = null)
 
@@ -109,7 +109,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <param name="LogHTTPError_toHTTPSSE">A delegate to log HTTP errors to a HTTP client sent events source.</param>
             /// 
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public CPOClientLogger(ICPOClient                  CPOClient,
+            public Logger(ICPOClient                  CPOClient,
                                    String                      Context,
 
                                    HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,

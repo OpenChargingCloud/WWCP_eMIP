@@ -416,8 +416,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// A SetEVSESyntheticStatus response builder.
         /// </summary>
-        public class Builder : AResponseBuilder<SetEVSESyntheticStatusRequest,
-                                                SetEVSESyntheticStatusResponse>
+        public new class Builder : AResponseBuilder<SetEVSESyntheticStatusRequest,
+                                                    SetEVSESyntheticStatusResponse>
         {
 
             #region Properties
@@ -460,14 +460,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetEVSESyntheticStatusResponse">A SetEVSESyntheticStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSESyntheticStatusResponse       SetEVSESyntheticStatusResponse  = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                      = null)
+            public Builder(SetEVSESyntheticStatusResponse       SetEVSESyntheticStatusResponse   = null,
+                           IReadOnlyDictionary<String, Object>  CustomData                       = null)
 
                 : base(SetEVSESyntheticStatusResponse?.Request,
-                       SetEVSESyntheticStatusResponse.HasCustomData
+                       SetEVSESyntheticStatusResponse.HasInternalData
                            ? CustomData?.Count > 0
-                                 ? SetEVSESyntheticStatusResponse.CustomData.Concat(CustomData)
-                                 : SetEVSESyntheticStatusResponse.CustomData
+                                 ? SetEVSESyntheticStatusResponse.InternalData.Concat(CustomData)
+                                 : SetEVSESyntheticStatusResponse.InternalData
                            : CustomData)
 
             {

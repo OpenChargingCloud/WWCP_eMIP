@@ -34,7 +34,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// A meter report.
     /// </summary>
-    public class MeterReport : ACustomData,
+    public class MeterReport : AInternalData,
                                IEquatable<MeterReport>,
                                IComparable<MeterReport>,
                                IComparable

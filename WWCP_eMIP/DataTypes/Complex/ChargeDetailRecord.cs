@@ -33,7 +33,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// A charge detail record.
     /// </summary>
-    public class ChargeDetailRecord : ACustomData,
+    public class ChargeDetailRecord : AInternalData,
                                       IEquatable<ChargeDetailRecord>,
                                       IComparable<ChargeDetailRecord>,
                                       IComparable
@@ -790,7 +790,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// A charge detail record builder.
         /// </summary>
-        public class Builder : ACustomData.Builder,
+        public class Builder : AInternalData.Builder,
                                IEquatable<Builder>
         {
 
@@ -1073,7 +1073,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                           PartnerProductId,
                                           MeterReports,
 
-                                          CustomData);
+                                          internalData);
 
             #endregion
 

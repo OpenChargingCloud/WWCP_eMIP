@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2020 GraphDefined GmbH <achim.friedland@graphdefined.com>
+ * Copyright (c) 2014-2021 GraphDefined GmbH <achim.friedland@graphdefined.com>
  * This file is part of WWCP Core <https://github.com/OpenChargingCloud/WWCP_Core>
  *
  * Licensed under the Affero GPL license, Version 3.0 (the "License");
@@ -19,7 +19,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
@@ -137,23 +136,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             => InternalId.IsNullOrEmpty();
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
+
+        /// <summary>
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length
-        {
-            get
-            {
-
-                switch (Format)
-                {
-
-                    default:
-                        return (UInt64) InternalId.Length;
-
-                }
-
-            }
-        }
+            => (UInt64) InternalId.Length;
 
         #endregion
 
@@ -237,26 +229,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                        UserIdFormats  Format  = UserIdFormats.RFID_UID)
         {
 
-            #region Initial checks
+            Text = Text?.Trim();
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
+            if (Text.IsNotNullOrEmpty())
             {
-                UserId = default;
-                return false;
+                try
+                {
+                    UserId = new User_Id(Text, Format);
+                    return true;
+                }
+                catch (Exception)
+                { }
             }
-
-            #endregion
-
-            try
-            {
-                UserId = new User_Id(Text, Format);
-                return true;
-            }
-            catch (Exception)
-            { }
 
             UserId = default;
             return false;
@@ -288,20 +272,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (User_Id UserId1, User_Id UserId2)
-        {
+        public static Boolean operator == (User_Id UserId1,
+                                           User_Id UserId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(UserId1, UserId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) UserId1 == null) || ((Object) UserId2 == null))
-                return false;
-
-            return UserId1.Equals(UserId2);
-
-        }
+            => UserId1.Equals(UserId2);
 
         #endregion
 
@@ -313,8 +287,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (User_Id UserId1, User_Id UserId2)
-            => !(UserId1 == UserId2);
+        public static Boolean operator != (User_Id UserId1,
+                                           User_Id UserId2)
+
+            => !UserId1.Equals(UserId2);
 
         #endregion
 
@@ -326,15 +302,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (User_Id UserId1, User_Id UserId2)
-        {
+        public static Boolean operator < (User_Id UserId1,
+                                          User_Id UserId2)
 
-            if ((Object) UserId1 == null)
-                throw new ArgumentNullException(nameof(UserId1), "The given UserId1 must not be null!");
-
-            return UserId1.CompareTo(UserId2) < 0;
-
-        }
+            => UserId1.CompareTo(UserId2) < 0;
 
         #endregion
 
@@ -346,8 +317,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (User_Id UserId1, User_Id UserId2)
-            => !(UserId1 > UserId2);
+        public static Boolean operator <= (User_Id UserId1,
+                                           User_Id UserId2)
+
+            => UserId1.CompareTo(UserId2) <= 0;
 
         #endregion
 
@@ -359,15 +332,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (User_Id UserId1, User_Id UserId2)
-        {
+        public static Boolean operator > (User_Id UserId1,
+                                          User_Id UserId2)
 
-            if ((Object) UserId1 == null)
-                throw new ArgumentNullException(nameof(UserId1), "The given UserId1 must not be null!");
-
-            return UserId1.CompareTo(UserId2) > 0;
-
-        }
+            => UserId1.CompareTo(UserId2) > 0;
 
         #endregion
 
@@ -379,8 +347,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId1">An user identification.</param>
         /// <param name="UserId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (User_Id UserId1, User_Id UserId2)
-            => !(UserId1 < UserId2);
+        public static Boolean operator >= (User_Id UserId1,
+                                           User_Id UserId2)
+
+            => UserId1.CompareTo(UserId2) >= 0;
 
         #endregion
 
@@ -395,17 +365,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Object">An object to compare with.</param>
         public Int32 CompareTo(Object Object)
-        {
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is User_Id UserId))
-                throw new ArgumentException("The given object is not an user identification!", nameof(Object));
-
-            return CompareTo(UserId);
-
-        }
+            => Object is User_Id userId
+                   ? CompareTo(userId)
+                   : throw new ArgumentException("The given object is not an user identification!", nameof(Object));
 
         #endregion
 
@@ -418,15 +381,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public Int32 CompareTo(User_Id UserId)
         {
 
-            if ((Object) UserId == null)
-                throw new ArgumentNullException(nameof(UserId), "The given user identification must not be null!");
+            var c = String.Compare(InternalId,
+                                   UserId.InternalId,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            var _Result = String.Compare(InternalId, UserId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-            if (_Result == 0)
+            if (c == 0)
                 return Format.CompareTo(UserId.Format);
 
-            return _Result;
+            return c;
 
         }
 
@@ -444,17 +406,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Object">An object to compare with.</param>
         /// <returns>true|false</returns>
         public override Boolean Equals(Object Object)
-        {
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is User_Id UserId))
-                return false;
-
-            return Equals(UserId);
-
-        }
+            => Object is User_Id userId &&
+               Equals(userId);
 
         #endregion
 
@@ -466,15 +420,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="UserId">A UserId to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(User_Id UserId)
-        {
 
-            if ((Object) UserId == null)
-                return false;
+            => String.Equals(InternalId,
+                             UserId.InternalId,
+                             StringComparison.OrdinalIgnoreCase) &&
 
-            return InternalId.ToLower().Equals(UserId.InternalId.ToLower()) &&
-                   Format.              Equals(UserId.Format);
-
-        }
+               Format.Equals(UserId.Format);
 
         #endregion
 
@@ -499,19 +450,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
-
-            return InternalId;
-
-            switch (Format)
-            {
-
-                default:
-                    return String.Concat(InternalId, " (", Format, ")");
-
-            }
-
-        }
+            => InternalId;
 
         #endregion
 

@@ -33,20 +33,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     public static partial class ConversionMethods
     {
 
-        #region AsText  (this OperatorIdFormat)
+        #region AsText  (this PartnerOperatorIdFormat)
 
         /// <summary>
         /// Return a text representation of the given operator identification format.
         /// </summary>
-        /// <param name="OperatorIdFormat">A operator identification format.</param>
-        public static String AsText(this OperatorIdFormats OperatorIdFormat)
+        /// <param name="PartnerOperatorIdFormat">A operator identification format.</param>
+        public static String AsText(this PartnerOperatorIdFormats PartnerOperatorIdFormat)
         {
 
-            switch (OperatorIdFormat)
+            switch (PartnerOperatorIdFormat)
             {
 
-                case OperatorIdFormats.eMI3:
-                case OperatorIdFormats.eMI3_STAR:
+                case PartnerOperatorIdFormats.eMI3:
+                case PartnerOperatorIdFormats.eMI3_STAR:
                     return "eMI3";
 
                 default:
@@ -63,7 +63,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// The different formats of operator identifications.
     /// </summary>
-    public enum OperatorIdFormats
+    public enum PartnerOperatorIdFormats
     {
 
         /// <summary>
@@ -85,21 +85,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
 
     /// <summary>
-    /// The unique identification of an operator.
+    /// The unique identification of a partner operator.
+    /// Gireve sometimes uses AA-BBB and sometimes AA*BBB!
     /// </summary>
-    public struct Operator_Id : IId,
-                                IEquatable<Operator_Id>,
-                                IComparable<Operator_Id>
+    public struct PartnerOperator_Id : IId,
+                                       IEquatable<PartnerOperator_Id>,
+                                       IComparable<PartnerOperator_Id>
 
     {
 
         #region Data
 
         /// <summary>
-        /// The regular expression for parsing an eMIP charging operator identification.
+        /// The regular expression for parsing an eMIP charging partner operator identification.
         /// </summary>
-        public static readonly Regex  OperatorId_RegEx  = new Regex(@"^([A-Z]{2})(\*?)([A-Z0-9]{3})$",
-                                                                    RegexOptions.IgnorePatternWhitespace);
+        public static readonly Regex  PartnerOperatorId_RegEx  = new Regex(@"^([A-Z]{2})([\*|\-]?)([A-Z0-9]{3})$",
+                                                                           RegexOptions.IgnorePatternWhitespace);
 
         #endregion
 
@@ -116,9 +117,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         public String             Suffix        { get; }
 
         /// <summary>
-        /// The format of the charging operator identification.
+        /// The format of the charging partner operator identification.
         /// </summary>
-        public OperatorIdFormats  Format        { get; }
+        public PartnerOperatorIdFormats  Format        { get; }
 
         /// <summary>
         /// Indicates whether this identification is null or empty.
@@ -137,7 +138,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 switch (Format)
                 {
 
-                    case OperatorIdFormats.eMI3_STAR:
+                    case PartnerOperatorIdFormats.eMI3_STAR:
                         return (UInt64) (CountryCode.Alpha2Code.Length + 1 + Suffix.Length);
 
                     default:
@@ -153,14 +154,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new charging operator identification.
+        /// Create a new charging partner operator identification.
         /// </summary>
         /// <param name="CountryCode">The country code.</param>
-        /// <param name="Suffix">The suffix of the charging operator identification.</param>
-        /// <param name="Format">The format of the charging operator identification.</param>
-        private Operator_Id(Country            CountryCode,
+        /// <param name="Suffix">The suffix of the charging partner operator identification.</param>
+        /// <param name="Format">The format of the charging partner operator identification.</param>
+        private PartnerOperator_Id(Country            CountryCode,
                             String             Suffix,
-                            OperatorIdFormats  Format = OperatorIdFormats.eMI3_STAR)
+                            PartnerOperatorIdFormats  Format = PartnerOperatorIdFormats.eMI3_STAR)
         {
 
             this.CountryCode  = CountryCode;
@@ -175,10 +176,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Parse(Text)
 
         /// <summary>
-        /// Parse the given text representation of an operator identification.
+        /// Parse the given text representation of a partner operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of an operator identification.</param>
-        public static Operator_Id Parse(String Text)
+        /// <param name="Text">A text representation of a partner operator identification.</param>
+        public static PartnerOperator_Id Parse(String Text)
         {
 
             #region Initial checks
@@ -187,23 +188,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                 Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of an operator identification must not be null or empty!");
+                throw new ArgumentNullException(nameof(Text), "The given text representation of a partner operator identification must not be null or empty!");
 
             #endregion
 
-            var MatchCollection = OperatorId_RegEx.Matches(Text);
+            var MatchCollection = PartnerOperatorId_RegEx.Matches(Text);
 
             if (MatchCollection.Count == 1 &&
                 Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
             {
 
-                return new Operator_Id(_CountryCode,
+                return new PartnerOperator_Id(_CountryCode,
                                        MatchCollection[0].Groups[3].Value,
-                                       MatchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
+                                       MatchCollection[0].Groups[2].Value == "*" ? PartnerOperatorIdFormats.eMI3_STAR : PartnerOperatorIdFormats.eMI3);
 
             }
 
-            throw new ArgumentException("Illegal text representation of an operator identification: '" + Text + "'!", nameof(Text));
+            throw new ArgumentException("Illegal text representation of a partner operator identification: '" + Text + "'!", nameof(Text));
 
         }
 
@@ -217,9 +218,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="CountryCode">A country code.</param>
         /// <param name="Suffix">The suffix of an charging operator identification.</param>
         /// <param name="IdFormat">The format of the charging operator identification [old|new].</param>
-        public static Operator_Id Parse(Country            CountryCode,
+        public static PartnerOperator_Id Parse(Country            CountryCode,
                                         String             Suffix,
-                                        OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3_STAR)
+                                        PartnerOperatorIdFormats  IdFormat = PartnerOperatorIdFormats.eMI3_STAR)
         {
 
             #region Initial checks
@@ -235,7 +236,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (IdFormat)
             {
 
-                case OperatorIdFormats.eMI3:
+                case PartnerOperatorIdFormats.eMI3:
                     return Parse(CountryCode.Alpha2Code +       Suffix);
 
                 default:
@@ -250,30 +251,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) TryParse(Text)
 
         /// <summary>
-        /// Try to parse the given text representation of an operator identification.
+        /// Try to parse the given text representation of a partner operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of an operator identification.</param>
-        public static Operator_Id? TryParse(String Text)
+        /// <param name="Text">A text representation of a partner operator identification.</param>
+        public static PartnerOperator_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Operator_Id _OperatorId))
-                return _OperatorId;
+            if (TryParse(Text, out PartnerOperator_Id _PartnerOperatorId))
+                return _PartnerOperatorId;
 
-            return new Operator_Id?();
+            return new PartnerOperator_Id?();
 
         }
 
         #endregion
 
-        #region (static) TryParse(Text, out OperatorId)
+        #region (static) TryParse(Text, out PartnerOperatorId)
 
         /// <summary>
-        /// Try to parse the given text representation of an operator identification.
+        /// Try to parse the given text representation of a partner operator identification.
         /// </summary>
-        /// <param name="Text">A text representation of an operator identification.</param>
-        /// <param name="OperatorId">The parsed charging operator identification.</param>
+        /// <param name="Text">A text representation of a partner operator identification.</param>
+        /// <param name="PartnerOperatorId">The parsed charging operator identification.</param>
         public static Boolean TryParse(String           Text,
-                                       out Operator_Id  OperatorId)
+                                       out PartnerOperator_Id  PartnerOperatorId)
         {
 
             #region Initial checks
@@ -283,7 +284,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                OperatorId = default;
+                PartnerOperatorId = default;
                 return false;
             }
 
@@ -292,15 +293,15 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = OperatorId_RegEx.Matches(Text);
+                var MatchCollection = PartnerOperatorId_RegEx.Matches(Text);
 
                 if (MatchCollection.Count == 1 &&
                     Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
                 {
 
-                    OperatorId = new Operator_Id(_CountryCode,
+                    PartnerOperatorId = new PartnerOperator_Id(_CountryCode,
                                                  MatchCollection[0].Groups[3].Value,
-                                                 MatchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
+                                                 MatchCollection[0].Groups[2].Value == "*" ? PartnerOperatorIdFormats.eMI3_STAR : PartnerOperatorIdFormats.eMI3);
 
                     return true;
 
@@ -315,14 +316,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 #pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
-            OperatorId = default;
+            PartnerOperatorId = default;
             return false;
 
         }
 
         #endregion
 
-        #region (static) TryParse(CountryCode, Suffix, IdFormat = OperatorIdFormats.eMI3_STAR)
+        #region (static) TryParse(CountryCode, Suffix, IdFormat = PartnerOperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.
@@ -330,40 +331,40 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="CountryCode">A country code.</param>
         /// <param name="Suffix">The suffix of an e-mobility operator identification.</param>
         /// <param name="IdFormat">The optional format of the e-mobility operator identification.</param>
-        public static Operator_Id? TryParse(Country            CountryCode,
+        public static PartnerOperator_Id? TryParse(Country            CountryCode,
                                             String             Suffix,
-                                            OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3_STAR)
+                                            PartnerOperatorIdFormats  IdFormat = PartnerOperatorIdFormats.eMI3_STAR)
         {
 
-            if (TryParse(CountryCode, Suffix, out Operator_Id _OperatorId, IdFormat))
-                return _OperatorId;
+            if (TryParse(CountryCode, Suffix, out PartnerOperator_Id _PartnerOperatorId, IdFormat))
+                return _PartnerOperatorId;
 
-            return new Operator_Id?();
+            return new PartnerOperator_Id?();
 
         }
 
         #endregion
 
-        #region (static) TryParse(CountryCode, Suffix, out OperatorId, IdFormat = OperatorIdFormats.eMI3_STAR)
+        #region (static) TryParse(CountryCode, Suffix, out PartnerOperatorId, IdFormat = PartnerOperatorIdFormats.eMI3_STAR)
 
         /// <summary>
         /// Try to parse the given text representation of an e-mobility operator identification.
         /// </summary>
         /// <param name="CountryCode">A country code.</param>
         /// <param name="Suffix">The suffix of an e-mobility operator identification.</param>
-        /// <param name="OperatorId">The parsed e-mobility operator identification.</param>
+        /// <param name="PartnerOperatorId">The parsed e-mobility operator identification.</param>
         /// <param name="IdFormat">The optional format of the e-mobility operator identification.</param>
         public static Boolean TryParse(Country            CountryCode,
                                        String             Suffix,
-                                       out Operator_Id    OperatorId,
-                                       OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3_STAR)
+                                       out PartnerOperator_Id    PartnerOperatorId,
+                                       PartnerOperatorIdFormats  IdFormat = PartnerOperatorIdFormats.eMI3_STAR)
         {
 
             #region Initial checks
 
             if (CountryCode == null || Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
             {
-                OperatorId = default;
+                PartnerOperatorId = default;
                 return false;
             }
 
@@ -372,13 +373,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (IdFormat)
             {
 
-                case OperatorIdFormats.eMI3:
+                case PartnerOperatorIdFormats.eMI3:
                     return TryParse(CountryCode.Alpha2Code +       Suffix,
-                                    out OperatorId);
+                                    out PartnerOperatorId);
 
                 default:
                     return TryParse(CountryCode.Alpha2Code + "*" + Suffix,
-                                    out OperatorId);
+                                    out PartnerOperatorId);
 
             }
 
@@ -391,9 +392,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Clone this charging operator identification.
         /// </summary>
-        public Operator_Id Clone
+        public PartnerOperator_Id Clone
 
-            => new Operator_Id(CountryCode,
+            => new PartnerOperator_Id(CountryCode,
                                new String(Suffix.ToCharArray()),
                                Format);
 
@@ -406,124 +407,124 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// Return a new charging operator identification in the given format.
         /// </summary>
         /// <param name="NewFormat">The new charging operator identification format.</param>
-        public Operator_Id ChangeFormat(OperatorIdFormats NewFormat)
+        public PartnerOperator_Id ChangeFormat(PartnerOperatorIdFormats NewFormat)
 
-            => new Operator_Id(CountryCode,
-                               Suffix,
-                               NewFormat);
+            => new PartnerOperator_Id(CountryCode,
+                                      Suffix,
+                                      NewFormat);
 
         #endregion
 
 
-        #region Operator overloading
+        #region PartnerOperator overloading
 
-        #region Operator == (OperatorId1, OperatorId2)
+        #region PartnerOperator == (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Operator_Id OperatorId1, Operator_Id OperatorId2)
+        public static Boolean operator == (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
         {
 
             // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(OperatorId1, OperatorId2))
+            if (ReferenceEquals(PartnerOperatorId1, PartnerOperatorId2))
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) OperatorId1 == null) || ((Object) OperatorId2 == null))
+            if (((Object) PartnerOperatorId1 == null) || ((Object) PartnerOperatorId2 == null))
                 return false;
 
-            return OperatorId1.Equals(OperatorId2);
+            return PartnerOperatorId1.Equals(PartnerOperatorId2);
 
         }
 
         #endregion
 
-        #region Operator != (OperatorId1, OperatorId2)
+        #region PartnerOperator != (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 == OperatorId2);
+        public static Boolean operator != (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
+            => !(PartnerOperatorId1 == PartnerOperatorId2);
 
         #endregion
 
-        #region Operator <  (OperatorId1, OperatorId2)
+        #region PartnerOperator <  (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Operator_Id OperatorId1, Operator_Id OperatorId2)
+        public static Boolean operator < (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
         {
 
-            if ((Object) OperatorId1 == null)
-                throw new ArgumentNullException(nameof(OperatorId1), "The given OperatorId1 must not be null!");
+            if ((Object) PartnerOperatorId1 == null)
+                throw new ArgumentNullException(nameof(PartnerOperatorId1), "The given PartnerOperatorId1 must not be null!");
 
-            return OperatorId1.CompareTo(OperatorId2) < 0;
+            return PartnerOperatorId1.CompareTo(PartnerOperatorId2) < 0;
 
         }
 
         #endregion
 
-        #region Operator <= (OperatorId1, OperatorId2)
+        #region PartnerOperator <= (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 > OperatorId2);
+        public static Boolean operator <= (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
+            => !(PartnerOperatorId1 > PartnerOperatorId2);
 
         #endregion
 
-        #region Operator >  (OperatorId1, OperatorId2)
+        #region PartnerOperator >  (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Operator_Id OperatorId1, Operator_Id OperatorId2)
+        public static Boolean operator > (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
         {
 
-            if ((Object) OperatorId1 == null)
-                throw new ArgumentNullException(nameof(OperatorId1), "The given OperatorId1 must not be null!");
+            if ((Object) PartnerOperatorId1 == null)
+                throw new ArgumentNullException(nameof(PartnerOperatorId1), "The given PartnerOperatorId1 must not be null!");
 
-            return OperatorId1.CompareTo(OperatorId2) > 0;
+            return PartnerOperatorId1.CompareTo(PartnerOperatorId2) > 0;
 
         }
 
         #endregion
 
-        #region Operator >= (OperatorId1, OperatorId2)
+        #region PartnerOperator >= (PartnerOperatorId1, PartnerOperatorId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId1">An charging operator identification.</param>
-        /// <param name="OperatorId2">Another charging operator identification.</param>
+        /// <param name="PartnerOperatorId1">An charging operator identification.</param>
+        /// <param name="PartnerOperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 < OperatorId2);
+        public static Boolean operator >= (PartnerOperator_Id PartnerOperatorId1, PartnerOperator_Id PartnerOperatorId2)
+            => !(PartnerOperatorId1 < PartnerOperatorId2);
 
         #endregion
 
         #endregion
 
-        #region IComparable<OperatorId> Members
+        #region IComparable<PartnerOperatorId> Members
 
         #region CompareTo(Object)
 
@@ -537,31 +538,31 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
-            if (!(Object is Operator_Id OperatorId))
-                throw new ArgumentException("The given object is not an operator identification!", nameof(Object));
+            if (!(Object is PartnerOperator_Id PartnerOperatorId))
+                throw new ArgumentException("The given object is not a partner operator identification!", nameof(Object));
 
-            return CompareTo(OperatorId);
+            return CompareTo(PartnerOperatorId);
 
         }
 
         #endregion
 
-        #region CompareTo(OperatorId)
+        #region CompareTo(PartnerOperatorId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="OperatorId">An object to compare with.</param>
-        public Int32 CompareTo(Operator_Id OperatorId)
+        /// <param name="PartnerOperatorId">An object to compare with.</param>
+        public Int32 CompareTo(PartnerOperator_Id PartnerOperatorId)
         {
 
-            if ((Object) OperatorId == null)
-                throw new ArgumentNullException(nameof(OperatorId), "The given charging operator identification must not be null!");
+            if ((Object) PartnerOperatorId == null)
+                throw new ArgumentNullException(nameof(PartnerOperatorId), "The given charging operator identification must not be null!");
 
-            var _Result = CountryCode.CompareTo(OperatorId.CountryCode);
+            var _Result = CountryCode.CompareTo(PartnerOperatorId.CountryCode);
 
             if (_Result == 0)
-                _Result = String.Compare(Suffix, OperatorId.Suffix, StringComparison.OrdinalIgnoreCase);
+                _Result = String.Compare(Suffix, PartnerOperatorId.Suffix, StringComparison.OrdinalIgnoreCase);
 
             return _Result;
 
@@ -571,7 +572,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<OperatorId> Members
+        #region IEquatable<PartnerOperatorId> Members
 
         #region Equals(Object)
 
@@ -586,30 +587,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             if (Object is null)
                 return false;
 
-            if (!(Object is Operator_Id OperatorId))
+            if (!(Object is PartnerOperator_Id PartnerOperatorId))
                 return false;
 
-            return Equals(OperatorId);
+            return Equals(PartnerOperatorId);
 
         }
 
         #endregion
 
-        #region Equals(OperatorId)
+        #region Equals(PartnerOperatorId)
 
         /// <summary>
-        /// Compares two OperatorIds for equality.
+        /// Compares two PartnerOperatorIds for equality.
         /// </summary>
-        /// <param name="OperatorId">A OperatorId to compare with.</param>
+        /// <param name="PartnerOperatorId">A PartnerOperatorId to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(Operator_Id OperatorId)
+        public Boolean Equals(PartnerOperator_Id PartnerOperatorId)
         {
 
-            if ((Object) OperatorId == null)
+            if ((Object) PartnerOperatorId == null)
                 return false;
 
-            return CountryCode.     Equals(OperatorId.CountryCode) &&
-                   Suffix.ToLower().Equals(OperatorId.Suffix.ToLower());
+            return CountryCode.     Equals(PartnerOperatorId.CountryCode) &&
+                   Suffix.ToLower().Equals(PartnerOperatorId.Suffix.ToLower());
 
         }
 
@@ -641,7 +642,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             switch (Format)
             {
 
-                case OperatorIdFormats.eMI3_STAR:
+                case PartnerOperatorIdFormats.eMI3_STAR:
                     return CountryCode.Alpha2Code + "*" + Suffix;
 
                 default:

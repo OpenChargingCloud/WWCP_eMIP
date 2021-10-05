@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2020 GraphDefined GmbH
+ * Copyright (c) 2014-2021 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -233,11 +233,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             {
 
                 MeterReport = new MeterReport(
-
-                                  MeterReportXML.ElementValueOrFail ("meterTypeId"),
-                                  MeterReportXML.ElementValueOrFail ("meterValue"),
-                                  MeterReportXML.MapEnumValuesOrFail("meterUnit",  MeterTypes.Parse)
-
+                                  MeterReportXML.ElementValueOrFail("meterUnit"),
+                                  MeterReportXML.ElementValueOrFail("meterValue"),
+                                  MeterReportXML.MapValueOrFail    ("meterTypeId",  MeterTypes.Parse)
                               );
 
                 if (CustomMeterReportParser != null)

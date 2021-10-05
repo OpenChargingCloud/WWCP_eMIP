@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2020 GraphDefined GmbH
+ * Copyright (c) 2014-2021 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,12 +43,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// The service session identification.
         /// </summary>
-        public ServiceSession_Id  ServiceSessionId          { get; }
+        public ServiceSession_Id    ServiceSessionId          { get; }
 
         /// <summary>
         /// The optional sales partner operator identification.
         /// </summary>
-        public Operator_Id?       SalesPartnerOperatorId    { get; }
+        public PartnerOperator_Id?  SalesPartnerOperatorId    { get; }
 
         #endregion
 
@@ -102,7 +102,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                              ServiceSession_Id                    ServiceSessionId,
                                              RequestStatus                        RequestStatus,
 
-                                             Operator_Id?                         SalesPartnerOperatorId   = null,
+                                             PartnerOperator_Id?                  SalesPartnerOperatorId   = null,
                                              HTTPResponse                         HTTPResponse             = null,
                                              IReadOnlyDictionary<String, Object>  CustomData               = null)
 
@@ -244,12 +244,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                         Request,
 
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("transactionId",          Transaction_Id.Parse),
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("serviceSessionId",       ServiceSession_Id.Parse),
-                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("requestStatus",          RequestStatus.Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("transactionId",          Transaction_Id.    Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("serviceSessionId",       ServiceSession_Id. Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrFail    ("requestStatus",          RequestStatus.     Parse),
 
                                                         //ToDo: What to do with: <salePartnerOperatorIdType>eMI3</salePartnerOperatorIdType>?
-                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable("salePartnerOperatorId",  Operator_Id.Parse),
+                                                        SetChargeDetailRecordResponseXML.MapValueOrNullable("salePartnerOperatorId",  PartnerOperator_Id.Parse),
 
                                                         HTTPResponse
 
@@ -511,24 +511,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             #region Properties
 
             /// <summary>
-            /// The transaction identification.
-            /// </summary>
-            public Transaction_Id     TransactionId             { get; set; }
-
-            /// <summary>
             /// The service session identification.
             /// </summary>
-            public ServiceSession_Id  ServiceSessionId          { get; set; }
-
-            /// <summary>
-            /// The status of the request.
-            /// </summary>
-            public RequestStatus      RequestStatus             { get; set; }
+            public ServiceSession_Id    ServiceSessionId          { get; set; }
 
             /// <summary>
             /// The optional sales partner operator identification.
             /// </summary>
-            public Operator_Id?       SalesPartnerOperatorId    { get; set; }
+            public PartnerOperator_Id?  SalesPartnerOperatorId    { get; set; }
 
             #endregion
 

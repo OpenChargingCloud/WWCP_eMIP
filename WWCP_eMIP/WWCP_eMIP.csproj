@@ -66,6 +66,7 @@
     <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
     <Compile Include="DataTypes\Enums\CDRNatures.cs" />
     <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
+    <Compile Include="DataTypes\Simple\PartnerOperator_Id.cs" />
     <Compile Include="DataTypes\Simple\SessionEvent_Id.cs" />
     <Compile Include="DataTypes\Simple\SessionAction_Id.cs" />
     <Compile Include="DataTypes\Simple\MeterTypes.cs" />

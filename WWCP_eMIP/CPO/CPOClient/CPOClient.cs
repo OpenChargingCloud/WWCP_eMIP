@@ -1101,7 +1101,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSendHeartbeatRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSendHeartbeatRequest));
             }
 
             #endregion
@@ -1286,7 +1286,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSendHeartbeatResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSendHeartbeatResponse));
             }
 
             #endregion
@@ -1359,7 +1359,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusRequest));
             }
 
             #endregion
@@ -1574,7 +1574,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingPoolAvailabilityStatusResponse));
             }
 
             #endregion
@@ -1647,7 +1647,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusRequest));
             }
 
             #endregion
@@ -1862,7 +1862,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingStationAvailabilityStatusResponse));
             }
 
             #endregion
@@ -1934,7 +1934,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusRequest));
             }
 
             #endregion
@@ -2150,7 +2150,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSEAvailabilityStatusResponse));
             }
 
             #endregion
@@ -2222,7 +2222,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusRequest));
             }
 
             #endregion
@@ -2437,7 +2437,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargingConnectorAvailabilityStatusResponse));
             }
 
             #endregion
@@ -2510,7 +2510,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusRequest));
             }
 
             #endregion
@@ -2725,7 +2725,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSEBusyStatusResponse));
             }
 
             #endregion
@@ -2801,7 +2801,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusRequest));
             }
 
             #endregion
@@ -3020,7 +3020,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetEVSESyntheticStatusResponse));
             }
 
             #endregion
@@ -3092,7 +3092,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationRequest));
             }
 
             #endregion
@@ -3307,7 +3307,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnGetServiceAuthorisationResponse));
             }
 
             #endregion
@@ -3380,7 +3380,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetSessionEventReportRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetSessionEventReportRequest));
             }
 
             #endregion
@@ -3591,7 +3591,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetSessionEventReportResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetSessionEventReportResponse));
             }
 
             #endregion
@@ -3660,7 +3660,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordRequest));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordRequest));
             }
 
             #endregion
@@ -3873,7 +3873,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                e.Log(nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordResponse));
+                DebugX.LogException(e, nameof(CPOClient) + "." + nameof(OnSetChargeDetailRecordResponse));
             }
 
             #endregion

@@ -321,7 +321,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPRequest));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPRequest));
                 }
 
                 #endregion
@@ -368,7 +368,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationRequest));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationRequest));
                     }
 
                     #endregion
@@ -431,7 +431,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationResponse));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationResponse));
                     }
 
                     #endregion
@@ -475,7 +475,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPResponse));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnGetServiceAuthorisationSOAPResponse));
                 }
 
                 #endregion
@@ -515,7 +515,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPRequest));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPRequest));
                 }
 
                 #endregion
@@ -563,7 +563,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportRequest));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetSessionEventReportRequest));
                     }
 
                     #endregion
@@ -627,7 +627,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportResponse));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetSessionEventReportResponse));
                     }
 
                     #endregion
@@ -671,7 +671,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPResponse));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetSessionEventReportSOAPResponse));
                 }
 
                 #endregion
@@ -711,7 +711,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPRequest));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPRequest));
                 }
 
                 #endregion
@@ -756,7 +756,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordRequest));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordRequest));
                     }
 
                     #endregion
@@ -816,7 +816,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordResponse));
+                        DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordResponse));
                     }
 
                     #endregion
@@ -860,7 +860,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPResponse));
+                    DebugX.LogException(e, nameof(EMPServer) + "." + nameof(OnSetChargeDetailRecordSOAPResponse));
                 }
 
                 #endregion

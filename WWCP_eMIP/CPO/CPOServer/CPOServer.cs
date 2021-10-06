@@ -288,7 +288,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPRequest));
+                    DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPRequest));
                 }
 
                 #endregion
@@ -340,7 +340,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationRequest));
+                        DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationRequest));
                     }
 
                     #endregion
@@ -406,7 +406,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationResponse));
+                        DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationResponse));
                     }
 
                     #endregion
@@ -451,7 +451,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPResponse));
+                    DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetServiceAuthorisationSOAPResponse));
                 }
 
                 #endregion
@@ -500,7 +500,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPRequest));
+                    DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPRequest));
                 }
 
                 #endregion
@@ -547,7 +547,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionRequest));
+                        DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetSessionActionRequest));
                     }
 
                     #endregion
@@ -608,7 +608,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                     }
                     catch (Exception e)
                     {
-                        e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionResponse));
+                        DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetSessionActionResponse));
                     }
 
                     #endregion
@@ -653,7 +653,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                 }
                 catch (Exception e)
                 {
-                    e.Log(nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPResponse));
+                    DebugX.LogException(e, nameof(CPOServer) + "." + nameof(OnSetSessionActionSOAPResponse));
                 }
 
                 #endregion

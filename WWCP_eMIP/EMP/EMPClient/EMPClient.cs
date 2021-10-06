@@ -441,7 +441,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSendHeartbeatRequest));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSendHeartbeatRequest));
             }
 
             #endregion
@@ -625,7 +625,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSendHeartbeatResponse));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSendHeartbeatResponse));
             }
 
             #endregion
@@ -703,7 +703,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationRequest));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationRequest));
             }
 
             #endregion
@@ -909,7 +909,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationResponse));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSetServiceAuthorisationResponse));
             }
 
             #endregion
@@ -980,7 +980,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSetSessionActionRequest));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSetSessionActionRequest));
             }
 
             #endregion
@@ -1180,7 +1180,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                e.Log(nameof(EMPClient) + "." + nameof(OnSetSessionActionResponse));
+                DebugX.LogException(e, nameof(EMPClient) + "." + nameof(OnSetSessionActionResponse));
             }
 
             #endregion

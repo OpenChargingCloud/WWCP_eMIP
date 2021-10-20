@@ -59,13 +59,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// Create a new eMIP EMP server logger using the default logging delegates.
         /// </summary>
         /// <param name="EMPServer">A eMIP EMP server.</param>
+        /// <param name="LoggingPath">The logging path.</param>
         /// <param name="Context">A context of this API.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public EMPServerLogger(EMPServer               EMPServer,
+                               String                  LoggingPath,
                                String                  Context         = DefaultContext,
                                LogfileCreatorDelegate  LogfileCreator  = null)
 
             : this(EMPServer,
+                   LoggingPath,
                    Context.IsNotNullOrEmpty() ? Context : DefaultContext,
                    null,
                    null,
@@ -84,6 +87,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// Create a new eMIP EMP server logger using the given logging delegates.
         /// </summary>
         /// <param name="EMPServer">A eMIP EMP server.</param>
+        /// <param name="LoggingPath">The logging path.</param>
         /// <param name="Context">A context of this API.</param>
         /// 
         /// <param name="LogHTTPRequest_toConsole">A delegate to log incoming HTTP requests to console.</param>
@@ -103,6 +107,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// 
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public EMPServerLogger(EMPServer                   EMPServer,
+                               String                      LoggingPath,
                                String                      Context,
 
                                HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,
@@ -123,6 +128,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
                                LogfileCreatorDelegate      LogfileCreator              = null)
 
             : base(EMPServer.SOAPServer.HTTPServer,
+                   LoggingPath,
                    Context.IsNotNullOrEmpty() ? Context : DefaultContext,
 
                    LogHTTPRequest_toConsole,

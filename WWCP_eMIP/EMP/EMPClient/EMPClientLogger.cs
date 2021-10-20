@@ -60,19 +60,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #region Constructor(s)
 
-            #region EMPClientLogger(EMPClient, Context = DefaultContext, LogfileCreator = null)
+            #region Logger(EMPClient, Context = DefaultContext, LogfileCreator = null)
 
             /// <summary>
             /// Create a new eMIP EMP client logger using the default logging delegates.
             /// </summary>
             /// <param name="EMPClient">A eMIP EMP client.</param>
+            /// <param name="LoggingPath">The logging path.</param>
             /// <param name="Context">A context of this API.</param>
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
             public Logger(EMPClient               EMPClient,
-                                   String                  Context         = DefaultContext,
-                                   LogfileCreatorDelegate  LogfileCreator  = null)
+                          String                  LoggingPath,
+                          String                  Context         = DefaultContext,
+                          LogfileCreatorDelegate  LogfileCreator  = null)
 
                 : this(EMPClient,
+                       LoggingPath,
                        Context.IsNotNullOrEmpty() ? Context : DefaultContext,
                        null,
                        null,
@@ -85,12 +88,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 
             #endregion
 
-            #region EMPClientLogger(EMPClient, Context, ... Logging delegates ...)
+            #region Logger(EMPClient, Context, ... Logging delegates ...)
 
             /// <summary>
             /// Create a new eMIP EMP client logger using the given logging delegates.
             /// </summary>
             /// <param name="EMPClient">A eMIP EMP client.</param>
+            /// <param name="LoggingPath">The logging path.</param>
             /// <param name="Context">A context of this API.</param>
             /// 
             /// <param name="LogHTTPRequest_toConsole">A delegate to log incoming HTTP requests to console.</param>
@@ -110,26 +114,28 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// 
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
             public Logger(IEMPClient                  EMPClient,
-                                   String                      Context,
+                          String                      LoggingPath,
+                          String                      Context,
 
-                                   HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,
-                                   HTTPResponseLoggerDelegate  LogHTTPResponse_toConsole,
-                                   HTTPRequestLoggerDelegate   LogHTTPRequest_toDisc,
-                                   HTTPResponseLoggerDelegate  LogHTTPResponse_toDisc,
+                          HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,
+                          HTTPResponseLoggerDelegate  LogHTTPResponse_toConsole,
+                          HTTPRequestLoggerDelegate   LogHTTPRequest_toDisc,
+                          HTTPResponseLoggerDelegate  LogHTTPResponse_toDisc,
 
-                                   HTTPRequestLoggerDelegate   LogHTTPRequest_toNetwork    = null,
-                                   HTTPResponseLoggerDelegate  LogHTTPResponse_toNetwork   = null,
-                                   HTTPRequestLoggerDelegate   LogHTTPRequest_toHTTPSSE    = null,
-                                   HTTPResponseLoggerDelegate  LogHTTPResponse_toHTTPSSE   = null,
+                          HTTPRequestLoggerDelegate   LogHTTPRequest_toNetwork    = null,
+                          HTTPResponseLoggerDelegate  LogHTTPResponse_toNetwork   = null,
+                          HTTPRequestLoggerDelegate   LogHTTPRequest_toHTTPSSE    = null,
+                          HTTPResponseLoggerDelegate  LogHTTPResponse_toHTTPSSE   = null,
 
-                                   HTTPResponseLoggerDelegate  LogHTTPError_toConsole      = null,
-                                   HTTPResponseLoggerDelegate  LogHTTPError_toDisc         = null,
-                                   HTTPResponseLoggerDelegate  LogHTTPError_toNetwork      = null,
-                                   HTTPResponseLoggerDelegate  LogHTTPError_toHTTPSSE      = null,
+                          HTTPResponseLoggerDelegate  LogHTTPError_toConsole      = null,
+                          HTTPResponseLoggerDelegate  LogHTTPError_toDisc         = null,
+                          HTTPResponseLoggerDelegate  LogHTTPError_toNetwork      = null,
+                          HTTPResponseLoggerDelegate  LogHTTPError_toHTTPSSE      = null,
 
-                                   LogfileCreatorDelegate      LogfileCreator              = null)
+                          LogfileCreatorDelegate      LogfileCreator              = null)
 
                 : base(EMPClient,
+                       LoggingPath,
                        Context.IsNotNullOrEmpty() ? Context : DefaultContext,
 
                        LogHTTPRequest_toConsole,

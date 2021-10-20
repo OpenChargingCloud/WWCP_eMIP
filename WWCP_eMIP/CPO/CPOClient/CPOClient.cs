@@ -1003,6 +1003,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          CounterValues?                       SetChargeDetailRecord                    = null,
 
                          Boolean                              DisableLogging                           = false,
+                         String                               LoggingPath                              = null,
                          String                               LoggingContext                           = Logger.DefaultContext,
                          LogfileCreatorDelegate               LogfileCreator                           = null,
                          DNSClient                            DNSClient                                = null)
@@ -1038,6 +1039,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             base.HTTPLogger  = DisableLogging == false
                                    ? new Logger(this,
+                                                LoggingPath,
                                                 LoggingContext,
                                                 LogfileCreator)
                                    : null;

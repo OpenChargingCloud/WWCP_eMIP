@@ -30,9 +30,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// Extention methods for the eMIP CPO client interface.
+    /// Extension methods for the eMIP CPO client interface.
     /// </summary>
-    public static class ICPOClientExtentions
+    public static class ICPOClientExtensions
     {
 
         #region SendHeartbeat            (this CPOClient, PartnerId, OperatorId, TransactionId = null, ...)

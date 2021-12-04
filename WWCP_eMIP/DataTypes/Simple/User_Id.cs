@@ -28,9 +28,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
-    /// Extentions methods for user identification formats.
+    /// Extensions methods for user identification formats.
     /// </summary>
-    public static class UserIdFormatsExtentions
+    public static class UserIdFormatsExtensions
     {
 
         #region Parse (Text)

@@ -31,9 +31,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
 {
 
     /// <summary>
-    /// Extention methods for the eMIP EMP client interface.
+    /// Extension methods for the eMIP EMP client interface.
     /// </summary>
-    public static class IEMPClientExtentions
+    public static class IEMPClientExtensions
     {
 
         #region SendHeartbeat          (this EMPClient, PartnerId, OperatorId, TransactionId = null, ...)

@@ -36,9 +36,9 @@ namespace org.GraphDefined.WWCP
 {
 
     /// <summary>
-    /// Extentions methods for the WWCP wrapper for eMIP roaming clients for charging station operators.
+    /// Extensions methods for the WWCP wrapper for eMIP roaming clients for charging station operators.
     /// </summary>
-    public static class CPOExtentions
+    public static class CPOExtensions
     {
 
         /// <summary>

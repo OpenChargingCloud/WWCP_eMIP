@@ -40,7 +40,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// eMIP+ HTTP API extention methods.
     /// </summary>
-    public static class ExtentionMethods
+    public static class ExtensionMethods
     {
 
         #region ParseRoamingNetwork(this HTTPRequest, HTTPServer, out RoamingNetwork, out HTTPResponse)

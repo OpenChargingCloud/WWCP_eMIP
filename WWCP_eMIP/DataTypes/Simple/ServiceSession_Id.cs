@@ -19,6 +19,8 @@
 
 using System;
 
+using Newtonsoft.Json.Linq;
+
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -37,8 +39,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
-
         /// <summary>
         /// The internal identification.
         /// </summary>
@@ -55,19 +55,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             => InternalId.IsNullOrEmpty();
 
         /// <summary>
-        /// The length of the service session identificator.
+        /// The length of the charging session identificator.
         /// </summary>
         public UInt64 Length
-            => (UInt64) InternalId.Length;
+            => (UInt64) InternalId?.Length;
 
         #endregion
 
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new service session identification based on the given string.
+        /// Create a new charging session identification.
+        /// based on the given string.
         /// </summary>
-        /// <param name="Text">The text representation of a service session identification.</param>
         private ServiceSession_Id(String Text)
         {
             InternalId = Text;
@@ -76,44 +76,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region (static) Random(Length = 20)
+        #region (static) NewRandom
 
-        public static ServiceSession_Id Random(Byte Length = 20)
-            => new ServiceSession_Id(_Random.RandomString(Length));
-
-        #endregion
-
-        #region (static) Zero
-
-        public static ServiceSession_Id Zero
-            => new ServiceSession_Id("0");
+        /// <summary>
+        /// Create a new random charging session identification.
+        /// </summary>
+        public static ServiceSession_Id NewRandom
+            => Parse(Guid.NewGuid().ToString());
 
         #endregion
-
 
         #region (static) Parse   (Text)
 
         /// <summary>
-        /// Parse the given string as a service session identification.
+        /// Parse the given string as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service session identification.</param>
+        /// <param name="Text">A text-representation of a charging session identification.</param>
         public static ServiceSession_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out ServiceSession_Id sessionId))
+                return sessionId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a service session identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out ServiceSession_Id ServiceSessionId))
-                return ServiceSessionId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a service session identification is invalid!");
+            throw new ArgumentException("Invalid text-representation of a charging session identification: '" + Text + "'!",
+                                        nameof(Text));
 
         }
 
@@ -122,53 +108,56 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) TryParse(Text)
 
         /// <summary>
-        /// Try to parse the given string as a service session identification.
+        /// Try to parse the given string as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service session identification.</param>
+        /// <param name="Text">A text-representation of a charging session identification.</param>
         public static ServiceSession_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out ServiceSession_Id ServiceSessionId))
-                return ServiceSessionId;
+            if (TryParse(Text, out ServiceSession_Id sessionId))
+                return sessionId;
 
-            return new ServiceSession_Id?();
+            return null;
 
         }
 
         #endregion
 
-        #region (static) TryParse(Text, out ServiceSessionId)
+        #region (static) TryParse(JToken)
 
         /// <summary>
-        /// Try to parse the given string as a service session identification.
+        /// Try to parse the given JSON token as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service session identification.</param>
-        /// <param name="ServiceSessionId">The parsed service session identification.</param>
-        public static Boolean TryParse(String Text, out ServiceSession_Id ServiceSessionId)
+        /// <param name="JToken">A JSON token representation of a charging session identification.</param>
+        public static ServiceSession_Id? TryParse(JToken JToken)
+            => TryParse(JToken?.Value<String>());
+
+        #endregion
+
+        #region (static) TryParse(Text, out SessionId)
+
+        /// <summary>
+        /// Try to parse the given string as a charging session identification.
+        /// </summary>
+        /// <param name="Text">A text-representation of a charging session identification.</param>
+        /// <param name="SessionId">The parsed charging session identification.</param>
+        public static Boolean TryParse(String Text, out ServiceSession_Id SessionId)
         {
 
-            #region Initial checks
+            Text = Text?.Trim();
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
+            if (!Text.IsNullOrEmpty())
             {
-                ServiceSessionId = default;
-                return false;
+                try
+                {
+                    SessionId = new ServiceSession_Id(Text);
+                    return true;
+                }
+                catch
+                { }
             }
 
-            #endregion
-
-            try
-            {
-                ServiceSessionId = new ServiceSession_Id(Text);
-                return true;
-            }
-            catch (Exception)
-            { }
-
-            ServiceSessionId = default;
+            SessionId = default;
             return false;
 
         }
@@ -178,126 +167,120 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this service session identification.
+        /// Clone this charging session identification.
         /// </summary>
         public ServiceSession_Id Clone
 
             => new ServiceSession_Id(
-                   new String(InternalId.ToCharArray())
+                   new String(InternalId?.ToCharArray())
                );
+
+        #endregion
+
+
+        #region (static) Zero
+
+        public static ServiceSession_Id Zero
+            => new ServiceSession_Id("0");
 
         #endregion
 
 
         #region Operator overloading
 
-        #region Operator == (ServiceSessionId1, ServiceSessionId2)
+        #region Operator == (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-        {
+        public static Boolean operator == (ServiceSession_Id SessionId1,
+                                           ServiceSession_Id SessionId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ServiceSessionId1, ServiceSessionId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ServiceSessionId1 == null) || ((Object) ServiceSessionId2 == null))
-                return false;
-
-            return ServiceSessionId1.Equals(ServiceSessionId2);
-
-        }
+            => SessionId1.Equals(SessionId2);
 
         #endregion
 
-        #region Operator != (ServiceSessionId1, ServiceSessionId2)
+        #region Operator != (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-            => !(ServiceSessionId1 == ServiceSessionId2);
+        public static Boolean operator != (ServiceSession_Id SessionId1,
+                                           ServiceSession_Id SessionId2)
+
+            => !SessionId1.Equals(SessionId2);
 
         #endregion
 
-        #region Operator <  (ServiceSessionId1, ServiceSessionId2)
+        #region Operator <  (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-        {
+        public static Boolean operator < (ServiceSession_Id SessionId1,
+                                          ServiceSession_Id SessionId2)
 
-            if ((Object) ServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(ServiceSessionId1), "The given ServiceSessionId1 must not be null!");
-
-            return ServiceSessionId1.CompareTo(ServiceSessionId2) < 0;
-
-        }
+            => SessionId1.CompareTo(SessionId2) < 0;
 
         #endregion
 
-        #region Operator <= (ServiceSessionId1, ServiceSessionId2)
+        #region Operator <= (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-            => !(ServiceSessionId1 > ServiceSessionId2);
+        public static Boolean operator <= (ServiceSession_Id SessionId1,
+                                           ServiceSession_Id SessionId2)
+
+            => SessionId1.CompareTo(SessionId2) <= 0;
 
         #endregion
 
-        #region Operator >  (ServiceSessionId1, ServiceSessionId2)
+        #region Operator >  (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-        {
+        public static Boolean operator > (ServiceSession_Id SessionId1,
+                                          ServiceSession_Id SessionId2)
 
-            if ((Object) ServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(ServiceSessionId1), "The given ServiceSessionId1 must not be null!");
-
-            return ServiceSessionId1.CompareTo(ServiceSessionId2) > 0;
-
-        }
+            => SessionId1.CompareTo(SessionId2) > 0;
 
         #endregion
 
-        #region Operator >= (ServiceSessionId1, ServiceSessionId2)
+        #region Operator >= (SessionId1, SessionId2)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId1">A service session identification.</param>
-        /// <param name="ServiceSessionId2">Another service session identification.</param>
+        /// <param name="SessionId1">A charging session identification.</param>
+        /// <param name="SessionId2">Another charging session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (ServiceSession_Id ServiceSessionId1, ServiceSession_Id ServiceSessionId2)
-            => !(ServiceSessionId1 < ServiceSessionId2);
+        public static Boolean operator >= (ServiceSession_Id SessionId1,
+                                           ServiceSession_Id SessionId2)
+
+            => SessionId1.CompareTo(SessionId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ServiceSessionId> Members
+        #region IComparable<SessionId> Members
 
         #region CompareTo(Object)
 
@@ -306,42 +289,30 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Object">An object to compare with.</param>
         public Int32 CompareTo(Object Object)
-        {
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is ServiceSession_Id ServiceSessionId))
-                throw new ArgumentException("The given object is not a service session identification!",
-                                            nameof(Object));
-
-            return CompareTo(ServiceSessionId);
-
-        }
+            => Object is ServiceSession_Id sessionId
+                   ? CompareTo(sessionId)
+                   : throw new ArgumentException("The given object is not a charging session identification!");
 
         #endregion
 
-        #region CompareTo(ServiceSessionId)
+        #region CompareTo(SessionId)
 
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceSessionId">An object to compare with.</param>
-        public Int32 CompareTo(ServiceSession_Id ServiceSessionId)
-        {
+        /// <param name="SessionId">An object to compare with.</param>
+        public Int32 CompareTo(ServiceSession_Id SessionId)
 
-            if ((Object) ServiceSessionId == null)
-                throw new ArgumentNullException(nameof(ServiceSessionId),  "The given service session identification must not be null!");
-
-            return String.Compare(InternalId, ServiceSessionId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              SessionId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<ServiceSessionId> Members
+        #region IEquatable<SessionId> Members
 
         #region Equals(Object)
 
@@ -351,36 +322,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Object">An object to compare with.</param>
         /// <returns>true|false</returns>
         public override Boolean Equals(Object Object)
-        {
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is ServiceSession_Id ServiceSessionId))
-                return false;
-
-            return Equals(ServiceSessionId);
-
-        }
+            => Object is ServiceSession_Id sessionId
+                   ? Equals(sessionId)
+                   : false;
 
         #endregion
 
-        #region Equals(ServiceSessionId)
+        #region Equals(SessionId)
 
         /// <summary>
-        /// Compares two ServiceSessionIds for equality.
+        /// Compares two SessionIds for equality.
         /// </summary>
-        /// <param name="ServiceSessionId">A service session identification to compare with.</param>
+        /// <param name="SessionId">A charging session identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(ServiceSession_Id ServiceSessionId)
-        {
+        public Boolean Equals(ServiceSession_Id SessionId)
 
-            if ((Object) ServiceSessionId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(ServiceSessionId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             SessionId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -389,21 +349,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region GetHashCode()
 
         /// <summary>
-        /// Return the HashCode of this object.
+        /// Return the hash code of this object.
         /// </summary>
-        /// <returns>The HashCode of this object.</returns>
+        /// <returns>The hash code of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.GetHashCode() ?? 0;
 
         #endregion
 
         #region (override) ToString()
 
         /// <summary>
-        /// Return a text representation of this object.
+        /// Return a text-representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "";
 
         #endregion
 

@@ -285,7 +285,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             var CDR  = new ChargeDetailRecord(
                            CDRNature:               CDRNatures.Final,
                            ServiceSessionId:        ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
-                           RequestedServiceId:      Service_Id.Parse("1"),
+                           RequestedServiceId:      Service_Id.GenericChargeService,
                            EVSEId:                  ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
                            UserId:                  ChargeDetailRecord.AuthenticationStart.ToEMIP().Value,
                            StartTime:               ChargeDetailRecord.SessionTime.StartTime,

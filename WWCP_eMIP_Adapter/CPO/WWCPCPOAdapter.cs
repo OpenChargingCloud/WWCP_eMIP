@@ -4455,10 +4455,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 var response  = await CPORoaming.
                                           GetServiceAuthorisation(PartnerId:                PartnerId,
-                                                                  OperatorId:               (OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
+                                                                  OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(ChargingLocation.EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
-                                                                  RequestedServiceId:       Service_Id. Parse("1"),
+                                                                  RequestedServiceId:       Service_Id.GenericChargeService,
                                                                   TransactionId:            Transaction_Id.Random(),
                                                                   PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
 
@@ -4655,10 +4655,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                 var response  = await CPORoaming.
                                           GetServiceAuthorisation(PartnerId:                PartnerId,
-                                                                  OperatorId:               (OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
+                                                                  OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                                                   EVSEId:                   WWCP.EVSE_Id.Parse(CustomEVSEIdMapper(ChargingLocation.EVSEId.ToString())).ToEMIP().Value,
                                                                   UserId:                   User_Id.Parse(AuthIdentification.AuthToken.ToString()),
-                                                                  RequestedServiceId:       Service_Id. Parse("1"),
+                                                                  RequestedServiceId:       Service_Id.GenericChargeService,
                                                                   TransactionId:            Transaction_Id.Random(),
                                                                   PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
 

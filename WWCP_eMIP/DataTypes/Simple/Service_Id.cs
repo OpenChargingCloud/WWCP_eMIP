@@ -27,38 +27,70 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for service identifications.
+    /// </summary>
+    public static class ServiceIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this service identification is null or empty.
+        /// </summary>
+        /// <param name="ServiceId">A service identification.</param>
+        public static Boolean IsNullOrEmpty(this Service_Id? ServiceId)
+            => !ServiceId.HasValue || ServiceId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this service identification is null or empty.
+        /// </summary>
+        /// <param name="ServiceId">A service identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Service_Id? ServiceId)
+            => ServiceId.HasValue && ServiceId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a service.
     /// </summary>
-    public struct Service_Id : IId,
-                               IEquatable <Service_Id>,
-                               IComparable<Service_Id>
+    public readonly struct Service_Id : IId,
+                                        IEquatable <Service_Id>,
+                                        IComparable<Service_Id>
 
     {
 
         #region Data
 
-        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
-
         /// <summary>
-        /// The internal identification.
+        /// The internal service identification.
         /// </summary>
         private readonly String InternalId;
+
+        /// <summary>
+        /// Private non-cryptographic random number generator.
+        /// </summary>
+        private static readonly Random _random = new Random();
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Indicates whether this identification is null or empty.
+        /// Indicates whether this service identification is null or empty.
         /// </summary>
         public Boolean IsNullOrEmpty
             => InternalId.IsNullOrEmpty();
 
         /// <summary>
+        /// Indicates whether this service identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
+
+        /// <summary>
         /// The length of the service identificator.
         /// </summary>
         public UInt64 Length
-            => (UInt64) InternalId.Length;
+            => (UInt64) InternalId?.Length;
 
         #endregion
 
@@ -76,82 +108,77 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #endregion
 
 
-        #region (static) Parse   (Text)
+        #region (static) Random(Length)
+
+        /// <summary>
+        /// Create a new random user identification.
+        /// </summary>
+        /// <param name="Length">The expected length of the random user identification.</param>
+        public static Service_Id Random(Byte Length = 15)
+
+            => new Service_Id(_random.RandomString(Length).ToUpper());
+
+        #endregion
+
+        #region Parse   (Text)
 
         /// <summary>
         /// Parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service identification.</param>
+        /// <param name="Text">A text-representation of a service identification.</param>
         public static Service_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out Service_Id serviceId))
+                return serviceId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a service identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out Service_Id ServiceId))
-                return ServiceId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a service identification is invalid!");
+            throw new ArgumentException("Invalid text-representation of a service identification: '" + Text + "'!",
+                                        nameof(Text));
 
         }
 
         #endregion
 
-        #region (static) TryParse(Text)
+        #region TryParse(Text)
 
         /// <summary>
         /// Try to parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service identification.</param>
+        /// <param name="Text">A text-representation of a service identification.</param>
         public static Service_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Service_Id ServiceId))
-                return ServiceId;
+            if (TryParse(Text, out Service_Id serviceId))
+                return serviceId;
 
-            return new Service_Id?();
+            return null;
 
         }
 
         #endregion
 
-        #region (static) TryParse(Text, out ServiceId)
+        #region TryParse(Text, out ServiceId)
 
         /// <summary>
         /// Try to parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text representation of a service identification.</param>
-        /// <param name="ServiceId">The parsed service identification.</param>
+        /// <param name="Text">A text-representation of a service identification.</param>
+        /// <param name="ServiceId">The parsed user identification.</param>
         public static Boolean TryParse(String Text, out Service_Id ServiceId)
         {
 
-            #region Initial checks
+            Text = Text?.Trim();
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
+            if (Text.IsNotNullOrEmpty())
             {
-                ServiceId = default;
-                return false;
+                try
+                {
+                    ServiceId = new Service_Id(Text);
+                    return true;
+                }
+                catch
+                { }
             }
-
-            #endregion
-
-            try
-            {
-                ServiceId = new Service_Id(Text);
-                return true;
-            }
-            catch (Exception)
-            { }
 
             ServiceId = default;
             return false;
@@ -163,13 +190,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this service identification.
+        /// Clone this user identification.
         /// </summary>
         public Service_Id Clone
 
             => new Service_Id(
-                   new String(InternalId.ToCharArray())
+                   new String(InternalId?.ToCharArray())
                );
+
+        #endregion
+
+
+        #region (static) Generic Charge Service
+
+        /// <summary>
+        /// Generic Charge Service ("1")
+        /// </summary>
+        public static Service_Id GenericChargeService
+            => new Service_Id("1");
 
         #endregion
 
@@ -181,23 +219,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Service_Id ServiceId1, Service_Id ServiceId2)
-        {
+        public static Boolean operator == (Service_Id ServiceId1,
+                                           Service_Id ServiceId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ServiceId1, ServiceId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ServiceId1 == null) || ((Object) ServiceId2 == null))
-                return false;
-
-            return ServiceId1.Equals(ServiceId2);
-
-        }
+            => ServiceId1.Equals(ServiceId2);
 
         #endregion
 
@@ -206,11 +234,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Service_Id ServiceId1, Service_Id ServiceId2)
-            => !(ServiceId1 == ServiceId2);
+        public static Boolean operator != (Service_Id ServiceId1,
+                                           Service_Id ServiceId2)
+
+            => !ServiceId1.Equals(ServiceId2);
 
         #endregion
 
@@ -219,18 +249,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Service_Id ServiceId1, Service_Id ServiceId2)
-        {
+        public static Boolean operator < (Service_Id ServiceId1,
+                                          Service_Id ServiceId2)
 
-            if ((Object) ServiceId1 == null)
-                throw new ArgumentNullException(nameof(ServiceId1), "The given ServiceId1 must not be null!");
-
-            return ServiceId1.CompareTo(ServiceId2) < 0;
-
-        }
+            => ServiceId1.CompareTo(ServiceId2) < 0;
 
         #endregion
 
@@ -239,11 +264,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Service_Id ServiceId1, Service_Id ServiceId2)
-            => !(ServiceId1 > ServiceId2);
+        public static Boolean operator <= (Service_Id ServiceId1,
+                                           Service_Id ServiceId2)
+
+            => ServiceId1.CompareTo(ServiceId2) <= 0;
 
         #endregion
 
@@ -252,18 +279,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Service_Id ServiceId1, Service_Id ServiceId2)
-        {
+        public static Boolean operator > (Service_Id ServiceId1,
+                                          Service_Id ServiceId2)
 
-            if ((Object) ServiceId1 == null)
-                throw new ArgumentNullException(nameof(ServiceId1), "The given ServiceId1 must not be null!");
-
-            return ServiceId1.CompareTo(ServiceId2) > 0;
-
-        }
+            => ServiceId1.CompareTo(ServiceId2) > 0;
 
         #endregion
 
@@ -272,17 +294,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="ServiceId1">A service identification.</param>
-        /// <param name="ServiceId2">Another service identification.</param>
+        /// <param name="ServiceId1">An user identification.</param>
+        /// <param name="ServiceId2">Another user identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Service_Id ServiceId1, Service_Id ServiceId2)
-            => !(ServiceId1 < ServiceId2);
+        public static Boolean operator >= (Service_Id ServiceId1,
+                                           Service_Id ServiceId2)
+
+            => ServiceId1.CompareTo(ServiceId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ServiceId> Members
+        #region IComparable<Service_Id> Members
 
         #region CompareTo(Object)
 
@@ -291,18 +315,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Object">An object to compare with.</param>
         public Int32 CompareTo(Object Object)
-        {
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Service_Id ServiceId))
-                throw new ArgumentException("The given object is not a service identification!",
-                                            nameof(Object));
-
-            return CompareTo(ServiceId);
-
-        }
+            => Object is Service_Id serviceId
+                   ? CompareTo(serviceId)
+                   : throw new ArgumentException("The given object is not a service identification!",
+                                                 nameof(Object));
 
         #endregion
 
@@ -313,20 +330,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="ServiceId">An object to compare with.</param>
         public Int32 CompareTo(Service_Id ServiceId)
-        {
 
-            if ((Object) ServiceId == null)
-                throw new ArgumentNullException(nameof(ServiceId),  "The given service identification must not be null!");
-
-            return String.Compare(InternalId, ServiceId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              ServiceId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<ServiceId> Members
+        #region IEquatable<Service_Id> Members
 
         #region Equals(Object)
 
@@ -336,36 +349,24 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Object">An object to compare with.</param>
         /// <returns>true|false</returns>
         public override Boolean Equals(Object Object)
-        {
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is Service_Id ServiceId))
-                return false;
-
-            return Equals(ServiceId);
-
-        }
+            => Object is Service_Id serviceId &&
+                   Equals(serviceId);
 
         #endregion
 
         #region Equals(ServiceId)
 
         /// <summary>
-        /// Compares two ServiceIds for equality.
+        /// Compares two user identifications for equality.
         /// </summary>
-        /// <param name="ServiceId">A service identification to compare with.</param>
+        /// <param name="ServiceId">An user identification to compare with.</param>
         /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(Service_Id ServiceId)
-        {
 
-            if ((Object) ServiceId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(ServiceId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             ServiceId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -374,21 +375,23 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region GetHashCode()
 
         /// <summary>
-        /// Return the HashCode of this object.
+        /// Return the hash code of this object.
         /// </summary>
-        /// <returns>The HashCode of this object.</returns>
+        /// <returns>The hash code of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
         #region (override) ToString()
 
         /// <summary>
-        /// Return a text representation of this object.
+        /// Return a text-representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "";
 
         #endregion
 

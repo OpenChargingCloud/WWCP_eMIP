@@ -136,7 +136,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="PartnerProductId">The unique identification of the charging product.</param>
         /// <param name="MeterReports">An optional enumeration of meter reports.</param>
         /// 
-        /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
+        /// <param name="InternalData">An optional dictionary of customer-specific data.</param>
         public ChargeDetailRecord(CDRNatures                           CDRNature,
                                   ServiceSession_Id                    ServiceSessionId,
                                   Service_Id                           RequestedServiceId,
@@ -153,9 +153,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                   PartnerProduct_Id?                   PartnerProductId         = null,
                                   IEnumerable<MeterReport>             MeterReports             = null,
 
-                                  IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                  IReadOnlyDictionary<String, Object>  InternalData             = null)
 
-            : base(CustomData)
+            : base(InternalData)
 
         {
 

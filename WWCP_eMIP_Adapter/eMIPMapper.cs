@@ -308,7 +308,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                                                            "kWh",
                                                                            MeterTypes.TotalEnergy),
                                                     },
-                           CustomData:              new Dictionary<String, Object> {
+                           InternalData:              new Dictionary<String, Object> {
                                                         { WWCP_CDR, ChargeDetailRecord }
                                                     });
 

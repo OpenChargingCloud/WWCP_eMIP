@@ -302,7 +302,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
 
             if (DisableLogging == false)
             {
-                Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, this.LoggingPath));
+                Directory.CreateDirectory(this.LoggingPath);
             }
 
             this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,

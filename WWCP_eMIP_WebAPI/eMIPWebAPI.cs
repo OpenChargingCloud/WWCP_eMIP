@@ -34,7 +34,7 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
 {
 
     /// <summary>
@@ -136,7 +136,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     /// <summary>
     /// A HTTP API providing eMIP+ data structures.
     /// </summary>
-    public class WebAPI
+    public class eMIPWebAPI
     {
 
         #region Data
@@ -176,34 +176,38 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <summary>
         /// The HTTP server for serving the eMIP+ WebAPI.
         /// </summary>
-        public HTTPServer<RoamingNetworks, RoamingNetwork>  HTTPServer       { get; }
+        public HTTPServer<RoamingNetworks, RoamingNetwork>  HTTPServer        { get; }
 
         /// <summary>
         /// The HTTP URI prefix.
         /// </summary>
-        public HTTPPath                                     URLPathPrefix    { get; }
+        public HTTPPath                                     URLPathPrefix     { get; }
 
         /// <summary>
         /// The HTTP realm, if HTTP Basic Authentication is used.
         /// </summary>
-        public String                                       HTTPRealm        { get; }
+        public String                                       HTTPRealm         { get; }
 
         /// <summary>
         /// An enumeration of logins for an optional HTTP Basic Authentication.
         /// </summary>
-        public IEnumerable<KeyValuePair<String, String>>    HTTPLogins       { get; }
+        public IEnumerable<KeyValuePair<String, String>>    HTTPLogins        { get; }
 
+
+        public Boolean                                      DisableLogging    { get; }
+
+        public String                                       LoggingPath       { get; }
 
         /// <summary>
         /// Send debug information via HTTP Server Sent Events.
         /// </summary>
-        public HTTPEventSource<JObject>                     DebugLog         { get; }
+        public HTTPEventSource<JObject>                     DebugLog          { get; }
 
 
         /// <summary>
         /// The DNS client to use.
         /// </summary>
-        public DNSClient                                    DNSClient        { get; }
+        public DNSClient                                    DNSClient         { get; }
 
 
         private readonly List<WWCPCPOAdapter> _CPOAdapters;
@@ -253,16 +257,19 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// 
         /// <param name="XMLNamespaces">An optional delegate to process the XML namespaces.</param>
         /// <param name="XMLPostProcessing">An optional delegate to process the XML after its final creation.</param>
-        public WebAPI(HTTPServer<RoamingNetworks, RoamingNetwork>  HTTPServer,
-                      HTTPPath?                                    URLPathPrefix                       = null,
-                      String                                       HTTPRealm                           = DefaultHTTPRealm,
-                      IEnumerable<KeyValuePair<String, String>>    HTTPLogins                          = null,
+        public eMIPWebAPI(HTTPServer<RoamingNetworks, RoamingNetwork>  HTTPServer,
+                          HTTPPath?                                    URLPathPrefix            = null,
+                          String                                       HTTPRealm                = DefaultHTTPRealm,
+                          IEnumerable<KeyValuePair<String, String>>    HTTPLogins               = null,
 
-                      XMLNamespacesDelegate                        XMLNamespaces                       = null,
-                      XMLPostProcessingDelegate                    XMLPostProcessing                   = null,
+                          XMLNamespacesDelegate                        XMLNamespaces            = null,
+                          XMLPostProcessingDelegate                    XMLPostProcessing        = null,
 
-                      CustomOperatorIdMapperDelegate               CustomOperatorIdMapper              = null,
-                      CustomEVSEIdMapperDelegate                   CustomEVSEIdMapper                  = null)
+                          CustomOperatorIdMapperDelegate               CustomOperatorIdMapper   = null,
+                          CustomEVSEIdMapperDelegate                   CustomEVSEIdMapper       = null,
+
+                          Boolean?                                     DisableLogging           = false,
+                          String?                                      LoggingPath              = null)
 
         {
 
@@ -285,14 +292,25 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             HTTPServer.ResponseLog  += (HTTPProcessor, ServerTimestamp, Request, Response)                       => ResponseLog.WhenAll(HTTPProcessor, ServerTimestamp, Request, Response);
             HTTPServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
 
-            var LogfilePrefix            = "HTTPSSEs" + Path.DirectorySeparatorChar;
+
+            // Logging
+            this.DisableLogging          = DisableLogging ?? false;
+            this.LoggingPath             = LoggingPath    ?? Path.Combine(AppContext.BaseDirectory, "eMIPWebAPI");
+
+            if (this.LoggingPath[^1] != Path.DirectorySeparatorChar)
+                this.LoggingPath += Path.DirectorySeparatorChar;
+
+            if (DisableLogging == false)
+            {
+                Directory.CreateDirectory(this.LoggingPath);
+            }
 
             this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
-                                                                         URLTemplate:              this.URLPathPrefix + "/DebugLog",
+                                                                         URLTemplate:              this.URLPathPrefix + "/" + DebugLogId.ToString(),
                                                                          MaxNumberOfCachedEvents:  10000,
                                                                          RetryIntervall:           TimeSpan.FromSeconds(5),
                                                                          EnableLogging:            true,
-                                                                         LogfilePrefix:            LogfilePrefix);
+                                                                         LogfilePath:              this.LoggingPath);
 
             RegisterURITemplates();
 

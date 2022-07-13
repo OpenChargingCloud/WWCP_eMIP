@@ -1,175 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DBE61B94-D8E1-403F-802B-D40F3B95FAD3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>org.GraphDefined.WWCP.eMIP</RootNamespace>
-    <AssemblyName>org.GraphDefined.WWCP.eMIP</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <LangVersion>8.0</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\WWCP_Core\WWCP.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\org.GraphDefined.WWCP.eMIP.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Styx\libs\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CPO\CPOClient\CPOClient.cs" />
-    <Compile Include="CPO\CPOClient\CPOClientDelegates.cs" />
-    <Compile Include="CPO\CPOClient\CPOClientLogger.cs" />
-    <Compile Include="CPO\CPOClient\ICPOClient.cs" />
-    <Compile Include="CPO\CPOClient\ICPOClientExtentions.cs" />
-    <Compile Include="CPO\CPORoaming.cs" />
-    <Compile Include="CPO\CPOServer\CPOServer.cs" />
-    <Compile Include="CPO\CPOServer\CPOServerDelegates.cs" />
-    <Compile Include="CPO\CPOServer\CPOServerLogger.cs" />
-    <Compile Include="DataTypes\Complex\ChargeDetailRecord.cs" />
-    <Compile Include="DataTypes\Complex\EVSEAvailabilityStatus.cs" />
-    <Compile Include="DataTypes\Complex\SessionEvent.cs" />
-    <Compile Include="DataTypes\Complex\SessionAction.cs" />
-    <Compile Include="DataTypes\Complex\MeterReport.cs" />
-    <Compile Include="DataTypes\Enums\RemoteStartStopValues.cs" />
-    <Compile Include="DataTypes\Enums\CDRNatures.cs" />
-    <Compile Include="DataTypes\Enums\MeterTypeValues.cs" />
-    <Compile Include="DataTypes\Simple\PartnerOperator_Id.cs" />
-    <Compile Include="DataTypes\Simple\SessionEvent_Id.cs" />
-    <Compile Include="DataTypes\Simple\SessionAction_Id.cs" />
-    <Compile Include="DataTypes\Simple\MeterTypes.cs" />
-    <Compile Include="DataTypes\Simple\Booking_Id.cs" />
-    <Compile Include="DataTypes\Simple\SessionEventNatures.cs" />
-    <Compile Include="DataTypes\Simple\SessionActionNatures.cs" />
-    <Compile Include="DataTypes\Enums\ChargingConnectorAvailabilityStatusTypes.cs" />
-    <Compile Include="DataTypes\Enums\ChargingPoolAvailabilityStatusTypes.cs" />
-    <Compile Include="DataTypes\Enums\ChargingStationAvailabilityStatusTypes.cs" />
-    <Compile Include="DataTypes\Enums\AuthorisationValues.cs" />
-    <Compile Include="DataTypes\Enums\EVSEBusyStatusTypes.cs" />
-    <Compile Include="DataTypes\Enums\EVSEAvailabilityStatusTypes.cs" />
-    <Compile Include="DataTypes\Simple\ChargingPool_Id.cs" />
-    <Compile Include="DataTypes\Simple\Provider_Id.cs" />
-    <Compile Include="DataTypes\Simple\ServiceSession_Id.cs" />
-    <Compile Include="DataTypes\Simple\Contract_Id.cs" />
-    <Compile Include="DataTypes\Simple\PartnerProduct_Id.cs" />
-    <Compile Include="DataTypes\Simple\User_Id.cs" />
-    <Compile Include="DataTypes\Simple\Service_Id.cs" />
-    <Compile Include="DataTypes\Simple\Partner_Id.cs" />
-    <Compile Include="DataTypes\Simple\Operator_Id.cs" />
-    <Compile Include="DataTypes\Simple\ChargingConnector_Id.cs" />
-    <Compile Include="DataTypes\Simple\ChargingStation_Id.cs" />
-    <Compile Include="DataTypes\Simple\EVSE_Id.cs" />
-    <Compile Include="DataTypes\Simple\RequestStatus.cs" />
-    <Compile Include="DataTypes\Simple\PartnerServiceSession_Id.cs" />
-    <Compile Include="DataTypes\Simple\Transaction_Id.cs" />
-    <Compile Include="EMP\EMPRoaming.cs" />
-    <Compile Include="EMP\EMPClient\EMPClientLogger.cs" />
-    <Compile Include="EMP\EMPClient\EMPClientDelegates.cs" />
-    <Compile Include="EMP\EMPClient\EMPClient.cs" />
-    <Compile Include="EMP\EMPClient\IEMPClientExtentions.cs" />
-    <Compile Include="EMP\EMPClient\IEMPClient.cs" />
-    <Compile Include="EMP\EMPServer\EMPServer.cs" />
-    <Compile Include="EMP\EMPServer\EMPServerDelegates.cs" />
-    <Compile Include="EMP\EMPServer\EMPServerLogger.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IO\Exceptions\eMIPException.cs" />
-    <Compile Include="IO\eMIPNS.cs" />
-    <Compile Include="IO\SOAP.cs" />
-    <Compile Include="Messages\ARequest.cs" />
-    <Compile Include="Messages\AResponse.cs" />
-    <Compile Include="Messages\AResponseBuilder.cs" />
-    <Compile Include="Messages\CPO\SetChargeDetailRecordRequest.cs" />
-    <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusRequest.cs" />
-    <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusRequest.cs" />
-    <Compile Include="Messages\CPO\SetChargingConnectorAvailabilityStatusResponse.cs" />
-    <Compile Include="Messages\CPO\SetChargingPoolAvailabilityStatusResponse.cs" />
-    <Compile Include="Messages\CPO\SetChargingStationAvailabilityStatusResponse.cs" />
-    <Compile Include="Messages\CPO\GetServiceAuthorisationRequest.cs" />
-    <Compile Include="Messages\CPO\GetServiceAuthorisationResponse.cs" />
-    <Compile Include="Messages\CPO\SetChargeDetailRecordResponse.cs" />
-    <Compile Include="DataTypes\Complex\EVSEBusyStatus.cs" />
-    <Compile Include="Messages\CPO\SetEVSESyntheticStatusResponse.cs" />
-    <Compile Include="Messages\CPO\SetEVSESyntheticStatusRequest.cs" />
-    <Compile Include="Messages\CPO\SetEVSEBusyStatusResponse.cs" />
-    <Compile Include="Messages\CPO\SetEVSEBusyStatusRequest.cs" />
-    <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusResponse.cs" />
-    <Compile Include="Messages\CPO\SetChargingStationAvailabilityStatusRequest.cs" />
-    <Compile Include="Messages\CPO\SetEVSEAvailabilityStatusRequest.cs" />
-    <Compile Include="Messages\CPO\HeartbeatRequest.cs" />
-    <Compile Include="Messages\CPO\HeartbeatResponse.cs" />
-    <Compile Include="Messages\EMP\HeartbeatRequest.cs" />
-    <Compile Include="Messages\EMP\HeartbeatResponse.cs" />
-    <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationRequest.cs" />
-    <Compile Include="Messages\EMP\Incoming\GetServiceAuthorisationResponse.cs" />
-    <Compile Include="Messages\EMP\Incoming\SetChargeDetailRecordRequest.cs" />
-    <Compile Include="Messages\EMP\Incoming\SetChargeDetailRecordResponse.cs" />
-    <Compile Include="Messages\EMP\Incoming\SetSessionEventReportRequest.cs" />
-    <Compile Include="Messages\EMP\Incoming\SetSessionEventReportResponse.cs" />
-    <Compile Include="Messages\EMP\SetServiceAuthorisationRequest.cs" />
-    <Compile Include="Messages\EMP\SetServiceAuthorisationResponse.cs" />
-    <Compile Include="Messages\CPO\SetSessionEventReportRequest.cs" />
-    <Compile Include="Messages\EMP\SetSessionActionRequest.cs" />
-    <Compile Include="Messages\CPO\SetSessionEventReportResponse.cs" />
-    <Compile Include="Messages\EMP\SetSessionActionResponse.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequestRequest.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetSessionActionRequestResponse.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationResponse.cs" />
-    <Compile Include="Messages\CPO\Incoming\SetServiceAuthorisationRequest.cs" />
-    <Compile Include="Messages\IRequest.cs" />
-    <Compile Include="Messages\IResponse.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Version.cs" />
+    <ProjectReference Include="..\..\Hermod\Hermod\Hermod.csproj" />
+    <ProjectReference Include="..\..\Styx\Styx\Styx.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BouncyCastle\crypto\crypto.csproj">
-      <Project>{38872a5f-e87e-4fad-b109-8eb7b2e6a4a0}</Project>
-      <Name>crypto</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Hermod\Hermod\Hermod.csproj">
-      <Project>{477efd16-3627-4473-957d-44ca9a9dfb79}</Project>
-      <Name>Hermod</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Styx\Styx\Styx.csproj">
-      <Project>{af76ecc0-2ca5-4cff-9e1e-ff5478c4b6e4}</Project>
-      <Name>Styx</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

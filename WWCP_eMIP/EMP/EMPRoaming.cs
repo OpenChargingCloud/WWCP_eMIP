@@ -26,6 +26,7 @@ using System.Security.Cryptography.X509Certificates;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using System.Security.Authentication;
 
 #endregion
 
@@ -89,6 +90,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// </summary>
         X509Certificate                      IHTTPClient.ClientCert
             => EMPClient.ClientCert;
+
+        /// <summary>
+        /// The TLS protocol to use.
+        /// </summary>
+        SslProtocols                         IHTTPClient.TLSProtocol
+            => EMPClient.TLSProtocol;
+
+        /// <summary>
+        /// Prefer IPv4 instead of IPv6.
+        /// </summary>
+        Boolean                              IHTTPClient.PreferIPv4
+            => EMPClient.PreferIPv4;
 
         /// <summary>
         /// The HTTP user agent identification.

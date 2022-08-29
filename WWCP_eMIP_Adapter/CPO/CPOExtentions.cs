@@ -131,16 +131,16 @@ namespace org.GraphDefined.WWCP
                                                 ECPrivateKeyParameters                              PrivateKey                                               = null,
                                                 PublicKeyCertificates                               PublicKeyCertificates                                    = null,
 
-                                                CounterValues?                                      CPOClientSendHeartbeatCounter                            = null,
-                                                CounterValues?                                      CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
-                                                CounterValues?                                      CPOClientSetChargingStationAvailabilityStatusCounter     = null,
-                                                CounterValues?                                      CPOClientSetEVSEAvailabilityStatusCounter                = null,
-                                                CounterValues?                                      CPOClientSetChargingConnectorAvailabilityStatusCounter   = null,
-                                                CounterValues?                                      CPOClientSetEVSEBusyStatusCounter                        = null,
-                                                CounterValues?                                      CPOClientSetEVSESyntheticStatusCounter                   = null,
-                                                CounterValues?                                      CPOClientGetServiceAuthorisationCounter                  = null,
-                                                CounterValues?                                      CPOClientSetSessionEventReportCounter                    = null,
-                                                CounterValues?                                      CPOClientSetChargeDetailRecordCounter                    = null)
+                                                APICounterValues?                                   CPOClientSendHeartbeatCounter                            = null,
+                                                APICounterValues?                                   CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
+                                                APICounterValues?                                   CPOClientSetChargingStationAvailabilityStatusCounter     = null,
+                                                APICounterValues?                                   CPOClientSetEVSEAvailabilityStatusCounter                = null,
+                                                APICounterValues?                                   CPOClientSetChargingConnectorAvailabilityStatusCounter   = null,
+                                                APICounterValues?                                   CPOClientSetEVSEBusyStatusCounter                        = null,
+                                                APICounterValues?                                   CPOClientSetEVSESyntheticStatusCounter                   = null,
+                                                APICounterValues?                                   CPOClientGetServiceAuthorisationCounter                  = null,
+                                                APICounterValues?                                   CPOClientSetSessionEventReportCounter                    = null,
+                                                APICounterValues?                                   CPOClientSetChargeDetailRecordCounter                    = null)
 
         {
 

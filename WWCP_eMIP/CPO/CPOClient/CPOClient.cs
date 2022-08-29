@@ -48,52 +48,52 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         public class CPOCounters
         {
 
-            public CounterValues SendHeartbeat                             { get; }
+            public APICounterValues SendHeartbeat                             { get; }
 
-            public CounterValues SetChargingPoolAvailabilityStatus         { get; }
-            public CounterValues SetChargingStationAvailabilityStatus      { get; }
-            public CounterValues SetEVSEAvailabilityStatus                 { get; }
-            public CounterValues SetChargingConnectorAvailabilityStatus    { get; }
+            public APICounterValues SetChargingPoolAvailabilityStatus         { get; }
+            public APICounterValues SetChargingStationAvailabilityStatus      { get; }
+            public APICounterValues SetEVSEAvailabilityStatus                 { get; }
+            public APICounterValues SetChargingConnectorAvailabilityStatus    { get; }
 
-            public CounterValues SetEVSEBusyStatus                         { get; }
-            public CounterValues SetEVSESyntheticStatus                    { get; }
+            public APICounterValues SetEVSEBusyStatus                         { get; }
+            public APICounterValues SetEVSESyntheticStatus                    { get; }
 
-            public CounterValues GetServiceAuthorisation                   { get; }
-            public CounterValues SetSessionEventReport                     { get; }
+            public APICounterValues GetServiceAuthorisation                   { get; }
+            public APICounterValues SetSessionEventReport                     { get; }
 
-            public CounterValues SetChargeDetailRecord                     { get; }
+            public APICounterValues SetChargeDetailRecord                     { get; }
 
 
-            public CPOCounters(CounterValues? SendHeartbeat                            = null,
+            public CPOCounters(APICounterValues? SendHeartbeat                            = null,
 
-                               CounterValues? SetChargingPoolAvailabilityStatus        = null,
-                               CounterValues? SetChargingStationAvailabilityStatus     = null,
-                               CounterValues? SetEVSEAvailabilityStatus                = null,
-                               CounterValues? SetChargingConnectorAvailabilityStatus   = null,
+                               APICounterValues? SetChargingPoolAvailabilityStatus        = null,
+                               APICounterValues? SetChargingStationAvailabilityStatus     = null,
+                               APICounterValues? SetEVSEAvailabilityStatus                = null,
+                               APICounterValues? SetChargingConnectorAvailabilityStatus   = null,
 
-                               CounterValues? SetEVSEBusyStatus                        = null,
-                               CounterValues? SetEVSESyntheticStatus                   = null,
+                               APICounterValues? SetEVSEBusyStatus                        = null,
+                               APICounterValues? SetEVSESyntheticStatus                   = null,
 
-                               CounterValues? GetServiceAuthorisation                  = null,
-                               CounterValues? SetSessionEventReport                    = null,
+                               APICounterValues? GetServiceAuthorisation                  = null,
+                               APICounterValues? SetSessionEventReport                    = null,
 
-                               CounterValues? SetChargeDetailRecord                    = null)
+                               APICounterValues? SetChargeDetailRecord                    = null)
             {
 
-                this.SendHeartbeat                           = SendHeartbeat                          ?? new CounterValues();
+                this.SendHeartbeat                           = SendHeartbeat                          ?? new APICounterValues();
 
-                this.SetChargingPoolAvailabilityStatus       = SetChargingPoolAvailabilityStatus      ?? new CounterValues();
-                this.SetChargingStationAvailabilityStatus    = SetChargingStationAvailabilityStatus   ?? new CounterValues();
-                this.SetEVSEAvailabilityStatus               = SetEVSEAvailabilityStatus              ?? new CounterValues();
-                this.SetChargingConnectorAvailabilityStatus  = SetChargingConnectorAvailabilityStatus ?? new CounterValues();
+                this.SetChargingPoolAvailabilityStatus       = SetChargingPoolAvailabilityStatus      ?? new APICounterValues();
+                this.SetChargingStationAvailabilityStatus    = SetChargingStationAvailabilityStatus   ?? new APICounterValues();
+                this.SetEVSEAvailabilityStatus               = SetEVSEAvailabilityStatus              ?? new APICounterValues();
+                this.SetChargingConnectorAvailabilityStatus  = SetChargingConnectorAvailabilityStatus ?? new APICounterValues();
 
-                this.SetEVSEBusyStatus                       = SetEVSEBusyStatus                      ?? new CounterValues();
-                this.SetEVSESyntheticStatus                  = SetEVSESyntheticStatus                 ?? new CounterValues();
+                this.SetEVSEBusyStatus                       = SetEVSEBusyStatus                      ?? new APICounterValues();
+                this.SetEVSESyntheticStatus                  = SetEVSESyntheticStatus                 ?? new APICounterValues();
 
-                this.GetServiceAuthorisation                 = GetServiceAuthorisation                ?? new CounterValues();
-                this.SetSessionEventReport                   = SetSessionEventReport                  ?? new CounterValues();
+                this.GetServiceAuthorisation                 = GetServiceAuthorisation                ?? new APICounterValues();
+                this.SetSessionEventReport                   = SetSessionEventReport                  ?? new APICounterValues();
 
-                this.SetChargeDetailRecord                   = SetChargeDetailRecord                  ?? new CounterValues();
+                this.SetChargeDetailRecord                   = SetChargeDetailRecord                  ?? new APICounterValues();
 
             }
 
@@ -991,16 +991,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                          TransmissionRetryDelayDelegate       TransmissionRetryDelay                   = null,
                          UInt16?                              MaxNumberOfRetries                       = DefaultMaxNumberOfRetries,
 
-                         CounterValues?                       SendHeartbeat                            = null,
-                         CounterValues?                       SetChargingPoolAvailabilityStatus        = null,
-                         CounterValues?                       SetChargingStationAvailabilityStatus     = null,
-                         CounterValues?                       SetEVSEAvailabilityStatus                = null,
-                         CounterValues?                       SetChargingConnectorAvailabilityStatus   = null,
-                         CounterValues?                       SetEVSEBusyStatus                        = null,
-                         CounterValues?                       SetEVSESyntheticStatus                   = null,
-                         CounterValues?                       GetServiceAuthorisation                  = null,
-                         CounterValues?                       SetSessionEventReport                    = null,
-                         CounterValues?                       SetChargeDetailRecord                    = null,
+                         APICounterValues?                    SendHeartbeat                            = null,
+                         APICounterValues?                    SetChargingPoolAvailabilityStatus        = null,
+                         APICounterValues?                    SetChargingStationAvailabilityStatus     = null,
+                         APICounterValues?                    SetEVSEAvailabilityStatus                = null,
+                         APICounterValues?                    SetChargingConnectorAvailabilityStatus   = null,
+                         APICounterValues?                    SetEVSEBusyStatus                        = null,
+                         APICounterValues?                    SetEVSESyntheticStatus                   = null,
+                         APICounterValues?                    GetServiceAuthorisation                  = null,
+                         APICounterValues?                    SetSessionEventReport                    = null,
+                         APICounterValues?                    SetChargeDetailRecord                    = null,
 
                          Boolean                              DisableLogging                           = false,
                          String                               LoggingPath                              = null,
@@ -1014,6 +1014,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    ClientCert,
+                   System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13,
+                   false,
                    HTTPUserAgent       ?? DefaultHTTPUserAgent,
                    null,
                    null,
@@ -1085,7 +1087,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SendHeartbeat.IncRequests();
+                Counters.SendHeartbeat.IncRequests_OK();
 
                 if (OnSendHeartbeatRequest != null)
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
@@ -1118,6 +1120,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                     RemoteCertificateValidator,
                                                     ClientCertificateSelector,
                                                     ClientCert,
+                                                    null,
+                                                    false,
                                                     HTTPUserAgent,
                                                     URLPathPrefix,
                                                     null,
@@ -1337,7 +1341,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetChargingPoolAvailabilityStatus.IncRequests();
+                Counters.SetChargingPoolAvailabilityStatus.IncRequests_OK();
 
                 if (OnSetChargingPoolAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
@@ -1395,6 +1399,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -1626,7 +1632,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetChargingStationAvailabilityStatus.IncRequests();
+                Counters.SetChargingStationAvailabilityStatus.IncRequests_OK();
 
                 if (OnSetChargingStationAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
@@ -1684,6 +1690,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -1914,7 +1922,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetEVSEAvailabilityStatus.IncRequests();
+                Counters.SetEVSEAvailabilityStatus.IncRequests_OK();
 
                 if (OnSetEVSEAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
@@ -1973,6 +1981,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2203,7 +2213,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetChargingConnectorAvailabilityStatus.IncRequests();
+                Counters.SetChargingConnectorAvailabilityStatus.IncRequests_OK();
 
                 if (OnSetChargingConnectorAvailabilityStatusRequest != null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
@@ -2261,6 +2271,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2492,7 +2504,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetEVSEBusyStatus.IncRequests();
+                Counters.SetEVSEBusyStatus.IncRequests_OK();
 
                 if (OnSetEVSEBusyStatusRequest != null)
                     await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
@@ -2550,6 +2562,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2780,7 +2794,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetEVSESyntheticStatus.IncRequests();
+                Counters.SetEVSESyntheticStatus.IncRequests_OK();
 
                 if (OnSetEVSESyntheticStatusRequest != null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
@@ -2842,6 +2856,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3077,7 +3093,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.GetServiceAuthorisation.IncRequests();
+                Counters.GetServiceAuthorisation.IncRequests_OK();
 
                 if (OnGetServiceAuthorisationRequest != null)
                     await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
@@ -3134,6 +3150,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3366,7 +3384,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetSessionEventReport.IncRequests();
+                Counters.SetSessionEventReport.IncRequests_OK();
 
                 if (OnSetSessionEventReportRequest != null)
                     await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
@@ -3410,6 +3428,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3650,7 +3670,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             try
             {
 
-                Counters.SetChargeDetailRecord.IncRequests();
+                Counters.SetChargeDetailRecord.IncRequests_OK();
 
                 if (OnSetChargeDetailRecordRequest != null)
                     await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
@@ -3704,6 +3724,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
+                                                        null,
+                                                        false,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,

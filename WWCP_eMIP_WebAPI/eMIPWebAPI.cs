@@ -229,17 +229,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
         /// <summary>
         /// An event called whenever a HTTP request came in.
         /// </summary>
-        public HTTPRequestLogEvent   RequestLog    = new HTTPRequestLogEvent();
+        public HTTPRequestLogEvent   RequestLog    = new ();
 
         /// <summary>
         /// An event called whenever a HTTP request could successfully be processed.
         /// </summary>
-        public HTTPResponseLogEvent  ResponseLog   = new HTTPResponseLogEvent();
+        public HTTPResponseLogEvent  ResponseLog   = new ();
 
         /// <summary>
         /// An event called whenever a HTTP request resulted in an error.
         /// </summary>
-        public HTTPErrorLogEvent     ErrorLog      = new HTTPErrorLogEvent();
+        public HTTPErrorLogEvent     ErrorLog      = new ();
 
         #endregion
 
@@ -300,10 +300,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
             if (this.LoggingPath[^1] != Path.DirectorySeparatorChar)
                 this.LoggingPath += Path.DirectorySeparatorChar;
 
-            if (DisableLogging == false)
-            {
+            if (!this.DisableLogging)
                 Directory.CreateDirectory(this.LoggingPath);
-            }
 
             this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
                                                                          URLTemplate:              this.URLPathPrefix + "/" + DebugLogId.ToString(),

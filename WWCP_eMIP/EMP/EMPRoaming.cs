@@ -149,20 +149,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// The CPO client (HTTP client) logger.
         /// </summary>
         HTTPClientLogger                     IHTTPClient.HTTPLogger
-        {
-
-            get
-            {
-                return EMPClient.HTTPLogger;
-            }
-
-            set
-            {
-                if (value is EMPClient.Logger logger)
-                    EMPClient.HTTPLogger = logger;
-            }
-
-        }
+            => EMPClient.HTTPLogger;
 
         /// <summary>
         /// The DNS client defines which DNS servers to use.

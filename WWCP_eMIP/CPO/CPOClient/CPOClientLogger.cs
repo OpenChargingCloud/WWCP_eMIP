@@ -22,6 +22,7 @@ using System;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.Logging;
 
 #endregion
 
@@ -69,10 +70,10 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <param name="LoggingPath">The logging path.</param>
             /// <param name="Context">A context of this API.</param>
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public Logger(CPOClient               CPOClient,
-                          String                  LoggingPath,
-                          String                  Context         = DefaultContext,
-                          LogfileCreatorDelegate  LogfileCreator  = null)
+            public Logger(CPOClient                CPOClient,
+                          String                   LoggingPath,
+                          String                   Context         = DefaultContext,
+                          LogfileCreatorDelegate?  LogfileCreator  = null)
 
                 : this(CPOClient,
                        LoggingPath,
@@ -113,26 +114,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <param name="LogHTTPError_toHTTPSSE">A delegate to log HTTP errors to a HTTP client sent events source.</param>
             /// 
             /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
-            public Logger(ICPOClient                  CPOClient,
-                          String                      LoggingPath,
-                          String                      Context,
+            public Logger(ICPOClient                   CPOClient,
+                          String                       LoggingPath,
+                          String                       Context,
 
-                          HTTPRequestLoggerDelegate   LogHTTPRequest_toConsole,
-                          HTTPResponseLoggerDelegate  LogHTTPResponse_toConsole,
-                          HTTPRequestLoggerDelegate   LogHTTPRequest_toDisc,
-                          HTTPResponseLoggerDelegate  LogHTTPResponse_toDisc,
+                          HTTPRequestLoggerDelegate?   LogHTTPRequest_toConsole    = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPResponse_toConsole   = null,
+                          HTTPRequestLoggerDelegate?   LogHTTPRequest_toDisc       = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPResponse_toDisc      = null,
 
-                          HTTPRequestLoggerDelegate   LogHTTPRequest_toNetwork    = null,
-                          HTTPResponseLoggerDelegate  LogHTTPResponse_toNetwork   = null,
-                          HTTPRequestLoggerDelegate   LogHTTPRequest_toHTTPSSE    = null,
-                          HTTPResponseLoggerDelegate  LogHTTPResponse_toHTTPSSE   = null,
+                          HTTPRequestLoggerDelegate?   LogHTTPRequest_toNetwork    = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPResponse_toNetwork   = null,
+                          HTTPRequestLoggerDelegate?   LogHTTPRequest_toHTTPSSE    = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPResponse_toHTTPSSE   = null,
 
-                          HTTPResponseLoggerDelegate  LogHTTPError_toConsole      = null,
-                          HTTPResponseLoggerDelegate  LogHTTPError_toDisc         = null,
-                          HTTPResponseLoggerDelegate  LogHTTPError_toNetwork      = null,
-                          HTTPResponseLoggerDelegate  LogHTTPError_toHTTPSSE      = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPError_toConsole      = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPError_toDisc         = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPError_toNetwork      = null,
+                          HTTPResponseLoggerDelegate?  LogHTTPError_toHTTPSSE      = null,
 
-                          LogfileCreatorDelegate      LogfileCreator              = null)
+                          LogfileCreatorDelegate?      LogfileCreator              = null)
 
                 : base(CPOClient,
                        LoggingPath,

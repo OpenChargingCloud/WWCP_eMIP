@@ -17,7 +17,6 @@
 
 #region Usings
 
-using System;
 using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -38,13 +37,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Random _Random                    = new Random(DateTime.UtcNow.Millisecond);
-
         /// <summary>
         /// The regular expression for parsing a charging connector identification.
         /// </summary>
-        public  static readonly Regex  ChargingConnectorId_RegEx  = new Regex(@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?X([A-Z0-9][A-Z0-9\*]{0,50})$",
-                                                                              RegexOptions.IgnorePatternWhitespace);
+        public  static readonly Regex  ChargingConnectorId_RegEx  = new (@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?X([A-Z0-9][A-Z0-9\*]{0,50})$",
+                                                                         RegexOptions.IgnorePatternWhitespace);
 
         private        readonly String MinSuffix;
 
@@ -134,12 +131,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Length">The desired length of the identification suffix.</param>
         /// <param name="Mapper">A delegate to modify the newly generated charging connector identification.</param>
-        public static ChargingConnector_Id Random(Operator_Id           OperatorId,
-                                                  Byte                  Length  = 12,
-                                                  Func<String, String>  Mapper  = null)
+        public static ChargingConnector_Id Random(Operator_Id            OperatorId,
+                                                  Byte                   Length  = 12,
+                                                  Func<String, String>?  Mapper  = null)
 
-            => new ChargingConnector_Id(OperatorId,
-                                        (Mapper ?? (_ => _)) (_Random.RandomString((UInt16) (Length < 12 ? 12 : Length > 50 ? 50 : Length))));
+            => new (OperatorId,
+                    (Mapper ?? (_ => _)) (RandomExtensions.RandomString((UInt16) (Length < 12 ? 12 : Length > 50 ? 50 : Length))));
 
         #endregion
 

@@ -17,8 +17,6 @@
 
 #region Usings
 
-using System;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -64,11 +62,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// The internal service identification.
         /// </summary>
         private readonly String InternalId;
-
-        /// <summary>
-        /// Private non-cryptographic random number generator.
-        /// </summary>
-        private static readonly Random _random = new Random();
 
         #endregion
 
@@ -116,7 +109,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Length">The expected length of the random user identification.</param>
         public static Service_Id Random(Byte Length = 15)
 
-            => new Service_Id(_random.RandomString(Length).ToUpper());
+            => new (RandomExtensions.RandomString(Length).ToUpper());
 
         #endregion
 

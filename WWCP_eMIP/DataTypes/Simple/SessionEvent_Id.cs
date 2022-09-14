@@ -17,8 +17,6 @@
 
 #region Usings
 
-using System;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -35,8 +33,6 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
     {
 
         #region Data
-
-        private readonly static Random _Random = new Random(DateTime.Now.Millisecond);
 
         /// <summary>
         /// The internal identification.
@@ -79,7 +75,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         #region (static) Random(Length = 20)
 
         public static SessionEvent_Id Random(Byte Length = 20)
-            => new SessionEvent_Id(_Random.RandomString(Length));
+
+            => new (RandomExtensions.RandomString(Length));
 
         #endregion
 

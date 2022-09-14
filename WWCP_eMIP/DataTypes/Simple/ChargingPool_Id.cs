@@ -17,14 +17,12 @@
 
 #region Usings
 
-using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Aegir;
-using org.GraphDefined.Vanaheimr.Hermod;
+using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
 
@@ -69,14 +67,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Random _Random               = new Random(DateTime.UtcNow.Millisecond);
-
         /// <summary>
         /// The regular expression for parsing a charging pool identification.
         /// All '*' are optional!
         /// </summary>
-        public  static readonly Regex  ChargingPoolId_RegEx  = new Regex(@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?P([A-Z0-9][A-Z0-9\*]{0,50})$",
-                                                                         RegexOptions.IgnorePatternWhitespace);
+        public  static readonly Regex  ChargingPoolId_RegEx  = new (@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?P([A-Z0-9][A-Z0-9\*]{0,50})$",
+                                                                    RegexOptions.IgnorePatternWhitespace);
 
         private        readonly String MinSuffix;
 
@@ -212,12 +208,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Length">The desired length of the identification suffix.</param>
         /// <param name="Mapper">A delegate to modify the newly generated charging pool identification.</param>
-        public static ChargingPool_Id Random(Operator_Id           OperatorId,
-                                             Byte                  Length  = 6,
-                                             Func<String, String>  Mapper  = null)
+        public static ChargingPool_Id Random(Operator_Id            OperatorId,
+                                             Byte                   Length  = 6,
+                                             Func<String, String>?  Mapper  = null)
 
-            => new ChargingPool_Id(OperatorId,
-                                   (Mapper ?? (_ => _)) (_Random.RandomString((UInt16)(Length < 6 ? 6 : Length > 50 ? 50 : Length))));
+            => new (OperatorId,
+                    (Mapper ?? (_ => _)) (RandomExtensions.RandomString((UInt16)(Length < 6 ? 6 : Length > 50 ? 50 : Length))));
 
         #endregion
 

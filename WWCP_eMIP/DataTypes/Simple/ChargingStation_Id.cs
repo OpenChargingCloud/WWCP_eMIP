@@ -17,10 +17,7 @@
 
 #region Usings
 
-using System;
-using System.Linq;
 using System.Text;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -70,14 +67,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Random _Random                  = new Random(DateTime.UtcNow.Millisecond);
-
         /// <summary>
         /// The regular expression for parsing a charging station identification.
         /// All '*' are optional!
         /// </summary>
-        public  static readonly Regex  ChargingStationId_RegEx  = new Regex(@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?S([A-Z0-9][A-Z0-9\*]{0,50})$",
-                                                                            RegexOptions.IgnorePatternWhitespace);
+        public  static readonly Regex  ChargingStationId_RegEx  = new (@"^([A-Z]{2}\*?[A-Z0-9]{3})\*?S([A-Z0-9][A-Z0-9\*]{0,50})$",
+                                                                       RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Char[] StarSplitter             = new Char[] { '*' };
 
@@ -358,12 +353,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="OperatorId">The unique identification of an operator.</param>
         /// <param name="Length">The desired length of the identification suffix.</param>
         /// <param name="Mapper">A delegate to modify the newly generated charging station identification.</param>
-        public static ChargingStation_Id Random(Operator_Id           OperatorId,
-                                                Byte                  Length  = 8,
-                                                Func<String, String>  Mapper  = null)
+        public static ChargingStation_Id Random(Operator_Id            OperatorId,
+                                                Byte                   Length  = 8,
+                                                Func<String, String>?  Mapper  = null)
 
-            => new ChargingStation_Id(OperatorId,
-                                      (Mapper ?? (_ => _)) (_Random.RandomString((UInt16)(Length < 8 ? 8 : Length > 50 ? 50 : Length))));
+            => new (OperatorId,
+                    (Mapper ?? (_ => _)) (RandomExtensions.RandomString((UInt16)(Length < 8 ? 8 : Length > 50 ? 50 : Length))));
 
         #endregion
 

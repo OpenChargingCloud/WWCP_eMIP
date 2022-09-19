@@ -119,7 +119,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                             HTTPResponse                         HTTPResponse        = null,
                             IReadOnlyDictionary<String, Object>  CustomData          = null)
 
-            : base(CustomData)
+            : base(null,
+                   CustomData)
 
         {
 

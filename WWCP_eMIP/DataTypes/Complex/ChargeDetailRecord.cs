@@ -155,7 +155,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
                                   IReadOnlyDictionary<String, Object>  InternalData             = null)
 
-            : base(InternalData)
+            : base(null,
+                   InternalData)
 
         {
 

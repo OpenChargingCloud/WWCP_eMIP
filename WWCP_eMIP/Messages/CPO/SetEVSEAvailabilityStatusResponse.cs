@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -49,18 +50,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetEVSEAvailabilityStatusResponse(SetEVSEAvailabilityStatusRequest     Request,
-                                                 Transaction_Id                       TransactionId,
-                                                 RequestStatus                        RequestStatus,
+        public SetEVSEAvailabilityStatusResponse(SetEVSEAvailabilityStatusRequest  Request,
+                                                 Transaction_Id                    TransactionId,
+                                                 RequestStatus                     RequestStatus,
 
-                                                 HTTPResponse                         HTTPResponse   = null,
-                                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                                 HTTPResponse?                     HTTPResponse   = null,
+                                                 JObject?                          CustomData     = null,
+                                                 UserDefinedDictionary?            InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -436,11 +439,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetEVSEAvailabilityStatus request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSEAvailabilityStatusRequest     Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetEVSEAvailabilityStatusRequest  Request,
+                           JObject?                          CustomData     = null,
+                           UserDefinedDictionary?            InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -453,19 +458,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetEVSEAvailabilityStatusResponse">A SetEVSEAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSEAvailabilityStatusResponse    SetEVSEAvailabilityStatusResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                          = null)
+            public Builder(SetEVSEAvailabilityStatusResponse?  SetEVSEAvailabilityStatusResponse   = null,
+                           JObject?                            CustomData                          = null,
+                           UserDefinedDictionary?              InternalData                        = null)
 
                 : base(SetEVSEAvailabilityStatusResponse?.Request,
-                       SetEVSEAvailabilityStatusResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetEVSEAvailabilityStatusResponse.InternalData.Concat(CustomData)
-                                 : SetEVSEAvailabilityStatusResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetEVSEAvailabilityStatusResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetEVSEAvailabilityStatusResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetEVSEAvailabilityStatusResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetEVSEAvailabilityStatusResponse != null)
+                if (SetEVSEAvailabilityStatusResponse is not null)
                 {
                     this.TransactionId  = SetEVSEAvailabilityStatusResponse.TransactionId;
                     this.RequestStatus  = SetEVSEAvailabilityStatusResponse.RequestStatus;

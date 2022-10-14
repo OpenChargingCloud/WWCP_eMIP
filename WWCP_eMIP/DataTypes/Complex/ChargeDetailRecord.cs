@@ -24,10 +24,11 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
@@ -137,25 +138,26 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="MeterReports">An optional enumeration of meter reports.</param>
         /// 
         /// <param name="InternalData">An optional dictionary of customer-specific data.</param>
-        public ChargeDetailRecord(CDRNatures                           CDRNature,
-                                  ServiceSession_Id                    ServiceSessionId,
-                                  Service_Id                           RequestedServiceId,
-                                  EVSE_Id                              EVSEId,
-                                  User_Id                              UserId,
-                                  DateTime                             StartTime,
-                                  DateTime                             EndTime,
+        public ChargeDetailRecord(CDRNatures                 CDRNature,
+                                  ServiceSession_Id          ServiceSessionId,
+                                  Service_Id                 RequestedServiceId,
+                                  EVSE_Id                    EVSEId,
+                                  User_Id                    UserId,
+                                  DateTime                   StartTime,
+                                  DateTime                   EndTime,
 
-                                  Contract_Id?                         UserContractIdAlias      = null,
-                                  ServiceSession_Id?                   ExecPartnerSessionId     = null,
-                                  Operator_Id?                         ExecPartnerOperatorId    = null,
-                                  ServiceSession_Id?                   SalesPartnerSessionId    = null,
-                                  Provider_Id?                         SalesPartnerOperatorId   = null,
-                                  PartnerProduct_Id?                   PartnerProductId         = null,
-                                  IEnumerable<MeterReport>             MeterReports             = null,
+                                  Contract_Id?               UserContractIdAlias      = null,
+                                  ServiceSession_Id?         ExecPartnerSessionId     = null,
+                                  Operator_Id?               ExecPartnerOperatorId    = null,
+                                  ServiceSession_Id?         SalesPartnerSessionId    = null,
+                                  Provider_Id?               SalesPartnerOperatorId   = null,
+                                  PartnerProduct_Id?         PartnerProductId         = null,
+                                  IEnumerable<MeterReport>?  MeterReports             = null,
 
-                                  IReadOnlyDictionary<String, Object>  InternalData             = null)
+                                  JObject?                   CustomData               = null,
+                                  UserDefinedDictionary?     InternalData             = null)
 
-            : base(null,
+            : base(CustomData,
                    InternalData)
 
         {
@@ -174,7 +176,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             this.SalesPartnerSessionId   = SalesPartnerSessionId;
             this.SalesPartnerOperatorId  = SalesPartnerOperatorId;
             this.PartnerProductId        = PartnerProductId;
-            this.MeterReports            = MeterReports ?? new MeterReport[0];
+            this.MeterReports            = MeterReports ?? Array.Empty<MeterReport>();
 
         }
 
@@ -878,14 +880,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
             /// </summary>
             /// <param name="ChargeDetailRecord">An optional charge detail record.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(ChargeDetailRecord                  ChargeDetailRecord   = null,
-                           IReadOnlyDictionary<String, Object> CustomData           = null)
+            public Builder(ChargeDetailRecord?     ChargeDetailRecord   = null,
+                           JObject?                CustomData           = null,
+                           UserDefinedDictionary?  InternalData         = null)
 
-                : base(CustomData)
+                : base(CustomData,
+                       InternalData)
 
             {
 
-                if (ChargeDetailRecord != null)
+                if (ChargeDetailRecord is not null)
                 {
 
                     this.CDRNature               = ChargeDetailRecord.CDRNature;
@@ -1074,7 +1078,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                           PartnerProductId,
                                           MeterReports,
 
-                                          internalData);
+                                          CustomData,
+                                          InternalData);
 
             #endregion
 

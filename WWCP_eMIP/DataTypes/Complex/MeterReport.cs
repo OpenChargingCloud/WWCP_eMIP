@@ -28,7 +28,7 @@ using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
@@ -68,13 +68,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Unit">The unit of the meter value.</param>
         /// <param name="Type">The type of the meter value.</param>
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
-        private MeterReport(String                               Value,
-                            String                               Unit,
-                            MeterTypes                           Type,
-                            IReadOnlyDictionary<String, Object>  CustomData    = null)
+        private MeterReport(String                  Value,
+                            String                  Unit,
+                            MeterTypes              Type,
+                            JObject?                CustomData     = null,
+                            UserDefinedDictionary?  InternalData   = null)
 
-            : base(null,
-                   CustomData)
+            : base(CustomData,
+                   InternalData)
 
         {
 
@@ -106,15 +107,17 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Unit">The unit of the meter value.</param>
         /// <param name="Type">The type of the meter value (energy, duration, ...).</param>
         /// <param name="CustomData">An optional dictionary of customer-specific data.</param>
-        public static MeterReport Create(String                               Value,
-                                         String                               Unit,
-                                         MeterTypes                           Type,
-                                         IReadOnlyDictionary<String, Object>  CustomData  = null)
+        public static MeterReport Create(String                  Value,
+                                         String                  Unit,
+                                         MeterTypes              Type,
+                                         JObject?                CustomData     = null,
+                                         UserDefinedDictionary?  InternalData   = null)
 
-            => new MeterReport(Value,
-                               Unit,
-                               Type,
-                               CustomData);
+            => new (Value,
+                    Unit,
+                    Type,
+                    CustomData,
+                    InternalData);
 
         #endregion
 

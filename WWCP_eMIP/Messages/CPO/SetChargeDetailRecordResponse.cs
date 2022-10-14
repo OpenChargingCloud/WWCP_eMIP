@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -65,12 +66,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest         Request,
-                                             Transaction_Id                       TransactionId,
-                                             RequestStatus                        RequestStatus,
+        public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest  Request,
+                                             Transaction_Id                TransactionId,
+                                             RequestStatus                 RequestStatus,
 
-                                             HTTPResponse                         HTTPResponse   = null,
-                                             IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                             HTTPResponse?                 HTTPResponse   = null,
+                                             JObject?                      CustomData     = null,
+                                             UserDefinedDictionary?        InternalData   = null)
 
             : this(Request,
                    TransactionId,
@@ -78,7 +80,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    RequestStatus,
                    null,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -97,20 +100,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="SalesPartnerOperatorId">An optional sales partner operator identification.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest         Request,
-                                             Transaction_Id                       TransactionId,
-                                             ServiceSession_Id                    ServiceSessionId,
-                                             RequestStatus                        RequestStatus,
+        public SetChargeDetailRecordResponse(SetChargeDetailRecordRequest  Request,
+                                             Transaction_Id                TransactionId,
+                                             ServiceSession_Id             ServiceSessionId,
+                                             RequestStatus                 RequestStatus,
 
-                                             PartnerOperator_Id?                  SalesPartnerOperatorId   = null,
-                                             HTTPResponse                         HTTPResponse             = null,
-                                             IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                             PartnerOperator_Id?           SalesPartnerOperatorId   = null,
+                                             HTTPResponse?                 HTTPResponse             = null,
+                                             JObject?                      CustomData               = null,
+                                             UserDefinedDictionary?        InternalData             = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         {
 
@@ -531,11 +536,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetChargeDetailRecord request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargeDetailRecordRequest         Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetChargeDetailRecordRequest  Request,
+                           JObject?                      CustomData     = null,
+                           UserDefinedDictionary?        InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -548,19 +555,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetChargeDetailRecordResponse">A SetChargeDetailRecord response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargeDetailRecordResponse        SetChargeDetailRecordResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                      = null)
+            public Builder(SetChargeDetailRecordResponse?  SetChargeDetailRecordResponse   = null,
+                           JObject?                        CustomData                      = null,
+                           UserDefinedDictionary?          InternalData                    = null)
 
                 : base(SetChargeDetailRecordResponse?.Request,
-                       SetChargeDetailRecordResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetChargeDetailRecordResponse.InternalData.Concat(CustomData)
-                                 : SetChargeDetailRecordResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetChargeDetailRecordResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetChargeDetailRecordResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetChargeDetailRecordResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetChargeDetailRecordResponse != null)
+                if (SetChargeDetailRecordResponse is not null)
                 {
 
                     this.TransactionId           = SetChargeDetailRecordResponse.TransactionId;

@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -49,18 +50,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetSessionActionRequestResponse(SetSessionActionRequestRequest              Request,
-                                        Transaction_Id                       TransactionId,
-                                        RequestStatus                        RequestStatus,
+        public SetSessionActionRequestResponse(SetSessionActionRequestRequest  Request,
+                                               Transaction_Id                  TransactionId,
+                                               RequestStatus                   RequestStatus,
 
-                                        HTTPResponse                         HTTPResponse   = null,
-                                        IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                               HTTPResponse?                   HTTPResponse   = null,
+                                               JObject?                        CustomData     = null,
+                                               UserDefinedDictionary?          InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -291,16 +294,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <param name="TransactionId">The transaction identification.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional custom data.</param>
-        public static SetSessionActionRequestResponse SystemError(SetSessionActionRequestRequest              Request,
-                                                           Transaction_Id                       TransactionId,
-                                                           HTTPResponse                         HTTPResponse   = null,
-                                                           IReadOnlyDictionary<String, Object>  CustomData     = null)
+        public static SetSessionActionRequestResponse SystemError(SetSessionActionRequestRequest  Request,
+                                                                  Transaction_Id                  TransactionId,
+                                                                  HTTPResponse?                   HTTPResponse   = null,
+                                                                  JObject?                        CustomData     = null,
+                                                                  UserDefinedDictionary?          InternalData   = null)
 
-            => new SetSessionActionRequestResponse(Request,
-                                            TransactionId,
-                                            RequestStatus.SystemError,
-                                            HTTPResponse,
-                                            CustomData);
+            => new (Request,
+                    TransactionId,
+                    RequestStatus.SystemError,
+                    HTTPResponse,
+                    CustomData,
+                    InternalData);
 
         #endregion
 
@@ -454,11 +459,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetSessionAction request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionRequestRequest              Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetSessionActionRequestRequest  Request,
+                           JObject?                        CustomData     = null,
+                           UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -471,19 +478,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionActionRequestResponse      SetSessionActionResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                 = null)
+            public Builder(SetSessionActionRequestResponse?  SetSessionActionResponse   = null,
+                           JObject?                          CustomData                 = null,
+                           UserDefinedDictionary?            InternalData               = null)
 
                 : base(SetSessionActionResponse?.Request,
-                       SetSessionActionResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetSessionActionResponse.InternalData.Concat(CustomData)
-                                 : SetSessionActionResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetSessionActionResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetSessionActionResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetSessionActionResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetSessionActionResponse != null)
+                if (SetSessionActionResponse is not null)
                 {
                     this.TransactionId  = SetSessionActionResponse.TransactionId;
                     this.RequestStatus  = SetSessionActionResponse.RequestStatus;

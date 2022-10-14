@@ -26,7 +26,7 @@ using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>

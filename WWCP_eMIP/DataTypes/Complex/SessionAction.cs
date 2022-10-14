@@ -25,7 +25,7 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>

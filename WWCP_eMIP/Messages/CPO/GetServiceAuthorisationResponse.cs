@@ -30,7 +30,7 @@ using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -78,7 +78,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// <summary>
         /// Optional information from the CPO to the eMSP.
         /// </summary>
-        public String                    Parameter                   { get; }
+        public String?                   Parameter                   { get; }
 
         #endregion
 
@@ -95,12 +95,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest       Request,
-                                               Transaction_Id                       TransactionId,
-                                               RequestStatus                        RequestStatus,
+        public GetServiceAuthorisationResponse(GetServiceAuthorisationRequest  Request,
+                                               Transaction_Id                  TransactionId,
+                                               RequestStatus                   RequestStatus,
 
-                                               HTTPResponse                         HTTPResponse   = null,
-                                               IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                               HTTPResponse?                   HTTPResponse   = null,
+                                               JObject?                        CustomData     = null,
+                                               UserDefinedDictionary?          InternalData   = null)
 
             : this(Request,
                    TransactionId,
@@ -113,7 +114,8 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                    null,
                    null,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -146,16 +148,18 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                                                Provider_Id?                         SalesPartnerOperatorId   = null,
                                                Contract_Id?                         UserContractIdAlias      = null,
-                                               IEnumerable<MeterReport>             MeterLimits              = null,
-                                               String                               Parameter                = null,
-                                               HTTPResponse                         HTTPResponse             = null,
-                                               IReadOnlyDictionary<String, Object>  CustomData               = null)
+                                               IEnumerable<MeterReport>?            MeterLimits              = null,
+                                               String?                              Parameter                = null,
+                                               HTTPResponse?                        HTTPResponse             = null,
+                                               JObject?                             CustomData               = null,
+                                               UserDefinedDictionary?               InternalData             = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         {
 
@@ -165,7 +169,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
             this.SalesPartnerOperatorId    = SalesPartnerOperatorId;
             this.UserContractIdAlias       = UserContractIdAlias;
-            this.MeterLimits               = MeterLimits ?? new MeterReport[0];
+            this.MeterLimits               = MeterLimits ?? Array.Empty<MeterReport>();
             this.Parameter                 = Parameter;
 
         }
@@ -757,11 +761,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A GetServiceAuthorisation request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(GetServiceAuthorisationRequest       Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(GetServiceAuthorisationRequest  Request,
+                           JObject?                        CustomData     = null,
+                           UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -774,19 +780,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="GetServiceAuthorisationResponse">A GetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(GetServiceAuthorisationResponse      GetServiceAuthorisationResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                        = null)
+            public Builder(GetServiceAuthorisationResponse?  GetServiceAuthorisationResponse   = null,
+                           JObject?                          CustomData                        = null,
+                           UserDefinedDictionary?            InternalData                      = null)
 
                 : base(GetServiceAuthorisationResponse?.Request,
-                       GetServiceAuthorisationResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? GetServiceAuthorisationResponse.InternalData.Concat(CustomData)
-                                 : GetServiceAuthorisationResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       GetServiceAuthorisationResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(GetServiceAuthorisationResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(GetServiceAuthorisationResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (GetServiceAuthorisationResponse != null)
+                if (GetServiceAuthorisationResponse is not null)
                 {
 
                     this.TransactionId              = GetServiceAuthorisationResponse.TransactionId;

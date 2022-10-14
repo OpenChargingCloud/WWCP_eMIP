@@ -21,7 +21,7 @@ using System.Xml.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>

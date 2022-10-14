@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -65,20 +66,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetSessionEventReportResponse(SetSessionEventReportRequest         Request,
-                                             Transaction_Id                       TransactionId,
-                                             RequestStatus                        RequestStatus,
-                                             ServiceSession_Id                    ServiceSessionId,
-                                             SessionAction_Id                     SessionActionId,
+        public SetSessionEventReportResponse(SetSessionEventReportRequest  Request,
+                                             Transaction_Id                TransactionId,
+                                             RequestStatus                 RequestStatus,
+                                             ServiceSession_Id             ServiceSessionId,
+                                             SessionAction_Id              SessionActionId,
 
-                                             HTTPResponse                         HTTPResponse   = null,
-                                             IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                             HTTPResponse?                 HTTPResponse   = null,
+                                             JObject?                      CustomData     = null,
+                                             UserDefinedDictionary?        InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         {
 
@@ -489,11 +492,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetSessionEventReport request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionEventReportRequest              Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetSessionEventReportRequest  Request,
+                           JObject?                      CustomData     = null,
+                           UserDefinedDictionary?        InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -506,19 +511,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetSessionEventReportResponse">A SetSessionEventReport response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetSessionEventReportResponse        SetSessionEventReportResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                      = null)
+            public Builder(SetSessionEventReportResponse?  SetSessionEventReportResponse   = null,
+                           JObject?                        CustomData                      = null,
+                           UserDefinedDictionary?          InternalData                    = null)
 
                 : base(SetSessionEventReportResponse?.Request,
-                       SetSessionEventReportResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetSessionEventReportResponse.InternalData.Concat(CustomData)
-                                 : SetSessionEventReportResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetSessionEventReportResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetSessionEventReportResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetSessionEventReportResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetSessionEventReportResponse != null)
+                if (SetSessionEventReportResponse is not null)
                 {
                     this.TransactionId     = SetSessionEventReportResponse.TransactionId;
                     this.RequestStatus     = SetSessionEventReportResponse.RequestStatus;

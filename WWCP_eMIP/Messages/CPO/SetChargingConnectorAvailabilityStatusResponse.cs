@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -53,14 +54,16 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                                                               Transaction_Id                                 TransactionId,
                                                               RequestStatus                                  RequestStatus,
 
-                                                              HTTPResponse                                   HTTPResponse   = null,
-                                                              IReadOnlyDictionary<String, Object>            CustomData     = null)
+                                                              HTTPResponse?                                  HTTPResponse   = null,
+                                                              JObject?                                       CustomData     = null,
+                                                              UserDefinedDictionary?                         InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -444,10 +447,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// <param name="Request">A SetChargingConnectorAvailabilityStatus request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetChargingConnectorAvailabilityStatusRequest  Request,
-                           IReadOnlyDictionary<String, Object>            CustomData  = null)
+                           JObject?                                       CustomData     = null,
+                           UserDefinedDictionary?                         InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -460,19 +465,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetChargingConnectorAvailabilityStatusResponse">A SetChargingConnectorAvailabilityStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetChargingConnectorAvailabilityStatusResponse  SetChargingConnectorAvailabilityStatusResponse   = null,
-                           IReadOnlyDictionary<String, Object>             CustomData                                       = null)
+            public Builder(SetChargingConnectorAvailabilityStatusResponse?  SetChargingConnectorAvailabilityStatusResponse   = null,
+                           JObject?                                         CustomData                                       = null,
+                           UserDefinedDictionary?                           InternalData                                     = null)
 
                 : base(SetChargingConnectorAvailabilityStatusResponse?.Request,
-                       SetChargingConnectorAvailabilityStatusResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetChargingConnectorAvailabilityStatusResponse.InternalData.Concat(CustomData)
-                                 : SetChargingConnectorAvailabilityStatusResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetChargingConnectorAvailabilityStatusResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetChargingConnectorAvailabilityStatusResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetChargingConnectorAvailabilityStatusResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetChargingConnectorAvailabilityStatusResponse != null)
+                if (SetChargingConnectorAvailabilityStatusResponse is not null)
                 {
                     this.TransactionId    = SetChargingConnectorAvailabilityStatusResponse.TransactionId;
                     this.RequestStatus    = SetChargingConnectorAvailabilityStatusResponse.RequestStatus;

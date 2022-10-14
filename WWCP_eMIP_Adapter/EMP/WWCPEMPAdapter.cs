@@ -35,7 +35,7 @@
 
 //#endregion
 
-//namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
+//namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 //{
 
 //    /// <summary>

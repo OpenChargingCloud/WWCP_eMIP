@@ -22,10 +22,11 @@ using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
@@ -73,6 +74,49 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
 
         #region Constructor(s)
 
+        //#region AResponse(Request, CustomData = null)
+
+        ///// <summary>
+        ///// Create a new generic eMIP response.
+        ///// </summary>
+        ///// <param name="Request">The eMIP request leading to this result.</param>
+        ///// <param name="CustomData">Optional customer-specific data of the response.</param>
+        //protected AResponseBuilder(TRequest                             Request,
+        //                           IReadOnlyDictionary<String, Object>  CustomData   = null)
+
+        //    : this(Request,
+        //           DateTime.UtcNow,
+        //           CustomData)
+
+        //{ }
+
+        //#endregion
+
+        //#region AResponse(Request, ResponseTimestamp = null, CustomData = null)
+
+        ///// <summary>
+        ///// Create a new generic eMIP response.
+        ///// </summary>
+        ///// <param name="Request">The eMIP request leading to this result.</param>
+        ///// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
+        ///// <param name="CustomData">Optional customer-specific data of the response.</param>
+        //protected AResponseBuilder(TRequest                Request,
+        //                           DateTime?               ResponseTimestamp   = null,
+        //                           JObject?                CustomData          = null,
+        //                           UserDefinedDictionary?  InternalData        = null)
+
+        //        : base(CustomData,
+        //               InternalData)
+
+        //{
+
+        //    this.Request            = Request;
+        //    this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
+
+        //}
+
+        //#endregion
+
         #region AResponse(Request, CustomData = null)
 
         /// <summary>
@@ -80,12 +124,14 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
-        protected AResponseBuilder(TRequest                             Request,
-                                   IReadOnlyDictionary<String, Object>  CustomData   = null)
+        protected AResponseBuilder(TRequest                Request,
+                                   JObject?                CustomData     = null,
+                                   UserDefinedDictionary?  InternalData   = null)
 
             : this(Request,
-                   DateTime.UtcNow,
-                   CustomData)
+                   Timestamp.Now,
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -99,52 +145,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
-        protected AResponseBuilder(TRequest                             Request,
-                                   DateTime?                            ResponseTimestamp   = null,
-                                   IReadOnlyDictionary<String, Object>  CustomData          = null)
+        protected AResponseBuilder(TRequest                Request,
+                                   DateTime?               ResponseTimestamp   = null,
+                                   JObject?                CustomData          = null,
+                                   UserDefinedDictionary?  InternalData        = null)
 
-            : base(CustomData)
-
-        {
-
-            this.Request            = Request;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
-
-        }
-
-        #endregion
-
-        #region AResponse(Request, CustomData = null)
-
-        /// <summary>
-        /// Create a new generic eMIP response.
-        /// </summary>
-        /// <param name="Request">The eMIP request leading to this result.</param>
-        /// <param name="CustomData">Optional customer-specific data of the response.</param>
-        protected AResponseBuilder(TRequest                                   Request,
-                                   IEnumerable<KeyValuePair<String, Object>>  CustomData   = null)
-
-            : this(Request,
-                   DateTime.UtcNow,
-                   CustomData)
-
-        { }
-
-        #endregion
-
-        #region AResponse(Request, ResponseTimestamp = null, CustomData = null)
-
-        /// <summary>
-        /// Create a new generic eMIP response.
-        /// </summary>
-        /// <param name="Request">The eMIP request leading to this result.</param>
-        /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
-        /// <param name="CustomData">Optional customer-specific data of the response.</param>
-        protected AResponseBuilder(TRequest                                   Request,
-                                   DateTime?                                  ResponseTimestamp   = null,
-                                   IEnumerable<KeyValuePair<String, Object>>  CustomData          = null)
-
-            : base(CustomData)
+                : base(CustomData,
+                       InternalData)
 
         {
 

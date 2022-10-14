@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
+namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 {
 
     /// <summary>
@@ -65,20 +66,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// <param name="ExecPartnerOperatorId">The operator identification of the executing operator.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetServiceAuthorisationResponse(SetServiceAuthorisationRequest       Request,
-                                               Transaction_Id                       TransactionId,
-                                               RequestStatus                        RequestStatus,
-                                               ServiceSession_Id                    ServiceSessionId,
+        public SetServiceAuthorisationResponse(SetServiceAuthorisationRequest  Request,
+                                               Transaction_Id                  TransactionId,
+                                               RequestStatus                   RequestStatus,
+                                               ServiceSession_Id               ServiceSessionId,
 
-                                               Operator_Id?                         ExecPartnerOperatorId   = null,
-                                               HTTPResponse                         HTTPResponse            = null,
-                                               IReadOnlyDictionary<String, Object>  CustomData              = null)
+                                               Operator_Id?                    ExecPartnerOperatorId   = null,
+                                               HTTPResponse?                   HTTPResponse            = null,
+                                               JObject?                        CustomData              = null,
+                                               UserDefinedDictionary?          InternalData            = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         {
 
@@ -496,11 +499,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="Request">A SetServiceAuthorisation request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetServiceAuthorisationRequest       Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetServiceAuthorisationRequest  Request,
+                           JObject?                        CustomData     = null,
+                           UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -513,19 +518,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="SetServiceAuthorisationResponse">A SetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetServiceAuthorisationResponse      SetServiceAuthorisationResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                        = null)
+            public Builder(SetServiceAuthorisationResponse?  SetServiceAuthorisationResponse   = null,
+                           JObject?                          CustomData                        = null,
+                           UserDefinedDictionary?            InternalData                      = null)
 
                 : base(SetServiceAuthorisationResponse?.Request,
-                       SetServiceAuthorisationResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetServiceAuthorisationResponse.InternalData.Concat(CustomData)
-                                 : SetServiceAuthorisationResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetServiceAuthorisationResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetServiceAuthorisationResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetServiceAuthorisationResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetServiceAuthorisationResponse != null)
+                if (SetServiceAuthorisationResponse is not null)
                 {
                     this.TransactionId          = SetServiceAuthorisationResponse.TransactionId;
                     this.RequestStatus          = SetServiceAuthorisationResponse.RequestStatus;

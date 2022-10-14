@@ -22,10 +22,12 @@ using System.Linq;
 using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
+//using WWCP = cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
@@ -42,11 +44,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
         /// </summary>
         /// <param name="EVSEId">A WWCP EVSE identification.</param>
         /// <param name="CustomEVSEIdMapper">A delegate to customize the mapping of EVSE identifications.</param>
-        public static EVSE_Id? ToEMIP(this WWCP.EVSE_Id           EVSEId,
-                                      CustomEVSEIdMapperDelegate  CustomEVSEIdMapper  = null)
+        public static EVSE_Id? ToEMIP(this WWCP.EVSE_Id            EVSEId,
+                                      CustomEVSEIdMapperDelegate?  CustomEVSEIdMapper  = null)
         {
 
-            if (EVSE_Id.TryParse(CustomEVSEIdMapper != null
+            if (EVSE_Id.TryParse(CustomEVSEIdMapper is not null
                                      ? CustomEVSEIdMapper(EVSEId.ToString())
                                      : EVSEId.ToString(),
                                  out EVSE_Id eMIPEVSEId))
@@ -308,9 +310,11 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4
                                                                            "kWh",
                                                                            MeterTypes.TotalEnergy),
                                                     },
-                           InternalData:              new Dictionary<String, Object> {
-                                                        { WWCP_CDR, ChargeDetailRecord }
-                                                    });
+                           InternalData:            new UserDefinedDictionary(
+                                                        new Dictionary<String, Object?> {
+                                                            { WWCP_CDR, ChargeDetailRecord }
+                                                        }
+                                                    ));
 
             if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
                 CDR = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, CDR);

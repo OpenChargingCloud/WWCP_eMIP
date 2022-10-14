@@ -17,13 +17,11 @@
 
 #region Usings
 
-using System;
-
-using org.GraphDefined.WWCP;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4
+namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     public class EVSEToEMIPException : eMIPException

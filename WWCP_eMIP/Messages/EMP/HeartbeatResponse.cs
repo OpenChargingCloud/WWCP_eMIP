@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
+namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 {
 
     /// <summary>
@@ -63,20 +64,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public HeartbeatResponse(HeartbeatRequest                     Request,
-                                 Transaction_Id                       TransactionId,
-                                 RequestStatus                        RequestStatus,
+        public HeartbeatResponse(HeartbeatRequest        Request,
+                                 Transaction_Id          TransactionId,
+                                 RequestStatus           RequestStatus,
 
-                                 HTTPResponse                         HTTPResponse   = null,
-                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                 HTTPResponse?           HTTPResponse   = null,
+                                 JObject?                CustomData     = null,
+                                 UserDefinedDictionary?  InternalData   = null)
 
             : this(Request,
                    TimeSpan.FromMinutes(5),
-                   DateTime.UtcNow,
+                   Timestamp.Now,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -92,20 +95,22 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public HeartbeatResponse(HeartbeatRequest                     Request,
-                                 TimeSpan                             HeartbeatPeriod,
-                                 DateTime                             CurrentTime,
-                                 Transaction_Id                       TransactionId,
-                                 RequestStatus                        RequestStatus,
+        public HeartbeatResponse(HeartbeatRequest        Request,
+                                 TimeSpan                HeartbeatPeriod,
+                                 DateTime                CurrentTime,
+                                 Transaction_Id          TransactionId,
+                                 RequestStatus           RequestStatus,
 
-                                 HTTPResponse                         HTTPResponse   = null,
-                                 IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                 HTTPResponse?           HTTPResponse   = null,
+                                 JObject?                CustomData     = null,
+                                 UserDefinedDictionary?  InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         {
 
@@ -519,11 +524,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="Request">A Heartbeat request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(HeartbeatRequest                     Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(HeartbeatRequest        Request,
+                           JObject?                CustomData     = null,
+                           UserDefinedDictionary?  InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -536,19 +543,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.EMP
             /// </summary>
             /// <param name="HeartbeatResponse">A Heartbeat response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(HeartbeatResponse                    HeartbeatResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData          = null)
+            public Builder(HeartbeatResponse?      HeartbeatResponse   = null,
+                           JObject?                CustomData          = null,
+                           UserDefinedDictionary?  InternalData        = null)
 
                 : base(HeartbeatResponse?.Request,
-                       HeartbeatResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? HeartbeatResponse.InternalData.Concat(CustomData)
-                                 : HeartbeatResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       HeartbeatResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(HeartbeatResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(HeartbeatResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (HeartbeatResponse != null)
+                if (HeartbeatResponse is not null)
                 {
 
                     this.HeartbeatPeriod  = HeartbeatResponse.HeartbeatPeriod;

@@ -32,10 +32,11 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using Org.BouncyCastle.Crypto.Parameters;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -290,9 +291,9 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
                               PublicKeyCertificates                              PublicKeyCertificates                           = null)
 
             : base(Id,
+                   RoamingNetwork,
                    Name,
                    Description,
-                   RoamingNetwork,
 
                    IncludeEVSEIds,
                    IncludeEVSEs,
@@ -461,33 +462,33 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
 
                     #region Add additional Gireve session infos
 
-                    if (response.Session != null)
+                    if (response.Session is not null)
                     {
 
                         RoamingNetwork.SessionsStore.Update(response.Session.Id,
                                                             session => {
 
-                            var Gireve = session.AddJSON("Gireve");
+                            //var Gireve = session.AddJSON("Gireve");
 
-                            session.SetJSON("Gireve", "request",              Request.ToXML().ToString());
+                            session.SetInternalData("Gireve.request",              Request.ToXML().ToString());
 
 
                             if (Request.UserContractIdAlias.HasValue)
-                                session.SetJSON("Gireve", "userContractIdAlias",  Request.UserContractIdAlias.Value.ToString());
+                                session.SetInternalData("Gireve.userContractIdAlias",  Request.UserContractIdAlias.Value.ToString());
 
                             if (Request.Parameter.IsNotNullOrEmpty())
-                                session.SetJSON("Gireve", "parameter",            Request.Parameter);
+                                session.SetInternalData("Gireve.parameter",            Request.Parameter);
 
                             if (Request.HTTPRequest != null)
                             {
 
-                                session.SetJSON("Gireve", "remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
+                                session.SetInternalData("Gireve.remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
 
                                 if (Request.HTTPRequest.X_Real_IP       != null)
-                                    session.SetJSON("Gireve", "realIP",           Request.HTTPRequest.X_Real_IP.ToString());
+                                    session.SetInternalData("Gireve.realIP",           Request.HTTPRequest.X_Real_IP.ToString());
 
                                 if (Request.HTTPRequest.X_Forwarded_For != null)
-                                    session.SetJSON("Gireve", "forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
+                                    session.SetInternalData("Gireve.forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
 
                             }
 
@@ -1554,12 +1555,12 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         async Task<PushEVSEDataResult>
 
             ISendPOIData.SetStaticData(EVSE                EVSE,
-                                    TransmissionTypes   TransmissionType,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id    EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 

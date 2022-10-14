@@ -24,8 +24,9 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json.Linq;
 
-using org.GraphDefined.WWCP.eMIPv0_7_4.EMP;
-using org.GraphDefined.WWCP.eMIPv0_7_4.CPO;
+using cloud.charging.open.protocols.WWCP;
+using cloud.charging.open.protocols.eMIPv0_7_4.EMP;
+using cloud.charging.open.protocols.eMIPv0_7_4.CPO;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
@@ -34,7 +35,7 @@ using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
+namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 {
 
     /// <summary>
@@ -326,7 +327,7 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI
 
             HTTPServer.RegisterResourcesFolder(HTTPHostname.Any,
                                                URLPathPrefix,
-                                               "org.GraphDefined.WWCP.eMIPv0_7_4.WebAPI.HTTPRoot",
+                                               "cloud.charging.open.protocols.eMIPv0_7_4.WebAPI.HTTPRoot",
                                                DefaultFilename: "index.html");
 
             #endregion

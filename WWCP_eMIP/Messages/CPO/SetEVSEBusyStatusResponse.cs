@@ -25,10 +25,11 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
-namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
+namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
@@ -49,18 +50,20 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
         /// 
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="CustomData">Optional additional customer-specific data.</param>
-        public SetEVSEBusyStatusResponse(SetEVSEBusyStatusRequest             Request,
-                                         Transaction_Id                       TransactionId,
-                                         RequestStatus                        RequestStatus,
+        public SetEVSEBusyStatusResponse(SetEVSEBusyStatusRequest  Request,
+                                         Transaction_Id            TransactionId,
+                                         RequestStatus             RequestStatus,
 
-                                         HTTPResponse                         HTTPResponse   = null,
-                                         IReadOnlyDictionary<String, Object>  CustomData     = null)
+                                         HTTPResponse?             HTTPResponse   = null,
+                                         JObject?                  CustomData     = null,
+                                         UserDefinedDictionary?    InternalData   = null)
 
             : base(Request,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
-                   CustomData)
+                   CustomData,
+                   InternalData)
 
         { }
 
@@ -436,11 +439,13 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="Request">A SetEVSEBusyStatus request.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSEBusyStatusRequest             Request,
-                           IReadOnlyDictionary<String, Object>  CustomData  = null)
+            public Builder(SetEVSEBusyStatusRequest  Request,
+                           JObject?                  CustomData     = null,
+                           UserDefinedDictionary?    InternalData   = null)
 
                 : base(Request,
-                       CustomData)
+                       CustomData,
+                       InternalData)
 
             { }
 
@@ -453,19 +458,21 @@ namespace org.GraphDefined.WWCP.eMIPv0_7_4.CPO
             /// </summary>
             /// <param name="SetEVSEBusyStatusResponse">A SetEVSEBusyStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
-            public Builder(SetEVSEBusyStatusResponse            SetEVSEBusyStatusResponse   = null,
-                           IReadOnlyDictionary<String, Object>  CustomData                  = null)
+            public Builder(SetEVSEBusyStatusResponse?  SetEVSEBusyStatusResponse   = null,
+                           JObject?                    CustomData                  = null,
+                           UserDefinedDictionary?      InternalData                = null)
 
                 : base(SetEVSEBusyStatusResponse?.Request,
-                       SetEVSEBusyStatusResponse.HasInternalData
-                           ? CustomData?.Count > 0
-                                 ? SetEVSEBusyStatusResponse.InternalData.Concat(CustomData)
-                                 : SetEVSEBusyStatusResponse.InternalData
-                           : CustomData)
+                       CustomData,
+                       SetEVSEBusyStatusResponse.IsNotEmpty
+                           ? InternalData.IsNotEmpty
+                                 ? new UserDefinedDictionary(SetEVSEBusyStatusResponse.InternalData.Concat(InternalData))
+                                 : new UserDefinedDictionary(SetEVSEBusyStatusResponse.InternalData)
+                           : InternalData)
 
             {
 
-                if (SetEVSEBusyStatusResponse != null)
+                if (SetEVSEBusyStatusResponse is not null)
                 {
                     this.TransactionId  = SetEVSEBusyStatusResponse.TransactionId;
                     this.RequestStatus  = SetEVSEBusyStatusResponse.RequestStatus;

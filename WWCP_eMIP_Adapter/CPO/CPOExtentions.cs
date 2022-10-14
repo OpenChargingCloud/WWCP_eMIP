@@ -28,11 +28,12 @@ using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using Org.BouncyCastle.Crypto.Parameters;
-using org.GraphDefined.WWCP.eMIPv0_7_4.CPO;
+using cloud.charging.open.protocols.eMIPv0_7_4.CPO;
+using cloud.charging.open.protocols.WWCP;
 
 #endregion
 
-namespace org.GraphDefined.WWCP
+namespace cloud.charging.open.protocols.WWCP
 {
 
     /// <summary>

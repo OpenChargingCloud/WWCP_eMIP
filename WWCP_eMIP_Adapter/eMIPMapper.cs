@@ -210,8 +210,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                    : new ChargingSession_Id?();
 
 
-        public static eMobilityProvider_Id ToWWCP_ProviderId(this Partner_Id PartnerId)
-            => eMobilityProvider_Id.Parse(PartnerId.ToString());
+        public static EMobilityProvider_Id ToWWCP_ProviderId(this Partner_Id PartnerId)
+            => EMobilityProvider_Id.Parse(PartnerId.ToString());
 
         public static RemoteAuthentication ToWWCP(this User_Id UserId)
         {
@@ -234,22 +234,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         }
 
 
-        public static Provider_Id ToEMIP(this eMobilityProvider_Id ProviderId)
+        public static Provider_Id ToEMIP(this EMobilityProvider_Id ProviderId)
             => Provider_Id.Parse(ProviderId.ToString());
 
-        public static eMobilityProvider_Id ToWWCP(this Provider_Id ProviderId)
-            => eMobilityProvider_Id.Parse(ProviderId.ToString());
+        public static EMobilityProvider_Id ToWWCP(this Provider_Id ProviderId)
+            => EMobilityProvider_Id.Parse(ProviderId.ToString());
 
 
-        public static Provider_Id? ToEMIP(this eMobilityProvider_Id? ProviderId)
+        public static Provider_Id? ToEMIP(this EMobilityProvider_Id? ProviderId)
             => ProviderId.HasValue
                    ? Provider_Id.Parse(ProviderId.ToString())
                    : new Provider_Id?();
 
-        public static eMobilityProvider_Id? ToWWCP(this Provider_Id? ProviderId)
+        public static EMobilityProvider_Id? ToWWCP(this Provider_Id? ProviderId)
             => ProviderId.HasValue
-                   ? eMobilityProvider_Id.Parse(ProviderId.ToString())
-                   : new eMobilityProvider_Id?();
+                   ? EMobilityProvider_Id.Parse(ProviderId.ToString())
+                   : new EMobilityProvider_Id?();
 
 
         public static User_Id? ToEMIP(this AAuthentication Authentication)

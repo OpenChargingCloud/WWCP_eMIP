@@ -103,14 +103,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static EVSEBusyStatusTypes ToEMIP(this EVSEStatusTypes EVSEStatusType)
         {
 
-            switch (EVSEStatusType)
-            {
+            if      (EVSEStatusType == EVSEStatusTypes.Available)
+                return EVSEBusyStatusTypes.Free;
 
-                case EVSEStatusTypes.Available:
-                    return EVSEBusyStatusTypes.Free;
-
-                case EVSEStatusTypes.Reserved:
-                    return EVSEBusyStatusTypes.Reserved;
+            else if (EVSEStatusType == EVSEStatusTypes.Reserved)
+                return EVSEBusyStatusTypes.Reserved;
 
                 // case EVSEStatusTypes.Charging:
                 // case EVSEStatusTypes.DoorNotClosed:
@@ -120,10 +117,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 // case EVSEStatusTypes.PluggedIn:
                 // case EVSEStatusTypes.WaitingForPlugin:
 
-                default:
-                    return EVSEBusyStatusTypes.Busy;
-
-            }
+            else
+                return EVSEBusyStatusTypes.Busy;
 
         }
 
@@ -139,28 +134,23 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static EVSEAvailabilityStatusTypes ToEMIP(this EVSEAdminStatusTypes EVSEAdminStatusType)
         {
 
-            switch (EVSEAdminStatusType)
-            {
+            if (EVSEAdminStatusType == EVSEAdminStatusTypes.OutOfService ||
+                EVSEAdminStatusType == EVSEAdminStatusTypes.Blocked ||
+                EVSEAdminStatusType == EVSEAdminStatusTypes.InternalUse)
+                return EVSEAvailabilityStatusTypes.OutOfOrder;
 
-                case EVSEAdminStatusTypes.OutOfService:
-                case EVSEAdminStatusTypes.Blocked:
-                case EVSEAdminStatusTypes.InternalUse:
-                    return EVSEAvailabilityStatusTypes.OutOfOrder;
+            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Operational)
+                return EVSEAvailabilityStatusTypes.InService;
 
-                case EVSEAdminStatusTypes.Operational:
-                    return EVSEAvailabilityStatusTypes.InService;
+            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Planned ||
+                     EVSEAdminStatusType == EVSEAdminStatusTypes.InDeployment)
+                return EVSEAvailabilityStatusTypes.Future;
 
-                case EVSEAdminStatusTypes.Planned:
-                case EVSEAdminStatusTypes.InDeployment:
-                    return EVSEAvailabilityStatusTypes.Future;
+            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Deleted)
+                return EVSEAvailabilityStatusTypes.Deleted;
 
-                case EVSEAdminStatusTypes.Deleted:
-                    return EVSEAvailabilityStatusTypes.Deleted;
-
-                default:
-                    return EVSEAvailabilityStatusTypes.OutOfOrder;
-
-            }
+            else
+                return EVSEAvailabilityStatusTypes.OutOfOrder;
 
         }
 

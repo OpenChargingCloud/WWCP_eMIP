@@ -115,7 +115,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An optional default charging station operator identification.
         /// </summary>
-        public ChargingStationOperator  DefaultOperator     { get; }
+        public IChargingStationOperator  DefaultOperator     { get; }
 
 
         protected readonly CustomOperatorIdMapperDelegate  CustomOperatorIdMapper;
@@ -259,7 +259,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               CPORoaming                                         CPORoaming,
 
                               Partner_Id                                         PartnerId,
-                              ChargingStationOperator                            DefaultOperator,
+                              IChargingStationOperator                           DefaultOperator,
 
                               IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
                               IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
@@ -1146,7 +1146,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             var Warnings = new List<Warning>();
 
             var _EVSEAvailabilityAdminStatus = EVSEAdminStatusUpdates.
-                                  ToLookup    (evsestatusupdate => evsestatusupdate.EVSE.Id,
+                                  ToLookup    (evsestatusupdate => evsestatusupdate.Id,
                                                evsestatusupdate => evsestatusupdate).
                                   ToDictionary(group            => group.Key,
                                                group            => group.AsEnumerable().OrderByDescending(item => item.NewStatus.Timestamp)).
@@ -1365,7 +1365,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             var Warnings = new List<Warning>();
 
             var _EVSEBusyStatus = EVSEStatusUpdates.
-                                  ToLookup    (evsestatusupdate => evsestatusupdate.EVSE.Id,
+                                  ToLookup    (evsestatusupdate => evsestatusupdate.Id,
                                                evsestatusupdate => evsestatusupdate).
                                   ToDictionary(group            => group.Key,
                                                group            => group.AsEnumerable().OrderByDescending(item => item.NewStatus.Timestamp)).
@@ -2438,22 +2438,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     if (LockTaken)
                     {
 
-                        var FilteredUpdates = StatusUpdates.Where(statusupdate => IncludeEVSEs  (statusupdate.EVSE) &&
-                                                                                  IncludeEVSEIds(statusupdate.EVSE.Id)).
+                        var FilteredUpdates = StatusUpdates.Where(statusupdate => IncludeEVSEIds(statusupdate.Id)).
                                                             ToArray();
 
                         if (FilteredUpdates.Length > 0)
                         {
 
-                            foreach (var Update in FilteredUpdates)
+                            foreach (var update in FilteredUpdates)
                             {
 
                                 // Delay the status update until the EVSE data had been uploaded!
-                                if (EVSEsToAddQueue.Any(evse => evse == Update.EVSE))
-                                    EVSEStatusChangesDelayedQueue.Add(Update);
+                                if (EVSEsToAddQueue.Any(evse => evse.Id == update.Id))
+                                    EVSEStatusChangesDelayedQueue.Add(update);
 
                                 else
-                                    EVSEStatusChangesFastQueue.Add(Update);
+                                    EVSEStatusChangesFastQueue.Add(update);
 
                             }
 
@@ -5196,12 +5195,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 // Copy 'EVSE status changes', remove originals...
                 EVSEAdminStatusChangesDelayedQueueCopy   = new List<EVSEAdminStatusUpdate>(EVSEAdminStatusChangesDelayedQueue);
-                EVSEAdminStatusChangesDelayedQueueCopy.AddRange(EVSEsToAddQueueCopy.SafeSelect(evse => new EVSEAdminStatusUpdate(evse, evse.AdminStatus, evse.AdminStatus)));
+                EVSEAdminStatusChangesDelayedQueueCopy.AddRange(EVSEsToAddQueueCopy.SafeSelect(evse => new EVSEAdminStatusUpdate(evse.Id, evse.AdminStatus, evse.AdminStatus)));
                 EVSEAdminStatusChangesDelayedQueue.Clear();
 
                 // Copy 'EVSE status changes', remove originals...
                 EVSEStatusChangesDelayedQueueCopy        = new List<EVSEStatusUpdate>     (EVSEStatusChangesDelayedQueue);
-                EVSEStatusChangesDelayedQueueCopy.AddRange(EVSEsToAddQueueCopy.     SafeSelect(evse => new EVSEStatusUpdate     (evse, evse.Status,      evse.Status)));
+                EVSEStatusChangesDelayedQueueCopy.AddRange(EVSEsToAddQueueCopy.     SafeSelect(evse => new EVSEStatusUpdate     (evse.Id, evse.Status,      evse.Status)));
                 EVSEStatusChangesDelayedQueue.Clear();
 
                 // Copy 'EVSEs to remove', remove originals...
@@ -5415,12 +5414,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     // Copy 'EVSE status changes', remove originals...
-                    EVSEAdminStatusFastQueueCopy = new List<EVSEAdminStatusUpdate>(EVSEAdminStatusChangesFastQueue.Where(statuschange => !EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)));
-                    EVSEStatusFastQueueCopy = new List<EVSEStatusUpdate>(EVSEStatusChangesFastQueue.Where(statuschange => !EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)));
+                    EVSEAdminStatusFastQueueCopy = new List<EVSEAdminStatusUpdate>(EVSEAdminStatusChangesFastQueue.Where(statuschange => !EVSEsToAddQueue.Any(evse => evse.Id == statuschange.Id)));
+                    EVSEStatusFastQueueCopy = new List<EVSEStatusUpdate>(EVSEStatusChangesFastQueue.Where(statuschange => !EVSEsToAddQueue.Any(evse => evse.Id == statuschange.Id)));
 
                     // Add all evse status changes of EVSEs *NOT YET UPLOADED* into the delayed queue...
-                    var EVSEAdminStatusChangesDelayed = EVSEAdminStatusChangesFastQueue.Where(statuschange => EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)).ToArray();
-                    var EVSEStatusChangesDelayed = EVSEStatusChangesFastQueue.Where(statuschange => EVSEsToAddQueue.Any(evse => evse == statuschange.EVSE)).ToArray();
+                    var EVSEAdminStatusChangesDelayed = EVSEAdminStatusChangesFastQueue.Where(statuschange => EVSEsToAddQueue.Any(evse => evse.Id == statuschange.Id)).ToArray();
+                    var EVSEStatusChangesDelayed = EVSEStatusChangesFastQueue.Where(statuschange => EVSEsToAddQueue.Any(evse => evse.Id == statuschange.Id)).ToArray();
 
                     if (EVSEAdminStatusChangesDelayed.Length > 0)
                         EVSEAdminStatusChangesDelayedQueue.AddRange(EVSEAdminStatusChangesDelayed);

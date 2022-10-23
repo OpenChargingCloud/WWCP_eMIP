@@ -100,7 +100,7 @@ namespace cloud.charging.open.protocols.WWCP
                                                 CPORoaming                                          CPORoaming,
 
                                                 eMIPv0_7_4.Partner_Id                               PartnerId,
-                                                ChargingStationOperator                             DefaultOperator,
+                                                IChargingStationOperator                            DefaultOperator,
 
                                                 WWCPChargeDetailRecord2ChargeDetailRecordDelegate   WWCPChargeDetailRecord2eMIPChargeDetailRecord            = null,
 

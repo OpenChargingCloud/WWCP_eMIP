@@ -769,11 +769,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         private async Task<PushEVSEDataResult>
 
-            PushEVSEData(IEnumerable<EVSE>    EVSEs,
+            PushEVSEData(IEnumerable<IEVSE>   EVSEs,
 
                          DateTime?            Timestamp          = null,
                          CancellationToken?   CancellationToken  = null,
-                         EventTracking_Id     EventTrackingId    = null,
+                         EventTracking_Id?    EventTrackingId    = null,
                          TimeSpan?            RequestTimeout     = null)
 
         {
@@ -1554,12 +1554,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.SetStaticData(EVSE                EVSE,
+            ISendPOIData.SetStaticData(IEVSE               EVSE,
                                        TransmissionTypes   TransmissionType,
 
                                        DateTime?           Timestamp,
                                        CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
+                                       EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
         {
@@ -1573,7 +1573,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (DisablePushData)
                 return PushEVSEDataResult.AdminDown(Id,
                                                     this,
-                                                    new EVSE[] { EVSE });
+                                                    new IEVSE[] { EVSE });
 
             #endregion
 
@@ -1596,7 +1596,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #endregion
 
-            return await PushEVSEData(new EVSE[] { EVSE },
+            return await PushEVSEData(new IEVSE[] { EVSE },
                                       // ActionTypes.fullLoad,
 
                                       Timestamp,
@@ -1622,13 +1622,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.AddStaticData(EVSE                EVSE,
-                                    TransmissionTypes   TransmissionType,
+            ISendPOIData.AddStaticData(IEVSE               EVSE,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id?   EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 
@@ -1641,7 +1641,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (DisablePushData)
                 return PushEVSEDataResult.AdminDown(Id,
                                                     this,
-                                                    new EVSE[] { EVSE });
+                                                    new IEVSE[] { EVSE });
 
             #endregion
 
@@ -1664,7 +1664,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #endregion
 
-            return await PushEVSEData(new EVSE[] { EVSE },
+            return await PushEVSEData(new IEVSE[] { EVSE },
                                       // ActionTypes.insert,
 
                                       Timestamp,
@@ -1694,16 +1694,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.UpdateStaticData(EVSE                EVSE,
-                                       String              PropertyName,
-                                       Object              OldValue,
-                                       Object              NewValue,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.UpdateStaticData(IEVSE               EVSE,
+                                          String?             PropertyName,
+                                          Object?             OldValue,
+                                          Object?             NewValue,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -1752,7 +1752,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                        (IncludeEVSEs != null && IncludeEVSEs(EVSE)))
                     {
 
-                        if (EVSEsUpdateLog.TryGetValue(EVSE, out List<PropertyUpdateInfos> PropertyUpdateInfo))
+                        if (EVSEsUpdateLog.TryGetValue(EVSE, out var PropertyUpdateInfo))
                             PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
 
                         else
@@ -1782,7 +1782,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #endregion
 
-            return await PushEVSEData(new EVSE[] { EVSE },
+            return await PushEVSEData(new IEVSE[] { EVSE },
                                       // ActionTypes.update,
 
                                       Timestamp,
@@ -1808,13 +1808,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.DeleteStaticData(EVSE                EVSE,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.DeleteStaticData(IEVSE               EVSE,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -1878,7 +1878,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #endregion
 
-            return await PushEVSEData(new EVSE[] { EVSE },
+            return await PushEVSEData(new IEVSE[] { EVSE },
                                       // ActionTypes.delete,
 
                                       Timestamp,
@@ -1905,13 +1905,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.SetStaticData(IEnumerable<EVSE>   EVSEs,
-                                    TransmissionTypes   TransmissionType,
+            ISendPOIData.SetStaticData(IEnumerable<IEVSE>  EVSEs,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id?   EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 
@@ -2008,13 +2008,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.AddStaticData(IEnumerable<EVSE>   EVSEs,
-                                    TransmissionTypes   TransmissionType,
+            ISendPOIData.AddStaticData(IEnumerable<IEVSE>  EVSEs,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id?   EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 
@@ -2110,13 +2110,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.UpdateStaticData(IEnumerable<EVSE>   EVSEs,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.UpdateStaticData(IEnumerable<IEVSE>  EVSEs,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -2212,13 +2212,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.DeleteStaticData(IEnumerable<EVSE>   EVSEs,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.DeleteStaticData(IEnumerable<IEVSE>  EVSEs,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -2517,13 +2517,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.SetStaticData(ChargingStation     ChargingStation,
-                                    TransmissionTypes   TransmissionType,
+            ISendPOIData.SetStaticData(IChargingStation    ChargingStation,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id?   EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 
@@ -2614,13 +2614,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.AddStaticData(ChargingStation     ChargingStation,
-                                    TransmissionTypes   TransmissionType,
+            ISendPOIData.AddStaticData(IChargingStation    ChargingStation,
+                                       TransmissionTypes   TransmissionType,
 
-                                    DateTime?           Timestamp,
-                                    CancellationToken?  CancellationToken,
-                                    EventTracking_Id    EventTrackingId,
-                                    TimeSpan?           RequestTimeout)
+                                       DateTime?           Timestamp,
+                                       CancellationToken?  CancellationToken,
+                                       EventTracking_Id?   EventTrackingId,
+                                       TimeSpan?           RequestTimeout)
 
         {
 
@@ -2714,16 +2714,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         async Task<PushEVSEDataResult>
 
-            ISendPOIData.UpdateStaticData(ChargingStation     ChargingStation,
-                                       String              PropertyName,
-                                       Object              OldValue,
-                                       Object              NewValue,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.UpdateStaticData(IChargingStation    ChargingStation,
+                                          String?             PropertyName,
+                                          Object?             OldValue,
+                                          Object?             NewValue,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -2828,13 +2828,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         Task<PushEVSEDataResult>
 
-            ISendPOIData.DeleteStaticData(ChargingStation     ChargingStation,
-                                       TransmissionTypes   TransmissionType,
+            ISendPOIData.DeleteStaticData(IChargingStation    ChargingStation,
+                                          TransmissionTypes   TransmissionType,
 
-                                       DateTime?           Timestamp,
-                                       CancellationToken?  CancellationToken,
-                                       EventTracking_Id    EventTrackingId,
-                                       TimeSpan?           RequestTimeout)
+                                          DateTime?           Timestamp,
+                                          CancellationToken?  CancellationToken,
+                                          EventTracking_Id?   EventTrackingId,
+                                          TimeSpan?           RequestTimeout)
 
         {
 
@@ -2872,13 +2872,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         Task<PushEVSEDataResult>
 
-            ISendPOIData.SetStaticData(IEnumerable<ChargingStation>  ChargingStations,
-                                    TransmissionTypes             TransmissionType,
+            ISendPOIData.SetStaticData(IEnumerable<IChargingStation>  ChargingStations,
+                                       TransmissionTypes              TransmissionType,
 
-                                    DateTime?                     Timestamp,
-                                    CancellationToken?            CancellationToken,
-                                    EventTracking_Id              EventTrackingId,
-                                    TimeSpan?                     RequestTimeout)
+                                       DateTime?                      Timestamp,
+                                       CancellationToken?             CancellationToken,
+                                       EventTracking_Id?              EventTrackingId,
+                                       TimeSpan?                      RequestTimeout)
 
         {
 
@@ -2915,14 +2915,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         Task<PushEVSEDataResult>
 
-            ISendPOIData.AddStaticData(IEnumerable<ChargingStation>  ChargingStations,
-                                    TransmissionTypes             TransmissionType,
+            ISendPOIData.AddStaticData(IEnumerable<IChargingStation>  ChargingStations,
+                                       TransmissionTypes              TransmissionType,
 
 
-                                    DateTime?                     Timestamp,
-                                    CancellationToken?            CancellationToken,
-                                    EventTracking_Id              EventTrackingId,
-                                    TimeSpan?                     RequestTimeout)
+                                       DateTime?                      Timestamp,
+                                       CancellationToken?             CancellationToken,
+                                       EventTracking_Id?              EventTrackingId,
+                                       TimeSpan?                      RequestTimeout)
 
         {
 
@@ -2959,13 +2959,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         Task<PushEVSEDataResult>
 
-            ISendPOIData.UpdateStaticData(IEnumerable<ChargingStation>  ChargingStations,
-                                       TransmissionTypes             TransmissionType,
+            ISendPOIData.UpdateStaticData(IEnumerable<IChargingStation>  ChargingStations,
+                                          TransmissionTypes              TransmissionType,
 
-                                       DateTime?                     Timestamp,
-                                       CancellationToken?            CancellationToken,
-                                       EventTracking_Id              EventTrackingId,
-                                       TimeSpan?                     RequestTimeout)
+                                          DateTime?                      Timestamp,
+                                          CancellationToken?             CancellationToken,
+                                          EventTracking_Id?              EventTrackingId,
+                                          TimeSpan?                      RequestTimeout)
 
         {
 
@@ -3002,13 +3002,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         Task<PushEVSEDataResult>
 
-            ISendPOIData.DeleteStaticData(IEnumerable<ChargingStation>  ChargingStations,
-                                       TransmissionTypes             TransmissionType,
+            ISendPOIData.DeleteStaticData(IEnumerable<IChargingStation>  ChargingStations,
+                                          TransmissionTypes              TransmissionType,
 
-                                       DateTime?                     Timestamp,
-                                       CancellationToken?            CancellationToken,
-                                       EventTracking_Id              EventTrackingId,
-                                       TimeSpan?                     RequestTimeout)
+                                          DateTime?                      Timestamp,
+                                          CancellationToken?             CancellationToken,
+                                          EventTracking_Id?              EventTrackingId,
+                                          TimeSpan?                      RequestTimeout)
 
         {
 
@@ -5172,13 +5172,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Get a copy of all current EVSE data and delayed status
 
-            var EVSEsToAddQueueCopy                     = new HashSet<EVSE>();
-            var EVSEsToUpdateQueueCopy                  = new HashSet<EVSE>();
+            var EVSEsToAddQueueCopy                     = new HashSet<IEVSE>();
+            var EVSEsToUpdateQueueCopy                  = new HashSet<IEVSE>();
             var EVSEAdminStatusChangesDelayedQueueCopy  = new List<EVSEAdminStatusUpdate>();
             var EVSEStatusChangesDelayedQueueCopy       = new List<EVSEStatusUpdate>();
-            var EVSEsToRemoveQueueCopy                  = new HashSet<EVSE>();
-            var EVSEsUpdateLogCopy                      = new Dictionary<EVSE,            PropertyUpdateInfos[]>();
-            var ChargingStationsUpdateLogCopy           = new Dictionary<ChargingStation, PropertyUpdateInfos[]>();
+            var EVSEsToRemoveQueueCopy                  = new HashSet<IEVSE>();
+            var EVSEsUpdateLogCopy                      = new Dictionary<IEVSE,            PropertyUpdateInfos[]>();
+            var ChargingStationsUpdateLogCopy           = new Dictionary<IChargingStation, PropertyUpdateInfos[]>();
             var ChargingPoolsUpdateLogCopy              = new Dictionary<ChargingPool,    PropertyUpdateInfos[]>();
 
             await DataAndStatusLock.WaitAsync();
@@ -5187,11 +5187,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Copy 'EVSEs to add', remove originals...
-                EVSEsToAddQueueCopy                      = new HashSet<EVSE>              (EVSEsToAddQueue);
+                EVSEsToAddQueueCopy                      = new HashSet<IEVSE>             (EVSEsToAddQueue);
                 EVSEsToAddQueue.Clear();
 
                 // Copy 'EVSEs to update', remove originals...
-                EVSEsToUpdateQueueCopy                   = new HashSet<EVSE>              (EVSEsToUpdateQueue);
+                EVSEsToUpdateQueueCopy                   = new HashSet<IEVSE>             (EVSEsToUpdateQueue);
                 EVSEsToUpdateQueue.Clear();
 
                 // Copy 'EVSE status changes', remove originals...
@@ -5205,7 +5205,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 EVSEStatusChangesDelayedQueue.Clear();
 
                 // Copy 'EVSEs to remove', remove originals...
-                EVSEsToRemoveQueueCopy                   = new HashSet<EVSE>              (EVSEsToRemoveQueue);
+                EVSEsToRemoveQueueCopy                   = new HashSet<IEVSE>             (EVSEsToRemoveQueue);
                 EVSEsToRemoveQueue.Clear();
 
                 // Copy EVSE property updates

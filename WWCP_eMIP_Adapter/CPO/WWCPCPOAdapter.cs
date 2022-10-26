@@ -362,7 +362,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Request mapping
 
-                    var chargingProduct = new ChargingProduct(Id:                ChargingProduct_Id.Random(),
+                    var chargingProduct = new ChargingProduct(Id:                ChargingProduct_Id.NewRandom(),
                                                               IntermediateCDRs:  Request.IntermediateCDRRequested);
 
                     //ChargingReservation_Id? ReservationId      = null;

@@ -118,7 +118,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a service identification.</param>
+        /// <param name="Text">A text representation of a service identification.</param>
         public static Service_Id Parse(String Text)
         {
 
@@ -137,7 +137,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Try to parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a service identification.</param>
+        /// <param name="Text">A text representation of a service identification.</param>
         public static Service_Id? TryParse(String Text)
         {
 
@@ -155,7 +155,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Try to parse the given string as a service identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a service identification.</param>
+        /// <param name="Text">A text representation of a service identification.</param>
         /// <param name="ServiceId">The parsed user identification.</param>
         public static Boolean TryParse(String Text, out Service_Id ServiceId)
         {
@@ -380,7 +380,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (override) ToString()
 
         /// <summary>
-        /// Return a text-representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 

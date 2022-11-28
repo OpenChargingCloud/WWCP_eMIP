@@ -91,7 +91,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Parse the given string as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a charging session identification.</param>
+        /// <param name="Text">A text representation of a charging session identification.</param>
         public static ServiceSession_Id Parse(String Text)
         {
 
@@ -110,7 +110,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Try to parse the given string as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a charging session identification.</param>
+        /// <param name="Text">A text representation of a charging session identification.</param>
         public static ServiceSession_Id? TryParse(String Text)
         {
 
@@ -139,7 +139,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Try to parse the given string as a charging session identification.
         /// </summary>
-        /// <param name="Text">A text-representation of a charging session identification.</param>
+        /// <param name="Text">A text representation of a charging session identification.</param>
         /// <param name="SessionId">The parsed charging session identification.</param>
         public static Boolean TryParse(String Text, out ServiceSession_Id SessionId)
         {
@@ -361,7 +361,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (override) ToString()
 
         /// <summary>
-        /// Return a text-representation of this object.
+        /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
 

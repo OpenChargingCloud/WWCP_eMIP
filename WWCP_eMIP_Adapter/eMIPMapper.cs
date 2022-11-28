@@ -216,7 +216,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             if (UserId.Format == UserIdFormats.RFID_UID)
             {
-                return RemoteAuthentication.FromAuthToken(Auth_Token.Parse(UserId.ToString()));
+                return RemoteAuthentication.FromAuthToken(AuthenticationToken.Parse(UserId.ToString()));
             }
 
             return null;

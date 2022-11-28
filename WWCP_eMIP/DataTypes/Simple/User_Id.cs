@@ -38,7 +38,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Parse the given text representation of an user identification format.
         /// </summary>
-        /// <param name="Text">A text-representation of an user identification format.</param>
+        /// <param name="Text">A text representation of an user identification format.</param>
         public static UserIdFormats Parse(String Text)
 
             => Text switch {

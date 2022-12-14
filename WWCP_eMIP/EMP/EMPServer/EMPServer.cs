@@ -17,10 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
@@ -294,7 +290,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region ~/ - GetServiceAuthorisation
 
-            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+            SOAPServer.RegisterSOAPDelegate(null,
+                                            HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
                                             "GetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_GetServiceAuthorisationRequest").FirstOrDefault(),
@@ -488,7 +485,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region ~/ - SetSessionEventReport
 
-            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+            SOAPServer.RegisterSOAPDelegate(null,
+                                            HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
                                             "SetSessionEventReportRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionEventReportRequest").FirstOrDefault(),
@@ -684,7 +682,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region ~/ - SetChargeDetailRecord
 
-            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+            SOAPServer.RegisterSOAPDelegate(null,
+                                            HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
                                             "SetChargeDetailRecordRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetChargeDetailRecordRequest").FirstOrDefault(),

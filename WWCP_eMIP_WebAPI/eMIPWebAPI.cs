@@ -305,6 +305,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                 Directory.CreateDirectory(this.LoggingPath);
 
             this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
+                                                                         HTTPAPI:                  null,
                                                                          URLTemplate:              this.URLPathPrefix + "/" + DebugLogId.ToString(),
                                                                          MaxNumberOfCachedEvents:  10000,
                                                                          RetryIntervall:           TimeSpan.FromSeconds(5),
@@ -325,7 +326,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 
             #region / (HTTPRoot)
 
-            HTTPServer.RegisterResourcesFolder(HTTPHostname.Any,
+            HTTPServer.RegisterResourcesFolder(null,
+                                               HTTPHostname.Any,
                                                URLPathPrefix,
                                                "cloud.charging.open.protocols.eMIPv0_7_4.WebAPI.HTTPRoot",
                                                DefaultFilename: "index.html");
@@ -339,7 +341,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
             // curl -v -X SET -H "Accept: application/json" \
             //      http://127.0.0.1:3004/RNs/Prod/IO/Gireve/WebAPI/ResendAll
             // ========================================================================================
-            HTTPServer.AddMethodCallback(HTTPHostname.Any,
+            HTTPServer.AddMethodCallback(null,
+                                         HTTPHostname.Any,
                                          HTTPMethod.SET,
                                          URLPathPrefix + "/ResendAll",
                                          //HTTPContentType.JSON_UTF8,

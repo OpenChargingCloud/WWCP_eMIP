@@ -17,10 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
@@ -261,7 +257,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+            SOAPServer.RegisterSOAPDelegate(null,
+                                            HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
                                             "SetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
@@ -473,7 +470,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetSessionActionRequestRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            SOAPServer.RegisterSOAPDelegate(HTTPHostname.Any,
+            SOAPServer.RegisterSOAPDelegate(null,
+                                            HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
                                             "SetSessionActionRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestRequest").FirstOrDefault(),

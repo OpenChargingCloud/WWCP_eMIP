@@ -11,7 +11,8 @@ on this protocol please visit http://www.gireve.com.
 
 ### End of Life!
 
-Gireve is deprecating its eMIP API, therefore also this project has reached the end of its lifetime.
+Gireve is deprecating its eMIP API in favour of OCPI, therefore also this
+project has reached its end of life.
 
 
 ### Requirements & Configuration

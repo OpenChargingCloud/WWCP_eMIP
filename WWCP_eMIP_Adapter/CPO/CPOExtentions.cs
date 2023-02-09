@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2022 GraphDefined GmbH
+ * Copyright (c) 2014-2023 GraphDefined GmbH
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -147,11 +147,8 @@ namespace cloud.charging.open.protocols.WWCP
 
             #region Initial checks
 
-            if (RoamingNetwork == null)
+            if (RoamingNetwork is null)
                 throw new ArgumentNullException(nameof(RoamingNetwork),  "The given roaming network must not be null!");
-
-            if (Id == null)
-                throw new ArgumentNullException(nameof(Id),              "The given unique roaming provider identification must not be null!");
 
             if (Name.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Name),            "The given roaming provider name must not be null or empty!");

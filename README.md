@@ -8,9 +8,16 @@ of this protocol are the communication aspects between a central clearing house,
 charge point operators (CPOs) and e-mobility providers (EMPs). For more details
 on this protocol please visit http://www.gireve.com.
 
+
+### End of Life!
+
+Gireve is deprecating its eMIP API in favour of OCPI, therefore also this
+project has reached its end of life.
+
+
 ### Requirements & Configuration
 
-1. You need .NET 4.7.1+
+1. You need .NET6
 
 ### Your participation
 

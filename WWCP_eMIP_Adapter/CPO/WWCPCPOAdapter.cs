@@ -1552,7 +1552,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.SetStaticData(IEVSE               EVSE,
                                        TransmissionTypes   TransmissionType,
@@ -1562,45 +1562,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (DisablePushData)
-                return PushEVSEDataResult.AdminDown(Id,
-                                                    this,
-                                                    new IEVSE[] { EVSE });
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                return await SetStaticData(this,
-                                           EVSE,
-
-                                           Timestamp,
-                                           CancellationToken,
-                                           EventTrackingId,
-                                           RequestTimeout).
-
-                              ConfigureAwait(false);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(new IEVSE[] { EVSE },
-                                      // ActionTypes.fullLoad,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IEVSE[] {
+                           EVSE
+                       }
+                   )
+                );
 
         #endregion
 
@@ -1616,7 +1586,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.AddStaticData(IEVSE               EVSE,
                                        TransmissionTypes   TransmissionType,
@@ -1626,45 +1596,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (DisablePushData)
-                return PushEVSEDataResult.AdminDown(Id,
-                                                    this,
-                                                    new IEVSE[] { EVSE });
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                return await AddStaticData(this,
-                                           EVSE,
-
-                                           Timestamp,
-                                           CancellationToken,
-                                           EventTrackingId,
-                                           RequestTimeout).
-
-                              ConfigureAwait(false);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(new IEVSE[] { EVSE },
-                                      // ActionTypes.insert,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IEVSE[] {
+                           EVSE
+                       }
+                   )
+                );
 
         #endregion
 
@@ -1684,7 +1624,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.UpdateStaticData(IEVSE               EVSE,
                                           String?             PropertyName,
@@ -1697,92 +1637,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (EVSE         == null)
-                throw new ArgumentNullException(nameof(EVSE),          "The given EVSE must not be null!");
-
-            if (PropertyName == null)
-                throw new ArgumentNullException(nameof(PropertyName),  "The given EVSE property name must not be null!");
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    if (IncludeEVSEs == null ||
-                       (IncludeEVSEs != null && IncludeEVSEs(EVSE)))
-                    {
-
-                        if (EVSEsUpdateLog.TryGetValue(EVSE, out var PropertyUpdateInfo))
-                            PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-
-                        else
-                        {
-
-                            var List = new List<PropertyUpdateInfos>();
-                            List.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-                            EVSEsUpdateLog.Add(EVSE, List);
-
-                        }
-
-                        EVSEsToUpdateQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                    }
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this, null);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(new IEVSE[] { EVSE },
-                                      // ActionTypes.update,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IEVSE[] {
+                           EVSE
+                       }
+                   )
+                );
 
         #endregion
 
@@ -1798,7 +1661,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.DeleteStaticData(IEVSE               EVSE,
                                           TransmissionTypes   TransmissionType,
@@ -1808,77 +1671,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (EVSE == null)
-                throw new ArgumentNullException(nameof(EVSE), "The given EVSE must not be null!");
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    if (IncludeEVSEs == null ||
-                       (IncludeEVSEs != null && IncludeEVSEs(EVSE)))
-                    {
-
-                        EVSEsToRemoveQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                    }
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this, null);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(new IEVSE[] { EVSE },
-                                      // ActionTypes.delete,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IEVSE[] {
+                           EVSE
+                       }
+                   )
+                );
 
         #endregion
 
@@ -1895,7 +1696,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.SetStaticData(IEnumerable<IEVSE>  EVSEs,
                                        TransmissionTypes   TransmissionType,
@@ -1905,84 +1706,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (!EVSEs.Any())
-                return PushEVSEDataResult.NoOperation(Id, this, null);
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
-                                                            IncludeEVSEIds(evse.Id)).
-                                              ToArray();
-
-                    if (FilteredEVSEs.Any())
-                    {
-
-                        foreach (var EVSE in FilteredEVSEs)
-                            EVSEsToAddQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        return PushEVSEDataResult.Enqueued(Id, this, null);
-
-                    }
-
-                    return PushEVSEDataResult.NoOperation(Id, this, null);
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-            }
-
-            #endregion
-
-
-            return await PushEVSEData(EVSEs,
-                                      // ActionTypes.fullLoad,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       EVSEs
+                   )
+                );
 
         #endregion
 
@@ -1998,7 +1728,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.AddStaticData(IEnumerable<IEVSE>  EVSEs,
                                        TransmissionTypes   TransmissionType,
@@ -2008,83 +1738,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (!EVSEs.Any())
-                return PushEVSEDataResult.NoOperation(Id, this, null);
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
-                                                            IncludeEVSEIds(evse.Id)).
-                                              ToArray();
-
-                    if (FilteredEVSEs.Any())
-                    {
-
-                        foreach (var EVSE in FilteredEVSEs)
-                            EVSEsToAddQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        return PushEVSEDataResult.Enqueued(Id, this, null);
-
-                    }
-
-                    return PushEVSEDataResult.NoOperation(Id, this, null);
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(EVSEs,
-                                      // ActionTypes.insert,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       EVSEs
+                   )
+                );
 
         #endregion
 
@@ -2100,7 +1760,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.UpdateStaticData(IEnumerable<IEVSE>  EVSEs,
                                           TransmissionTypes   TransmissionType,
@@ -2110,83 +1770,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (!EVSEs.Any())
-                return PushEVSEDataResult.NoOperation(Id, this, null);
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
-                                                            IncludeEVSEIds(evse.Id)).
-                                              ToArray();
-
-                    if (FilteredEVSEs.Any())
-                    {
-
-                        foreach (var EVSE in FilteredEVSEs)
-                            EVSEsToUpdateQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        return PushEVSEDataResult.Enqueued(Id, this, null);
-
-                    }
-
-                    return PushEVSEDataResult.NoOperation(Id, this, null);
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(EVSEs,
-                                      // ActionTypes.update,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       EVSEs
+                   )
+                );
 
         #endregion
 
@@ -2202,7 +1792,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushEVSEDataResult>
 
             ISendPOIData.DeleteStaticData(IEnumerable<IEVSE>  EVSEs,
                                           TransmissionTypes   TransmissionType,
@@ -2212,83 +1802,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (!EVSEs.Any())
-                return PushEVSEDataResult.NoOperation(Id, this, null);
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-
-                try
-                {
-
-                    var FilteredEVSEs = EVSEs.Where(evse => IncludeEVSEs(evse) &&
-                                                            IncludeEVSEIds(evse.Id)).
-                                              ToArray();
-
-                    if (FilteredEVSEs.Any())
-                    {
-
-                        foreach (var EVSE in FilteredEVSEs)
-                            EVSEsToRemoveQueue.Add(EVSE);
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        return PushEVSEDataResult.Enqueued(Id, this, null);
-
-                    }
-
-                    return PushEVSEDataResult.NoOperation(Id, this, null);
-
-                }
-                finally
-                {
-                    DataAndStatusLock.Release();
-                }
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(EVSEs,
-                                      // ActionTypes.delete,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushEVSEDataResult.NoOperation(
+                       Id,
+                       this,
+                       EVSEs
+                   )
+                );
 
         #endregion
 
@@ -2506,7 +2026,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.SetStaticData(IChargingStation    ChargingStation,
                                        TransmissionTypes   TransmissionType,
@@ -2516,78 +2036,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStation == null)
-                throw new ArgumentNullException(nameof(ChargingStation), "The given charging station must not be null!");
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-                {
-
-                    foreach (var evse in ChargingStation)
-                    {
-
-                        if (IncludeEVSEs == null ||
-                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
-                        {
-
-                            EVSEsToAddQueue.Add(evse);
-
-                            FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        }
-
-                    }
-
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this, null);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(ChargingStation.EVSEs,
-                                      // ActionTypes.fullLoad,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout).
-
-                                      ConfigureAwait(false);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingStation[] {
+                           ChargingStation
+                       }
+                   )
+                );
 
         #endregion
 
@@ -2640,7 +2097,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.UpdateStaticData(IChargingStation    ChargingStation,
                                           String?             PropertyName,
@@ -2653,92 +2110,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStation == null)
-                throw new ArgumentNullException(nameof(ChargingStation), "The given charging station must not be null!");
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-                {
-
-                    var AddData = false;
-
-                    foreach (var evse in ChargingStation)
-                    {
-                        if (IncludeEVSEs == null ||
-                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
-                        {
-                            EVSEsToUpdateQueue.Add(evse);
-                            AddData = true;
-                        }
-                    }
-
-                    if (AddData)
-                    {
-
-                        if (ChargingStationsUpdateLog.TryGetValue(ChargingStation, out List<PropertyUpdateInfos> PropertyUpdateInfo))
-                            PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-
-                        else
-                        {
-                            var List = new List<PropertyUpdateInfos>();
-                            List.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-                            ChargingStationsUpdateLog.Add(ChargingStation, List);
-                        }
-
-                        FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                    }
-
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this, null);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(ChargingStation,
-                                      // ActionTypes.update,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout).
-
-                                      ConfigureAwait(false);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingStation[] {
+                           ChargingStation
+                       }
+                   )
+                );
 
         #endregion
 
@@ -2754,7 +2134,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.DeleteStaticData(IChargingStation    ChargingStation,
                                           TransmissionTypes   TransmissionType,
@@ -2764,24 +2144,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStation == null)
-                throw new ArgumentNullException(nameof(ChargingStation), "The given charging station must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingStation.EVSEs,
-                                // ActionTypes.delete,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingStation[] {
+                           ChargingStation
+                       }
+                   )
+                );
 
         #endregion
 
@@ -2798,7 +2169,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.SetStaticData(IEnumerable<IChargingStation>  ChargingStations,
                                        TransmissionTypes              TransmissionType,
@@ -2808,24 +2179,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?              EventTrackingId,
                                        TimeSpan?                      RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStations == null)
-                throw new ArgumentNullException(nameof(ChargingStations), "The given enumeration of charging stations must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingStations.SafeSelectMany(station => station.EVSEs),
-                                // ActionTypes.fullLoad,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingStations
+                   )
+                );
 
         #endregion
 
@@ -2841,7 +2201,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.AddStaticData(IEnumerable<IChargingStation>  ChargingStations,
                                        TransmissionTypes              TransmissionType,
@@ -2852,24 +2212,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?              EventTrackingId,
                                        TimeSpan?                      RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStations == null)
-                throw new ArgumentNullException(nameof(ChargingStations), "The given enumeration of charging stations must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingStations.SafeSelectMany(station => station.EVSEs),
-                                // ActionTypes.insert,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingStations
+                   )
+                );
 
         #endregion
 
@@ -2885,7 +2234,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.UpdateStaticData(IEnumerable<IChargingStation>  ChargingStations,
                                           TransmissionTypes              TransmissionType,
@@ -2895,24 +2244,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?              EventTrackingId,
                                           TimeSpan?                      RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStations == null)
-                throw new ArgumentNullException(nameof(ChargingStations), "The given enumeration of charging stations must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingStations.SafeSelectMany(station => station.EVSEs),
-                                // ActionTypes.update,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingStations
+                   )
+                );
 
         #endregion
 
@@ -2928,7 +2266,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingStationDataResult>
 
             ISendPOIData.DeleteStaticData(IEnumerable<IChargingStation>  ChargingStations,
                                           TransmissionTypes              TransmissionType,
@@ -2938,24 +2276,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?              EventTrackingId,
                                           TimeSpan?                      RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingStations == null)
-                throw new ArgumentNullException(nameof(ChargingStations), "The given enumeration of charging stations must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingStations.SafeSelectMany(station => station.EVSEs),
-                                // ActionTypes.delete,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingStationDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingStations
+                   )
+                );
 
         #endregion
 
@@ -3030,7 +2357,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.SetStaticData(IChargingPool       ChargingPool,
                                        TransmissionTypes   TransmissionType,
@@ -3040,78 +2367,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?   EventTrackingId,
                                        TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPool == null)
-                throw new ArgumentNullException(nameof(ChargingPool), "The given charging pool must not be null!");
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                await DataAndStatusLock.WaitAsync();
-                {
-
-                    foreach (var evse in ChargingPool.EVSEs)
-                    {
-
-                        if (IncludeEVSEs == null ||
-                           (IncludeEVSEs != null && IncludeEVSEs(evse)))
-                        {
-
-                            EVSEsToAddQueue.Add(evse);
-
-                            FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                        }
-
-                    }
-
-                }
-
-                return PushEVSEDataResult.Enqueued(Id, this, null);
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(ChargingPool.EVSEs,
-                                      // ActionTypes.fullLoad,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout).
-
-                                      ConfigureAwait(false);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingPool[] {
+                           ChargingPool
+                       }
+                   )
+                );
 
         #endregion
 
@@ -3164,7 +2428,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        async Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.UpdateStaticData(IChargingPool       ChargingPool,
                                           String?             PropertyName,
@@ -3177,136 +2441,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (DisablePushData)
-                return PushEVSEDataResult.AdminDown(Id,
-                                                    this,
-                                                    null);
-
-            PushEVSEDataResult result = null;
-
-            #endregion
-
-            #region Enqueue, if requested...
-
-            if (TransmissionType == TransmissionTypes.Enqueue)
-            {
-
-                #region Send OnEnqueueSendCDRRequest event
-
-                //try
-                //{
-
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
-                //                                    Timestamp.Value,
-                //                                    this,
-                //                                    EventTrackingId,
-                //                                    RoamingNetwork.Id,
-                //                                    ChargeDetailRecord,
-                //                                    RequestTimeout);
-
-                //}
-                //catch (Exception e)
-                //{
-                //    DebugX.LogException(e, nameof(WWCPCPOAdapter) + "." + nameof(OnSendCDRRequest));
-                //}
-
-                #endregion
-
-                var invokeTimer = false;
-                var LockTaken = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime);
-
-                try
-                {
-
-                    if (LockTaken)
-                    {
-
-                        var AddData = false;
-
-                        foreach (var evse in ChargingPool.EVSEs)
-                        {
-                            if (IncludeEVSEs == null ||
-                               (IncludeEVSEs != null && IncludeEVSEs(evse)))
-                            {
-                                EVSEsToUpdateQueue.Add(evse);
-                                AddData = true;
-                            }
-                        }
-
-                        if (AddData)
-                        {
-
-                            if (ChargingPoolsUpdateLog.TryGetValue(ChargingPool, out List<PropertyUpdateInfos> PropertyUpdateInfo))
-                                PropertyUpdateInfo.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-
-                            else
-                            {
-                                var List = new List<PropertyUpdateInfos>();
-                                List.Add(new PropertyUpdateInfos(PropertyName, OldValue, NewValue));
-                                ChargingPoolsUpdateLog.Add(ChargingPool, List);
-                            }
-
-                            invokeTimer = true;
-
-                        }
-
-                        result = PushEVSEDataResult.Enqueued(Id, this, null);
-
-                    }
-
-                    #region Could not get the lock for toooo long!
-
-                    else
-                    {
-
-                        //Endtime  = DateTime.UtcNow;
-                        //Runtime  = Endtime - StartTime;
-                        result   = PushEVSEDataResult.Timeout(Id,
-                                                              this,
-                                                              new EVSE[0],// ChargeDetailRecords,
-                                                              "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!"
-                                                              //ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
-                                                              //Runtime: Runtime
-                                                              );
-
-                    }
-
-                    #endregion
-
-                }
-                finally
-                {
-                    if (LockTaken)
-                        DataAndStatusLock.Release();
-                }
-
-                if (!LockTaken)
-                    return PushEVSEDataResult.Error(Id, this, Description: "Could not acquire DataAndStatusLock!");
-
-                if (invokeTimer)
-                    FlushEVSEDataAndStatusTimer.Change(FlushEVSEDataAndStatusEvery, TimeSpan.FromMilliseconds(-1));
-
-                return result;
-
-            }
-
-            #endregion
-
-            return await PushEVSEData(ChargingPool.EVSEs,
-                                      // ActionTypes.update,
-
-                                      Timestamp,
-                                      CancellationToken,
-                                      EventTrackingId,
-                                      RequestTimeout).
-
-                                      ConfigureAwait(false);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingPool[] {
+                           ChargingPool
+                       }
+                   )
+                );
 
         #endregion
 
@@ -3322,7 +2465,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.DeleteStaticData(IChargingPool       ChargingPool,
                                           TransmissionTypes   TransmissionType,
@@ -3332,24 +2475,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?   EventTrackingId,
                                           TimeSpan?           RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPool == null)
-                throw new ArgumentNullException(nameof(ChargingPool), "The given charging pool must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingPool.EVSEs,
-                                // ActionTypes.delete,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       new IChargingPool[] {
+                           ChargingPool
+                       }
+                   )
+                );
 
         #endregion
 
@@ -3366,7 +2500,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.SetStaticData(IEnumerable<IChargingPool>  ChargingPools,
                                        TransmissionTypes           TransmissionType,
@@ -3376,24 +2510,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?           EventTrackingId,
                                        TimeSpan?                   RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPools == null)
-                throw new ArgumentNullException(nameof(ChargingPools), "The given enumeration of charging pools must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingPools.SafeSelectMany(pool => pool.EVSEs),
-                                // ActionTypes.fullLoad,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingPools
+                   )
+                );
 
         #endregion
 
@@ -3409,7 +2532,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.AddStaticData(IEnumerable<IChargingPool>  ChargingPools,
                                        TransmissionTypes           TransmissionType,
@@ -3419,24 +2542,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        EventTracking_Id?           EventTrackingId,
                                        TimeSpan?                   RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPools == null)
-                throw new ArgumentNullException(nameof(ChargingPools), "The given enumeration of charging pools must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingPools.SafeSelectMany(pool => pool.EVSEs),
-                                // ActionTypes.insert,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingPools
+                   )
+                );
 
         #endregion
 
@@ -3452,7 +2564,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.UpdateStaticData(IEnumerable<IChargingPool>  ChargingPools,
                                           TransmissionTypes           TransmissionType,
@@ -3462,24 +2574,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?           EventTrackingId,
                                           TimeSpan?                   RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPools == null)
-                throw new ArgumentNullException(nameof(ChargingPools), "The given enumeration of charging pools must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingPools.SafeSelectMany(pool => pool.EVSEs),
-                                // ActionTypes.update,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingPools
+                   )
+                );
 
         #endregion
 
@@ -3495,7 +2596,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        Task<PushEVSEDataResult>
+        Task<PushChargingPoolDataResult>
 
             ISendPOIData.DeleteStaticData(IEnumerable<IChargingPool>  ChargingPools,
                                           TransmissionTypes           TransmissionType,
@@ -3505,24 +2606,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           EventTracking_Id?           EventTrackingId,
                                           TimeSpan?                   RequestTimeout)
 
-        {
-
-            #region Initial checks
-
-            if (ChargingPools == null)
-                throw new ArgumentNullException(nameof(ChargingPools), "The given enumeration of charging pools must not be null!");
-
-            #endregion
-
-            return PushEVSEData(ChargingPools.SafeSelectMany(pool => pool.EVSEs),
-                                // ActionTypes.delete,
-
-                                Timestamp,
-                                CancellationToken,
-                                EventTrackingId,
-                                RequestTimeout);
-
-        }
+            => Task.FromResult(
+                   PushChargingPoolDataResult.NoOperation(
+                       Id,
+                       this,
+                       ChargingPools
+                   )
+                );
 
         #endregion
 

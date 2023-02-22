@@ -4131,9 +4131,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             var EVSEAdminStatusChangesDelayedQueueCopy  = new List<EVSEAdminStatusUpdate>();
             var EVSEStatusChangesDelayedQueueCopy       = new List<EVSEStatusUpdate>();
             var EVSEsToRemoveQueueCopy                  = new HashSet<IEVSE>();
-            var EVSEsUpdateLogCopy                      = new Dictionary<IEVSE,            PropertyUpdateInfos[]>();
-            var ChargingStationsUpdateLogCopy           = new Dictionary<IChargingStation, PropertyUpdateInfos[]>();
-            var ChargingPoolsUpdateLogCopy              = new Dictionary<IChargingPool,    PropertyUpdateInfos[]>();
+            var EVSEsUpdateLogCopy                      = new Dictionary<IEVSE,            PropertyUpdateInfo[]>();
+            var ChargingStationsUpdateLogCopy           = new Dictionary<IChargingStation, PropertyUpdateInfo[]>();
+            var ChargingPoolsUpdateLogCopy              = new Dictionary<IChargingPool,    PropertyUpdateInfo[]>();
 
             await DataAndStatusLock.WaitAsync();
 

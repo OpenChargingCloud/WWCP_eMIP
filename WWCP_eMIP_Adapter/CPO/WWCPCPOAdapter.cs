@@ -83,7 +83,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         IId IAuthorizeStartStop.AuthId
             => Id;
 
-        IId ISendChargeDetailRecords.Id
+        IId ISendChargeDetailRecords.SendChargeDetailRecordsId
             => Id;
 
         /// <summary>

@@ -201,7 +201,7 @@ namespace cloud.charging.open.protocols.WWCP
             eMIPConfigurator?.Invoke(NewRoamingProvider);
 
             return RoamingNetwork.
-                       CreateNewRoamingProvider(NewRoamingProvider,
+                       CreateEMPRoamingProvider(NewRoamingProvider,
                                                 Configurator) as WWCPCPOAdapter;
 
         }

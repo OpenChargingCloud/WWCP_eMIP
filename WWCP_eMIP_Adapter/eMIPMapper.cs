@@ -233,12 +233,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         public static Provider_Id? ToEMIP(this EMobilityProvider_Id? ProviderId)
             => ProviderId.HasValue
-                   ? Provider_Id.Parse(ProviderId.ToString())
+                   ? Provider_Id.Parse(ProviderId.Value.ToString())
                    : new Provider_Id?();
 
         public static EMobilityProvider_Id? ToWWCP(this Provider_Id? ProviderId)
             => ProviderId.HasValue
-                   ? EMobilityProvider_Id.Parse(ProviderId.ToString())
+                   ? EMobilityProvider_Id.Parse(ProviderId.Value.ToString())
                    : new EMobilityProvider_Id?();
 
 
@@ -246,12 +246,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         {
 
             if (Authentication.AuthToken.HasValue)
-                return new User_Id(Authentication.ToString(),
+                return new User_Id(Authentication.AuthToken.           Value.ToString(),
                                    UserIdFormats.RFID_UID);
 
             // Might be a DIN or ISO!!!
             if (Authentication.RemoteIdentification.HasValue)
-                return new User_Id(Authentication.ToString(),
+                return new User_Id(Authentication.RemoteIdentification.Value.ToString(),
                                    UserIdFormats.eMA);
 
             return null;

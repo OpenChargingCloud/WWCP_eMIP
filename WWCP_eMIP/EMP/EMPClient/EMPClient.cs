@@ -505,19 +505,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
+                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new HeartbeatResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -536,29 +531,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<HeartbeatResponse>(httpresponse,
-                                                                                                        new HeartbeatResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new HeartbeatResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<HeartbeatResponse>(
-
+                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new HeartbeatResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -770,10 +761,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetServiceAuthorisationResponse>(
-
+                                                         return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -781,10 +770,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                         ServiceSession_Id.Zero,
                                                                         null,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -803,22 +789,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetServiceAuthorisationResponse>(httpresponse,
-                                                                                                        new SetServiceAuthorisationResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            ServiceSession_Id.Zero,
-                                                                                                            null,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetServiceAuthorisationResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            ServiceSession_Id.Zero,
+                                                                            null,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetServiceAuthorisationResponse>(
-
+                                                         return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -826,10 +811,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                         ServiceSession_Id.Zero,
                                                                         null,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -1050,10 +1032,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetSessionActionResponse>(
-
+                                                         return HTTPResponse<SetSessionActionResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetSessionActionResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -1061,10 +1041,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                         ServiceSession_Id.Zero,
                                                                         SessionAction_Id.Zero,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -1083,22 +1060,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetSessionActionResponse>(httpresponse,
-                                                                                                               new SetSessionActionResponse(
-                                                                                                                   Request,
-                                                                                                                   Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                                   RequestStatus.HTTPError,
-                                                                                                                   ServiceSession_Id.Zero,
-                                                                                                                   SessionAction_Id.Zero,
-                                                                                                                   httpresponse
-                                                                                                               ),
-                                                                                                               IsFault: true);
+                                                             return HTTPResponse<SetSessionActionResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetSessionActionResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            ServiceSession_Id.Zero,
+                                                                            SessionAction_Id.Zero,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetSessionActionResponse>(
-
+                                                         return HTTPResponse<SetSessionActionResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetSessionActionResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -1106,10 +1082,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                         ServiceSession_Id.Zero,
                                                                         SessionAction_Id.Zero,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },

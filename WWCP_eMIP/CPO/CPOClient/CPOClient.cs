@@ -1163,19 +1163,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                     return new HTTPResponse<HeartbeatResponse>(
-
+                                                     return HTTPResponse<HeartbeatResponse>.IsFault(
                                                                 httpresponse,
-
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
                                                                     RequestStatus.DataError,
                                                                     httpresponse
-                                                                ),
-
-                                                                IsFault: true
-
+                                                                )
                                                             );
 
                                                  },
@@ -1194,29 +1189,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                          httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                          httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                         return new HTTPResponse<HeartbeatResponse>(httpresponse,
-                                                                                                    new HeartbeatResponse(
-                                                                                                        Request,
-                                                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                        RequestStatus.HTTPError,
-                                                                                                        httpresponse
-                                                                                                    ),
-                                                                                                    IsFault: true);
+                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                                    httpresponse,
+                                                                    new HeartbeatResponse(
+                                                                        Request,
+                                                                        Request.TransactionId ?? Transaction_Id.Zero,
+                                                                        RequestStatus.HTTPError,
+                                                                        httpresponse
+                                                                    )
+                                                                );
 
 
-                                                     return new HTTPResponse<HeartbeatResponse>(
-
+                                                     return HTTPResponse<HeartbeatResponse>.IsFault(
                                                                 httpresponse,
-
                                                                 new HeartbeatResponse(
                                                                     Request,
                                                                     Request.TransactionId ?? Transaction_Id.Zero,
                                                                     RequestStatus.SystemError,
                                                                     httpresponse
-                                                                ),
-
-                                                                IsFault: true
-
+                                                                )
                                                             );
 
                                                  },
@@ -1442,19 +1433,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -1473,29 +1459,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(httpresponse,
-                                                                                                        new SetChargingPoolAvailabilityStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetChargingPoolAvailabilityStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetChargingPoolAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -1733,19 +1715,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -1764,29 +1741,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(httpresponse,
-                                                                                                        new SetChargingStationAvailabilityStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetChargingStationAvailabilityStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetChargingStationAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2024,19 +1997,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2055,29 +2023,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(httpresponse,
-                                                                                                        new SetEVSEAvailabilityStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetEVSEAvailabilityStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetEVSEAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2314,19 +2278,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2345,29 +2304,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(httpresponse,
-                                                                                                        new SetChargingConnectorAvailabilityStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetChargingConnectorAvailabilityStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>(
-
+                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2402,15 +2357,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
-                                 new SetChargingConnectorAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.OK(
+                               new SetChargingConnectorAvailabilityStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -2605,19 +2559,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetEVSEBusyStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2636,29 +2585,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetEVSEBusyStatusResponse>(httpresponse,
-                                                                                                        new SetEVSEBusyStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetEVSEBusyStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetEVSEBusyStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSEBusyStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2693,15 +2638,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetEVSEBusyStatusResponse>.OK(
-                                 new SetEVSEBusyStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetEVSEBusyStatusResponse>.OK(
+                               new SetEVSEBusyStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -2899,19 +2843,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetEVSESyntheticStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -2930,29 +2869,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetEVSESyntheticStatusResponse>(httpresponse,
-                                                                                                        new SetEVSESyntheticStatusResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetEVSESyntheticStatusResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetEVSESyntheticStatusResponse>(
-
+                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3194,19 +3129,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<GetServiceAuthorisationResponse>(
-
+                                                         return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3225,29 +3155,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<GetServiceAuthorisationResponse>(httpresponse,
-                                                                                                        new GetServiceAuthorisationResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new GetServiceAuthorisationResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<GetServiceAuthorisationResponse>(
-
+                                                         return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3471,10 +3397,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetSessionEventReportResponse>(
-
+                                                         return HTTPResponse<SetSessionEventReportResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetSessionEventReportResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -3482,10 +3406,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                         ServiceSession_Id.Zero,
                                                                         SessionAction_Id.Zero,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3504,22 +3425,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetSessionEventReportResponse>(httpresponse,
-                                                                                                        new SetSessionEventReportResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            ServiceSession_Id.Zero,
-                                                                                                            SessionAction_Id.Zero,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetSessionEventReportResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetSessionEventReportResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            ServiceSession_Id.Zero,
+                                                                            SessionAction_Id.Zero,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetSessionEventReportResponse>(
-
+                                                         return HTTPResponse<SetSessionEventReportResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetSessionEventReportResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
@@ -3527,10 +3447,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                         ServiceSession_Id.Zero,
                                                                         SessionAction_Id.Zero,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3769,19 +3686,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return new HTTPResponse<SetChargeDetailRecordResponse>(
-
+                                                         return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.DataError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },
@@ -3800,29 +3712,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return new HTTPResponse<SetChargeDetailRecordResponse>(httpresponse,
-                                                                                                        new SetChargeDetailRecordResponse(
-                                                                                                            Request,
-                                                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                                                            RequestStatus.HTTPError,
-                                                                                                            httpresponse
-                                                                                                        ),
-                                                                                                        IsFault: true);
+                                                             return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
+                                                                        httpresponse,
+                                                                        new SetChargeDetailRecordResponse(
+                                                                            Request,
+                                                                            Request.TransactionId ?? Transaction_Id.Zero,
+                                                                            RequestStatus.HTTPError,
+                                                                            httpresponse
+                                                                        )
+                                                                    );
 
 
-                                                         return new HTTPResponse<SetChargeDetailRecordResponse>(
-
+                                                         return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
                                                                     httpresponse,
-
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
                                                                         Request.TransactionId ?? Transaction_Id.Zero,
                                                                         RequestStatus.SystemError,
                                                                         httpresponse
-                                                                    ),
-
-                                                                    IsFault: true
-
+                                                                    )
                                                                 );
 
                                                      },

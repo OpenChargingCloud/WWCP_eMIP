@@ -1677,7 +1677,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           String              PropertyName,
                                           Object?             NewValue,
                                           Object?             OldValue,
-                                          String?             DataSource,
+                                          Context?            DataSource,
                                           TransmissionTypes   TransmissionType,
 
                                           DateTime?           Timestamp,
@@ -2824,7 +2824,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           String?                   PropertyName,
                                           Object?                   NewValue,
                                           Object?                   OldValue,
-                                          String?                   DataSource,
+                                          Context?                  DataSource,
                                           TransmissionTypes         TransmissionType,
 
                                           DateTime?                 Timestamp,
@@ -3224,7 +3224,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                           String              PropertyName,
                                           Object?             NewValue,
                                           Object?             OldValue,
-                                          String?             DataSource,
+                                          Context?            DataSource,
                                           TransmissionTypes   TransmissionType,
 
                                           DateTime?           Timestamp,

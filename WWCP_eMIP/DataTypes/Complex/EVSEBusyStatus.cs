@@ -27,7 +27,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A EVSE busy status.
+    /// An EVSE busy status.
     /// </summary>
     public class EVSEBusyStatus
     {
@@ -67,7 +67,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Create a new EVSE busy status.
         /// </summary>
         /// <param name="EVSEId">The EVSE identification.</param>
-        /// <param name="StatusEventDate">The timestamp of the status change.</param>
+        /// <param name="StatusEventDate">The timestamp of the status update.</param>
         /// <param name="BusyStatus">The EVSE busy status.</param>
         /// <param name="BusyStatusUntil">An optional timestamp until which the given busy status is valid.</param>
         /// <param name="BusyStatusComment">An optional comment about the busy status.</param>

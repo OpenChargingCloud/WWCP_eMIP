@@ -27,7 +27,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     /// <summary>
-    /// A EVSE availability status.
+    /// An EVSE availability status.
     /// </summary>
     public class EVSEAvailabilityStatus
     {
@@ -67,7 +67,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Create a new EVSE availability status.
         /// </summary>
         /// <param name="EVSEId">The EVSE identification.</param>
-        /// <param name="StatusEventDate">The timestamp of the status change.</param>
+        /// <param name="StatusEventDate">The timestamp of the status update.</param>
         /// <param name="AvailabilityStatus">The EVSE availability status.</param>
         /// <param name="AvailabilityStatusUntil">An optional timestamp until which the given availability status is valid.</param>
         /// <param name="AvailabilityStatusComment">An optional comment about the availability status.</param>

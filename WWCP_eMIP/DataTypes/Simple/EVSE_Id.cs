@@ -416,7 +416,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 throw new ArgumentNullException(nameof(Object),  "The given object must not be null!");
 
             if (!(Object is EVSE_Id EVSEId))
-                throw new ArgumentException("The given object is not a EVSE identification!", nameof(Object));
+                throw new ArgumentException("The given object is not an EVSE identification!", nameof(Object));
 
             return CompareTo(EVSEId);
 

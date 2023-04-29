@@ -78,7 +78,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="PartnerId">The partner identification.</param>
         /// <param name="OperatorId">The operator identification.</param>
         /// <param name="EVSEId">The EVSE identification.</param>
-        /// <param name="StatusEventDate">The timestamp of the status change.</param>
+        /// <param name="StatusEventDate">The timestamp of the status update.</param>
         /// <param name="BusyStatus">The EVSE busy status.</param>
         /// <param name="TransactionId">An optional transaction identification.</param>
         /// <param name="BusyStatusUntil">An optional timestamp until which the given busy status is valid.</param>

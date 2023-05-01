@@ -70,19 +70,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                             ChargeDetailRecord  ChargeDetailRecord,
                                             Transaction_Id?     TransactionId       = null,
 
-                                            HTTPRequest         HTTPRequest         = null, 
+                                            HTTPRequest?        HTTPRequest         = null,
                                             DateTime?           Timestamp           = null,
-                                            CancellationToken?  CancellationToken   = null,
-                                            EventTracking_Id    EventTrackingId     = null,
+                                            CancellationToken   CancellationToken   = default,
+                                            EventTracking_Id?   EventTrackingId     = null,
                                             TimeSpan?           RequestTimeout      = null)
 
             : base(HTTPRequest,
                    PartnerId,
                    TransactionId,
                    Timestamp,
-                   CancellationToken,
                    EventTrackingId,
-                   RequestTimeout)
+                   RequestTimeout,
+                   CancellationToken)
 
         {
 
@@ -147,7 +147,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          HTTPRequest                                            HTTPRequest                                   = null,
                                                          DateTime?                                              Timestamp                                     = null,
-                                                         CancellationToken?                                     CancellationToken                             = null,
+                                                         CancellationToken                                      CancellationToken                             = default,
                                                          EventTracking_Id                                       EventTrackingId                               = null,
                                                          TimeSpan?                                              RequestTimeout                                = null)
         {
@@ -190,21 +190,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetChargeDetailRecordRequest Parse(String                                                 SetChargeDetailRecordRequestText,
-                                                         CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
-                                                         CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
-                                                         CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                                         OnExceptionDelegate                                    OnException                                   = null,
+        public static SetChargeDetailRecordRequest Parse(String                                                  SetChargeDetailRecordRequestText,
+                                                         CustomXMLParserDelegate<SetChargeDetailRecordRequest>?  CustomSendSetChargeDetailRecordRequestParser   = null,
+                                                         CustomXMLParserDelegate<ChargeDetailRecord>?            CustomChargeDetailRecordParser                 = null,
+                                                         CustomXMLParserDelegate<MeterReport>?                   CustomMeterReportParser                        = null,
+                                                         OnExceptionDelegate?                                    OnException                                    = null,
 
-                                                         HTTPRequest                                            HTTPRequest                                   = null,
-                                                         DateTime?                                              Timestamp                                     = null,
-                                                         CancellationToken?                                     CancellationToken                             = null,
-                                                         EventTracking_Id                                       EventTrackingId                               = null,
-                                                         TimeSpan?                                              RequestTimeout                                = null)
+                                                         HTTPRequest?                                            HTTPRequest                                    = null,
+                                                         DateTime?                                               Timestamp                                      = null,
+                                                         CancellationToken                                       CancellationToken                              = default,
+                                                         EventTracking_Id?                                       EventTrackingId                                = null,
+                                                         TimeSpan?                                               RequestTimeout                                 = null)
         {
 
             if (TryParse(SetChargeDetailRecordRequestText,
-                         out SetChargeDetailRecordRequest _SetChargeDetailRecordRequest,
+                         out SetChargeDetailRecordRequest setChargeDetailRecordRequest,
                          CustomSendSetChargeDetailRecordRequestParser,
                          CustomChargeDetailRecordParser,
                          CustomMeterReportParser,
@@ -216,7 +216,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                          EventTrackingId,
                          RequestTimeout))
             {
-                return _SetChargeDetailRecordRequest;
+                return setChargeDetailRecordRequest;
             }
 
             return null;
@@ -244,16 +244,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static Boolean TryParse(XElement                                               SetChargeDetailRecordRequestXML,
                                        out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
-                                       CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
-                                       CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
-                                       CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                       OnExceptionDelegate                                    OnException                                   = null,
+                                       CustomXMLParserDelegate<SetChargeDetailRecordRequest>?  CustomSendSetChargeDetailRecordRequestParser   = null,
+                                       CustomXMLParserDelegate<ChargeDetailRecord>?            CustomChargeDetailRecordParser                 = null,
+                                       CustomXMLParserDelegate<MeterReport>?                   CustomMeterReportParser                        = null,
+                                       OnExceptionDelegate?                                    OnException                                    = null,
 
-                                       HTTPRequest                                            HTTPRequest                                   = null,
-                                       DateTime?                                              Timestamp                                     = null,
-                                       CancellationToken?                                     CancellationToken                             = null,
-                                       EventTracking_Id                                       EventTrackingId                               = null,
-                                       TimeSpan?                                              RequestTimeout                                = null)
+                                       HTTPRequest?                                            HTTPRequest                                    = null,
+                                       DateTime?                                               Timestamp                                      = null,
+                                       CancellationToken                                       CancellationToken                              = default,
+                                       EventTracking_Id?                                       EventTrackingId                                = null,
+                                       TimeSpan?                                               RequestTimeout                                 = null)
         {
 
             try
@@ -320,18 +320,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(String                                                 SetChargeDetailRecordRequestText,
-                                       out SetChargeDetailRecordRequest                       SetChargeDetailRecordRequest,
-                                       CustomXMLParserDelegate<SetChargeDetailRecordRequest>  CustomSendSetChargeDetailRecordRequestParser  = null,
-                                       CustomXMLParserDelegate<ChargeDetailRecord>            CustomChargeDetailRecordParser                = null,
-                                       CustomXMLParserDelegate<MeterReport>                   CustomMeterReportParser                       = null,
-                                       OnExceptionDelegate                                    OnException                                   = null,
+        public static Boolean TryParse(String                                                  SetChargeDetailRecordRequestText,
+                                       out SetChargeDetailRecordRequest                        SetChargeDetailRecordRequest,
+                                       CustomXMLParserDelegate<SetChargeDetailRecordRequest>?  CustomSendSetChargeDetailRecordRequestParser   = null,
+                                       CustomXMLParserDelegate<ChargeDetailRecord>?            CustomChargeDetailRecordParser                 = null,
+                                       CustomXMLParserDelegate<MeterReport>?                   CustomMeterReportParser                        = null,
+                                       OnExceptionDelegate?                                    OnException                                    = null,
 
-                                       HTTPRequest                                            HTTPRequest                                   = null,
-                                       DateTime?                                              Timestamp                                     = null,
-                                       CancellationToken?                                     CancellationToken                             = null,
-                                       EventTracking_Id                                       EventTrackingId                               = null,
-                                       TimeSpan?                                              RequestTimeout                                = null)
+                                       HTTPRequest?                                            HTTPRequest                                    = null,
+                                       DateTime?                                               Timestamp                                      = null,
+                                       CancellationToken                                       CancellationToken                              = default,
+                                       EventTracking_Id?                                       EventTrackingId                                = null,
+                                       TimeSpan?                                               RequestTimeout                                 = null)
         {
 
             try

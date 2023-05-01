@@ -63,19 +63,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 Operator_Id         OperatorId,
                                 Transaction_Id?     TransactionId       = null,
 
-                                HTTPRequest         HTTPRequest         = null,
+                                HTTPRequest?        HTTPRequest         = null,
                                 DateTime?           Timestamp           = null,
-                                CancellationToken?  CancellationToken   = null,
-                                EventTracking_Id    EventTrackingId     = null,
+                                CancellationToken   CancellationToken   = default,
+                                EventTracking_Id?   EventTrackingId     = null,
                                 TimeSpan?           RequestTimeout      = null)
 
             : base(HTTPRequest,
                    PartnerId,
                    TransactionId,
                    Timestamp,
-                   CancellationToken,
                    EventTrackingId,
-                   RequestTimeout)
+                   RequestTimeout,
+                   CancellationToken)
 
         {
 
@@ -132,7 +132,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                              HTTPRequest                                HTTPRequest         = null,
                                              DateTime?                                  Timestamp           = null,
-                                             CancellationToken?                         CancellationToken   = null,
+                                             CancellationToken                          CancellationToken   = default,
                                              EventTracking_Id                           EventTrackingId     = null,
                                              TimeSpan?                                  RequestTimeout      = null)
         {
@@ -173,12 +173,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         public static HeartbeatRequest Parse(String                                     HeartbeatRequestText,
                                              CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
-                                             OnExceptionDelegate                        OnException         = null,
+                                             OnExceptionDelegate?                       OnException         = null,
 
-                                             HTTPRequest                                HTTPRequest         = null,
+                                             HTTPRequest?                               HTTPRequest         = null,
                                              DateTime?                                  Timestamp           = null,
-                                             CancellationToken?                         CancellationToken   = null,
-                                             EventTracking_Id                           EventTrackingId     = null,
+                                             CancellationToken                          CancellationToken   = default,
+                                             EventTracking_Id?                          EventTrackingId     = null,
                                              TimeSpan?                                  RequestTimeout      = null)
         {
 
@@ -220,12 +220,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public static Boolean TryParse(XElement                                   HeartbeatRequestXML,
                                        CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                        out HeartbeatRequest                       HeartbeatRequest,
-                                       OnExceptionDelegate                        OnException         = null,
+                                       OnExceptionDelegate?                       OnException         = null,
 
-                                       HTTPRequest                                HTTPRequest         = null,
+                                       HTTPRequest?                               HTTPRequest         = null,
                                        DateTime?                                  Timestamp           = null,
-                                       CancellationToken?                         CancellationToken   = null,
-                                       EventTracking_Id                           EventTrackingId     = null,
+                                       CancellationToken                          CancellationToken   = default,
+                                       EventTracking_Id?                          EventTrackingId     = null,
                                        TimeSpan?                                  RequestTimeout      = null)
         {
 
@@ -291,12 +291,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public static Boolean TryParse(String                                     HeartbeatRequestText,
                                        CustomXMLParserDelegate<HeartbeatRequest>  CustomSendHeartbeatRequestParser,
                                        out HeartbeatRequest                       HeartbeatRequest,
-                                       OnExceptionDelegate                        OnException         = null,
+                                       OnExceptionDelegate?                       OnException         = null,
 
-                                       HTTPRequest                                HTTPRequest         = null,
+                                       HTTPRequest?                               HTTPRequest         = null,
                                        DateTime?                                  Timestamp           = null,
-                                       CancellationToken?                         CancellationToken   = null,
-                                       EventTracking_Id                           EventTrackingId     = null,
+                                       CancellationToken                          CancellationToken   = default,
+                                       EventTracking_Id?                          EventTrackingId     = null,
                                        TimeSpan?                                  RequestTimeout      = null)
         {
 

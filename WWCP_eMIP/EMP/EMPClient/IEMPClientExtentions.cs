@@ -61,7 +61,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                           HTTPRequest         HTTPRequest         = null,
                           DateTime?           Timestamp           = null,
-                          CancellationToken?  CancellationToken   = null,
+                          CancellationToken   CancellationToken   = default,
                           EventTracking_Id    EventTrackingId     = null,
                           TimeSpan?           RequestTimeout      = null)
 
@@ -128,7 +128,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                     HTTPRequest                HTTPRequest               = null,
                                     DateTime?                  Timestamp                 = null,
-                                    CancellationToken?         CancellationToken         = null,
+                                    CancellationToken          CancellationToken         = default,
                                     EventTracking_Id           EventTrackingId           = null,
                                     TimeSpan?                  RequestTimeout            = null)
 
@@ -190,7 +190,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                              HTTPRequest                HTTPRequest            = null,
                              DateTime?                  Timestamp              = null,
-                             CancellationToken?         CancellationToken      = null,
+                             CancellationToken          CancellationToken      = default,
                              EventTracking_Id           EventTrackingId        = null,
                              TimeSpan?                  RequestTimeout         = null)
 

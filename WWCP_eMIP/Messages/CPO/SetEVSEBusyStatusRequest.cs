@@ -96,21 +96,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                         EVSEBusyStatusTypes  BusyStatus,
                                         Transaction_Id?      TransactionId       = null,
                                         DateTime?            BusyStatusUntil     = null,
-                                        String               BusyStatusComment   = null,
+                                        String?              BusyStatusComment   = null,
 
-                                        HTTPRequest          HTTPRequest         = null,
+                                        HTTPRequest?         HTTPRequest         = null,
                                         DateTime?            Timestamp           = null,
-                                        CancellationToken?   CancellationToken   = null,
-                                        EventTracking_Id     EventTrackingId     = null,
+                                        CancellationToken    CancellationToken   = default,
+                                        EventTracking_Id?    EventTrackingId     = null,
                                         TimeSpan?            RequestTimeout      = null)
 
             : base(HTTPRequest,
                    PartnerId,
                    TransactionId,
                    Timestamp,
-                   CancellationToken,
                    EventTrackingId,
-                   RequestTimeout)
+                   RequestTimeout,
+                   CancellationToken)
 
         {
 
@@ -119,7 +119,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             this.StatusEventDate    = StatusEventDate;
             this.BusyStatus         = BusyStatus;
             this.BusyStatusUntil    = BusyStatusUntil;
-            this.BusyStatusComment  = BusyStatusComment?.Trim();
+            this.BusyStatusComment  = BusyStatusComment?.Trim() ?? String.Empty;
 
         }
 
@@ -184,7 +184,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      HTTPRequest                                        HTTPRequest         = null,
                                                      DateTime?                                          Timestamp           = null,
-                                                     CancellationToken?                                 CancellationToken   = null,
+                                                     CancellationToken                                  CancellationToken   = default,
                                                      EventTracking_Id                                   EventTrackingId     = null,
                                                      TimeSpan?                                          RequestTimeout      = null)
         {
@@ -229,7 +229,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      HTTPRequest                                        HTTPRequest         = null,
                                                      DateTime?                                          Timestamp           = null,
-                                                     CancellationToken?                                 CancellationToken   = null,
+                                                     CancellationToken                                  CancellationToken   = default,
                                                      EventTracking_Id                                   EventTrackingId     = null,
                                                      TimeSpan?                                          RequestTimeout      = null)
         {
@@ -276,7 +276,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                        HTTPRequest                                        HTTPRequest         = null,
                                        DateTime?                                          Timestamp           = null,
-                                       CancellationToken?                                 CancellationToken   = null,
+                                       CancellationToken                                  CancellationToken   = default,
                                        EventTracking_Id                                   EventTrackingId     = null,
                                        TimeSpan?                                          RequestTimeout      = null)
         {
@@ -355,7 +355,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                        HTTPRequest                                        HTTPRequest         = null,
                                        DateTime?                                          Timestamp           = null,
-                                       CancellationToken?                                 CancellationToken   = null,
+                                       CancellationToken                                  CancellationToken   = default,
                                        EventTracking_Id                                   EventTrackingId     = null,
                                        TimeSpan?                                          RequestTimeout      = null)
         {

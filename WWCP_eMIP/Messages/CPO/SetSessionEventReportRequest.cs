@@ -84,22 +84,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                             ServiceSession_Id          ServiceSessionId,
                                             SessionEvent               SessionEvent,
 
-                                            Transaction_Id?            TransactionId            = null,
-                                            PartnerServiceSession_Id?  ExecPartnerSessionId     = null,
+                                            Transaction_Id?            TransactionId          = null,
+                                            PartnerServiceSession_Id?  ExecPartnerSessionId   = null,
 
-                                            HTTPRequest                HTTPRequest              = null,
-                                            DateTime?                  Timestamp                = null,
-                                            CancellationToken?         CancellationToken        = null,
-                                            EventTracking_Id           EventTrackingId          = null,
-                                            TimeSpan?                  RequestTimeout           = null)
+                                            HTTPRequest?               HTTPRequest            = null,
+                                            DateTime?                  Timestamp              = null,
+                                            CancellationToken          CancellationToken      = default,
+                                            EventTracking_Id?          EventTrackingId        = null,
+                                            TimeSpan?                  RequestTimeout         = null)
 
             : base(HTTPRequest,
                    PartnerId,
                    TransactionId,
                    Timestamp,
-                   CancellationToken,
                    EventTrackingId,
-                   RequestTimeout)
+                   RequestTimeout,
+                   CancellationToken)
 
         {
 
@@ -177,12 +177,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public static SetSessionEventReportRequest Parse(XElement                                               SetSessionEventReportRequestXML,
                                                          CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
                                                          CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
-                                                         OnExceptionDelegate                                    OnException         = null,
+                                                         OnExceptionDelegate?                                   OnException         = null,
 
-                                                         HTTPRequest                                            HTTPRequest         = null,
+                                                         HTTPRequest?                                           HTTPRequest         = null,
                                                          DateTime?                                              Timestamp           = null,
-                                                         CancellationToken?                                     CancellationToken   = null,
-                                                         EventTracking_Id                                       EventTrackingId     = null,
+                                                         CancellationToken                                      CancellationToken   = default,
+                                                         EventTracking_Id?                                      EventTrackingId     = null,
                                                          TimeSpan?                                              RequestTimeout      = null)
         {
 
@@ -229,7 +229,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          HTTPRequest                                            HTTPRequest         = null,
                                                          DateTime?                                              Timestamp           = null,
-                                                         CancellationToken?                                     CancellationToken   = null,
+                                                         CancellationToken                                      CancellationToken   = default,
                                                          EventTracking_Id                                       EventTrackingId     = null,
                                                          TimeSpan?                                              RequestTimeout      = null)
         {
@@ -275,12 +275,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
                                        CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
                                        out SetSessionEventReportRequest                       SetSessionEventReportRequest,
-                                       OnExceptionDelegate                                    OnException         = null,
+                                       OnExceptionDelegate?                                   OnException         = null,
 
-                                       HTTPRequest                                            HTTPRequest         = null,
+                                       HTTPRequest?                                           HTTPRequest         = null,
                                        DateTime?                                              Timestamp           = null,
-                                       CancellationToken?                                     CancellationToken   = null,
-                                       EventTracking_Id                                       EventTrackingId     = null,
+                                       CancellationToken                                      CancellationToken   = default,
+                                       EventTracking_Id?                                      EventTrackingId     = null,
                                        TimeSpan?                                              RequestTimeout      = null)
         {
 
@@ -358,12 +358,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        CustomXMLParserDelegate<SetSessionEventReportRequest>  CustomSendSetSessionEventReportRequestParser,
                                        CustomXMLParserDelegate<SessionEvent>                  CustomSessionEventParser,
                                        out SetSessionEventReportRequest                       SetSessionEventReportRequest,
-                                       OnExceptionDelegate                                    OnException         = null,
+                                       OnExceptionDelegate?                                   OnException         = null,
 
-                                       HTTPRequest                                            HTTPRequest         = null,
+                                       HTTPRequest?                                           HTTPRequest         = null,
                                        DateTime?                                              Timestamp           = null,
-                                       CancellationToken?                                     CancellationToken   = null,
-                                       EventTracking_Id                                       EventTrackingId     = null,
+                                       CancellationToken                                      CancellationToken   = default,
+                                       EventTracking_Id?                                      EventTrackingId     = null,
                                        TimeSpan?                                              RequestTimeout      = null)
         {
 

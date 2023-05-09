@@ -295,7 +295,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 
 
             // Logging
-            this.DisableLogging          = DisableLogging ?? false;
+            this.DisableLogging          = this.DisableLogging == false;
             this.LoggingPath             = LoggingPath    ?? Path.Combine(AppContext.BaseDirectory, "eMIPWebAPI");
 
             if (this.LoggingPath[^1] != Path.DirectorySeparatorChar)

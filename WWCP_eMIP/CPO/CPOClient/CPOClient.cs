@@ -1003,11 +1003,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          APICounterValues?                    SetSessionEventReport                    = null,
                          APICounterValues?                    SetChargeDetailRecord                    = null,
 
-                         Boolean                              DisableLogging                           = false,
-                         String                               LoggingPath                              = null,
-                         String                               LoggingContext                           = Logger.DefaultContext,
-                         LogfileCreatorDelegate               LogfileCreator                           = null,
-                         DNSClient                            DNSClient                                = null)
+                         Boolean?                             DisableLogging                           = false,
+                         String?                              LoggingPath                              = null,
+                         String?                              LoggingContext                           = Logger.DefaultContext,
+                         LogfileCreatorDelegate?              LogfileCreator                           = null,
+                         DNSClient?                           DNSClient                                = null)
 
             : base(RemoteURL           ?? URL.Parse("???"),
                    VirtualHostname,
@@ -1025,6 +1025,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    TransmissionRetryDelay,
                    MaxNumberOfRetries  ?? DefaultMaxNumberOfRetries,
                    false,
+                   DisableLogging,
                    null,
                    DNSClient)
 
@@ -1041,7 +1042,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              SetSessionEventReport,
                                              SetChargeDetailRecord);
 
-            base.HTTPLogger  = DisableLogging == false
+            base.HTTPLogger  = this.DisableLogging == false
                                    ? new Logger(this,
                                                 LoggingPath,
                                                 LoggingContext,
@@ -1130,6 +1131,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                     RequestTimeout,
                                                     TransmissionRetryDelay,
                                                     MaxNumberOfRetries,
+                                                    false,
                                                     false,
                                                     null,
                                                     DNSClient))
@@ -1400,6 +1402,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        false,
                                                         false,
                                                         null,
                                                         DNSClient))
@@ -1683,6 +1686,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
                                                         false,
+                                                        false,
                                                         null,
                                                         DNSClient))
                 {
@@ -1965,6 +1969,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
                                                         false,
+                                                        false,
                                                         null,
                                                         DNSClient))
                 {
@@ -2246,6 +2251,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
                                                         false,
+                                                        false,
                                                         null,
                                                         DNSClient))
                 {
@@ -2526,6 +2532,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        false,
                                                         false,
                                                         null,
                                                         DNSClient))
@@ -2810,6 +2817,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        false,
                                                         false,
                                                         null,
                                                         DNSClient))
@@ -3096,6 +3104,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
                                                         false,
+                                                        false,
                                                         null,
                                                         DNSClient))
                 {
@@ -3364,6 +3373,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        false,
                                                         false,
                                                         null,
                                                         DNSClient))
@@ -3651,6 +3661,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        false,
                                                         false,
                                                         null,
                                                         DNSClient))

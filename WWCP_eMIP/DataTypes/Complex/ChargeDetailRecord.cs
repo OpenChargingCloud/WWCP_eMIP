@@ -620,7 +620,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             var ChargeDetailRecord = Object as ChargeDetailRecord;
             if ((Object) ChargeDetailRecord == null)
-                throw new ArgumentException("The given object is not an charge detail record identification!", nameof(Object));
+                throw new ArgumentException("The given object is not a charge detail record identification!", nameof(Object));
 
             return CompareTo(ChargeDetailRecord);
 

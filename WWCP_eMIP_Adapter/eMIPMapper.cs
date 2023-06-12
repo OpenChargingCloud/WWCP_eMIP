@@ -211,7 +211,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 UserId.Format == UserIdFormats.EVCO ||
                 UserId.Format == UserIdFormats.EMP_SPEC)
             {
-                return RemoteAuthentication.FromRemoteIdentification(eMobilityAccount_Id.Parse(UserId.ToString()));
+                return RemoteAuthentication.FromRemoteIdentification(EMobilityAccount_Id.Parse(UserId.ToString()));
             }
 
             if (UserId.Format == UserIdFormats.RFID_UID)

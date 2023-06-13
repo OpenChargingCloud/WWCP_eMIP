@@ -124,7 +124,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                             UserDefinedDictionary?  InternalData        = null)
 
             : base(CustomData,
-                   InternalData)
+                   InternalData,
+                   Timestamp.Now)
 
         {
 

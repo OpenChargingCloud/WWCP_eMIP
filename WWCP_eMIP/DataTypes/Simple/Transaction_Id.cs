@@ -54,7 +54,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// The length of the transaction identificator.
         /// </summary>
         public UInt64 Length
-            => (UInt64) InternalId.Length;
+            => (UInt64) (InternalId?.Length ?? 0);
 
         #endregion
 
@@ -163,7 +163,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 TransactionId = new Transaction_Id(Text);
                 return true;
             }
-            catch (Exception)
+            catch
             { }
 
             TransactionId = default;

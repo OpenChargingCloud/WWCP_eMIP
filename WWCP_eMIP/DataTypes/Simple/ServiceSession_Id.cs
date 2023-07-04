@@ -98,7 +98,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             if (TryParse(Text, out ServiceSession_Id sessionId))
                 return sessionId;
 
-            throw new ArgumentException("Invalid text representation of a charging session identification: '" + Text + "'!",
+            throw new ArgumentException($"Invalid text representation of a charging session identification: '{Text}'!",
                                         nameof(Text));
 
         }

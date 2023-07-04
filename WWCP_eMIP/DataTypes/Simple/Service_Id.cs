@@ -125,7 +125,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             if (TryParse(Text, out Service_Id serviceId))
                 return serviceId;
 
-            throw new ArgumentException("Invalid text representation of a service identification: '" + Text + "'!",
+            throw new ArgumentException($"Invalid text representation of a service identification: '{Text}'!",
                                         nameof(Text));
 
         }

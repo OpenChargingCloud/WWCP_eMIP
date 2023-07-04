@@ -160,7 +160,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             var MatchCollection = ChargingConnectorId_RegEx.Matches(Text);
 
             if (MatchCollection.Count != 1)
-                throw new ArgumentException("Illegal text representation of a charging connector identification: '" + Text + "'!",
+                throw new ArgumentException("Illegal text representation of a charging connector identification: '{Text}'!",
                                             nameof(Text));
 
 
@@ -263,7 +263,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 }
 
             }
-            catch (Exception)
+            catch
             { }
 
             ChargingConnectorId = default;

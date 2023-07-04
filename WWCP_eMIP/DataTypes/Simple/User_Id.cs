@@ -145,7 +145,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length
-            => (UInt64) InternalId.Length;
+            => (UInt64) (InternalId?.Length ?? 0);
 
         #endregion
 
@@ -238,7 +238,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                     UserId = new User_Id(Text, Format);
                     return true;
                 }
-                catch (Exception)
+                catch
                 { }
             }
 

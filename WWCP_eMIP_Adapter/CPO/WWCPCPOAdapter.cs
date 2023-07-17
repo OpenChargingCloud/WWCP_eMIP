@@ -3362,9 +3362,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         public async Task<AuthStartResult>
 
             AuthorizeStart(LocalAuthentication          AuthIdentification,
@@ -3375,9 +3375,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                            ChargingStationOperator_Id?  OperatorId            = null,
 
                            DateTime?                    Timestamp             = null,
-                           CancellationToken            CancellationToken     = default,
                            EventTracking_Id?            EventTrackingId       = null,
-                           TimeSpan?                    RequestTimeout        = null)
+                           TimeSpan?                    RequestTimeout        = null,
+                           CancellationToken            CancellationToken     = default)
 
         {
 
@@ -3563,9 +3563,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="OperatorId">An optional charging station operator identification.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         public async Task<AuthStopResult>
 
             AuthorizeStop(ChargingSession_Id           SessionId,
@@ -3575,9 +3575,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                           ChargingStationOperator_Id?  OperatorId            = null,
 
                           DateTime?                    Timestamp             = null,
-                          CancellationToken            CancellationToken     = default,
                           EventTracking_Id?            EventTrackingId       = null,
-                          TimeSpan?                    RequestTimeout        = null)
+                          TimeSpan?                    RequestTimeout        = null,
+                          CancellationToken            CancellationToken     = default)
         {
 
             #region Initial checks
@@ -3752,18 +3752,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="TransmissionType">Whether to send the CDR directly or enqueue it for a while.</param>
         /// 
         /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         public async Task<SendCDRsResult>
 
             SendChargeDetailRecords(IEnumerable<WWCP.ChargeDetailRecord>  ChargeDetailRecords,
                                     TransmissionTypes                     TransmissionType,
 
                                     DateTime?                             Timestamp,
-                                    CancellationToken                     CancellationToken,
                                     EventTracking_Id?                     EventTrackingId,
-                                    TimeSpan?                             RequestTimeout)
+                                    TimeSpan?                             RequestTimeout,
+                                    CancellationToken                     CancellationToken)
 
         {
 

@@ -17,11 +17,9 @@
 
 #region Usings
 
-using System;
-using System.Linq;
 using System.Xml.Linq;
 using System.Net.Security;
-using System.Threading.Tasks;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
 using Newtonsoft.Json.Linq;
@@ -981,49 +979,53 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="LoggingContext">An optional context for logging.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         /// <param name="DNSClient">The DNS client to use.</param>
-        public CPOClient(URL?                                 RemoteURL                                = null,
-                         HTTPHostname?                        VirtualHostname                          = null,
-                         String                               Description                              = null,
-                         RemoteCertificateValidationCallback  RemoteCertificateValidator               = null,
-                         LocalCertificateSelectionCallback    ClientCertificateSelector                = null,
-                         X509Certificate                      ClientCert                               = null,
-                         String                               HTTPUserAgent                            = DefaultHTTPUserAgent,
-                         TimeSpan?                            RequestTimeout                           = null,
-                         TransmissionRetryDelayDelegate       TransmissionRetryDelay                   = null,
-                         UInt16?                              MaxNumberOfRetries                       = DefaultMaxNumberOfRetries,
+        public CPOClient(URL?                                  RemoteURL                                = null,
+                         HTTPHostname?                         VirtualHostname                          = null,
+                         String?                               Description                              = null,
+                         Boolean?                              PreferIPv4                               = null,
+                         RemoteCertificateValidationCallback?  RemoteCertificateValidator               = null,
+                         LocalCertificateSelectionCallback?    ClientCertificateSelector                = null,
+                         X509Certificate?                      ClientCert                               = null,
+                         SslProtocols?                         TLSProtocol                              = null,
+                         String                                HTTPUserAgent                            = DefaultHTTPUserAgent,
+                         TimeSpan?                             RequestTimeout                           = null,
+                         TransmissionRetryDelayDelegate?       TransmissionRetryDelay                   = null,
+                         UInt16?                               MaxNumberOfRetries                       = null,
+                         UInt32?                               InternalBufferSize                       = null,
 
-                         APICounterValues?                    SendHeartbeat                            = null,
-                         APICounterValues?                    SetChargingPoolAvailabilityStatus        = null,
-                         APICounterValues?                    SetChargingStationAvailabilityStatus     = null,
-                         APICounterValues?                    SetEVSEAvailabilityStatus                = null,
-                         APICounterValues?                    SetChargingConnectorAvailabilityStatus   = null,
-                         APICounterValues?                    SetEVSEBusyStatus                        = null,
-                         APICounterValues?                    SetEVSESyntheticStatus                   = null,
-                         APICounterValues?                    GetServiceAuthorisation                  = null,
-                         APICounterValues?                    SetSessionEventReport                    = null,
-                         APICounterValues?                    SetChargeDetailRecord                    = null,
+                         APICounterValues?                     SendHeartbeat                            = null,
+                         APICounterValues?                     SetChargingPoolAvailabilityStatus        = null,
+                         APICounterValues?                     SetChargingStationAvailabilityStatus     = null,
+                         APICounterValues?                     SetEVSEAvailabilityStatus                = null,
+                         APICounterValues?                     SetChargingConnectorAvailabilityStatus   = null,
+                         APICounterValues?                     SetEVSEBusyStatus                        = null,
+                         APICounterValues?                     SetEVSESyntheticStatus                   = null,
+                         APICounterValues?                     GetServiceAuthorisation                  = null,
+                         APICounterValues?                     SetSessionEventReport                    = null,
+                         APICounterValues?                     SetChargeDetailRecord                    = null,
 
-                         Boolean?                             DisableLogging                           = false,
-                         String?                              LoggingPath                              = null,
-                         String?                              LoggingContext                           = Logger.DefaultContext,
-                         LogfileCreatorDelegate?              LogfileCreator                           = null,
-                         DNSClient?                           DNSClient                                = null)
+                         Boolean?                              DisableLogging                           = false,
+                         String?                               LoggingPath                              = null,
+                         String?                               LoggingContext                           = Logger.DefaultContext,
+                         LogfileCreatorDelegate?               LogfileCreator                           = null,
+                         DNSClient?                            DNSClient                                = null)
 
-            : base(RemoteURL           ?? URL.Parse("???"),
+            : base(RemoteURL     ?? URL.Parse("???"),
                    VirtualHostname,
                    Description,
+                   PreferIPv4,
                    RemoteCertificateValidator,
                    ClientCertificateSelector,
                    ClientCert,
-                   System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13,
-                   false,
-                   HTTPUserAgent       ?? DefaultHTTPUserAgent,
+                   TLSProtocol,
+                   HTTPUserAgent ?? DefaultHTTPUserAgent,
                    null,
                    null,
                    HTTPContentType.XMLTEXT_UTF8,
                    RequestTimeout,
                    TransmissionRetryDelay,
-                   MaxNumberOfRetries  ?? DefaultMaxNumberOfRetries,
+                   MaxNumberOfRetries,
+                   InternalBufferSize,
                    false,
                    DisableLogging,
                    null,
@@ -1115,15 +1117,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
             // No retransmissions for heartbeats!
-            using (var _eMIPClient = new SOAPClient(RemoteURL,
+            using (var eMIPClient = new SOAPClient(RemoteURL,
                                                     VirtualHostname,
                                                     false,
                                                     Description,
+                                                    PreferIPv4,
                                                     RemoteCertificateValidator,
                                                     ClientCertificateSelector,
                                                     ClientCert,
-                                                    null,
-                                                    false,
+                                                    TLSProtocol,
                                                     HTTPUserAgent,
                                                     URLPathPrefix,
                                                     null,
@@ -1131,13 +1133,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                     RequestTimeout,
                                                     TransmissionRetryDelay,
                                                     MaxNumberOfRetries,
+                                                    InternalBufferSize,
                                                     false,
                                                     false,
                                                     null,
                                                     DNSClient))
             {
 
-                result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
+                result = await eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
                                                                                    SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
                                                  DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
                                                  RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
@@ -1386,15 +1389,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -1402,13 +1405,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper(Request,
                                                                                                        SOAP.Encapsulation(Request.ToXML(CustomSetChargingPoolAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingPoolAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingPoolAvailabilityStatusSOAPRequest,
@@ -1669,15 +1673,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -1685,13 +1689,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetChargingStationAvailabilityStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetChargingStationAvailabilityStatusSOAPRequestMapper(Request,
                                                                                                        SOAP.Encapsulation(Request.ToXML(CustomSetChargingStationAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingStationAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingStationAvailabilityStatusSOAPRequest,
@@ -1952,15 +1957,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -1968,13 +1973,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
                                                                                                        SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEAvailabilityStatusSOAPRequest,
@@ -2234,15 +2240,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2250,13 +2256,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper(Request,
                                                                                                        SOAP.Encapsulation(Request.ToXML(CustomSetChargingConnectorAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingConnectorAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingConnectorAvailabilityStatusSOAPRequest,
@@ -2516,15 +2523,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2532,13 +2539,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
                                                                                                SOAP.Encapsulation(Request.ToXML(CustomSetEVSEBusyStatusRequestSerializer))),
                                                      "eMIP_ToIOP_SetEVSEBusyStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEBusyStatusSOAPRequest,
@@ -2801,15 +2809,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -2817,13 +2825,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetEVSESyntheticStatusSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetEVSESyntheticStatusSOAPRequestMapper(Request,
                                                                                                SOAP.Encapsulation(Request.ToXML(CustomSetEVSESyntheticStatusRequestSerializer))),
                                                      "eMIP_ToIOP_SetEVSESyntheticStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSESyntheticStatusSOAPRequest,
@@ -3087,15 +3096,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3103,13 +3112,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomGetServiceAuthorisationSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomGetServiceAuthorisationSOAPRequestMapper(Request,
                                                                                                      SOAP.Encapsulation(Request.ToXML(CustomGetServiceAuthorisationRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_GetServiceAuthorisationV1/",
                                                      RequestLogDelegate:   OnGetServiceAuthorisationSOAPRequest,
@@ -3357,15 +3367,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3373,13 +3383,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetSessionEventReportSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetSessionEventReportSOAPRequestMapper(Request,
                                                                                                    SOAP.Encapsulation(Request.ToXML(CustomSetSessionEventReportRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetSessionEventReportV1/",
                                                      RequestLogDelegate:   OnSetSessionEventReportSOAPRequest,
@@ -3645,15 +3656,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (TransmissionRetry > 0)
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
+                using (var eMIPClient = new SOAPClient(RemoteURL,
                                                         VirtualHostname,
                                                         false,
                                                         Description,
+                                                        PreferIPv4,
                                                         RemoteCertificateValidator,
                                                         ClientCertificateSelector,
                                                         ClientCert,
-                                                        null,
-                                                        false,
+                                                        TLSProtocol,
                                                         HTTPUserAgent,
                                                         URLPathPrefix,
                                                         null,
@@ -3661,13 +3672,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                         RequestTimeout,
                                                         TransmissionRetryDelay,
                                                         MaxNumberOfRetries,
+                                                        InternalBufferSize,
                                                         false,
                                                         false,
                                                         null,
                                                         DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
                                                                                                    SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer,
                                                                                                                                     CustomChargeDetailRecordSerializer,
                                                                                                                                     CustomMeterReportSerializer))),

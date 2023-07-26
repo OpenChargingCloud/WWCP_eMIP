@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-#region Usings
-
-using System;
-
-#endregion
-
 namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
@@ -37,23 +31,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Number">A numeric-representation of an authorisation value.</param>
         public static AuthorisationValues AsAuthorisationValue(Byte Number)
-        {
 
-            switch (Number)
-            {
-
-                case 1:
-                    return AuthorisationValues.OK;
-
-                case 2:
-                    return AuthorisationValues.KO;
-
-                default:
-                    return AuthorisationValues.Undefined;
-
-            }
-
-        }
+            => Number switch {
+                   1  => AuthorisationValues.OK,
+                   2  => AuthorisationValues.KO,
+                   _  => AuthorisationValues.Undefined
+               };
 
         #endregion
 
@@ -64,25 +47,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Text">A text representation of an authorisation value.</param>
         public static AuthorisationValues AsAuthorisationValue(String Text)
-        {
 
-            switch (Text)
-            {
+            => Text switch {
+                   "1" or "OK"  => AuthorisationValues.OK,
+                   "2" or "KO"  => AuthorisationValues.KO,
+                   _            => AuthorisationValues.Undefined
+               };
 
-                case "1":
-                case "OK":
-                    return AuthorisationValues.OK;
-
-                case "2":
-                case "KO":
-                    return AuthorisationValues.KO;
-
-                default:
-                    return AuthorisationValues.Undefined;
-
-            }
-
-        }
 
         #endregion
 
@@ -94,23 +65,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="AuthorisationValue">An authorisation value.</param>
         public static String AsText(this AuthorisationValues AuthorisationValue)
-        {
 
-            switch (AuthorisationValue)
-            {
-
-                case AuthorisationValues.OK:
-                    return "1";
-
-                case AuthorisationValues.KO:
-                    return "2";
-
-                default:
-                    return "undefined";
-
-            }
-
-        }
+            => AuthorisationValue switch {
+                   AuthorisationValues.OK  => "1",
+                   AuthorisationValues.KO  => "2",
+                   _                       => "undefined"
+               };
 
         #endregion
 
@@ -121,23 +81,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="AuthorisationValue">An authorisation value.</param>
         public static Byte AsNumber(this AuthorisationValues AuthorisationValue)
-        {
 
-            switch (AuthorisationValue)
-            {
-
-                case AuthorisationValues.OK:
-                    return 1;
-
-                case AuthorisationValues.KO:
-                    return 2;
-
-                default:
-                    return 0;
-
-            }
-
-        }
+            => AuthorisationValue switch {
+                   AuthorisationValues.OK  => 1,
+                   AuthorisationValues.KO  => 2,
+                   _                       => 0
+               };
 
         #endregion
 

@@ -17,9 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -30,14 +27,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// An eMIP request status.
     /// </summary>
-    public struct RequestStatus : IId,
-                                  IEquatable <RequestStatus>,
-                                  IComparable<RequestStatus>
+    public readonly struct RequestStatus : IId,
+                                           IEquatable <RequestStatus>,
+                                           IComparable<RequestStatus>
     {
 
         #region Data
 
-        private static readonly Dictionary<Int32, RequestStatus> Lookup = new Dictionary<Int32, RequestStatus>();
+        private static readonly Dictionary<Int32, RequestStatus> Lookup = new();
 
         #endregion
 
@@ -46,24 +43,24 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Indicates whether this identification is null or empty.
         /// </summary>
-        public Boolean IsNullOrEmpty
+        public Boolean  IsNullOrEmpty
             => false;
 
         /// <summary>
         /// The length of this identification.
         /// </summary>
-        public UInt64 Length
+        public UInt64   Length
             => 0;
 
         /// <summary>
         /// The internal identification.
         /// </summary>
-        public Int32   Code          { get; }
+        public Int32    Code           { get; }
 
         /// <summary>
         /// The description of the result status.
         /// </summary>
-        public String  Description   { get; }
+        public String?  Description    { get; }
 
         #endregion
 
@@ -102,7 +99,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Code">The numeric code of the status.</param>
         /// <param name="Description">The description of the result status.</param>
         private RequestStatus(Int32   Code,
-                              String  Description = null)
+                              String? Description = null)
         {
 
             this.Code         = Code;
@@ -128,11 +125,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Code">The numeric code of the status.</param>
         /// <param name="Description">The description of the result status.</param>
-        public static RequestStatus Register(Int32   Code,
-                                             String  Description = null)
+        public static RequestStatus Register(Int32    Code,
+                                             String?  Description   = null)
 
-            => new RequestStatus(Code,
-                                 Description);
+            => new (Code,
+                    Description);
 
         #endregion
 
@@ -148,8 +145,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text), "The given text representation of a request status must not be null or empty!");
@@ -171,8 +167,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static RequestStatus Parse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out RequestStatus Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var requestStatus))
+                return requestStatus;
 
             return new RequestStatus(Code);
 
@@ -191,15 +187,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Code))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var code))
                 return new RequestStatus?();
 
             #endregion
 
-            return TryParse(Code);
+            return TryParse(code);
 
         }
 
@@ -214,8 +209,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static RequestStatus? TryParse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out RequestStatus Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var requestStatus))
+                return requestStatus;
 
             return new RequestStatus(Code);
 
@@ -235,14 +230,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             #endregion
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Value))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var Value))
             {
-                RequestStatus = default(RequestStatus);
+                RequestStatus = default;
                 return false;
             }
 
@@ -280,8 +274,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public RequestStatus Clone
 
-            => new RequestStatus(Code,
-                                 new String(Description.ToCharArray()));
+            => new (Code,
+                    Description is not null
+                        ? new String(Description.ToCharArray())
+                        : null);
 
         #endregion
 
@@ -295,7 +291,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Ok!
         /// </summary>
         public static RequestStatus Ok
-            => new RequestStatus(1,         "Ok!");
+            => new (1,         "Ok!");
 
 
 
@@ -303,31 +299,31 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Ok-Warning: The CPO of the EVSE cannot by identified!
         /// </summary>
         public static RequestStatus CPONotFound
-            => new RequestStatus(201,       "The CPO of the EVSE cannot by identified!");
+            => new (201,       "The CPO of the EVSE cannot by identified!");
 
         /// <summary>
         /// Ok-Warning: There is no roaming contract between the CPO and the eMSP for the requested service!
         /// </summary>
         public static RequestStatus NoRoamingContract
-            => new RequestStatus(202,       "There is no roaming contract between the CPO and the eMSP for the requested service!");
+            => new (202,       "There is no roaming contract between the CPO and the eMSP for the requested service!");
 
         /// <summary>
         /// Ok-Warning: The eMSP of the end-user cannot be identified!
         /// </summary>
         public static RequestStatus EMSPNotFound
-            => new RequestStatus(203,       "The eMSP of the end-user cannot be identified!");
+            => new (203,       "The eMSP of the end-user cannot be identified!");
 
         /// <summary>
         /// Ok-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE!
         /// </summary>
         public static RequestStatus EVSEServiceNotAvailable
-            => new RequestStatus(205,       "The autorisation request is rejected by CPO: The requested service is not available on this EVSE!");
+            => new (205,       "The autorisation request is rejected by CPO: The requested service is not available on this EVSE!");
 
         /// <summary>
         /// Ok-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!
         /// </summary>
         public static RequestStatus EVSENotReachable
-            => new RequestStatus(206,       "The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!");
+            => new (206,       "The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!");
 
 
 
@@ -335,19 +331,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// KO-Error 201: The autorisation request is rejected: Unknown error!
         /// </summary>
         public static RequestStatus UnknownAuthError
-            => new RequestStatus(10201,     "The autorisation request is rejected: Unknown error!");
+            => new (10201,     "The autorisation request is rejected: Unknown error!");
 
         /// <summary>
         /// KO-Error 207: The CPO of the EVSE is not reachable!
         /// </summary>
         public static RequestStatus CPO_NotReachable
-            => new RequestStatus(10207,     "The CPO of the EVSE is not reachable!");
+            => new (10207,     "The CPO of the EVSE is not reachable!");
 
         /// <summary>
         /// KO-Error 210: The eMSP did not respond correctly to the request!
         /// </summary>
         public static RequestStatus EMSP_InvalidResponse
-            => new RequestStatus(10210,     "The eMSP did not respond correctly to the request!");
+            => new (10210,     "The eMSP did not respond correctly to the request!");
 
 
 
@@ -355,49 +351,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// KO-Error 501: Session not found!
         /// </summary>
         public static RequestStatus SessionNotFound
-            => new RequestStatus(10501,     "Session not found!");
+            => new (10501,     "Session not found!");
 
         /// <summary>
         /// KO-Error 502: CPO/eMSP not found!
         /// </summary>
         public static RequestStatus CPOorEMSP_NotFound
-            => new RequestStatus(10502,     "CPO/eMSP not found!");
+            => new (10502,     "CPO/eMSP not found!");
 
         /// <summary>
         /// KO-Error 503: The CPO/eMSP does not accept Action/Event!
         /// </summary>
         public static RequestStatus CPOorEMSP_DoesNotAcceptActionOrEvent
-            => new RequestStatus(10503,     "The CPO/eMSP does not accept Action/Event!");
+            => new (10503,     "The CPO/eMSP does not accept Action/Event!");
 
         /// <summary>
         /// KO-Error 504: The request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond!
         /// </summary>
         public static RequestStatus CPOorEMSP_DoesNotRespond
-            => new RequestStatus(10504,     "The request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond!");
+            => new (10504,     "The request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond!");
 
         /// <summary>
         /// KO-Error 505: The CPO/eMSP returns an IOP Fault!
         /// </summary>
         public static RequestStatus CPOorEMSP_IOPFault
-            => new RequestStatus(10505,     "The CPO/eMSP returns an IOP Fault!");
+            => new (10505,     "The CPO/eMSP returns an IOP Fault!");
 
         /// <summary>
         /// KO-Error 506: The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!
         /// </summary>
         public static RequestStatus CPOorEMSP_DoesNotRecogniseActionOrEventNature
-            => new RequestStatus(10506,     "The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!");
+            => new (10506,     "The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!");
 
         /// <summary>
         /// KO-Error 507: The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!
         /// </summary>
         public static RequestStatus CPOorEMSP_ActionOrReportErrorOccured
-            => new RequestStatus(10507,     "The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!");
+            => new (10507,     "The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!");
 
         /// <summary>
         /// KO-Error 508: The requestor is neither eMSP nor CPO for this session!
         /// </summary>
         public static RequestStatus CPOorEMSP_IllegalSessionAccess
-            => new RequestStatus(10508,     "The requestor is neither eMSP nor CPO for this session!");
+            => new (10508,     "The requestor is neither eMSP nor CPO for this session!");
 
 
 
@@ -405,7 +401,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// The charging pool/station/point/connector is unknown!
         /// </summary>
         public static RequestStatus UnknownEntity
-            => new RequestStatus(10601,     "The charging pool/station/point/connector is unknown!");
+            => new (10601,     "The charging pool/station/point/connector is unknown!");
 
 
 
@@ -413,7 +409,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// OKWarning701: eMSP doesn't accept this final CDR because one has already been received for this session (optional)!
         /// </summary>
         public static RequestStatus OKWarning701
-            => new RequestStatus(10701,     "eMSP doesn't accept this final CDR because one has already been received for this session (optional)!");
+            => new (10701,     "eMSP doesn't accept this final CDR because one has already been received for this session (optional)!");
 
 
 
@@ -421,25 +417,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// System error!
         /// </summary>
         public static RequestStatus SystemError
-            => new RequestStatus(-9999990,  "System error!");
+            => new (-9999990,  "System error!");
 
         /// <summary>
         /// HTTP error!
         /// </summary>
         public static RequestStatus HTTPError
-            => new RequestStatus(-9999991,  "HTTP error!");
+            => new (-9999991,  "HTTP error!");
 
         /// <summary>
         /// Service not available!
         /// </summary>
         public static RequestStatus ServiceNotAvailable
-            => new RequestStatus(-9999992,  "Service not available!");
+            => new (-9999992,  "Service not available!");
 
         /// <summary>
         /// Data error!
         /// </summary>
         public static RequestStatus DataError
-            => new RequestStatus(-9999993,  "Data error!");
+            => new (-9999993,  "Data error!");
 
         #endregion
 

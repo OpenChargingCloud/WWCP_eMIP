@@ -3481,7 +3481,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 Runtime  = Endtime - StartTime;
 
                 if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
-                    response?.Content                     != null              &&
+                    response?.Content                     is not null          &&
                     response?.Content.RequestStatus.Code  == 1                 &&
                     response?.Content.AuthorisationValue  == AuthorisationValues.OK)
                 {
@@ -3628,7 +3628,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             TimeSpan        Runtime;
             AuthStopResult  result;
 
-            if (ChargingLocation?.EVSEId == null)
+            if (ChargingLocation?.EVSEId is null)
             {
 
                 Endtime  = DateTime.UtcNow;
@@ -3674,7 +3674,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 Runtime  = Endtime - StartTime;
 
                 if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
-                    response?.Content                     != null              &&
+                    response?.Content                     is not null          &&
                     response?.Content.RequestStatus.Code  == 1                 &&
                     response?.Content.AuthorisationValue  == AuthorisationValues.OK)
                 {

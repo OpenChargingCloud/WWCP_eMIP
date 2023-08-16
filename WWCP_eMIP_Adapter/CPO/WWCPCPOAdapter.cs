@@ -40,7 +40,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// A WWCP wrapper for the eMIP CPO Roaming client which maps
     /// WWCP data structures onto eMIP data structures and vice versa.
     /// </summary>
-    public class WWCPCPOAdapter : AWWCPEMPAdapter<ChargeDetailRecord>,
+    public class WWCPCPOAdapter : AWWCPCSOAdapter<ChargeDetailRecord>,
                                   IEMPRoamingProvider,
                                   IEquatable <WWCPCPOAdapter>,
                                   IComparable<WWCPCPOAdapter>,

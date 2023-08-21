@@ -94,7 +94,7 @@ namespace cloud.charging.open.protocols.WWCP
         public static WWCPCPOAdapter
 
             CreateeMIPv0_7_4_CSORoamingProvider(this RoamingNetwork                                 RoamingNetwork,
-                                                EMPRoamingProvider_Id                               Id,
+                                                CSORoamingProvider_Id                               Id,
                                                 I18NString                                          Name,
                                                 I18NString                                          Description,
                                                 CPORoaming                                          CPORoaming,
@@ -126,12 +126,12 @@ namespace cloud.charging.open.protocols.WWCP
                                                 Boolean                                             DisableAuthentication                                    = false,
                                                 Boolean                                             DisableSendChargeDetailRecords                           = false,
 
-                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>               eMIPConfigurator                                         = null,
-                                                Action<IEMPRoamingProvider>                         Configurator                                             = null,
+                                                Action<eMIPv0_7_4.CPO.WWCPCPOAdapter>?              eMIPConfigurator                                         = null,
+                                                Action<ICSORoamingProvider>?                        Configurator                                             = null,
 
                                                 String                                              EllipticCurve                                            = "P-256",
-                                                ECPrivateKeyParameters                              PrivateKey                                               = null,
-                                                PublicKeyCertificates                               PublicKeyCertificates                                    = null,
+                                                ECPrivateKeyParameters?                             PrivateKey                                               = null,
+                                                PublicKeyCertificates?                              PublicKeyCertificates                                    = null,
 
                                                 APICounterValues?                                   CPOClientSendHeartbeatCounter                            = null,
                                                 APICounterValues?                                   CPOClientSetChargingPoolAvailabilityStatusCounter        = null,
@@ -201,7 +201,7 @@ namespace cloud.charging.open.protocols.WWCP
             eMIPConfigurator?.Invoke(NewRoamingProvider);
 
             return RoamingNetwork.
-                       CreateEMPRoamingProvider(NewRoamingProvider,
+                       CreateCSORoamingProvider(NewRoamingProvider,
                                                 Configurator) as WWCPCPOAdapter;
 
         }

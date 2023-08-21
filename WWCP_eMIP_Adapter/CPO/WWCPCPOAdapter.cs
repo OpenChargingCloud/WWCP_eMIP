@@ -41,7 +41,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// WWCP data structures onto eMIP data structures and vice versa.
     /// </summary>
     public class WWCPCPOAdapter : AWWCPCSOAdapter<ChargeDetailRecord>,
-                                  IEMPRoamingProvider,
+                                  ICSORoamingProvider,
                                   IEquatable <WWCPCPOAdapter>,
                                   IComparable<WWCPCPOAdapter>,
                                   IComparable
@@ -266,7 +266,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="DisablePushStatus">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
-        public WWCPCPOAdapter(EMPRoamingProvider_Id                              Id,
+        public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
                               I18NString                                         Name,
                               I18NString                                         Description,
                               RoamingNetwork                                     RoamingNetwork,
@@ -492,7 +492,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                );
 
                     var response = await RoamingNetwork.
-                                             RemoteStart(EMPRoamingProvider:    this,
+                                             RemoteStart(CSORoamingProvider:    this,
                                                          ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
                                                          ChargingProduct:       chargingProduct,
                                                          ReservationId:         null,
@@ -711,7 +711,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     {
 
                         var response = await RoamingNetwork.
-                                                 RemoteStop(EMPRoamingProvider:    this,
+                                                 RemoteStop(CSORoamingProvider:    this,
                                                             SessionId:             Request.ServiceSessionId.ToWWCP(),
                                                             ReservationHandling:   ReservationHandling.Close,
                                                             ProviderId:            Request.PartnerId.ToWWCP_ProviderId(),

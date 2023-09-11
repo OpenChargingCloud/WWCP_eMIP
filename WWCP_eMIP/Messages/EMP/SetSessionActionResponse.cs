@@ -232,7 +232,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetSessionActionResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, SetSessionActionResponseXML, e);
 
                 SetSessionActionResponse = null;
                 return false;
@@ -278,7 +278,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetSessionActionResponseText, e);
+                OnException?.Invoke(Timestamp.Now, SetSessionActionResponseText, e);
             }
 
             SetSessionActionResponse = null;

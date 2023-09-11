@@ -430,7 +430,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnHeartbeatRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -609,7 +609,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnSendHeartbeatResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -675,7 +675,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnSetServiceAuthorisationRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -876,7 +876,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnSetServiceAuthorisationResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -957,7 +957,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnSetSessionActionRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -1152,7 +1152,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Send OnSetSessionActionResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {

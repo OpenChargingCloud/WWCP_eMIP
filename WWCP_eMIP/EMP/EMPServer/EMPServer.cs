@@ -302,7 +302,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 #region Send OnGetServiceAuthorisationSOAPRequest event
 
-                var StartTime = DateTime.UtcNow;
+                var StartTime = Timestamp.Now;
 
                 try
                 {
@@ -377,7 +377,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                         var results = await Task.WhenAll(OnGetServiceAuthorisation.GetInvocationList().
                                                              Cast<OnGetServiceAuthorisationDelegate>().
-                                                             Select(e => e(DateTime.UtcNow,
+                                                             Select(e => e(Timestamp.Now,
                                                                            this,
                                                                            _GetServiceAuthorisationRequest))).
                                                              ConfigureAwait(false);
@@ -399,7 +399,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Send OnGetServiceAuthorisationResponse event
 
-                    var EndTime = DateTime.UtcNow;
+                    var EndTime = Timestamp.Now;
 
                     try
                     {
@@ -447,7 +447,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.UtcNow,
+                    Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.XMLTEXT_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomGetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
@@ -497,7 +497,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 #region Send OnSetSessionEventReportSOAPRequest event
 
-                var StartTime = DateTime.UtcNow;
+                var StartTime = Timestamp.Now;
 
                 try
                 {
@@ -573,7 +573,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                         var results = await Task.WhenAll(OnSetSessionEventReport.GetInvocationList().
                                                              Cast<OnSetSessionEventReportDelegate>().
-                                                             Select(e => e(DateTime.UtcNow,
+                                                             Select(e => e(Timestamp.Now,
                                                                            this,
                                                                            _SetSessionEventReportRequest))).
                                                              ConfigureAwait(false);
@@ -595,7 +595,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Send OnSetSessionEventReportResponse event
 
-                    var EndTime = DateTime.UtcNow;
+                    var EndTime = Timestamp.Now;
 
                     try
                     {
@@ -644,7 +644,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.UtcNow,
+                    Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.XMLTEXT_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionEventReportResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
@@ -694,7 +694,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 #region Send OnSetChargeDetailRecordSOAPRequest event
 
-                var StartTime = DateTime.UtcNow;
+                var StartTime = Timestamp.Now;
 
                 try
                 {
@@ -767,7 +767,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                         var results = await Task.WhenAll(OnSetChargeDetailRecord.GetInvocationList().
                                                              Cast<OnSetChargeDetailRecordDelegate>().
-                                                             Select(e => e(DateTime.UtcNow,
+                                                             Select(e => e(Timestamp.Now,
                                                                            this,
                                                                            _SetChargeDetailRecordRequest))).
                                                              ConfigureAwait(false);
@@ -789,7 +789,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Send OnSetChargeDetailRecordResponse event
 
-                    var EndTime = DateTime.UtcNow;
+                    var EndTime = Timestamp.Now;
 
                     try
                     {
@@ -834,7 +834,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.UtcNow,
+                    Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.XMLTEXT_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetChargeDetailRecordResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"

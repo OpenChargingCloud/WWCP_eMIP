@@ -292,7 +292,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetChargeDetailRecordRequestXML, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetChargeDetailRecordRequestXML, e);
 
                 SetChargeDetailRecordRequest = null;
                 return false;
@@ -356,7 +356,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetChargeDetailRecordRequestText, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetChargeDetailRecordRequestText, e);
             }
 
             SetChargeDetailRecordRequest = null;

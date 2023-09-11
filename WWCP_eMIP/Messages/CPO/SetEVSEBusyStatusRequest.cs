@@ -322,7 +322,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetEVSEBusyStatusRequestXML, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetEVSEBusyStatusRequestXML, e);
 
                 SetEVSEBusyStatusRequest = null;
                 return false;
@@ -380,7 +380,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetEVSEBusyStatusRequestText, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetEVSEBusyStatusRequestText, e);
             }
 
             SetEVSEBusyStatusRequest = null;

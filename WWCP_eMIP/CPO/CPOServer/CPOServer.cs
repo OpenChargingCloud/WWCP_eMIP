@@ -22,6 +22,7 @@ using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
+using org.GraphDefined.Vanaheimr.Hermod.Logging;
 
 #endregion
 
@@ -49,7 +50,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML server URI prefix.
         /// </summary>
-        public new static readonly HTTPPath         DefaultURLPathPrefix           = HTTPPath.Parse("/");
+        public     static readonly HTTPPath         DefaultURLPathPrefix       = HTTPPath.Parse("/");
 
         /// <summary>
         /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
@@ -73,7 +74,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The identification of this HTTP/SOAP service.
         /// </summary>
-        public String  ServiceName           { get; }
+        public String  ServiceName         { get; }
 
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
@@ -84,21 +85,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region Custom request/response mappers
 
-        public CustomXMLParserDelegate<SetServiceAuthorisationRequest>       CustomSetServiceAuthorisationRequestParser        { get; set; }
+        public CustomXMLParserDelegate<SetServiceAuthorisationRequest>?       CustomSetServiceAuthorisationRequestParser        { get; set; }
 
-        public CustomXMLParserDelegate<MeterReport>                          CustomMeterReportParser                           { get; set; }
+        public CustomXMLParserDelegate<MeterReport>?                          CustomMeterReportParser                           { get; set; }
 
-        public CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>  CustomSetServiceAuthorisationResponseSerializer   { get; set; }
-
-
-        public CustomXMLParserDelegate<SetSessionActionRequestRequest>              CustomSetSessionActionRequestParser               { get; set; }
-
-        public CustomXMLParserDelegate<SessionAction>                        CustomSessionActionParser                         { get; set; }
-
-        public CustomXMLSerializerDelegate<SetSessionActionRequestResponse>         CustomSetSessionActionResponseSerializer          { get; set; }
+        public CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>?  CustomSetServiceAuthorisationResponseSerializer   { get; set; }
 
 
-        public OnExceptionDelegate                                           OnException                                       { get; set; }
+        public CustomXMLParserDelegate<SetSessionActionRequestRequest>?       CustomSetSessionActionRequestParser               { get; set; }
+
+        public CustomXMLParserDelegate<SessionAction>?                        CustomSessionActionParser                         { get; set; }
+
+        public CustomXMLSerializerDelegate<SetSessionActionRequestResponse>?  CustomSetSessionActionResponseSerializer          { get; set; }
+
+
+        public OnExceptionDelegate?                                           OnException                                       { get; set; }
 
         #endregion
 
@@ -109,27 +110,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation SOAP request was received.
         /// </summary>
-        public event RequestLogHandler                          OnSetServiceAuthorisationSOAPRequest;
+        public event RequestLogHandler?                          OnSetServiceAuthorisationSOAPRequest;
 
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation request was received.
         /// </summary>
-        public event OnSetServiceAuthorisationRequestDelegate   OnSetServiceAuthorisationRequest;
+        public event OnSetServiceAuthorisationRequestDelegate?   OnSetServiceAuthorisationRequest;
 
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation request was received.
         /// </summary>
-        public event OnSetServiceAuthorisationDelegate          OnSetServiceAuthorisation;
+        public event OnSetServiceAuthorisationDelegate?          OnSetServiceAuthorisation;
 
         /// <summary>
         /// An event sent whenever a response to a SetServiceAuthorisation request was sent.
         /// </summary>
-        public event OnSetServiceAuthorisationResponseDelegate  OnSetServiceAuthorisationResponse;
+        public event OnSetServiceAuthorisationResponseDelegate?  OnSetServiceAuthorisationResponse;
 
         /// <summary>
         /// An event sent whenever a response to a SetServiceAuthorisation SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler                           OnSetServiceAuthorisationSOAPResponse;
+        public event AccessLogHandler?                           OnSetServiceAuthorisationSOAPResponse;
 
         #endregion
 
@@ -138,27 +139,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetSessionAction SOAP request was received.
         /// </summary>
-        public event RequestLogHandler                   OnSetSessionActionSOAPRequest;
+        public event RequestLogHandler?                   OnSetSessionActionSOAPRequest;
 
         /// <summary>
         /// An event sent whenever a SetSessionAction request was received.
         /// </summary>
-        public event OnSetSessionActionRequestDelegate   OnSetSessionActionRequest;
+        public event OnSetSessionActionRequestDelegate?   OnSetSessionActionRequest;
 
         /// <summary>
         /// An event sent whenever a SetSessionAction request was received.
         /// </summary>
-        public event OnSetSessionActionDelegate          OnSetSessionAction;
+        public event OnSetSessionActionDelegate?          OnSetSessionAction;
 
         /// <summary>
         /// An event sent whenever a response to a SetSessionAction request was sent.
         /// </summary>
-        public event OnSetSessionActionResponseDelegate  OnSetSessionActionResponse;
+        public event OnSetSessionActionResponseDelegate?  OnSetSessionActionResponse;
 
         /// <summary>
         /// An event sent whenever a response to a SetSessionAction SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler                    OnSetSessionActionSOAPResponse;
+        public event AccessLogHandler?                    OnSetSessionActionSOAPResponse;
 
         #endregion
 
@@ -180,15 +181,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RegisterHTTPRootService">Register HTTP root services for sending a notice to clients connecting via HTML or plain text.</param>
         /// <param name="DNSClient">An optional DNS client to use.</param>
         /// <param name="AutoStart">Start the server immediately.</param>
-        public CPOServer(String           HTTPServerName            = DefaultHTTPServerName,
-                         IPPort?          HTTPServerPort            = null,
-                         String           ServiceName               = null,
-                         HTTPPath?        URLPathPrefix             = null,
-                         String           AuthorisationURL          = DefaultAuthorisationURL,
-                         HTTPContentType  ContentType               = null,
-                         Boolean          RegisterHTTPRootService   = true,
-                         DNSClient        DNSClient                 = null,
-                         Boolean          AutoStart                 = false)
+        public CPOServer(String            HTTPServerName            = DefaultHTTPServerName,
+                         IPPort?           HTTPServerPort            = null,
+                         String?           ServiceName               = null,
+                         HTTPPath?         URLPathPrefix             = null,
+                         String            AuthorisationURL          = DefaultAuthorisationURL,
+                         HTTPContentType?  ContentType               = null,
+                         Boolean           RegisterHTTPRootService   = true,
+                         DNSClient?        DNSClient                 = null,
+                         Boolean           AutoStart                 = false)
 
             : base(HTTPServerName.IsNotNullOrEmpty() ? HTTPServerName : DefaultHTTPServerName,
                    HTTPServerPort ?? DefaultHTTPServerPort,
@@ -222,10 +223,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="ServiceName">An optional identification for this SOAP service.</param>
         /// <param name="URLPathPrefix">An optional prefix for the HTTP URIs.</param>
         /// <param name="AuthorisationURL">The HTTP/SOAP/XML URI for eMIP authorization requests.</param>
-        public CPOServer(SOAPServer  SOAPServer,
-                         String      ServiceName       = null,
-                         HTTPPath?   URLPathPrefix     = null,
-                         String      AuthorisationURL  = DefaultAuthorisationURL)
+        public CPOServer(SOAPServer               SOAPServer,
+                         String?                  ServiceName       = null,
+                         HTTPPath?                URLPathPrefix     = null,
+                         String                   AuthorisationURL  = DefaultAuthorisationURL,
+
+                         String                   LoggingPath       = "",
+                         String?                  LoggingContext    = null,
+                         LogfileCreatorDelegate?  LogfileCreator    = null)
 
             : base(SOAPServer,
                    URLPathPrefix ?? DefaultURLPathPrefix)
@@ -234,6 +239,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             this.ServiceName       = ServiceName      ?? "eMIP " + Version.Number + " " + nameof(CPOServer);
             this.AuthorisationURL  = AuthorisationURL ?? DefaultAuthorisationURL;
+
+            this.HTTPLogger        = new CPOServerLogger(
+                                         this,
+                                         LoggingPath,
+                                         LoggingContext,
+                                         LogfileCreator
+                                     );
 
             RegisterURITemplates();
 
@@ -254,9 +266,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region ~/ - SetServiceAuthorisation
 
-            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
-            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@GireveTests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
+            // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(null,
                                             HTTPHostname.Any,
                                             URLPrefix + AuthorisationURL,
@@ -265,19 +277,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                             async (HTTPRequest, SetServiceAuthorisationXML) => {
 
 
-                SetServiceAuthorisationResponse Response  = null;
+                SetServiceAuthorisationResponse? Response  = null;
 
                 #region Send OnSetServiceAuthorisationSOAPRequest event
 
-                var StartTime = DateTime.UtcNow;
+                var startTime = Timestamp.Now;
 
                 try
                 {
 
-                    if (OnSetServiceAuthorisationSOAPRequest != null)
+                    if (OnSetServiceAuthorisationSOAPRequest is not null)
                         await Task.WhenAll(OnSetServiceAuthorisationSOAPRequest.GetInvocationList().
                                            Cast<RequestLogHandler>().
-                                           Select(e => e(StartTime,
+                                           Select(e => e(startTime,
                                                          SOAPServer.HTTPServer,
                                                          HTTPRequest))).
                                            ConfigureAwait(false);
@@ -292,16 +304,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
                 if (SetServiceAuthorisationRequest.TryParse(SetServiceAuthorisationXML,
+                                                            out var setServiceAuthorisationRequest,
                                                             CustomSetServiceAuthorisationRequestParser,
                                                             CustomMeterReportParser,
-                                                            out SetServiceAuthorisationRequest _SetServiceAuthorisationRequest,
                                                             OnException,
 
                                                             HTTPRequest,
                                                             HTTPRequest.Timestamp,
-                                                            HTTPRequest.CancellationToken,
                                                             HTTPRequest.EventTrackingId,
-                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout,
+                                                            HTTPRequest.CancellationToken) &&
+                    setServiceAuthorisationRequest is not null)
                 {
 
                     #region Send OnSetServiceAuthorisationRequest event
@@ -309,29 +322,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     try
                     {
 
-                        if (OnSetServiceAuthorisationRequest != null)
+                        if (OnSetServiceAuthorisationRequest is not null)
                             await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
                                                Cast<OnSetServiceAuthorisationRequestDelegate>().
-                                               Select(e => e(StartTime,
-                                                             _SetServiceAuthorisationRequest.Timestamp.Value,
+                                               Select(e => e(startTime,
+                                                             setServiceAuthorisationRequest.Timestamp ?? Timestamp.Now,
                                                              this,
                                                              ServiceName,
-                                                             _SetServiceAuthorisationRequest.EventTrackingId,
-                                                             _SetServiceAuthorisationRequest.PartnerId,
-                                                             _SetServiceAuthorisationRequest.OperatorId,
-                                                             _SetServiceAuthorisationRequest.TargetOperatorId,
-                                                             _SetServiceAuthorisationRequest.EVSEId,
-                                                             _SetServiceAuthorisationRequest.UserId,
-                                                             _SetServiceAuthorisationRequest.RequestedServiceId,
-                                                             _SetServiceAuthorisationRequest.ServiceSessionId,
-                                                             _SetServiceAuthorisationRequest.AuthorisationValue,
-                                                             _SetServiceAuthorisationRequest.IntermediateCDRRequested,
-                                                             _SetServiceAuthorisationRequest.TransactionId,
-                                                             _SetServiceAuthorisationRequest.UserContractIdAlias,
-                                                             _SetServiceAuthorisationRequest.MeterLimits,
-                                                             _SetServiceAuthorisationRequest.Parameter,
-                                                             _SetServiceAuthorisationRequest.BookingId,
-                                                             _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout))).
+                                                             setServiceAuthorisationRequest.EventTrackingId,
+                                                             setServiceAuthorisationRequest.PartnerId,
+                                                             setServiceAuthorisationRequest.OperatorId,
+                                                             setServiceAuthorisationRequest.TargetOperatorId,
+                                                             setServiceAuthorisationRequest.EVSEId,
+                                                             setServiceAuthorisationRequest.UserId,
+                                                             setServiceAuthorisationRequest.RequestedServiceId,
+                                                             setServiceAuthorisationRequest.ServiceSessionId,
+                                                             setServiceAuthorisationRequest.AuthorisationValue,
+                                                             setServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                             setServiceAuthorisationRequest.TransactionId,
+                                                             setServiceAuthorisationRequest.UserContractIdAlias,
+                                                             setServiceAuthorisationRequest.MeterLimits,
+                                                             setServiceAuthorisationRequest.Parameter,
+                                                             setServiceAuthorisationRequest.BookingId,
+                                                             setServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout))).
                                                ConfigureAwait(false);
 
                     }
@@ -344,14 +357,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Call async subscribers
 
-                    if (OnSetServiceAuthorisation != null)
+                    if (OnSetServiceAuthorisation is not null)
                     {
 
                         var results = await Task.WhenAll(OnSetServiceAuthorisation.GetInvocationList().
                                                              Cast<OnSetServiceAuthorisationDelegate>().
-                                                             Select(e => e(DateTime.UtcNow,
+                                                             Select(e => e(Timestamp.Now,
                                                                            this,
-                                                                           _SetServiceAuthorisationRequest))).
+                                                                           setServiceAuthorisationRequest))).
                                                              ConfigureAwait(false);
 
                         Response = results.FirstOrDefault();
@@ -359,45 +372,45 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     }
 
                     //"Could not forward the incoming SetServiceAuthorisation request!",
-                    if (Response == null)
+                    if (Response is null)
                         Response = SetServiceAuthorisationResponse.SystemError(
-                                       _SetServiceAuthorisationRequest,
-                                       _SetServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
+                                       setServiceAuthorisationRequest,
+                                       setServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
                                    );
 
                     #endregion
 
                     #region Send OnSetServiceAuthorisationResponse event
 
-                    var EndTime = DateTime.UtcNow;
+                    var endTime = Timestamp.Now;
 
                     try
                     {
 
-                        if (OnSetServiceAuthorisationResponse != null)
+                        if (OnSetServiceAuthorisationResponse is not null)
                             await Task.WhenAll(OnSetServiceAuthorisationResponse.GetInvocationList().
                                                Cast<OnSetServiceAuthorisationResponseDelegate>().
-                                               Select(e => e(EndTime,
+                                               Select(e => e(endTime,
                                                              this,
                                                              ServiceName,
-                                                             _SetServiceAuthorisationRequest.EventTrackingId,
-                                                             _SetServiceAuthorisationRequest.PartnerId,
-                                                             _SetServiceAuthorisationRequest.OperatorId,
-                                                             _SetServiceAuthorisationRequest.TargetOperatorId,
-                                                             _SetServiceAuthorisationRequest.EVSEId,
-                                                             _SetServiceAuthorisationRequest.UserId,
-                                                             _SetServiceAuthorisationRequest.RequestedServiceId,
-                                                             _SetServiceAuthorisationRequest.ServiceSessionId,
-                                                             _SetServiceAuthorisationRequest.AuthorisationValue,
-                                                             _SetServiceAuthorisationRequest.IntermediateCDRRequested,
-                                                             _SetServiceAuthorisationRequest.TransactionId,
-                                                             _SetServiceAuthorisationRequest.UserContractIdAlias,
-                                                             _SetServiceAuthorisationRequest.MeterLimits,
-                                                             _SetServiceAuthorisationRequest.Parameter,
-                                                             _SetServiceAuthorisationRequest.BookingId,
-                                                             _SetServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout,
+                                                             setServiceAuthorisationRequest.EventTrackingId,
+                                                             setServiceAuthorisationRequest.PartnerId,
+                                                             setServiceAuthorisationRequest.OperatorId,
+                                                             setServiceAuthorisationRequest.TargetOperatorId,
+                                                             setServiceAuthorisationRequest.EVSEId,
+                                                             setServiceAuthorisationRequest.UserId,
+                                                             setServiceAuthorisationRequest.RequestedServiceId,
+                                                             setServiceAuthorisationRequest.ServiceSessionId,
+                                                             setServiceAuthorisationRequest.AuthorisationValue,
+                                                             setServiceAuthorisationRequest.IntermediateCDRRequested,
+                                                             setServiceAuthorisationRequest.TransactionId,
+                                                             setServiceAuthorisationRequest.UserContractIdAlias,
+                                                             setServiceAuthorisationRequest.MeterLimits,
+                                                             setServiceAuthorisationRequest.Parameter,
+                                                             setServiceAuthorisationRequest.BookingId,
+                                                             setServiceAuthorisationRequest.RequestTimeout ?? DefaultRequestTimeout,
                                                              Response,
-                                                             EndTime - StartTime))).
+                                                             endTime - startTime))).
                                                ConfigureAwait(false);
 
                     }
@@ -413,8 +426,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 // "Could not process the incoming SetServiceAuthorisation request!"
                 else
                     Response = SetServiceAuthorisationResponse.SystemError(
-                                   _SetServiceAuthorisationRequest,
-                                   _SetServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
+                                   setServiceAuthorisationRequest,
+                                   setServiceAuthorisationRequest?.TransactionId ?? Transaction_Id.Zero
                                );
 
 
@@ -423,7 +436,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.UtcNow,
+                    Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
@@ -436,7 +449,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 try
                 {
 
-                    if (OnSetServiceAuthorisationSOAPResponse != null)
+                    if (OnSetServiceAuthorisationSOAPResponse is not null)
                         await Task.WhenAll(OnSetServiceAuthorisationSOAPResponse.GetInvocationList().
                                            Cast<AccessLogHandler>().
                                            Select(e => e(HTTPResponse.Timestamp,
@@ -478,19 +491,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                             async (HTTPRequest, SetSessionActionXML) => {
 
 
-                SetSessionActionRequestResponse Response  = null;
+                SetSessionActionRequestResponse? Response  = null;
 
                 #region Send OnSetSessionActionSOAPRequest event
 
-                var StartTime = DateTime.UtcNow;
+                var startTime = Timestamp.Now;
 
                 try
                 {
 
-                    if (OnSetSessionActionSOAPRequest != null)
+                    if (OnSetSessionActionSOAPRequest is not null)
                         await Task.WhenAll(OnSetSessionActionSOAPRequest.GetInvocationList().
                                            Cast<RequestLogHandler>().
-                                           Select(e => e(StartTime,
+                                           Select(e => e(startTime,
                                                          SOAPServer.HTTPServer,
                                                          HTTPRequest))).
                                            ConfigureAwait(false);
@@ -505,16 +518,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
                 if (SetSessionActionRequestRequest.TryParse(SetSessionActionXML,
-                                                            out SetSessionActionRequestRequest setSessionActionRequest,
+                                                            out var setSessionActionRequest,
                                                             CustomSetSessionActionRequestParser,
                                                             CustomSessionActionParser,
                                                             OnException,
 
                                                             HTTPRequest,
                                                             HTTPRequest.Timestamp,
-                                                            HTTPRequest.CancellationToken,
                                                             HTTPRequest.EventTrackingId,
-                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout))
+                                                            HTTPRequest.Timeout ?? DefaultRequestTimeout,
+                                                            HTTPRequest.CancellationToken) &&
+                    setSessionActionRequest is not null)
                 {
 
                     #region Send OnSetSessionActionRequest event
@@ -522,11 +536,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     try
                     {
 
-                        if (OnSetSessionActionRequest != null)
+                        if (OnSetSessionActionRequest is not null)
                             await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
                                                Cast<OnSetSessionActionRequestDelegate>().
-                                               Select(e => e(StartTime,
-                                                             setSessionActionRequest.Timestamp.Value,
+                                               Select(e => e(startTime,
+                                                             setSessionActionRequest.Timestamp ?? Timestamp.Now,
                                                              this,
                                                              ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
@@ -552,12 +566,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Call async subscribers
 
-                    if (OnSetSessionAction != null)
+                    if (OnSetSessionAction is not null)
                     {
 
                         var results = await Task.WhenAll(OnSetSessionAction.GetInvocationList().
                                                              Cast<OnSetSessionActionDelegate>().
-                                                             Select(e => e(DateTime.UtcNow,
+                                                             Select(e => e(Timestamp.Now,
                                                                            this,
                                                                            setSessionActionRequest))).
                                                              ConfigureAwait(false);
@@ -567,7 +581,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     }
 
                     // "Could not process the incoming SetSessionAction request!",
-                    if (Response == null)
+                    if (Response is null)
                         Response = SetSessionActionRequestResponse.SystemError(
                                        setSessionActionRequest,
                                        setSessionActionRequest.TransactionId ?? Transaction_Id.Zero
@@ -577,7 +591,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Send OnSetSessionActionResponse event
 
-                    var EndTime = DateTime.UtcNow;
+                    var endTime = Timestamp.Now;
 
                     try
                     {
@@ -585,7 +599,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                         if (OnSetSessionActionResponse != null)
                             await Task.WhenAll(OnSetSessionActionResponse.GetInvocationList().
                                                Cast<OnSetSessionActionResponseDelegate>().
-                                               Select(e => e(EndTime,
+                                               Select(e => e(endTime,
                                                              this,
                                                              ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
@@ -600,7 +614,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                              setSessionActionRequest.RequestTimeout ?? DefaultRequestTimeout,
                                                              Response,
-                                                             EndTime - StartTime))).
+                                                             endTime - startTime))).
                                                ConfigureAwait(false);
 
                     }
@@ -617,7 +631,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 else
                     Response = SetSessionActionRequestResponse.SystemError(
                                    setSessionActionRequest,
-                                   setSessionActionRequest.TransactionId ?? Transaction_Id.Zero
+                                   setSessionActionRequest?.TransactionId ?? Transaction_Id.Zero
                                );
 
 
@@ -626,7 +640,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
                     Server          = SOAPServer.HTTPServer.DefaultServerName,
-                    Date            = DateTime.UtcNow,
+                    Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
                     Connection      = "close"
@@ -639,7 +653,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 try
                 {
 
-                    if (OnSetSessionActionSOAPResponse != null)
+                    if (OnSetSessionActionSOAPResponse is not null)
                         await Task.WhenAll(OnSetSessionActionSOAPResponse.GetInvocationList().
                                            Cast<AccessLogHandler>().
                                            Select(e => e(HTTPResponse.Timestamp,

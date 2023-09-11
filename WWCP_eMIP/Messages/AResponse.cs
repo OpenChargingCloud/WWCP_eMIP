@@ -95,7 +95,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             : this(Request,
                    TransactionId,
                    RequestStatus,
-                   DateTime.UtcNow,
+                   Timestamp.Now,
                    HTTPResponse,
                    CustomData,
                    InternalData)
@@ -132,7 +132,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             this.Request            = Request;
             this.TransactionId      = TransactionId;
             this.RequestStatus      = RequestStatus;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
+            this.ResponseTimestamp  = ResponseTimestamp ?? Timestamp.Now;
             this.HTTPResponse       = HTTPResponse;
 
         }

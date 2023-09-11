@@ -85,7 +85,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         //                           IReadOnlyDictionary<String, Object>  CustomData   = null)
 
         //    : this(Request,
-        //           DateTime.UtcNow,
+        //           Timestamp.Now,
         //           CustomData)
 
         //{ }
@@ -111,7 +111,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         //{
 
         //    this.Request            = Request;
-        //    this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
+        //    this.ResponseTimestamp  = ResponseTimestamp ?? Timestamp.Now;
 
         //}
 
@@ -156,7 +156,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         {
 
             this.Request            = Request;
-            this.ResponseTimestamp  = ResponseTimestamp ?? DateTime.UtcNow;
+            this.ResponseTimestamp  = ResponseTimestamp ?? Timestamp.Now;
 
         }
 

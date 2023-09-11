@@ -114,7 +114,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             this.PartnerId          = PartnerId;
             this.TransactionId      = TransactionId;
 
-            this.Timestamp          = Timestamp                 ?? DateTime.UtcNow;
+            this.Timestamp          = Timestamp                 ?? org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
             this.EventTrackingId    = EventTrackingId           ?? EventTracking_Id.New;
             this.RequestTimeout     = RequestTimeout            ?? DefaultRequestTimeout;
             this.CancellationToken  = CancellationToken;

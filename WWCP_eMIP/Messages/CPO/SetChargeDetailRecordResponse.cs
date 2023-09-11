@@ -271,7 +271,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetChargeDetailRecordResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, SetChargeDetailRecordResponseXML, e);
 
                 SetChargeDetailRecordResponse = null;
                 return false;
@@ -317,7 +317,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetChargeDetailRecordResponseText, e);
+                OnException?.Invoke(Timestamp.Now, SetChargeDetailRecordResponseText, e);
             }
 
             SetChargeDetailRecordResponse = null;

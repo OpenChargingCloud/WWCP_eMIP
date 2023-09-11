@@ -1088,7 +1088,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnHeartbeatRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -1263,7 +1263,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendHeartbeatResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -1336,7 +1336,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetChargingPoolAvailabilityStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -1541,7 +1541,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetChargingPoolAvailabilityStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -1621,7 +1621,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetChargingStationAvailabilityStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -1826,7 +1826,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetChargingStationAvailabilityStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -1905,7 +1905,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetEVSEAvailabilityStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -2111,7 +2111,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetEVSEAvailabilityStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -2190,7 +2190,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetChargingConnectorAvailabilityStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -2394,7 +2394,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetChargingConnectorAvailabilityStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -2474,7 +2474,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetEVSEBusyStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -2678,7 +2678,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetEVSEBusyStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -2757,7 +2757,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetEVSESyntheticStatusRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -2966,7 +2966,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetEVSESyntheticStatusResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -3050,7 +3050,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnGetServiceAuthorisationRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -3255,7 +3255,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendGetServiceAuthorisationResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -3335,7 +3335,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetSessionEventReportRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -3536,7 +3536,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetSessionEventReportResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {
@@ -3615,7 +3615,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSetChargeDetailRecordRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = Timestamp.Now;
 
             try
             {
@@ -3818,7 +3818,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendSetChargeDetailRecordResponse event
 
-            var Endtime = DateTime.UtcNow;
+            var Endtime = Timestamp.Now;
 
             try
             {

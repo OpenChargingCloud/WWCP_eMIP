@@ -328,7 +328,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetSessionActionRequestXML, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetSessionActionRequestXML, e);
 
                 SetSessionActionRequest = null;
                 return false;
@@ -389,7 +389,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetSessionActionRequestText, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetSessionActionRequestText, e);
             }
 
             SetSessionActionRequest = null;

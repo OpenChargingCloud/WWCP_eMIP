@@ -201,7 +201,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetChargingPoolAvailabilityStatusResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, SetChargingPoolAvailabilityStatusResponseXML, e);
 
                 SetChargingPoolAvailabilityStatusResponse = null;
                 return false;
@@ -247,7 +247,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetChargingPoolAvailabilityStatusResponseText, e);
+                OnException?.Invoke(Timestamp.Now, SetChargingPoolAvailabilityStatusResponseText, e);
             }
 
             SetChargingPoolAvailabilityStatusResponse = null;

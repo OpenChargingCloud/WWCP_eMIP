@@ -17,9 +17,6 @@
 
 #region Usings
 
-using System;
-
-using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.Logging;
 
@@ -48,7 +45,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The linked eMIP CPO server.
         /// </summary>
-        public CPOServer  CPOServer   { get; }
+        public CPOServer  CPOServer    { get; }
 
         #endregion
 
@@ -65,12 +62,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOServerLogger(CPOServer                CPOServer,
                                String                   LoggingPath,
-                               String                   Context         = DefaultContext,
+                               String?                  Context         = null,
                                LogfileCreatorDelegate?  LogfileCreator  = null)
 
             : this(CPOServer,
                    LoggingPath,
-                   Context.IsNotNullOrEmpty() ? Context : DefaultContext,
+                   Context,
                    null,
                    null,
                    null,
@@ -109,7 +106,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         public CPOServerLogger(CPOServer                    CPOServer,
                                String                       LoggingPath,
-                               String                       Context,
+                               String?                      Context                     = null,
 
                                HTTPRequestLoggerDelegate?   LogHTTPRequest_toConsole    = null,
                                HTTPResponseLoggerDelegate?  LogHTTPResponse_toConsole   = null,
@@ -130,7 +127,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             : base(CPOServer.SOAPServer.HTTPServer,
                    LoggingPath,
-                   Context.IsNotNullOrEmpty() ? Context : DefaultContext,
+                   Context ?? DefaultContext,
 
                    LogHTTPRequest_toConsole,
                    LogHTTPResponse_toConsole,

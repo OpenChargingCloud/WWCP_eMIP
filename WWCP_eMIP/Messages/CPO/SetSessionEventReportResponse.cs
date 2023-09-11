@@ -240,7 +240,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetSessionEventReportResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, SetSessionEventReportResponseXML, e);
 
                 SetSessionEventReportResponse = null;
                 return false;
@@ -286,7 +286,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetSessionEventReportResponseText, e);
+                OnException?.Invoke(Timestamp.Now, SetSessionEventReportResponseText, e);
             }
 
             SetSessionEventReportResponse = null;

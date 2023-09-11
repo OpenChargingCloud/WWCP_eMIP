@@ -74,7 +74,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             : this(Request,
                    TimeSpan.FromMinutes(5),
-                   DateTime.UtcNow,
+                   Timestamp.Now,
                    TransactionId,
                    RequestStatus,
                    HTTPResponse,
@@ -261,7 +261,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, HeartbeatResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, HeartbeatResponseXML, e);
 
                 HeartbeatResponse = null;
                 return false;
@@ -307,7 +307,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, HeartbeatResponseText, e);
+                OnException?.Invoke(Timestamp.Now, HeartbeatResponseText, e);
             }
 
             HeartbeatResponse = null;

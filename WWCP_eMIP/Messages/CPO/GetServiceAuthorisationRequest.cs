@@ -313,7 +313,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, GetServiceAuthorisationRequestXML, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, GetServiceAuthorisationRequestXML, e);
 
                 GetServiceAuthorisationRequest = null;
                 return false;
@@ -371,7 +371,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, GetServiceAuthorisationRequestText, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, GetServiceAuthorisationRequestText, e);
             }
 
             GetServiceAuthorisationRequest = null;

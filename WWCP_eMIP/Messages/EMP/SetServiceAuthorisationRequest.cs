@@ -414,7 +414,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SetServiceAuthorisationRequestXML, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetServiceAuthorisationRequestXML, e);
 
                 SetServiceAuthorisationRequest = null;
                 return false;
@@ -475,7 +475,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SetServiceAuthorisationRequestText, e);
+                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetServiceAuthorisationRequestText, e);
             }
 
             SetServiceAuthorisationRequest = null;

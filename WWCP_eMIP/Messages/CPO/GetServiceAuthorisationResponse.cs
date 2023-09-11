@@ -367,7 +367,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, GetServiceAuthorisationResponseXML, e);
+                OnException?.Invoke(Timestamp.Now, GetServiceAuthorisationResponseXML, e);
 
                 GetServiceAuthorisationResponse = null;
                 return false;
@@ -416,7 +416,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, GetServiceAuthorisationResponseText, e);
+                OnException?.Invoke(Timestamp.Now, GetServiceAuthorisationResponseText, e);
             }
 
             GetServiceAuthorisationResponse = null;

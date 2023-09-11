@@ -17,14 +17,12 @@
 
 #region Usings
 
-using System;
 using System.Xml.Linq;
-using System.Collections.Generic;
+
+using Newtonsoft.Json.Linq;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
-using Newtonsoft.Json.Linq;
-using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 
@@ -173,17 +171,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReportXML">The XML to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static MeterReport Parse(XElement                              MeterReportXML,
-                                        CustomXMLParserDelegate<MeterReport>  CustomMeterReportParser   = null,
-                                        OnExceptionDelegate                   OnException               = null)
+        public static MeterReport? Parse(XElement                               MeterReportXML,
+                                         CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
+                                         OnExceptionDelegate?                   OnException               = null)
         {
 
             if (TryParse(MeterReportXML,
-                         out MeterReport _MeterReport,
+                         out var meterReport,
                          CustomMeterReportParser,
                          OnException))
             {
-                return _MeterReport;
+                return meterReport;
             }
 
             return null;
@@ -200,17 +198,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReportText">The text to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static MeterReport Parse(String                                MeterReportText,
-                                        CustomXMLParserDelegate<MeterReport>  CustomMeterReportParser   = null,
-                                        OnExceptionDelegate                   OnException               = null)
+        public static MeterReport? Parse(String                                 MeterReportText,
+                                         CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
+                                         OnExceptionDelegate?                   OnException               = null)
         {
 
             if (TryParse(MeterReportText,
-                         out MeterReport _MeterReport,
+                         out var meterReport,
                          CustomMeterReportParser,
                          OnException))
             {
-                return _MeterReport;
+                return meterReport;
             }
 
             return null;
@@ -228,10 +226,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReport">The parsed meter report.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(XElement                              MeterReportXML,
-                                       out MeterReport                       MeterReport,
-                                       CustomXMLParserDelegate<MeterReport>  CustomMeterReportParser   = null,
-                                       OnExceptionDelegate                   OnException               = null)
+        public static Boolean TryParse(XElement                               MeterReportXML,
+                                       out MeterReport?                       MeterReport,
+                                       CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
+                                       OnExceptionDelegate?                   OnException               = null)
         {
 
             try
@@ -251,7 +249,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow,
+                OnException?.Invoke(Timestamp.Now,
                                     MeterReportXML,
                                     e);
             }
@@ -272,10 +270,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReport">The parsed meter report.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(String                                MeterReportText,
-                                       out MeterReport                       MeterReport,
-                                       CustomXMLParserDelegate<MeterReport>  CustomMeterReportParser   = null,
-                                       OnExceptionDelegate                   OnException               = null)
+        public static Boolean TryParse(String                                 MeterReportText,
+                                       out MeterReport?                       MeterReport,
+                                       CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
+                                       OnExceptionDelegate?                   OnException               = null)
         {
 
             try
@@ -290,7 +288,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, MeterReportText, e);
+                OnException?.Invoke(Timestamp.Now, MeterReportText, e);
 
                 MeterReport = null;
                 return false;
@@ -308,8 +306,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="XName">The XML name to use.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
-        public XElement ToXML(XName                                     XName                         = null,
-                              CustomXMLSerializerDelegate<MeterReport>  CustomMeterReportSerializer   = null)
+        public XElement ToXML(XName?                                     XName                         = null,
+                              CustomXMLSerializerDelegate<MeterReport>?  CustomMeterReportSerializer   = null)
         {
 
             var XML = new XElement(XName ?? "meterReport",
@@ -333,18 +331,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a JSON representation of this EVSE data record.
         /// </summary>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport JSON objects.</param>
-        public JObject ToJSON(CustomJObjectSerializerDelegate<MeterReport> CustomMeterReportSerializer   = null)
+        public JObject ToJSON(CustomJObjectSerializerDelegate<MeterReport>?  CustomMeterReportSerializer   = null)
         {
 
-            var JSON = JSONObject.Create(
+            var json = JSONObject.Create(
                            new JProperty("meterTypeId",  Type.Code),
                            new JProperty("meterValue",   Value),
                            new JProperty("meterUnit",    Unit)
                        );
 
-            return CustomMeterReportSerializer != null
-                       ? CustomMeterReportSerializer(this, JSON)
-                       : JSON;
+            return CustomMeterReportSerializer is not null
+                       ? CustomMeterReportSerializer(this, json)
+                       : json;
 
         }
 

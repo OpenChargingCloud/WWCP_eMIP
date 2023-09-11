@@ -204,7 +204,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             catch (Exception e)
             {
 
-                OnException?.Invoke(DateTime.UtcNow, SessionEventXML, e);
+                OnException?.Invoke(Timestamp.Now, SessionEventXML, e);
 
                 SessionEvent = null;
                 return false;
@@ -244,7 +244,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             }
             catch (Exception e)
             {
-                OnException?.Invoke(DateTime.UtcNow, SessionEventText, e);
+                OnException?.Invoke(Timestamp.Now, SessionEventText, e);
             }
 
             SessionEvent = null;

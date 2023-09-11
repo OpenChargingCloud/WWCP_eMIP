@@ -17,8 +17,6 @@
 
 #region Usings
 
-using System;
-
 using Newtonsoft.Json.Linq;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -31,9 +29,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a service session.
     /// </summary>
-    public struct ServiceSession_Id : IId,
-                                      IEquatable <ServiceSession_Id>,
-                                      IComparable<ServiceSession_Id>
+    public readonly struct ServiceSession_Id : IId,
+                                               IEquatable <ServiceSession_Id>,
+                                               IComparable<ServiceSession_Id>
 
     {
 
@@ -55,10 +53,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => InternalId.IsNullOrEmpty();
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
+
+        /// <summary>
         /// The length of the charging session identificator.
         /// </summary>
         public UInt64 Length
-            => (UInt64) InternalId?.Length;
+            => (UInt64) (InternalId?.Length ?? 0);
 
         #endregion
 

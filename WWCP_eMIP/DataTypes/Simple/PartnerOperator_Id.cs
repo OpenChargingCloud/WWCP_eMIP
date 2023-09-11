@@ -88,9 +88,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// The unique identification of a partner operator.
     /// Gireve sometimes uses AA-BBB and sometimes AA*BBB!
     /// </summary>
-    public struct PartnerOperator_Id : IId,
-                                       IEquatable<PartnerOperator_Id>,
-                                       IComparable<PartnerOperator_Id>
+    public readonly struct PartnerOperator_Id : IId,
+                                                IEquatable<PartnerOperator_Id>,
+                                                IComparable<PartnerOperator_Id>
 
     {
 
@@ -126,6 +126,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => Suffix.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
 
         /// <summary>
         /// Returns the length of the identification.

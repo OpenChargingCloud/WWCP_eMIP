@@ -17,10 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion

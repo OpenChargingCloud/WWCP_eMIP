@@ -30,9 +30,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// Session action natures.
     /// </summary>
-    public struct SessionActionNatures : IId,
-                                         IEquatable <SessionActionNatures>,
-                                         IComparable<SessionActionNatures>
+    public readonly struct SessionActionNatures : IId,
+                                                  IEquatable <SessionActionNatures>,
+                                                  IComparable<SessionActionNatures>
     {
 
         #region Data
@@ -58,6 +58,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => false;
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => true;
 
         /// <summary>
         /// The length of the tag identification.

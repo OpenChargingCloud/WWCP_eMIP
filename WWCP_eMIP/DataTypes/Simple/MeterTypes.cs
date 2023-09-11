@@ -60,6 +60,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => false;
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => false;
+
+        /// <summary>
         /// The length of the tag identification.
         /// </summary>
         public UInt64 Length

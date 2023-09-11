@@ -29,9 +29,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a charging connector.
     /// </summary>
-    public struct ChargingConnector_Id : IId,
-                                         IEquatable<ChargingConnector_Id>,
-                                         IComparable<ChargingConnector_Id>
+    public readonly struct ChargingConnector_Id : IId,
+                                                  IEquatable<ChargingConnector_Id>,
+                                                  IComparable<ChargingConnector_Id>
 
     {
 
@@ -70,6 +70,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => Suffix.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
 
         /// <summary>
         /// Returns the length of the identification.

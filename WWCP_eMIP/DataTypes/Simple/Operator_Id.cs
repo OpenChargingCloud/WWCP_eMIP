@@ -87,9 +87,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of an operator.
     /// </summary>
-    public struct Operator_Id : IId,
-                                IEquatable<Operator_Id>,
-                                IComparable<Operator_Id>
+    public readonly struct Operator_Id : IId,
+                                         IEquatable<Operator_Id>,
+                                         IComparable<Operator_Id>
 
     {
 
@@ -125,6 +125,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => Suffix.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
 
         /// <summary>
         /// Returns the length of the identification.

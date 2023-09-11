@@ -17,7 +17,6 @@
 
 #region Usings
 
-using System;
 using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -89,9 +88,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a partner.
     /// </summary>
-    public struct Partner_Id : IId,
-                               IEquatable<Partner_Id>,
-                               IComparable<Partner_Id>
+    public readonly struct Partner_Id : IId,
+                                        IEquatable<Partner_Id>,
+                                        IComparable<Partner_Id>
 
     {
 
@@ -129,24 +128,23 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => Suffix.IsNullOrEmpty();
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
+
+        /// <summary>
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length
         {
             get
             {
-
-                switch (Format)
-                {
-
-                    case PartnerIdFormats.eMI3_STAR:
-                        return (UInt64) (CountryCode.Alpha2Code.Length             + 1 + Suffix.Length);
-
-                    default:  // eMI3
-                        return (UInt64) (CountryCode.Alpha2Code.Length                 + Suffix.Length);
-
-                }
-
+                return Format switch {
+                    PartnerIdFormats.eMI3_STAR  => (UInt64) (CountryCode.Alpha2Code.Length + 1 + Suffix.Length),
+                    // eMI3
+                    _                           => (UInt64) (CountryCode.Alpha2Code.Length +     Suffix.Length),
+                };
             }
         }
 

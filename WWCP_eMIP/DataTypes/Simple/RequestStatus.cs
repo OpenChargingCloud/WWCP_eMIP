@@ -47,6 +47,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => false;
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => true;
+
+        /// <summary>
         /// The length of this identification.
         /// </summary>
         public UInt64   Length

@@ -59,9 +59,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a charging pool.
     /// </summary>
-    public struct ChargingPool_Id : IId,
-                                    IEquatable<ChargingPool_Id>,
-                                    IComparable<ChargingPool_Id>
+    public readonly struct ChargingPool_Id : IId,
+                                             IEquatable<ChargingPool_Id>,
+                                             IComparable<ChargingPool_Id>
 
     {
 
@@ -101,6 +101,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => Suffix.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
 
         /// <summary>
         /// Returns the length of the identification.

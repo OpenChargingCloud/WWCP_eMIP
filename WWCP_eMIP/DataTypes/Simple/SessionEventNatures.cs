@@ -17,9 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -30,9 +27,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// Session event natures.
     /// </summary>
-    public struct SessionEventNatures : IId,
-                                        IEquatable <SessionEventNatures>,
-                                        IComparable<SessionEventNatures>
+    public readonly struct SessionEventNatures : IId,
+                                                 IEquatable <SessionEventNatures>,
+                                                 IComparable<SessionEventNatures>
     {
 
         #region Data
@@ -47,6 +44,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Indicates whether this identification is null or empty.
         /// </summary>
         public Boolean IsNullOrEmpty
+            => false;
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
             => false;
 
         /// <summary>

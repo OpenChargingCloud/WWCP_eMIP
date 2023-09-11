@@ -27,9 +27,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a session event.
     /// </summary>
-    public struct SessionEvent_Id : IId,
-                                    IEquatable <SessionEvent_Id>,
-                                    IComparable<SessionEvent_Id>
+    public readonly struct SessionEvent_Id : IId,
+                                             IEquatable <SessionEvent_Id>,
+                                             IComparable<SessionEvent_Id>
     {
 
         #region Data
@@ -48,6 +48,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => InternalId.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
 
         /// <summary>
         /// The length of the session event identificator.

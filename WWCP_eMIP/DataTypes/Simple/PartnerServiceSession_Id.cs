@@ -27,9 +27,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a partner service session.
     /// </summary>
-    public struct PartnerServiceSession_Id : IId,
-                                             IEquatable <PartnerServiceSession_Id>,
-                                             IComparable<PartnerServiceSession_Id>
+    public readonly struct PartnerServiceSession_Id : IId,
+                                                      IEquatable <PartnerServiceSession_Id>,
+                                                      IComparable<PartnerServiceSession_Id>
 
     {
 
@@ -49,6 +49,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => InternalId.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
 
         /// <summary>
         /// The length of the partner service session identificator.

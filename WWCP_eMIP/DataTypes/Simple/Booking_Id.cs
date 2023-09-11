@@ -27,9 +27,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of a booking.
     /// </summary>
-    public struct Booking_Id : IId,
-                               IEquatable <Booking_Id>,
-                               IComparable<Booking_Id>
+    public readonly struct Booking_Id : IId,
+                                        IEquatable <Booking_Id>,
+                                        IComparable<Booking_Id>
 
     {
 
@@ -49,6 +49,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Boolean IsNullOrEmpty
             => InternalId.IsNullOrEmpty();
+
+        /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => InternalId.IsNotNullOrEmpty();
 
         /// <summary>
         /// The length of the booking identificator.

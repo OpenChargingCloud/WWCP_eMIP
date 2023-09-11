@@ -89,9 +89,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of an e-mobility provider.
     /// </summary>
-    public struct Provider_Id : IId,
-                                IEquatable<Provider_Id>,
-                                IComparable<Provider_Id>
+    public readonly struct Provider_Id : IId,
+                                         IEquatable<Provider_Id>,
+                                         IComparable<Provider_Id>
 
     {
 
@@ -129,24 +129,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => Suffix.IsNullOrEmpty();
 
         /// <summary>
+        /// Indicates whether this identification is NOT null or empty.
+        /// </summary>
+        public Boolean IsNotNullOrEmpty
+            => Suffix.IsNotNullOrEmpty();
+
+        /// <summary>
         /// Returns the length of the identification.
         /// </summary>
         public UInt64 Length
         {
             get
             {
-
-                switch (Format)
-                {
-
-                    case ProviderIdFormats.eMI3_HYPHEN:
-                        return (UInt64) (CountryCode.Alpha2Code.Length + 1 + Suffix.Length);
-
-                    default:
-                        return (UInt64) (CountryCode.Alpha2Code.Length     + Suffix.Length);
-
-                }
-
+                return Format switch {
+                    ProviderIdFormats.eMI3_HYPHEN  => (UInt64) (CountryCode.Alpha2Code.Length + 1 + Suffix.Length),
+                    _                              => (UInt64) (CountryCode.Alpha2Code.Length +     Suffix.Length),
+                };
             }
         }
 

@@ -324,7 +324,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                               );
 
 
-                if (CustomSendSetChargingStationAvailabilityStatusRequestParser != null)
+                if (CustomSendSetChargingStationAvailabilityStatusRequestParser is not null)
                     SetChargingStationAvailabilityStatusRequest = CustomSendSetChargingStationAvailabilityStatusRequestParser(SetChargingStationAvailabilityStatusRequestXML,
                                                                                                                               SetChargingStationAvailabilityStatusRequest);
 
@@ -440,7 +440,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetChargingStationAvailabilityStatusRequestSerializer != null
+            return CustomSetChargingStationAvailabilityStatusRequestSerializer is not null
                        ? CustomSetChargingStationAvailabilityStatusRequestSerializer(this, XML)
                        : XML;
 
@@ -467,7 +467,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetChargingStationAvailabilityStatusRequest1 == null) || ((Object) SetChargingStationAvailabilityStatusRequest2 == null))
+            if (SetChargingStationAvailabilityStatusRequest1 is null || SetChargingStationAvailabilityStatusRequest2 is null)
                 return false;
 
             return SetChargingStationAvailabilityStatusRequest1.Equals(SetChargingStationAvailabilityStatusRequest2);

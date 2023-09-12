@@ -17,6 +17,8 @@
 
 #region Usings
 
+using System.Collections.Concurrent;
+
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -34,7 +36,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Dictionary<Int32, RequestStatus> Lookup = new();
+        private static readonly ConcurrentDictionary<Int32, RequestStatus> Lookup = new();
 
         #endregion
 
@@ -77,18 +79,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         static RequestStatus()
         {
 
-            RequestStatus requeststatus;
-
-            foreach (var _MethodInfo in typeof(RequestStatus).GetMethods())
+            foreach (var methodInfo in typeof(RequestStatus).GetMethods())
             {
-                if (_MethodInfo.IsStatic &&
-                    _MethodInfo.GetParameters().Length == 0)
+                if (methodInfo.IsStatic &&
+                    methodInfo.GetParameters().Length == 0)
                 {
 
-                    requeststatus = (RequestStatus) _MethodInfo.Invoke(Activator.CreateInstance(typeof(RequestStatus)), null);
+                    var requeststatusObject = methodInfo.Invoke(Activator.CreateInstance(typeof(RequestStatus)), null);
 
-                    if (!Lookup.ContainsKey(requeststatus.Code))
-                        Lookup.Add(requeststatus.Code, requeststatus);
+                    if (requeststatusObject is RequestStatus requeststatus &&
+                        !Lookup.ContainsKey(requeststatus.Code))
+                    {
+                        Lookup.TryAdd(requeststatus.Code, requeststatus);
+                    }
 
                 }
             }
@@ -111,11 +114,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             this.Code         = Code;
             this.Description  = Description;
 
-            lock (Lookup)
-            {
-                if (!Lookup.ContainsKey(Code))
-                    Lookup.Add(Code, this);
-            }
+            if (!Lookup.ContainsKey(Code))
+                 Lookup.TryAdd(Code, this);
 
         }
 
@@ -158,7 +158,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            return Parse(Int32.Parse(Text));
+            if (Int32.TryParse(Text, out var number))
+                return Parse(number);
+
+            throw new ArgumentException($"Invalid text representation of a request status: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -195,12 +199,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             Text = Text.Trim();
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var code))
-                return new RequestStatus?();
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
+                return null;
 
             #endregion
 
-            return TryParse(code);
+            return TryParse(number);
 
         }
 
@@ -240,13 +244,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var Value))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
             {
                 RequestStatus = default;
                 return false;
             }
 
-            RequestStatus = new RequestStatus(Value);
+            RequestStatus = new RequestStatus(number);
             return true;
 
         }
@@ -456,20 +460,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-        {
+        public static Boolean operator == (RequestStatus RequestStatus1,
+                                           RequestStatus RequestStatus2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(RequestStatus1, RequestStatus2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) RequestStatus1 == null) || ((Object) RequestStatus2 == null))
-                return false;
-
-            return RequestStatus1.Equals(RequestStatus2);
-
-        }
+            => RequestStatus1.Equals(RequestStatus2);
 
         #endregion
 
@@ -481,8 +475,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-            => !(RequestStatus1 == RequestStatus2);
+        public static Boolean operator != (RequestStatus RequestStatus1,
+                                           RequestStatus RequestStatus2)
+
+            => !RequestStatus1.Equals(RequestStatus2);
 
         #endregion
 
@@ -494,15 +490,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-        {
+        public static Boolean operator < (RequestStatus RequestStatus1,
+                                          RequestStatus RequestStatus2)
 
-            if ((Object) RequestStatus1 == null)
-                throw new ArgumentNullException(nameof(RequestStatus1), "The given RequestStatus1 must not be null!");
-
-            return RequestStatus1.CompareTo(RequestStatus2) < 0;
-
-        }
+            => RequestStatus1.CompareTo(RequestStatus2) < 0;
 
         #endregion
 
@@ -514,8 +505,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-            => !(RequestStatus1 > RequestStatus2);
+        public static Boolean operator <= (RequestStatus RequestStatus1,
+                                           RequestStatus RequestStatus2)
+
+            => RequestStatus1.CompareTo(RequestStatus2) <= 0;
 
         #endregion
 
@@ -527,15 +520,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-        {
+        public static Boolean operator > (RequestStatus RequestStatus1,
+                                          RequestStatus RequestStatus2)
 
-            if ((Object) RequestStatus1 == null)
-                throw new ArgumentNullException(nameof(RequestStatus1), "The given RequestStatus1 must not be null!");
-
-            return RequestStatus1.CompareTo(RequestStatus2) > 0;
-
-        }
+            => RequestStatus1.CompareTo(RequestStatus2) > 0;
 
         #endregion
 
@@ -547,8 +535,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="RequestStatus1">A request status.</param>
         /// <param name="RequestStatus2">Another request status.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (RequestStatus RequestStatus1, RequestStatus RequestStatus2)
-            => !(RequestStatus1 < RequestStatus2);
+        public static Boolean operator >= (RequestStatus RequestStatus1,
+                                           RequestStatus RequestStatus2)
+
+            => RequestStatus1.CompareTo(RequestStatus2) >= 0;
 
         #endregion
 
@@ -559,40 +549,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two request status.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A request status to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is RequestStatus))
-                throw new ArgumentException("The given object is not a request status!",
-                                            nameof(Object));
-
-            return CompareTo((RequestStatus) Object);
-
-        }
+            => Object is RequestStatus requestStatus
+                   ? CompareTo(requestStatus)
+                   : throw new ArgumentException("The given object is not a request status!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(RequestStatus)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two request status.
         /// </summary>
-        /// <param name="RequestStatus">An object to compare with.</param>
+        /// <param name="RequestStatus">A request status to compare with.</param>
         public Int32 CompareTo(RequestStatus RequestStatus)
-        {
 
-            if ((Object) RequestStatus == null)
-                throw new ArgumentNullException(nameof(RequestStatus),  "The given request status must not be null!");
-
-            return Code.CompareTo(RequestStatus.Code);
-
-        }
+            => Code.CompareTo(RequestStatus.Code);
 
         #endregion
 
@@ -603,41 +580,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two request status for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A request status to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is RequestStatus))
-                return false;
-
-            return Equals((RequestStatus) Object);
-
-        }
+            => Object is RequestStatus requestStatus &&
+                   Equals(requestStatus);
 
         #endregion
 
         #region Equals(RequestStatus)
 
         /// <summary>
-        /// Compares two RequestStatuss for equality.
+        /// Compares two request status for equality.
         /// </summary>
         /// <param name="RequestStatus">A request status to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(RequestStatus RequestStatus)
-        {
 
-            if ((Object) RequestStatus == null)
-                return false;
-
-            return Code.Equals(RequestStatus.Code);
-
-        }
+            => Code.Equals(RequestStatus.Code);
 
         #endregion
 
@@ -650,6 +611,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
+
             => Code.GetHashCode();
 
         #endregion
@@ -661,8 +623,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public override String ToString()
 
-            => String.Concat(Code,
-                             Description.IsNotNullOrEmpty() ? ": " + Description : "");
+            => $"{Code}{(Description.IsNotNullOrEmpty() ? ": " + Description : "")}";
 
         #endregion
 

@@ -35,6 +35,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     {
 
         /// <summary>
+        /// Indicates whether this charging station identification is null or empty.
+        /// </summary>
+        /// <param name="ChargingStationId">A charging station identification.</param>
+        public static Boolean IsNullOrEmpty(this ChargingStation_Id? ChargingStationId)
+            => !ChargingStationId.HasValue || ChargingStationId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this charging station identification is NOT null or empty.
+        /// </summary>
+        /// <param name="ChargingStationId">A charging station identification.</param>
+        public static Boolean IsNotNullOrEmpty(this ChargingStation_Id? ChargingStationId)
+            => ChargingStationId.HasValue && ChargingStationId.Value.IsNotNullOrEmpty;
+
+
+        /// <summary>
         /// Create a new EVSE identification
         /// based on the given charging station identification.
         /// </summary>
@@ -62,7 +77,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     public readonly struct ChargingStation_Id : IId,
                                                 IEquatable<ChargingStation_Id>,
                                                 IComparable<ChargingStation_Id>
-
     {
 
         #region Data
@@ -384,18 +398,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            var MatchCollection = ChargingStationId_RegEx.Matches(Text);
+            var matchCollection = ChargingStationId_RegEx.Matches(Text);
 
-            if (MatchCollection.Count != 1)
-                throw new ArgumentException("Illegal text representation of a charging station identification: '{Text}'!",
+            if (matchCollection.Count != 1)
+                throw new ArgumentException($"Illegal text representation of a charging station identification: '{Text}'!",
                                             nameof(Text));
 
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
-                return new ChargingStation_Id(OperatorId,
-                                              MatchCollection[0].Groups[2].Value);
+            if (Operator_Id.TryParse(matchCollection[0].Groups[1].Value, out var operatorId))
+                return new ChargingStation_Id(
+                           operatorId,
+                           matchCollection[0].Groups[2].Value
+                       );
 
-            throw new ArgumentException("Illegal charging station identification '" + Text + "'!",
+            throw new ArgumentException($"Invalid text representation of a charging station identification: '{Text}'!",
                                         nameof(Text));
 
         }
@@ -411,20 +427,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Suffix">The suffix of the charging station identification.</param>
         public static ChargingStation_Id Parse(Operator_Id  OperatorId,
                                                String       Suffix)
-        {
 
-            switch (OperatorId.Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return Parse(OperatorId.ToString() +  "S" + Suffix);
-
-                default:
-                    return Parse(OperatorId.ToString() + "*S" + Suffix);
-
-            }
-
-        }
+            => OperatorId.Format switch {
+                   OperatorIdFormats.eMI3  => Parse(OperatorId.ToString() +  "S" + Suffix),
+                   _                       => Parse(OperatorId.ToString() + "*S" + Suffix)
+               };
 
         #endregion
 
@@ -437,8 +444,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static ChargingStation_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out ChargingStation_Id ChargingStationId))
-                return ChargingStationId;
+            if (TryParse(Text, out var chargingStationId))
+                return chargingStationId;
 
             return null;
 
@@ -458,8 +465,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -472,19 +478,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = ChargingStationId_RegEx.Matches(Text);
+                var matchCollection = ChargingStationId_RegEx.Matches(Text);
 
-                if (MatchCollection.Count != 1)
+                if (matchCollection.Count != 1)
                 {
                     ChargingStationId = default;
                     return false;
                 }
 
-                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
+                if (Operator_Id.TryParse(matchCollection[0].Groups[1].Value, out var operatorId))
                 {
 
-                    ChargingStationId = new ChargingStation_Id(OperatorId,
-                                                               MatchCollection[0].Groups[2].Value);
+                    ChargingStationId = new ChargingStation_Id(
+                                            operatorId,
+                                            matchCollection[0].Groups[2].Value
+                                        );
 
                     return true;
 
@@ -508,8 +516,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public ChargingStation_Id Clone
 
-            => new ChargingStation_Id(OperatorId.Clone,
-                                      new String(Suffix.ToCharArray()));
+            => new (OperatorId.Clone,
+                    new String(Suffix.ToCharArray()));
 
         #endregion
 
@@ -524,20 +532,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-        {
+        public static Boolean operator == (ChargingStation_Id ChargingStationId1,
+                                           ChargingStation_Id ChargingStationId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ChargingStationId1, ChargingStationId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ChargingStationId1 == null) || ((Object) ChargingStationId2 == null))
-                return false;
-
-            return ChargingStationId1.Equals(ChargingStationId2);
-
-        }
+            => ChargingStationId1.Equals(ChargingStationId2);
 
         #endregion
 
@@ -549,8 +547,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-            => !(ChargingStationId1 == ChargingStationId2);
+        public static Boolean operator != (ChargingStation_Id ChargingStationId1,
+                                           ChargingStation_Id ChargingStationId2)
+
+            => !ChargingStationId1.Equals(ChargingStationId2);
 
         #endregion
 
@@ -562,15 +562,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-        {
+        public static Boolean operator < (ChargingStation_Id ChargingStationId1,
+                                          ChargingStation_Id ChargingStationId2)
 
-            if ((Object) ChargingStationId1 == null)
-                throw new ArgumentNullException(nameof(ChargingStationId1), "The given ChargingStationId1 must not be null!");
-
-            return ChargingStationId1.CompareTo(ChargingStationId2) < 0;
-
-        }
+            => ChargingStationId1.CompareTo(ChargingStationId2) < 0;
 
         #endregion
 
@@ -582,8 +577,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-            => !(ChargingStationId1 > ChargingStationId2);
+        public static Boolean operator <= (ChargingStation_Id ChargingStationId1,
+                                           ChargingStation_Id ChargingStationId2)
+
+            => ChargingStationId1.CompareTo(ChargingStationId2) <= 0;
 
         #endregion
 
@@ -595,15 +592,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-        {
+        public static Boolean operator > (ChargingStation_Id ChargingStationId1,
+                                          ChargingStation_Id ChargingStationId2)
 
-            if ((Object) ChargingStationId1 == null)
-                throw new ArgumentNullException(nameof(ChargingStationId1), "The given ChargingStationId1 must not be null!");
-
-            return ChargingStationId1.CompareTo(ChargingStationId2) > 0;
-
-        }
+            => ChargingStationId1.CompareTo(ChargingStationId2) > 0;
 
         #endregion
 
@@ -615,54 +607,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingStationId1">A charging station identification.</param>
         /// <param name="ChargingStationId2">Another charging station identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (ChargingStation_Id ChargingStationId1, ChargingStation_Id ChargingStationId2)
-            => !(ChargingStationId1 < ChargingStationId2);
+        public static Boolean operator >= (ChargingStation_Id ChargingStationId1,
+                                           ChargingStation_Id ChargingStationId2)
+
+            => ChargingStationId1.CompareTo(ChargingStationId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ChargingStationId> Members
+        #region IComparable<ChargingStation_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging station identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A charging station identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is ChargingStation_Id ChargingStationId))
-                throw new ArgumentException("The given object is not a charging station identification!", nameof(Object));
-
-            return CompareTo(ChargingStationId);
-
-        }
+            => Object is ChargingStation_Id chargingStationId
+                   ? CompareTo(chargingStationId)
+                   : throw new ArgumentException("The given object is not a charging station identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(ChargingStationId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging station identifications.
         /// </summary>
-        /// <param name="ChargingStationId">An object to compare with.</param>
+        /// <param name="Object">A charging station identification to compare with.</param>
         public Int32 CompareTo(ChargingStation_Id ChargingStationId)
         {
 
-            if ((Object) ChargingStationId == null)
-                throw new ArgumentNullException(nameof(ChargingStationId), "The given charging station identification must not be null!");
+            var c = OperatorId.CompareTo(ChargingStationId.OperatorId);
 
-            var _Result = OperatorId.CompareTo(ChargingStationId.OperatorId);
+            if (c == 0)
+                c = String.Compare(MinSuffix,
+                                   ChargingStationId.MinSuffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(MinSuffix, ChargingStationId.MinSuffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -675,22 +662,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging station identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A charging station identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is ChargingStation_Id ChargingStationId))
-                return false;
-
-            return Equals(ChargingStationId);
-
-        }
+            => Object is ChargingStation_Id chargingStationId &&
+                   Equals(chargingStationId);
 
         #endregion
 
@@ -700,17 +678,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Compares two charging station identifications for equality.
         /// </summary>
         /// <param name="ChargingStationId">A charging station identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(ChargingStation_Id ChargingStationId)
-        {
 
-            if ((Object) ChargingStationId == null)
-                return false;
+            => OperatorId.Equals(ChargingStationId.OperatorId) &&
 
-            return OperatorId.         Equals(ChargingStationId.OperatorId) &&
-                   MinSuffix.ToLower().Equals(ChargingStationId.MinSuffix.ToLower());
-
-        }
+               String.Equals(MinSuffix,
+                             ChargingStationId.MinSuffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -734,20 +708,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(OperatorId,  "S", Suffix);
-
-                default:
-                    return String.Concat(OperatorId, "*S", Suffix);
-
-            }
-
-        }
+            => Format switch {
+                   OperatorIdFormats.eMI3  => String.Concat(OperatorId,  "S", Suffix),
+                   _                       => String.Concat(OperatorId, "*S", Suffix)
+               };
 
         #endregion
 

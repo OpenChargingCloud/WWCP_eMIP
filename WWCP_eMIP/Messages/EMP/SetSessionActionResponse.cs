@@ -222,7 +222,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                            );
 
 
-                if (CustomSetSessionActionResponseParser != null)
+                if (CustomSetSessionActionResponseParser is not null)
                     SetSessionActionResponse = CustomSetSessionActionResponseParser(SetSessionActionResponseXML,
                                                                                     SetSessionActionResponse);
 
@@ -307,7 +307,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomSetSessionActionResponseSerializer != null
+            return CustomSetSessionActionResponseSerializer is not null
                        ? CustomSetSessionActionResponseSerializer(this, XML)
                        : XML;
 

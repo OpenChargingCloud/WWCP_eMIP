@@ -107,7 +107,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) EVSEBusyStatus1 == null) || ((Object) EVSEBusyStatus2 == null))
+            if (EVSEBusyStatus1 is null || EVSEBusyStatus2 is null)
                 return false;
 
             return EVSEBusyStatus1.Equals(EVSEBusyStatus2);

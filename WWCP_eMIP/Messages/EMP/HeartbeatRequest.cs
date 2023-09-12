@@ -252,7 +252,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                    );
 
 
-                if (CustomSendHeartbeatRequestParser != null)
+                if (CustomSendHeartbeatRequestParser is not null)
                     HeartbeatRequest = CustomSendHeartbeatRequestParser(HeartbeatRequestXML,
                                                                         HeartbeatRequest);
 
@@ -354,7 +354,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomHeartbeatRequestSerializer != null
+            return CustomHeartbeatRequestSerializer is not null
                        ? CustomHeartbeatRequestSerializer(this, XML)
                        : XML;
 
@@ -381,7 +381,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) HeartbeatRequest1 == null) || ((Object) HeartbeatRequest2 == null))
+            if (HeartbeatRequest1 is null || HeartbeatRequest2 is null)
                 return false;
 
             return HeartbeatRequest1.Equals(HeartbeatRequest2);

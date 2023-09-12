@@ -469,7 +469,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetSessionActionRequest1 == null) || ((Object) SetSessionActionRequest2 == null))
+            if (SetSessionActionRequest1 is null || SetSessionActionRequest2 is null)
                 return false;
 
             return SetSessionActionRequest1.Equals(SetSessionActionRequest2);

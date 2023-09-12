@@ -200,8 +200,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                    : new ChargingSession_Id?();
 
 
-        public static EMobilityProvider_Id ToWWCP_ProviderId(this Partner_Id PartnerId)
-            => EMobilityProvider_Id.Parse(PartnerId.ToString());
+        public static EMobilityProvider_Id ToWWCP_ProviderId(this Operator_Id OperatorId)
+            => EMobilityProvider_Id.Parse(OperatorId.ToString());
 
         public static RemoteAuthentication ToWWCP(this User_Id UserId)
         {

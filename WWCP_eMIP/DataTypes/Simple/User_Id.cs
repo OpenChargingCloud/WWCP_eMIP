@@ -17,9 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Diagnostics;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -42,12 +39,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static UserIdFormats Parse(String Text)
 
             => Text switch {
-                "RFID-UID" => UserIdFormats.RFID_UID,
-                "eMI3"     => UserIdFormats.eMI3,
-                "eMA"      => UserIdFormats.eMA,
-                "EVCO"     => UserIdFormats.EVCO,
-                _          => UserIdFormats.EMP_SPEC,
-            };
+                   "RFID-UID"  => UserIdFormats.RFID_UID,
+                   "eMI3"      => UserIdFormats.eMI3,
+                   "eMA"       => UserIdFormats.eMA,
+                   "EVCO"      => UserIdFormats.EVCO,
+                   _           => UserIdFormats.EMP_SPEC
+               };
 
         #endregion
 
@@ -60,12 +57,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static String AsText(this UserIdFormats UserIdFormat)
 
             => UserIdFormat switch {
-                UserIdFormats.RFID_UID  => "RFID-UID",
-                UserIdFormats.eMI3      => "eMI3",
-                UserIdFormats.eMA       => "eMA",
-                UserIdFormats.EVCO      => "EVCO",
-                _                       => "EMP-SPEC",
-            };
+                   UserIdFormats.RFID_UID  => "RFID-UID",
+                   UserIdFormats.eMI3      => "eMI3",
+                   UserIdFormats.eMA       => "eMA",
+                   UserIdFormats.EVCO      => "EVCO",
+                   _                       => "EMP-SPEC"
+               };
 
         #endregion
 
@@ -108,44 +105,39 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     /// <summary>
     /// The unique identification of an user.
     /// </summary>
-    [DebuggerDisplay("{InternalId} ({Format})")]
     public readonly struct User_Id : IId<User_Id>
 
     {
 
-        #region Data
+        #region Properties
 
         /// <summary>
-        /// The identificator.
+        /// The user identification.
         /// </summary>
-        private readonly String InternalId;
-
-        #endregion
-
-        #region Properties
+        public String         Value     { get; }
 
         /// <summary>
         /// The format of the user identification.
         /// </summary>
-        public UserIdFormats Format   { get; }
+        public UserIdFormats  Format    { get; }
 
         /// <summary>
         /// Indicates whether this identification is null or empty.
         /// </summary>
-        public Boolean IsNullOrEmpty
-            => InternalId.IsNullOrEmpty();
+        public Boolean        IsNullOrEmpty
+            => Value.IsNullOrEmpty();
 
         /// <summary>
         /// Indicates whether this identification is NOT null or empty.
         /// </summary>
-        public Boolean IsNotNullOrEmpty
-            => InternalId.IsNotNullOrEmpty();
+        public Boolean        IsNotNullOrEmpty
+            => Value.IsNotNullOrEmpty();
 
         /// <summary>
         /// Returns the length of the identification.
         /// </summary>
-        public UInt64 Length
-            => (UInt64) (InternalId?.Length ?? 0);
+        public UInt64         Length
+            => (UInt64) (Value?.Length ?? 0);
 
         #endregion
 
@@ -160,8 +152,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                        UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
-            this.InternalId  = Value;
-            this.Format      = Format;
+            this.Value   = Value;
+            this.Format  = Format;
 
         }
 
@@ -179,18 +171,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                     UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var userId, Format))
+                return userId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of an user identification must not be null or empty!");
-
-            #endregion
-
-            return new User_Id(Text,
-                               Format);
+            throw new ArgumentException($"Invalid text representation of an user identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -207,10 +192,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                         UserIdFormats  Format = UserIdFormats.RFID_UID)
         {
 
-            if (TryParse(Text, out User_Id UserId, Format))
-                return UserId;
+            if (TryParse(Text, out var userId, Format))
+                return userId;
 
-            return new User_Id?();
+            return null;
 
         }
 
@@ -229,7 +214,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                        UserIdFormats  Format  = UserIdFormats.RFID_UID)
         {
 
-            Text = Text?.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNotNullOrEmpty())
             {
@@ -256,7 +241,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public User_Id Clone
 
-            => new User_Id(new String(InternalId.ToCharArray()),
+            => new User_Id(new String(Value.ToCharArray()),
                            Format);
 
         #endregion
@@ -361,10 +346,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two user identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
+        /// <param name="Object">An user identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
             => Object is User_Id userId
                    ? CompareTo(userId)
@@ -375,14 +360,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region CompareTo(UserId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two user identifications.
         /// </summary>
-        /// <param name="UserId">An object to compare with.</param>
+        /// <param name="UserId">An user identification to compare with.</param>
         public Int32 CompareTo(User_Id UserId)
         {
 
-            var c = String.Compare(InternalId,
-                                   UserId.InternalId,
+            var c = String.Compare(Value,
+                                   UserId.Value,
                                    StringComparison.OrdinalIgnoreCase);
 
             if (c == 0)
@@ -401,11 +386,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two user identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
+        /// <param name="Object">An user identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
             => Object is User_Id userId &&
                Equals(userId);
@@ -415,14 +399,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(UserId)
 
         /// <summary>
-        /// Compares two UserIds for equality.
+        /// Compares two user identifications for equality.
         /// </summary>
-        /// <param name="UserId">A UserId to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="UserId">An user identification to compare with.</param>
         public Boolean Equals(User_Id UserId)
 
-            => String.Equals(InternalId,
-                             UserId.InternalId,
+            => String.Equals(Value,
+                             UserId.Value,
                              StringComparison.OrdinalIgnoreCase) &&
 
                Format.Equals(UserId.Format);
@@ -439,7 +422,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
 
-            => InternalId.GetHashCode() ^
+            => Value.GetHashCode() ^
                Format.    GetHashCode();
 
         #endregion
@@ -450,7 +433,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => Value;
+            //=> $"{Value} ({Format})";
 
         #endregion
 

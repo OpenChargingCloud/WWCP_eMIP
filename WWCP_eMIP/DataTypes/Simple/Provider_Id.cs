@@ -17,7 +17,6 @@
 
 #region Usings
 
-using System;
 using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -85,6 +84,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
     }
 
+    /// <summary>
+    /// Extension methods for provider identifications.
+    /// </summary>
+    public static class ProviderIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this provider identification is null or empty.
+        /// </summary>
+        /// <param name="ProviderId">A provider identification.</param>
+        public static Boolean IsNullOrEmpty(this Provider_Id? ProviderId)
+            => !ProviderId.HasValue || ProviderId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this provider identification is NOT null or empty.
+        /// </summary>
+        /// <param name="ProviderId">A provider identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Provider_Id? ProviderId)
+            => ProviderId.HasValue && ProviderId.Value.IsNotNullOrEmpty;
+
+    }
+
+
 
     /// <summary>
     /// The unique identification of an e-mobility provider.
@@ -92,7 +114,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     public readonly struct Provider_Id : IId,
                                          IEquatable<Provider_Id>,
                                          IComparable<Provider_Id>
-
     {
 
         #region Data
@@ -183,27 +204,31 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim().ToUpper();
+            Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text), "The given text representation of an e-mobility provider identification must not be null or empty!");
 
             #endregion
 
-            var MatchCollection = ProviderId_RegEx.Matches(Text);
+            var matchCollection = ProviderId_RegEx.Matches(Text);
 
-            if (MatchCollection.Count == 1 &&
-                Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+            if (matchCollection.Count == 1 &&
+                Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
             {
 
-                return new Provider_Id(_CountryCode,
-                                       MatchCollection[0].Groups[3].Value,
-                                       MatchCollection[0].Groups[2].Value == "-" ? ProviderIdFormats.eMI3_HYPHEN : ProviderIdFormats.eMI3);
+                return new Provider_Id(
+                           countryCode,
+                           matchCollection[0].Groups[3].Value,
+                           matchCollection[0].Groups[2].Value == "-"
+                               ? ProviderIdFormats.eMI3_HYPHEN
+                               : ProviderIdFormats.eMI3
+                       );
 
             }
 
-            throw new ArgumentException("Illegal text representation of an e-mobility provider identification: '{Text}'!", nameof(Text));
+            throw new ArgumentException($"Invalid text representation of a provider identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -224,24 +249,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (CountryCode == null)
-                throw new ArgumentNullException(nameof(CountryCode),  "The given country must not be null!");
-
             if (Suffix.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Suffix),       "The given charging e-mobility provider identification suffix must not be null or empty!");
+                throw new ArgumentNullException(nameof(Suffix), "The given charging e-mobility provider identification suffix must not be null or empty!");
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case ProviderIdFormats.eMI3:
-                    return Parse(CountryCode.Alpha2Code +       Suffix);
-
-                default:
-                    return Parse(CountryCode.Alpha2Code + "-" + Suffix);
-
-            }
+            return IdFormat switch {
+                ProviderIdFormats.eMI3  => Parse(CountryCode.Alpha2Code +       Suffix),
+                _                       => Parse(CountryCode.Alpha2Code + "-" + Suffix)
+            };
 
         }
 
@@ -256,10 +272,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Provider_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Provider_Id _ProviderId))
-                return _ProviderId;
+            if (TryParse(Text, out var providerId))
+                return providerId;
 
-            return new Provider_Id?();
+            return null;
 
         }
 
@@ -278,12 +294,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim().ToUpper();
+            Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
             {
-                ProviderId = default(Provider_Id);
+                ProviderId = default;
                 return false;
             }
 
@@ -292,30 +307,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = ProviderId_RegEx.Matches(Text);
+                var matchCollection = ProviderId_RegEx.Matches(Text);
 
-                if (MatchCollection.Count == 1 &&
-                    Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+                if (matchCollection.Count == 1 &&
+                    Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
                 {
 
-                    ProviderId = new Provider_Id(_CountryCode,
-                                                 MatchCollection[0].Groups[3].Value,
-                                                 MatchCollection[0].Groups[2].Value == "-" ? ProviderIdFormats.eMI3_HYPHEN : ProviderIdFormats.eMI3);
+                    ProviderId = new Provider_Id(
+                                     countryCode,
+                                     matchCollection[0].Groups[3].Value,
+                                     matchCollection[0].Groups[2].Value == "-"
+                                         ? ProviderIdFormats.eMI3_HYPHEN
+                                         : ProviderIdFormats.eMI3
+                                 );
 
                     return true;
 
                 }
 
             }
-
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
-            ProviderId = default(Provider_Id);
+            ProviderId = default;
             return false;
 
         }
@@ -335,10 +349,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                             ProviderIdFormats  IdFormat = ProviderIdFormats.eMI3_HYPHEN)
         {
 
-            if (TryParse(CountryCode, Suffix, out Provider_Id _ProviderId, IdFormat))
-                return _ProviderId;
+            if (TryParse(CountryCode, Suffix, out var providerId, IdFormat))
+                return providerId;
 
-            return new Provider_Id?();
+            return null;
 
         }
 
@@ -361,26 +375,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (CountryCode == null || Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
+            if (Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
             {
-                ProviderId = default(Provider_Id);
+                ProviderId = default;
                 return false;
             }
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case ProviderIdFormats.eMI3:
-                    return TryParse(CountryCode.Alpha2Code +       Suffix,
-                                    out ProviderId);
-
-                default:
-                    return TryParse(CountryCode.Alpha2Code + "-" + Suffix,
-                                    out ProviderId);
-
-            }
+            return IdFormat switch {
+                ProviderIdFormats.eMI3  => TryParse(CountryCode.Alpha2Code +       Suffix, out ProviderId),
+                _                       => TryParse(CountryCode.Alpha2Code + "-" + Suffix, out ProviderId)
+            };
 
         }
 
@@ -394,9 +400,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="NewFormat">The new charging e-mobility provider identification format.</param>
         public Provider_Id ChangeFormat(ProviderIdFormats NewFormat)
 
-            => new Provider_Id(CountryCode,
-                               Suffix,
-                               NewFormat);
+            => new (CountryCode,
+                    Suffix,
+                    NewFormat);
 
         #endregion
 
@@ -407,9 +413,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Provider_Id Clone
 
-            => new Provider_Id(CountryCode,
-                               new String(Suffix.ToCharArray()),
-                               Format);
+            => new (CountryCode,
+                    new String(Suffix.ToCharArray()),
+                    Format);
 
         #endregion
 
@@ -424,20 +430,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Provider_Id ProviderId1, Provider_Id ProviderId2)
-        {
+        public static Boolean operator == (Provider_Id ProviderId1,
+                                           Provider_Id ProviderId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ProviderId1, ProviderId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ProviderId1 == null) || ((Object) ProviderId2 == null))
-                return false;
-
-            return ProviderId1.Equals(ProviderId2);
-
-        }
+            => ProviderId1.Equals(ProviderId2);
 
         #endregion
 
@@ -449,8 +445,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Provider_Id ProviderId1, Provider_Id ProviderId2)
-            => !(ProviderId1 == ProviderId2);
+        public static Boolean operator != (Provider_Id ProviderId1,
+                                           Provider_Id ProviderId2)
+
+            => !ProviderId1.Equals(ProviderId2);
 
         #endregion
 
@@ -462,15 +460,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Provider_Id ProviderId1, Provider_Id ProviderId2)
-        {
+        public static Boolean operator < (Provider_Id ProviderId1,
+                                          Provider_Id ProviderId2)
 
-            if ((Object) ProviderId1 == null)
-                throw new ArgumentNullException(nameof(ProviderId1), "The given ProviderId1 must not be null!");
-
-            return ProviderId1.CompareTo(ProviderId2) < 0;
-
-        }
+            => ProviderId1.CompareTo(ProviderId2) < 0;
 
         #endregion
 
@@ -482,8 +475,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Provider_Id ProviderId1, Provider_Id ProviderId2)
-            => !(ProviderId1 > ProviderId2);
+        public static Boolean operator <= (Provider_Id ProviderId1,
+                                           Provider_Id ProviderId2)
+
+            => ProviderId1.CompareTo(ProviderId2) <= 0;
 
         #endregion
 
@@ -495,15 +490,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Provider_Id ProviderId1, Provider_Id ProviderId2)
-        {
+        public static Boolean operator > (Provider_Id ProviderId1,
+                                          Provider_Id ProviderId2)
 
-            if ((Object) ProviderId1 == null)
-                throw new ArgumentNullException(nameof(ProviderId1), "The given ProviderId1 must not be null!");
-
-            return ProviderId1.CompareTo(ProviderId2) > 0;
-
-        }
+            => ProviderId1.CompareTo(ProviderId2) > 0;
 
         #endregion
 
@@ -515,54 +505,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ProviderId1">An charging e-mobility provider identification.</param>
         /// <param name="ProviderId2">Another charging e-mobility provider identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Provider_Id ProviderId1, Provider_Id ProviderId2)
-            => !(ProviderId1 < ProviderId2);
+        public static Boolean operator >= (Provider_Id ProviderId1,
+                                           Provider_Id ProviderId2)
+
+            => ProviderId1.CompareTo(ProviderId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ProviderId> Members
+        #region IComparable<Provider_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two provider identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A provider identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Provider_Id ProviderId))
-                throw new ArgumentException("The given object is not an e-mobility provider identification!", nameof(Object));
-
-            return CompareTo(ProviderId);
-
-        }
+            => Object is Provider_Id providerId
+                   ? CompareTo(providerId)
+                   : throw new ArgumentException("The given object is not a provider identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(ProviderId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two provider identifications.
         /// </summary>
-        /// <param name="ProviderId">An object to compare with.</param>
+        /// <param name="ProviderId">A provider identification to compare with.</param>
         public Int32 CompareTo(Provider_Id ProviderId)
         {
 
-            if ((Object) ProviderId == null)
-                throw new ArgumentNullException(nameof(ProviderId), "The given charging e-mobility provider identification must not be null!");
+            var c = CountryCode.CompareTo(ProviderId.CountryCode);
 
-            var _Result = CountryCode.CompareTo(ProviderId.CountryCode);
+            if (c == 0)
+                c = String.Compare(Suffix,
+                                   ProviderId.Suffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, ProviderId.Suffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -570,47 +555,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<ProviderId> Members
+        #region IEquatable<Provider_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two provider identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A provider identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Provider_Id ProviderId))
-                return false;
-
-            return Equals(ProviderId);
-
-        }
+            => Object is Provider_Id providerId &&
+                   Equals(providerId);
 
         #endregion
 
         #region Equals(ProviderId)
 
         /// <summary>
-        /// Compares two ProviderIds for equality.
+        /// Compares two provider identifications for equality.
         /// </summary>
-        /// <param name="ProviderId">A ProviderId to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="ProviderId">A provider identification to compare with.</param>
         public Boolean Equals(Provider_Id ProviderId)
-        {
 
-            if ((Object) ProviderId == null)
-                return false;
+            => CountryCode.Equals(ProviderId.CountryCode) &&
 
-            return CountryCode.     Equals(ProviderId.CountryCode) &&
-                   Suffix.ToLower().Equals(ProviderId.Suffix.ToLower());
-
-        }
+               String.Equals(Suffix,
+                             ProviderId.Suffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -635,20 +607,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case ProviderIdFormats.eMI3_HYPHEN:
-                    return CountryCode.Alpha2Code + "-" + Suffix;
-
-                default:
-                    return CountryCode.Alpha2Code       + Suffix;
-
-            }
-
-        }
+            => Format switch {
+                   ProviderIdFormats.eMI3_HYPHEN  => CountryCode.Alpha2Code + "-" + Suffix,
+                   _                              => CountryCode.Alpha2Code +       Suffix
+               };
 
         #endregion
 

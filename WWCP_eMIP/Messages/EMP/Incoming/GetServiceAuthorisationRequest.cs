@@ -330,7 +330,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                  );
 
 
-                if (CustomSendGetServiceAuthorisationRequestParser != null)
+                if (CustomSendGetServiceAuthorisationRequestParser is not null)
                     GetServiceAuthorisationRequest = CustomSendGetServiceAuthorisationRequestParser(GetServiceAuthorisationRequestXML,
                                                                                                     GetServiceAuthorisationRequest);
 
@@ -449,7 +449,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomGetServiceAuthorisationRequestSerializer != null
+            return CustomGetServiceAuthorisationRequestSerializer is not null
                        ? CustomGetServiceAuthorisationRequestSerializer(this, XML)
                        : XML;
 

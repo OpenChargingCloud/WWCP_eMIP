@@ -84,6 +84,28 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
     }
 
+    /// <summary>
+    /// Extension methods for partner identifications.
+    /// </summary>
+    public static class PartnerIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this partner identification is null or empty.
+        /// </summary>
+        /// <param name="PartnerId">A partner identification.</param>
+        public static Boolean IsNullOrEmpty(this Partner_Id? PartnerId)
+            => !PartnerId.HasValue || PartnerId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this partner identification is NOT null or empty.
+        /// </summary>
+        /// <param name="PartnerId">A partner identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Partner_Id? PartnerId)
+            => PartnerId.HasValue && PartnerId.Value.IsNotNullOrEmpty;
+
+    }
+
 
     /// <summary>
     /// The unique identification of a partner.
@@ -158,8 +180,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="CountryCode">The country code.</param>
         /// <param name="Suffix">The suffix of the charging operator identification.</param>
         /// <param name="Format">The format of the charging operator identification.</param>
-        private Partner_Id(Country            CountryCode,
-                           String             Suffix,
+        private Partner_Id(Country           CountryCode,
+                           String            Suffix,
                            PartnerIdFormats  Format = PartnerIdFormats.eMI3)
         {
 
@@ -188,19 +210,24 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            var MatchCollection = PartnerId_RegEx.Matches(Text.Trim().ToUpper());
+            var matchCollection = PartnerId_RegEx.Matches(Text.Trim().ToUpper());
 
-            if (MatchCollection.Count == 1 &&
-                Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+            if (matchCollection.Count == 1 &&
+                Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
             {
 
-                return new Partner_Id(_CountryCode,
-                                       MatchCollection[0].Groups[3].Value,
-                                       MatchCollection[0].Groups[2].Value == "*" ? PartnerIdFormats.eMI3_STAR : PartnerIdFormats.eMI3);
+                return new Partner_Id(
+                           countryCode,
+                           matchCollection[0].Groups[3].Value,
+                           matchCollection[0].Groups[2].Value == "*"
+                               ? PartnerIdFormats.eMI3_STAR
+                               : PartnerIdFormats.eMI3
+                       );
 
             }
 
-            throw new ArgumentException("Illegal text representation of a charging operator identification: '{Text}'!", nameof(Text));
+            throw new ArgumentException($"Invalid text representation of a partner identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -214,31 +241,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="CountryCode">A country code.</param>
         /// <param name="Suffix">The suffix of an charging operator identification.</param>
         /// <param name="IdFormat">The format of the charging operator identification [old|new].</param>
-        public static Partner_Id Parse(Country            CountryCode,
-                                        String             Suffix,
-                                        PartnerIdFormats  IdFormat = PartnerIdFormats.eMI3)
+        public static Partner_Id Parse(Country           CountryCode,
+                                       String            Suffix,
+                                       PartnerIdFormats  IdFormat = PartnerIdFormats.eMI3)
         {
 
             #region Initial checks
 
-            if (CountryCode == null)
-                throw new ArgumentNullException(nameof(CountryCode),  "The given country must not be null!");
-
             if (Suffix.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Suffix),       "The given charging operator identification suffix must not be null or empty!");
+                throw new ArgumentNullException(nameof(Suffix), "The given charging operator identification suffix must not be null or empty!");
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case PartnerIdFormats.eMI3:
-                    return Parse(CountryCode.Alpha2Code +       Suffix);
-
-                default:
-                    return Parse(CountryCode.Alpha2Code + "*" + Suffix);
-
-            }
+            return IdFormat switch {
+                PartnerIdFormats.eMI3  => Parse(CountryCode.Alpha2Code +       Suffix),
+                _                      => Parse(CountryCode.Alpha2Code + "*" + Suffix)
+            };
 
         }
 
@@ -253,10 +271,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Partner_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Partner_Id _PartnerId))
-                return _PartnerId;
+            if (TryParse(Text, out var partnerId))
+                return partnerId;
 
-            return new Partner_Id?();
+            return null;
 
         }
 
@@ -269,7 +287,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Text">A text representation of a charging operator identification.</param>
         /// <param name="PartnerId">The parsed charging operator identification.</param>
-        public static Boolean TryParse(String           Text,
+        public static Boolean TryParse(String          Text,
                                        out Partner_Id  PartnerId)
         {
 
@@ -277,7 +295,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             if (Text.IsNullOrEmpty())
             {
-                PartnerId = default(Partner_Id);
+                PartnerId = default;
                 return false;
             }
 
@@ -286,30 +304,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = PartnerId_RegEx.Matches(Text.Trim().ToUpper());
+                var matchCollection = PartnerId_RegEx.Matches(Text.Trim().ToUpper());
 
-                if (MatchCollection.Count == 1 &&
-                    Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+                if (matchCollection.Count == 1 &&
+                    Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
                 {
 
-                    PartnerId = new Partner_Id(_CountryCode,
-                                                 MatchCollection[0].Groups[3].Value,
-                                                 MatchCollection[0].Groups[2].Value == "*" ? PartnerIdFormats.eMI3_STAR : PartnerIdFormats.eMI3);
+                    PartnerId = new Partner_Id(
+                                    countryCode,
+                                    matchCollection[0].Groups[3].Value,
+                                    matchCollection[0].Groups[2].Value == "*"
+                                        ? PartnerIdFormats.eMI3_STAR
+                                        : PartnerIdFormats.eMI3
+                                );
 
                     return true;
 
                 }
 
             }
-
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
-            PartnerId = default(Partner_Id);
+            PartnerId = default;
             return false;
 
         }
@@ -329,10 +346,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                            PartnerIdFormats  IdFormat = PartnerIdFormats.eMI3_STAR)
         {
 
-            if (TryParse(CountryCode, Suffix, out Partner_Id _PartnerId, IdFormat))
-                return _PartnerId;
+            if (TryParse(CountryCode, Suffix, out var partnerId, IdFormat))
+                return partnerId;
 
-            return new Partner_Id?();
+            return null;
 
         }
 
@@ -347,34 +364,26 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Suffix">The suffix of an e-mobility operator identification.</param>
         /// <param name="PartnerId">The parsed e-mobility operator identification.</param>
         /// <param name="IdFormat">The optional format of the e-mobility operator identification.</param>
-        public static Boolean TryParse(Country            CountryCode,
-                                       String             Suffix,
+        public static Boolean TryParse(Country           CountryCode,
+                                       String            Suffix,
                                        out Partner_Id    PartnerId,
                                        PartnerIdFormats  IdFormat = PartnerIdFormats.eMI3_STAR)
         {
 
             #region Initial checks
 
-            if (CountryCode == null || Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
+            if (Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
             {
-                PartnerId = default(Partner_Id);
+                PartnerId = default;
                 return false;
             }
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case PartnerIdFormats.eMI3:
-                    return TryParse(CountryCode.Alpha2Code +       Suffix,
-                                    out PartnerId);
-
-                default:_STAR:
-                    return TryParse(CountryCode.Alpha2Code + "*" + Suffix,
-                                    out PartnerId);
-
-            }
+            return IdFormat switch {
+                PartnerIdFormats.eMI3  => TryParse(CountryCode.Alpha2Code +       Suffix, out PartnerId),
+                _                      => TryParse(CountryCode.Alpha2Code + "*" + Suffix, out PartnerId)
+            };
 
         }
 
@@ -388,9 +397,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="NewFormat">The new charging operator identification format.</param>
         public Partner_Id ChangeFormat(PartnerIdFormats NewFormat)
 
-            => new Partner_Id(CountryCode,
-                               Suffix,
-                               NewFormat);
+            => new (CountryCode,
+                    Suffix,
+                    NewFormat);
 
         #endregion
 
@@ -401,9 +410,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Partner_Id Clone
 
-            => new Partner_Id(CountryCode,
-                               new String(Suffix.ToCharArray()),
-                               Format);
+            => new (CountryCode,
+                    new String(Suffix.ToCharArray()),
+                    Format);
 
         #endregion
 
@@ -418,20 +427,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Partner_Id PartnerId1, Partner_Id PartnerId2)
-        {
+        public static Boolean operator == (Partner_Id PartnerId1,
+                                           Partner_Id PartnerId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(PartnerId1, PartnerId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) PartnerId1 == null) || ((Object) PartnerId2 == null))
-                return false;
-
-            return PartnerId1.Equals(PartnerId2);
-
-        }
+            => PartnerId1.Equals(PartnerId2);
 
         #endregion
 
@@ -443,8 +442,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Partner_Id PartnerId1, Partner_Id PartnerId2)
-            => !(PartnerId1 == PartnerId2);
+        public static Boolean operator != (Partner_Id PartnerId1,
+                                           Partner_Id PartnerId2)
+
+            => !PartnerId1.Equals(PartnerId2);
 
         #endregion
 
@@ -456,15 +457,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Partner_Id PartnerId1, Partner_Id PartnerId2)
-        {
+        public static Boolean operator < (Partner_Id PartnerId1,
+                                          Partner_Id PartnerId2)
 
-            if ((Object) PartnerId1 == null)
-                throw new ArgumentNullException(nameof(PartnerId1), "The given PartnerId1 must not be null!");
-
-            return PartnerId1.CompareTo(PartnerId2) < 0;
-
-        }
+            => PartnerId1.CompareTo(PartnerId2) < 0;
 
         #endregion
 
@@ -476,8 +472,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Partner_Id PartnerId1, Partner_Id PartnerId2)
-            => !(PartnerId1 > PartnerId2);
+        public static Boolean operator <= (Partner_Id PartnerId1,
+                                           Partner_Id PartnerId2)
+
+            => PartnerId1.CompareTo(PartnerId2) <= 0;
 
         #endregion
 
@@ -489,15 +487,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Partner_Id PartnerId1, Partner_Id PartnerId2)
-        {
+        public static Boolean operator > (Partner_Id PartnerId1,
+                                          Partner_Id PartnerId2)
 
-            if ((Object) PartnerId1 == null)
-                throw new ArgumentNullException(nameof(PartnerId1), "The given PartnerId1 must not be null!");
-
-            return PartnerId1.CompareTo(PartnerId2) > 0;
-
-        }
+            => PartnerId1.CompareTo(PartnerId2) > 0;
 
         #endregion
 
@@ -509,54 +502,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerId1">An charging operator identification.</param>
         /// <param name="PartnerId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Partner_Id PartnerId1, Partner_Id PartnerId2)
-            => !(PartnerId1 < PartnerId2);
+        public static Boolean operator >= (Partner_Id PartnerId1,
+                                           Partner_Id PartnerId2)
+
+            => PartnerId1.CompareTo(PartnerId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerId> Members
+        #region IComparable<Partner_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A partner identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Partner_Id PartnerId))
-                throw new ArgumentException("The given object is not a charging operator identification!", nameof(Object));
-
-            return CompareTo(PartnerId);
-
-        }
+            => Object is Partner_Id partnerId
+                   ? CompareTo(partnerId)
+                   : throw new ArgumentException("The given object is not a partner identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(PartnerId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner identifications.
         /// </summary>
-        /// <param name="PartnerId">An object to compare with.</param>
+        /// <param name="PartnerId">A partner identification to compare with.</param>
         public Int32 CompareTo(Partner_Id PartnerId)
         {
 
-            if ((Object) PartnerId == null)
-                throw new ArgumentNullException(nameof(PartnerId), "The given charging operator identification must not be null!");
+            var c = CountryCode.CompareTo(PartnerId.CountryCode);
 
-            var _Result = CountryCode.CompareTo(PartnerId.CountryCode);
+            if (c == 0)
+                c = String.Compare(Suffix,
+                                   PartnerId.Suffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, PartnerId.Suffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -564,47 +552,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<PartnerId> Members
+        #region IEquatable<Partner_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A partner identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Partner_Id PartnerId))
-                return false;
-
-            return Equals(PartnerId);
-
-        }
+            => Object is Partner_Id partnerId &&
+                   Equals(partnerId);
 
         #endregion
 
         #region Equals(PartnerId)
 
         /// <summary>
-        /// Compares two PartnerIds for equality.
+        /// Compares two partner identifications for equality.
         /// </summary>
-        /// <param name="PartnerId">A PartnerId to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="PartnerId">A partner identification to compare with.</param>
         public Boolean Equals(Partner_Id PartnerId)
-        {
 
-            if ((Object) PartnerId == null)
-                return false;
+            => CountryCode.Equals(PartnerId.CountryCode) &&
 
-            return CountryCode.     Equals(PartnerId.CountryCode) &&
-                   Suffix.ToLower().Equals(PartnerId.Suffix.ToLower());
-
-        }
+               String.Equals(Suffix,
+                             PartnerId.Suffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -629,20 +604,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case PartnerIdFormats.eMI3_STAR:
-                    return CountryCode.Alpha2Code + "*" + Suffix;
-
-                default:
-                    return CountryCode.Alpha2Code       + Suffix;
-
-            }
-
-        }
+            => Format switch {
+                PartnerIdFormats.eMI3_STAR  => CountryCode.Alpha2Code + "*" + Suffix,
+                _                           => CountryCode.Alpha2Code + Suffix
+            };
 
         #endregion
 
@@ -653,29 +619,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Format">The format of the identification.</param>
         public String ToString(PartnerIdFormats Format)
-        {
 
-            switch (Format)
-            {
-
-                case PartnerIdFormats.eMI3:
-                    return String.Concat(CountryCode.Alpha2Code,
-                                         Suffix);
-
-                case PartnerIdFormats.eMI3_STAR:
-                    return String.Concat(CountryCode.Alpha2Code,
-                                         "*",
-                                         Suffix);
-
-                default: // DIN
-                    return String.Concat("+",
-                                         CountryCode.TelefonCode,
-                                         "*",
-                                         Suffix);
-
-            }
-
-        }
+            => Format switch {
+                   PartnerIdFormats.eMI3       => String.Concat(     CountryCode.Alpha2Code,       Suffix),
+                   PartnerIdFormats.eMI3_STAR  => String.Concat(     CountryCode.Alpha2Code,  "*", Suffix),
+                   // DIN
+                   _                           => String.Concat("+", CountryCode.TelefonCode, "*", Suffix)
+               };
 
         #endregion
 

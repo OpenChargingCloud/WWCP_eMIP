@@ -184,7 +184,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                             );
 
 
-                if (CustomSendSetEVSEBusyStatusResponseParser != null)
+                if (CustomSendSetEVSEBusyStatusResponseParser is not null)
                     SetEVSEBusyStatusResponse = CustomSendSetEVSEBusyStatusResponseParser(SetEVSEBusyStatusResponseXML,
                                                                   SetEVSEBusyStatusResponse);
 
@@ -267,7 +267,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetEVSEBusyStatusResponseSerializer != null
+            return CustomSetEVSEBusyStatusResponseSerializer is not null
                        ? CustomSetEVSEBusyStatusResponseSerializer(this, XML)
                        : XML;
 
@@ -294,7 +294,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetEVSEBusyStatusResponse1 == null) || ((Object) SetEVSEBusyStatusResponse2 == null))
+            if (SetEVSEBusyStatusResponse1 is null || SetEVSEBusyStatusResponse2 is null)
                 return false;
 
             return SetEVSEBusyStatusResponse1.Equals(SetEVSEBusyStatusResponse2);

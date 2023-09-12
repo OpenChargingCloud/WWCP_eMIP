@@ -226,7 +226,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                   );
 
 
-                if (CustomSendSetServiceAuthorisationResponseParser != null)
+                if (CustomSendSetServiceAuthorisationResponseParser is not null)
                     SetServiceAuthorisationResponse = CustomSendSetServiceAuthorisationResponseParser(SetServiceAuthorisationResponseXML,
                                                                                                       SetServiceAuthorisationResponse);
 
@@ -318,7 +318,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomSetServiceAuthorisationResponseSerializer != null
+            return CustomSetServiceAuthorisationResponseSerializer is not null
                        ? CustomSetServiceAuthorisationResponseSerializer(this, XML)
                        : XML;
 
@@ -345,7 +345,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetServiceAuthorisationResponse1 == null) || ((Object) SetServiceAuthorisationResponse2 == null))
+            if (SetServiceAuthorisationResponse1 is null || SetServiceAuthorisationResponse2 is null)
                 return false;
 
             return SetServiceAuthorisationResponse1.Equals(SetServiceAuthorisationResponse2);

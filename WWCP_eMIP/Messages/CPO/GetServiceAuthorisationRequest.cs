@@ -303,7 +303,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                  );
 
 
-                if (CustomSendGetServiceAuthorisationRequestParser != null)
+                if (CustomSendGetServiceAuthorisationRequestParser is not null)
                     GetServiceAuthorisationRequest = CustomSendGetServiceAuthorisationRequestParser(GetServiceAuthorisationRequestXML,
                                                                                                     GetServiceAuthorisationRequest);
 
@@ -417,7 +417,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomGetServiceAuthorisationRequestSerializer != null
+            return CustomGetServiceAuthorisationRequestSerializer is not null
                        ? CustomGetServiceAuthorisationRequestSerializer(this, XML)
                        : XML;
 
@@ -444,7 +444,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) GetServiceAuthorisationRequest1 == null) || ((Object) GetServiceAuthorisationRequest2 == null))
+            if (GetServiceAuthorisationRequest1 is null || GetServiceAuthorisationRequest2 is null)
                 return false;
 
             return GetServiceAuthorisationRequest1.Equals(GetServiceAuthorisationRequest2);

@@ -17,7 +17,6 @@
 
 #region Usings
 
-using System;
 using System.Text.RegularExpressions;
 
 using org.GraphDefined.Vanaheimr.Illias;
@@ -40,21 +39,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="OperatorIdFormat">A operator identification format.</param>
         public static String AsText(this OperatorIdFormats OperatorIdFormat)
-        {
 
-            switch (OperatorIdFormat)
-            {
-
-                case OperatorIdFormats.eMI3:
-                case OperatorIdFormats.eMI3_STAR:
-                    return "eMI3";
-
-                default:
-                    return "Gireve";
-
-            }
-
-        }
+            => OperatorIdFormat switch {
+                   OperatorIdFormats.eMI3 or OperatorIdFormats.eMI3_STAR  => "eMI3",
+                   _                                                      => "Gireve"
+               };
 
         #endregion
 
@@ -80,6 +69,28 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Proprietary Gireve format.
         /// </summary>
         Gireve
+
+    }
+
+    /// <summary>
+    /// Extension methods for operator identifications.
+    /// </summary>
+    public static class OperatorIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this operator identification is null or empty.
+        /// </summary>
+        /// <param name="OperatorId">An operator identification.</param>
+        public static Boolean IsNullOrEmpty(this Operator_Id? OperatorId)
+            => !OperatorId.HasValue || OperatorId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this operator identification is NOT null or empty.
+        /// </summary>
+        /// <param name="OperatorId">An operator identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Operator_Id? OperatorId)
+            => OperatorId.HasValue && OperatorId.Value.IsNotNullOrEmpty;
 
     }
 
@@ -189,27 +200,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim().ToUpper();
+            Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text), "The given text representation of an operator identification must not be null or empty!");
 
             #endregion
 
-            var MatchCollection = OperatorId_RegEx.Matches(Text);
+            var matchCollection = OperatorId_RegEx.Matches(Text);
 
-            if (MatchCollection.Count == 1 &&
-                Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+            if (matchCollection.Count == 1 &&
+                Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
             {
 
-                return new Operator_Id(_CountryCode,
-                                       MatchCollection[0].Groups[3].Value,
-                                       MatchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
+                return new Operator_Id(countryCode,
+                                       matchCollection[0].Groups[3].Value,
+                                       matchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
 
             }
 
-            throw new ArgumentException("Illegal text representation of an operator identification: '{Text}'!", nameof(Text));
+            throw new ArgumentException($"Invalid text representation of an operator identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -230,24 +241,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (CountryCode == null)
-                throw new ArgumentNullException(nameof(CountryCode),  "The given country must not be null!");
-
             if (Suffix.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Suffix),       "The given charging operator identification suffix must not be null or empty!");
+                throw new ArgumentNullException(nameof(Suffix),  "The given charging operator identification suffix must not be null or empty!");
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return Parse(CountryCode.Alpha2Code +       Suffix);
-
-                default:
-                    return Parse(CountryCode.Alpha2Code + "*" + Suffix);
-
-            }
+            return IdFormat switch {
+                OperatorIdFormats.eMI3  => Parse(CountryCode.Alpha2Code +       Suffix),
+                _                       => Parse(CountryCode.Alpha2Code + "*" + Suffix)
+            };
 
         }
 
@@ -262,10 +264,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Operator_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Operator_Id _OperatorId))
-                return _OperatorId;
+            if (TryParse(Text, out var operatorId))
+                return operatorId;
 
-            return new Operator_Id?();
+            return null;
 
         }
 
@@ -284,8 +286,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim().ToUpper();
+            Text = Text.Trim().ToUpper();
 
             if (Text.IsNullOrEmpty())
             {
@@ -298,27 +299,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = OperatorId_RegEx.Matches(Text);
+                var matchCollection = OperatorId_RegEx.Matches(Text);
 
-                if (MatchCollection.Count == 1 &&
-                    Country.TryParseAlpha2Code(MatchCollection[0].Groups[1].Value, out Country _CountryCode))
+                if (matchCollection.Count == 1 &&
+                    Country.TryParseAlpha2Code(matchCollection[0].Groups[1].Value, out var countryCode))
                 {
 
-                    OperatorId = new Operator_Id(_CountryCode,
-                                                 MatchCollection[0].Groups[3].Value,
-                                                 MatchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
+                    OperatorId = new Operator_Id(countryCode,
+                                                 matchCollection[0].Groups[3].Value,
+                                                 matchCollection[0].Groups[2].Value == "*" ? OperatorIdFormats.eMI3_STAR : OperatorIdFormats.eMI3);
 
                     return true;
 
                 }
 
             }
-
-#pragma warning disable RCS1075  // Avoid empty catch clause that catches System.Exception.
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-#pragma warning restore RCS1075  // Avoid empty catch clause that catches System.Exception.
             { }
 
             OperatorId = default;
@@ -341,10 +337,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                             OperatorIdFormats  IdFormat = OperatorIdFormats.eMI3_STAR)
         {
 
-            if (TryParse(CountryCode, Suffix, out Operator_Id _OperatorId, IdFormat))
-                return _OperatorId;
+            if (TryParse(CountryCode, Suffix, out var operatorId, IdFormat))
+                return operatorId;
 
-            return new Operator_Id?();
+            return null;
 
         }
 
@@ -367,7 +363,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (CountryCode == null || Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
+            if (Suffix.IsNullOrEmpty() || Suffix.Trim().IsNullOrEmpty())
             {
                 OperatorId = default;
                 return false;
@@ -375,18 +371,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            switch (IdFormat)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return TryParse(CountryCode.Alpha2Code +       Suffix,
-                                    out OperatorId);
-
-                default:
-                    return TryParse(CountryCode.Alpha2Code + "*" + Suffix,
-                                    out OperatorId);
-
-            }
+            return IdFormat switch {
+                OperatorIdFormats.eMI3  => TryParse(CountryCode.Alpha2Code +       Suffix, out OperatorId),
+                _                       => TryParse(CountryCode.Alpha2Code + "*" + Suffix, out OperatorId)
+            };
 
         }
 
@@ -399,9 +387,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Operator_Id Clone
 
-            => new Operator_Id(CountryCode,
-                               new String(Suffix.ToCharArray()),
-                               Format);
+            => new (CountryCode,
+                    new String(Suffix.ToCharArray()),
+                    Format);
 
         #endregion
 
@@ -414,9 +402,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="NewFormat">The new charging operator identification format.</param>
         public Operator_Id ChangeFormat(OperatorIdFormats NewFormat)
 
-            => new Operator_Id(CountryCode,
-                               Suffix,
-                               NewFormat);
+            => new (CountryCode,
+                    Suffix,
+                    NewFormat);
 
         #endregion
 
@@ -431,20 +419,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Operator_Id OperatorId1, Operator_Id OperatorId2)
-        {
+        public static Boolean operator == (Operator_Id OperatorId1,
+                                           Operator_Id OperatorId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(OperatorId1, OperatorId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) OperatorId1 == null) || ((Object) OperatorId2 == null))
-                return false;
-
-            return OperatorId1.Equals(OperatorId2);
-
-        }
+            => OperatorId1.Equals(OperatorId2);
 
         #endregion
 
@@ -456,8 +434,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 == OperatorId2);
+        public static Boolean operator != (Operator_Id OperatorId1,
+                                           Operator_Id OperatorId2)
+
+            => !OperatorId1.Equals(OperatorId2);
 
         #endregion
 
@@ -469,15 +449,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Operator_Id OperatorId1, Operator_Id OperatorId2)
-        {
+        public static Boolean operator < (Operator_Id OperatorId1,
+                                          Operator_Id OperatorId2)
 
-            if ((Object) OperatorId1 == null)
-                throw new ArgumentNullException(nameof(OperatorId1), "The given OperatorId1 must not be null!");
-
-            return OperatorId1.CompareTo(OperatorId2) < 0;
-
-        }
+            => OperatorId1.CompareTo(OperatorId2) < 0;
 
         #endregion
 
@@ -489,8 +464,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 > OperatorId2);
+        public static Boolean operator <= (Operator_Id OperatorId1,
+                                           Operator_Id OperatorId2)
+
+            => OperatorId1.CompareTo(OperatorId2) <= 0;
 
         #endregion
 
@@ -502,15 +479,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Operator_Id OperatorId1, Operator_Id OperatorId2)
-        {
+        public static Boolean operator > (Operator_Id OperatorId1,
+                                          Operator_Id OperatorId2)
 
-            if ((Object) OperatorId1 == null)
-                throw new ArgumentNullException(nameof(OperatorId1), "The given OperatorId1 must not be null!");
-
-            return OperatorId1.CompareTo(OperatorId2) > 0;
-
-        }
+            => OperatorId1.CompareTo(OperatorId2) > 0;
 
         #endregion
 
@@ -522,54 +494,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="OperatorId1">An charging operator identification.</param>
         /// <param name="OperatorId2">Another charging operator identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Operator_Id OperatorId1, Operator_Id OperatorId2)
-            => !(OperatorId1 < OperatorId2);
+        public static Boolean operator >= (Operator_Id OperatorId1,
+                                           Operator_Id OperatorId2)
+
+            => OperatorId1.CompareTo(OperatorId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<OperatorId> Members
+        #region IComparable<Operator_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two operator identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">An operator identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Operator_Id OperatorId))
-                throw new ArgumentException("The given object is not an operator identification!", nameof(Object));
-
-            return CompareTo(OperatorId);
-
-        }
+            => Object is Operator_Id operatorId
+                   ? CompareTo(operatorId)
+                   : throw new ArgumentException("The given object is not an operator identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(OperatorId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two operator identifications.
         /// </summary>
-        /// <param name="OperatorId">An object to compare with.</param>
+        /// <param name="OperatorId">An operator identification to compare with.</param>
         public Int32 CompareTo(Operator_Id OperatorId)
         {
 
-            if ((Object) OperatorId == null)
-                throw new ArgumentNullException(nameof(OperatorId), "The given charging operator identification must not be null!");
+            var c = CountryCode.CompareTo(OperatorId.CountryCode);
 
-            var _Result = CountryCode.CompareTo(OperatorId.CountryCode);
+            if (c == 0)
+                c = String.Compare(Suffix,
+                                   OperatorId.Suffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(Suffix, OperatorId.Suffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -577,47 +544,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<OperatorId> Members
+        #region IEquatable<Operator_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two operator identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">An operator identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Operator_Id OperatorId))
-                return false;
-
-            return Equals(OperatorId);
-
-        }
+            => Object is Operator_Id operatorId &&
+                   Equals(operatorId);
 
         #endregion
 
         #region Equals(OperatorId)
 
         /// <summary>
-        /// Compares two OperatorIds for equality.
+        /// Compares two operator identifications for equality.
         /// </summary>
-        /// <param name="OperatorId">A OperatorId to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="OperatorId">An operator identification to compare with.</param>
         public Boolean Equals(Operator_Id OperatorId)
-        {
 
-            if ((Object) OperatorId == null)
-                return false;
+            => CountryCode.Equals(OperatorId.CountryCode) &&
 
-            return CountryCode.     Equals(OperatorId.CountryCode) &&
-                   Suffix.ToLower().Equals(OperatorId.Suffix.ToLower());
-
-        }
+               String.Equals(Suffix,
+                             OperatorId.Suffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -642,20 +596,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case OperatorIdFormats.eMI3_STAR:
-                    return CountryCode.Alpha2Code + "*" + Suffix;
-
-                default:
-                    return CountryCode.Alpha2Code       + Suffix;
-
-            }
-
-        }
+            => Format switch {
+                   OperatorIdFormats.eMI3_STAR  => CountryCode.Alpha2Code + "*" + Suffix,
+                   _                            => CountryCode.Alpha2Code +       Suffix,
+               };
 
         #endregion
 

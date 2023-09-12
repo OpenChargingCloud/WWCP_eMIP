@@ -25,12 +25,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for transaction identifications.
+    /// </summary>
+    public static class TransactionIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this transaction identification is null or empty.
+        /// </summary>
+        /// <param name="TransactionId">A transaction identification.</param>
+        public static Boolean IsNullOrEmpty(this Transaction_Id? TransactionId)
+            => !TransactionId.HasValue || TransactionId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this transaction identification is NOT null or empty.
+        /// </summary>
+        /// <param name="TransactionId">A transaction identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Transaction_Id? TransactionId)
+            => TransactionId.HasValue && TransactionId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a transaction.
     /// </summary>
     public readonly struct Transaction_Id : IId,
                                             IEquatable <Transaction_Id>,
                                             IComparable<Transaction_Id>
-
     {
 
         #region Data
@@ -67,8 +89,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Constructor(s)
 
         /// <summary>
-        /// Create a new transaction identification.
-        /// based on the given string.
+        /// Create a new transaction identification based on the given string.
         /// </summary>
         /// <param name="Text">The text representation of a transaction.</param>
         private Transaction_Id(String Text)
@@ -90,7 +111,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (static) Zero
 
         public static Transaction_Id Zero
-            => new Transaction_Id("0");
+            => new ("0");
 
         #endregion
 
@@ -104,20 +125,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Transaction_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var transactionId))
+                return transactionId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a transaction identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out Transaction_Id TransactionId))
-                return TransactionId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a transaction identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a transaction identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -132,10 +144,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Transaction_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Transaction_Id TransactionId))
-                return TransactionId;
+            if (TryParse(Text, out var transactionId))
+                return transactionId;
 
-            return new Transaction_Id?();
+            return null;
 
         }
 
@@ -153,8 +165,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -190,20 +201,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-        {
+        public static Boolean operator == (Transaction_Id TransactionId1,
+                                           Transaction_Id TransactionId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(TransactionId1, TransactionId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) TransactionId1 == null) || ((Object) TransactionId2 == null))
-                return false;
-
-            return TransactionId1.Equals(TransactionId2);
-
-        }
+            => TransactionId1.Equals(TransactionId2);
 
         #endregion
 
@@ -215,8 +216,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-            => !(TransactionId1 == TransactionId2);
+        public static Boolean operator != (Transaction_Id TransactionId1,
+                                           Transaction_Id TransactionId2)
+
+            => !TransactionId1.Equals(TransactionId2);
 
         #endregion
 
@@ -228,15 +231,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-        {
+        public static Boolean operator < (Transaction_Id TransactionId1,
+                                          Transaction_Id TransactionId2)
 
-            if ((Object) TransactionId1 == null)
-                throw new ArgumentNullException(nameof(TransactionId1), "The given TransactionId1 must not be null!");
-
-            return TransactionId1.CompareTo(TransactionId2) < 0;
-
-        }
+            => TransactionId1.CompareTo(TransactionId2) < 0;
 
         #endregion
 
@@ -248,8 +246,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-            => !(TransactionId1 > TransactionId2);
+        public static Boolean operator <= (Transaction_Id TransactionId1,
+                                           Transaction_Id TransactionId2)
+
+            => TransactionId1.CompareTo(TransactionId2) <= 0;
 
         #endregion
 
@@ -261,15 +261,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-        {
+        public static Boolean operator > (Transaction_Id TransactionId1,
+                                          Transaction_Id TransactionId2)
 
-            if ((Object) TransactionId1 == null)
-                throw new ArgumentNullException(nameof(TransactionId1), "The given TransactionId1 must not be null!");
-
-            return TransactionId1.CompareTo(TransactionId2) > 0;
-
-        }
+            => TransactionId1.CompareTo(TransactionId2) > 0;
 
         #endregion
 
@@ -281,97 +276,74 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="TransactionId1">A transaction identification.</param>
         /// <param name="TransactionId2">Another transaction identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Transaction_Id TransactionId1, Transaction_Id TransactionId2)
-            => !(TransactionId1 < TransactionId2);
+        public static Boolean operator >= (Transaction_Id TransactionId1,
+                                           Transaction_Id TransactionId2)
+
+            => TransactionId1.CompareTo(TransactionId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<TransactionId> Members
+        #region IComparable<Transaction_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two transaction identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A transaction identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Transaction_Id TransactionId))
-                throw new ArgumentException("The given object is not a transaction identification!",
-                                            nameof(Object));
-
-            return CompareTo(TransactionId);
-
-        }
+            => Object is Transaction_Id transactionId
+                   ? CompareTo(transactionId)
+                   : throw new ArgumentException("The given object is not a transaction identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(TransactionId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two transaction identifications.
         /// </summary>
-        /// <param name="TransactionId">An object to compare with.</param>
+        /// <param name="TransactionId">A transaction identification to compare with.</param>
         public Int32 CompareTo(Transaction_Id TransactionId)
-        {
 
-            if ((Object) TransactionId == null)
-                throw new ArgumentNullException(nameof(TransactionId),  "The given transaction identification must not be null!");
-
-            return String.Compare(InternalId, TransactionId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              TransactionId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<TransactionId> Members
+        #region IEquatable<Transaction_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two transaction identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A transaction identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Transaction_Id TransactionId))
-                return false;
-
-            return Equals(TransactionId);
-
-        }
+            => Object is Transaction_Id transactionId &&
+                   Equals(transactionId);
 
         #endregion
 
         #region Equals(TransactionId)
 
         /// <summary>
-        /// Compares two TransactionIds for equality.
+        /// Compares two transaction identifications for equality.
         /// </summary>
         /// <param name="TransactionId">A transaction identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(Transaction_Id TransactionId)
-        {
 
-            if ((Object) TransactionId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(TransactionId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             TransactionId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -384,7 +356,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
@@ -394,7 +367,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

@@ -17,8 +17,7 @@
 
 #region Usings
 
-using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 using org.GraphDefined.Vanaheimr.Illias;
 
@@ -37,7 +36,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Dictionary<Int32, MeterTypes> Lookup = new Dictionary<Int32, MeterTypes>();
+        private static readonly ConcurrentDictionary<Int32, MeterTypes> Lookup = new();
 
         #endregion
 
@@ -46,29 +45,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The internal identification.
         /// </summary>
-        public Int32   Code          { get; }
+        public Int32    Code          { get; }
 
         /// <summary>
         /// The description of the meter type.
         /// </summary>
-        public String  Description   { get; }
+        public String?  Description   { get; }
 
         /// <summary>
         /// Indicates whether this identification is null or empty.
         /// </summary>
-        public Boolean IsNullOrEmpty
+        public Boolean  IsNullOrEmpty
             => false;
 
         /// <summary>
         /// Indicates whether this identification is NOT null or empty.
         /// </summary>
-        public Boolean IsNotNullOrEmpty
+        public Boolean  IsNotNullOrEmpty
             => false;
 
         /// <summary>
         /// The length of the tag identification.
         /// </summary>
-        public UInt64 Length
+        public UInt64   Length
             => 0;
 
         #endregion
@@ -80,18 +79,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         static MeterTypes()
         {
 
-            MeterTypes meterType;
-
-            foreach (var _MethodInfo in typeof(MeterTypes).GetMethods())
+            foreach (var methodInfo in typeof(MeterTypes).GetMethods())
             {
-                if (_MethodInfo.IsStatic &&
-                    _MethodInfo.GetParameters().Length == 0)
+                if (methodInfo.IsStatic &&
+                    methodInfo.GetParameters().Length == 0)
                 {
 
-                    meterType = (MeterTypes) _MethodInfo.Invoke(Activator.CreateInstance(typeof(MeterTypes)), null);
+                    var meterTypeObject = methodInfo.Invoke(Activator.CreateInstance(typeof(MeterTypes)), null);
 
-                    if (!Lookup.ContainsKey(meterType.Code))
-                        Lookup.Add(meterType.Code, meterType);
+                    if (meterTypeObject is MeterTypes meterType &&
+                        !Lookup.ContainsKey(meterType.Code))
+                    {
+                        Lookup.TryAdd(meterType.Code, meterType);
+                    }
 
                 }
             }
@@ -107,18 +107,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Code">The numeric code of the status.</param>
         /// <param name="Description">The description of the meter type.</param>
-        private MeterTypes(Int32   Code,
-                           String  Description = null)
+        private MeterTypes(Int32    Code,
+                           String?  Description   = null)
         {
 
             this.Code         = Code;
             this.Description  = Description;
 
-            lock (Lookup)
-            {
-                if (!Lookup.ContainsKey(Code))
-                    Lookup.Add(Code, this);
-            }
+            if (!Lookup.ContainsKey(Code))
+                 Lookup.TryAdd(Code, this);
 
         }
 
@@ -134,11 +131,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="Code">The numeric code of the meter type.</param>
         /// <param name="Description">The description of the meter type.</param>
-        public static MeterTypes Register(Int32   Code,
-                                          String  Description = null)
+        public static MeterTypes Register(Int32    Code,
+                                          String?  Description = null)
 
-            => new MeterTypes(Code,
-                              Description);
+            => new (Code,
+                    Description);
 
         #endregion
 
@@ -154,15 +151,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text), "The given text representation of a meter type must not be null or empty!");
 
             #endregion
 
-            return Parse(Int32.Parse(Text));
+            if (Int32.TryParse(Text, out var number))
+                return Parse(number);
+
+            throw new ArgumentException($"Invalid text representation of a meter type: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -177,8 +177,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static MeterTypes Parse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out MeterTypes Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var meterType))
+                return meterType;
 
             return new MeterTypes(Code);
 
@@ -197,15 +197,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Code))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
                 return new MeterTypes?();
 
             #endregion
 
-            return TryParse(Code);
+            return TryParse(number);
 
         }
 
@@ -220,8 +219,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static MeterTypes? TryParse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out MeterTypes Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var meterType))
+                return meterType;
 
             return new MeterTypes(Code);
 
@@ -241,18 +240,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             #endregion
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Value))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
             {
-                MeterTypes = default(MeterTypes);
+                MeterTypes = default;
                 return false;
             }
 
-            MeterTypes = new MeterTypes(Value);
+            MeterTypes = new MeterTypes(number);
             return true;
 
         }
@@ -286,8 +284,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public MeterTypes Clone
 
-            => new MeterTypes(Code,
-                              new String(Description.ToCharArray()));
+            => new (Code,
+                    Description is not null && Description.IsNotNullOrEmpty()
+                        ? new String(Description.ToCharArray())
+                        : null);
 
         #endregion
 
@@ -301,19 +301,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Total duration (e.g. in minutes).
         /// </summary>
         public static MeterTypes TotalDuration
-            => new MeterTypes(1,  "Total duration (e.g. in minutes)");
+            => new (1,  "Total duration (e.g. in minutes)");
 
         /// <summary>
         /// Total energy (e.g. in Wh).
         /// </summary>
         public static MeterTypes TotalEnergy
-            => new MeterTypes(2,  "Total energy (e.g. in Wh)");
+            => new (2,  "Total energy (e.g. in Wh)");
 
         /// <summary>
         /// B2B Service Costs.
         /// </summary>
         public static MeterTypes SystemError
-            => new MeterTypes(3,  "B2B Service Costs");
+            => new (3,  "B2B Service Costs");
 
         #endregion
 
@@ -328,20 +328,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (MeterTypes MeterType1, MeterTypes MeterType2)
-        {
+        public static Boolean operator == (MeterTypes MeterType1,
+                                           MeterTypes MeterType2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(MeterType1, MeterType2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) MeterType1 == null) || ((Object) MeterType2 == null))
-                return false;
-
-            return MeterType1.Equals(MeterType2);
-
-        }
+            => MeterType1.Equals(MeterType2);
 
         #endregion
 
@@ -353,8 +343,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 == MeterType2);
+        public static Boolean operator != (MeterTypes MeterType1,
+                                           MeterTypes MeterType2)
+
+            => !MeterType1.Equals(MeterType2);
 
         #endregion
 
@@ -366,15 +358,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (MeterTypes MeterType1, MeterTypes MeterType2)
-        {
+        public static Boolean operator < (MeterTypes MeterType1,
+                                          MeterTypes MeterType2)
 
-            if ((Object) MeterType1 == null)
-                throw new ArgumentNullException(nameof(MeterType1), "The given MeterType1 must not be null!");
-
-            return MeterType1.CompareTo(MeterType2) < 0;
-
-        }
+            => MeterType1.CompareTo(MeterType2) < 0;
 
         #endregion
 
@@ -386,8 +373,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 > MeterType2);
+        public static Boolean operator <= (MeterTypes MeterType1,
+                                           MeterTypes MeterType2)
+
+            => MeterType1.CompareTo(MeterType2) <= 0;
 
         #endregion
 
@@ -399,15 +388,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (MeterTypes MeterType1, MeterTypes MeterType2)
-        {
+        public static Boolean operator > (MeterTypes MeterType1,
+                                          MeterTypes MeterType2)
 
-            if ((Object) MeterType1 == null)
-                throw new ArgumentNullException(nameof(MeterType1), "The given MeterType1 must not be null!");
-
-            return MeterType1.CompareTo(MeterType2) > 0;
-
-        }
+            => MeterType1.CompareTo(MeterType2) > 0;
 
         #endregion
 
@@ -419,8 +403,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterType1">A meter type.</param>
         /// <param name="MeterType2">Another meter type.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (MeterTypes MeterType1, MeterTypes MeterType2)
-            => !(MeterType1 < MeterType2);
+        public static Boolean operator >= (MeterTypes MeterType1,
+                                           MeterTypes MeterType2)
+
+            => MeterType1.CompareTo(MeterType2) >= 0;
 
         #endregion
 
@@ -431,40 +417,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two meter types.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A meter type to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is MeterTypes))
-                throw new ArgumentException("The given object is not a meter type!",
-                                            nameof(Object));
-
-            return CompareTo((MeterTypes) Object);
-
-        }
+            => Object is MeterTypes meterType
+                   ? CompareTo(meterType)
+                   : throw new ArgumentException("The given object is not a meter type!",
+                                                 nameof(Object));
 
         #endregion
 
-        #region CompareTo(MeterTypes)
+        #region CompareTo(MeterType)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two meter types.
         /// </summary>
-        /// <param name="MeterTypes">An object to compare with.</param>
-        public Int32 CompareTo(MeterTypes MeterTypes)
-        {
+        /// <param name="MeterType">A meter type to compare with.</param>
+        public Int32 CompareTo(MeterTypes MeterType)
 
-            if ((Object) MeterTypes == null)
-                throw new ArgumentNullException(nameof(MeterTypes),  "The given meter type must not be null!");
-
-            return Code.CompareTo(MeterTypes.Code);
-
-        }
+            => Code.CompareTo(MeterType.Code);
 
         #endregion
 
@@ -475,41 +448,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two meter types for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A meter type to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is MeterTypes))
-                return false;
-
-            return Equals((MeterTypes) Object);
-
-        }
+            => Object is MeterTypes meterType &&
+                   Equals(meterType);
 
         #endregion
 
-        #region Equals(MeterTypes)
+        #region Equals(MeterType)
 
         /// <summary>
-        /// Compares two MeterTypess for equality.
+        /// Compares two meter types for equality.
         /// </summary>
-        /// <param name="MeterTypes">A meter type to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
-        public Boolean Equals(MeterTypes MeterTypes)
-        {
+        /// <param name="MeterType">A meter type to compare with.</param>
+        public Boolean Equals(MeterTypes MeterType)
 
-            if ((Object) MeterTypes == null)
-                return false;
-
-            return Code.Equals(MeterTypes.Code);
-
-        }
+            => Code.Equals(MeterType.Code);
 
         #endregion
 
@@ -522,6 +479,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
+
             => Code.GetHashCode();
 
         #endregion
@@ -533,8 +491,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public override String ToString()
 
-            => String.Concat(Code,
-                             Description.IsNotNullOrEmpty() ? ": " + Description : "");
+            => $"{Code}{(Description.IsNotNullOrEmpty() ? ": " + Description : "")}";
 
         #endregion
 

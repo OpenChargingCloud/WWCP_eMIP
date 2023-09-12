@@ -17,6 +17,8 @@
 
 #region Usings
 
+using System.Collections.Concurrent;
+
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -34,7 +36,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #region Data
 
-        private static readonly Dictionary<Int32, SessionEventNatures> Lookup = new Dictionary<Int32, SessionEventNatures>();
+        private static readonly ConcurrentDictionary<Int32, SessionEventNatures> Lookup = new ();
 
         #endregion
 
@@ -61,12 +63,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The internal identification.
         /// </summary>
-        public Int32   Code          { get; }
+        public Int32    Code           { get; }
 
         /// <summary>
-        /// The description of the meter type.
+        /// The description of the session event nature.
         /// </summary>
-        public String  Description   { get; }
+        public String?  Description    { get; }
 
         #endregion
 
@@ -77,18 +79,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         static SessionEventNatures()
         {
 
-            SessionEventNatures sessionEventNature;
-
-            foreach (var _MethodInfo in typeof(SessionEventNatures).GetMethods())
+            foreach (var methodInfo in typeof(SessionEventNatures).GetMethods())
             {
-                if (_MethodInfo.IsStatic &&
-                    _MethodInfo.GetParameters().Length == 0)
+                if (methodInfo.IsStatic &&
+                    methodInfo.GetParameters().Length == 0)
                 {
 
-                    sessionEventNature = (SessionEventNatures) _MethodInfo.Invoke(Activator.CreateInstance(typeof(SessionEventNatures)), null);
+                    var sessionEventNatureObject = methodInfo.Invoke(Activator.CreateInstance(typeof(SessionEventNatures)), null);
 
-                    if (!Lookup.ContainsKey(sessionEventNature.Code))
-                        Lookup.Add(sessionEventNature.Code, sessionEventNature);
+                    if (sessionEventNatureObject is SessionEventNatures sessionEventNature &&
+                        !Lookup.ContainsKey(sessionEventNature.Code))
+                    {
+                        Lookup.TryAdd(sessionEventNature.Code, sessionEventNature);
+                    }
 
                 }
             }
@@ -100,22 +103,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (private) SessionEventNatures(Code, Description = null)
 
         /// <summary>
-        /// Create a new meter type.
+        /// Create a new session event nature.
         /// </summary>
         /// <param name="Code">The numeric code of the status.</param>
-        /// <param name="Description">The description of the meter type.</param>
-        private SessionEventNatures(Int32   Code,
-                                     String  Description = null)
+        /// <param name="Description">The description of the session event nature.</param>
+        private SessionEventNatures(Int32    Code,
+                                    String?  Description   = null)
         {
 
             this.Code         = Code;
             this.Description  = Description;
 
-            lock (Lookup)
-            {
-                if (!Lookup.ContainsKey(Code))
-                    Lookup.Add(Code, this);
-            }
+            if (!Lookup.ContainsKey(Code))
+                 Lookup.TryAdd(Code, this);
 
         }
 
@@ -127,15 +127,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Register(Code, Description = null)
 
         /// <summary>
-        /// Parse the given string as a meter type.
+        /// Parse the given string as a session event nature.
         /// </summary>
-        /// <param name="Code">The numeric code of the meter type.</param>
-        /// <param name="Description">The description of the meter type.</param>
-        public static SessionEventNatures Register(Int32   Code,
-                                          String  Description = null)
+        /// <param name="Code">The numeric code of the session event nature.</param>
+        /// <param name="Description">The description of the session event nature.</param>
+        public static SessionEventNatures Register(Int32    Code,
+                                                   String?  Description   = null)
 
-            => new SessionEventNatures(Code,
-                              Description);
+            => new (Code,
+                    Description);
 
         #endregion
 
@@ -143,23 +143,26 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Parse   (Text)
 
         /// <summary>
-        /// Parse the given string as a meter type.
+        /// Parse the given string as a session event nature.
         /// </summary>
-        /// <param name="Text">A text representation of a meter type.</param>
+        /// <param name="Text">A text representation of a session event nature.</param>
         public static SessionEventNatures Parse(String Text)
         {
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a meter type must not be null or empty!");
+                throw new ArgumentNullException(nameof(Text), "The given text representation of a session event nature must not be null or empty!");
 
             #endregion
 
-            return Parse(Int32.Parse(Text));
+            if (Int32.TryParse(Text, out var number))
+                return Parse(number);
+
+            throw new ArgumentException($"Invalid text representation of a session event nature: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -168,14 +171,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Parse   (Code)
 
         /// <summary>
-        /// Parse the given number as a meter type.
+        /// Parse the given number as a session event nature.
         /// </summary>
-        /// <param name="Code">A numeric representation of a meter type.</param>
+        /// <param name="Code">A numeric representation of a session event nature.</param>
         public static SessionEventNatures Parse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out SessionEventNatures Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var sessionEventNature))
+                return sessionEventNature;
 
             return new SessionEventNatures(Code);
 
@@ -186,23 +189,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region TryParse(Text)
 
         /// <summary>
-        /// Try to parse the given string as a meter type.
+        /// Try to parse the given string as a session event nature.
         /// </summary>
-        /// <param name="Text">A text representation of a meter type.</param>
+        /// <param name="Text">A text representation of a session event nature.</param>
         public static SessionEventNatures? TryParse(String Text)
         {
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Code))
-                return new SessionEventNatures?();
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
+                return null;
 
             #endregion
 
-            return TryParse(Code);
+            return TryParse(number);
 
         }
 
@@ -211,65 +213,64 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region TryParse(Code)
 
         /// <summary>
-        /// Try to parse the given number as a meter type.
+        /// Try to parse the given number as a session event nature.
         /// </summary>
-        /// <param name="Code">A numeric representation of a meter type.</param>
+        /// <param name="Code">A numeric representation of a session event nature.</param>
         public static SessionEventNatures? TryParse(Int32 Code)
         {
 
-            if (Lookup.TryGetValue(Code, out SessionEventNatures Status))
-                return Status;
+            if (Lookup.TryGetValue(Code, out var sessionEventNature))
+                return sessionEventNature;
 
-            return new SessionEventNatures(Code);
+            return null;
 
         }
 
         #endregion
 
-        #region TryParse(Text, out SessionEventNatures)
+        #region TryParse(Text, out SessionEventNature)
 
         /// <summary>
-        /// Try to parse the given string as a meter type.
+        /// Try to parse the given string as a session event nature.
         /// </summary>
-        /// <param name="Text">A text representation of a meter type.</param>
-        /// <param name="SessionEventNatures">The parsed meter type.</param>
-        public static Boolean TryParse(String Text, out SessionEventNatures SessionEventNatures)
+        /// <param name="Text">A text representation of a session event nature.</param>
+        /// <param name="SessionEventNature">The parsed session event nature.</param>
+        public static Boolean TryParse(String Text, out SessionEventNatures SessionEventNature)
         {
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             #endregion
 
-            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out Int32 Value))
+            if (Text.IsNullOrEmpty() || !Int32.TryParse(Text, out var number))
             {
-                SessionEventNatures = default(SessionEventNatures);
+                SessionEventNature = default;
                 return false;
             }
 
-            SessionEventNatures = new SessionEventNatures(Value);
+            SessionEventNature = new SessionEventNatures(number);
             return true;
 
         }
 
         #endregion
 
-        #region TryParse(Code, out SessionEventNatures)
+        #region TryParse(Code, out SessionEventNature)
 
         /// <summary>
-        /// Try to parse the given number as a meter type.
+        /// Try to parse the given number as a session event nature.
         /// </summary>
-        /// <param name="Code">A numeric representation of a meter type.</param>
-        /// <param name="SessionEventNatures">The parsed meter type.</param>
-        public static Boolean TryParse(Int32 Code, out SessionEventNatures SessionEventNatures)
+        /// <param name="Code">A numeric representation of a session event nature.</param>
+        /// <param name="SessionEventNatures">The parsed session event nature.</param>
+        public static Boolean TryParse(Int32 Code, out SessionEventNatures SessionEventNature)
         {
 
-            if (Lookup.TryGetValue(Code, out SessionEventNatures))
+            if (Lookup.TryGetValue(Code, out SessionEventNature))
                 return true;
 
-            SessionEventNatures = new SessionEventNatures(Code);
+            SessionEventNature = new SessionEventNatures(Code);
             return true;
 
         }
@@ -279,12 +280,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Clone
 
         /// <summary>
-        /// Clone this meter type.
+        /// Clone this session event nature.
         /// </summary>
         public SessionEventNatures Clone
 
-            => new SessionEventNatures(Code,
-                              new String(Description.ToCharArray()));
+            => new (Code,
+                    Description is not null && Description.IsNotNullOrEmpty()
+                        ? new String(Description.ToCharArray())
+                        : null);
 
         #endregion
 
@@ -298,25 +301,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Emergency Stop.
         /// </summary>
         public static SessionEventNatures EmergencyStop
-            => new SessionEventNatures(0, "Emergency Stop");
+            => new (0, "Emergency Stop");
 
         /// <summary>
         /// Operation terminated.
         /// </summary>
         public static SessionEventNatures Terminated
-            => new SessionEventNatures(1, "Operation terminated");
+            => new (1, "Operation terminated");
 
         /// <summary>
         /// Operation suspendedn.
         /// </summary>
         public static SessionEventNatures Suspended
-            => new SessionEventNatures(2, "Operation suspended");
+            => new (2, "Operation suspended");
 
         /// <summary>
         /// Operation started.
         /// </summary>
         public static SessionEventNatures Started
-            => new SessionEventNatures(3, "Operation started");
+            => new (3, "Operation started");
 
         #endregion
 
@@ -328,23 +331,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-        {
+        public static Boolean operator == (SessionEventNatures SessionEventNature1,
+                                           SessionEventNatures SessionEventNature2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(SessionEventNature1, SessionEventNature2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) SessionEventNature1 == null) || ((Object) SessionEventNature2 == null))
-                return false;
-
-            return SessionEventNature1.Equals(SessionEventNature2);
-
-        }
+            => SessionEventNature1.Equals(SessionEventNature2);
 
         #endregion
 
@@ -353,11 +346,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-            => !(SessionEventNature1 == SessionEventNature2);
+        public static Boolean operator != (SessionEventNatures SessionEventNature1,
+                                           SessionEventNatures SessionEventNature2)
+
+            => !SessionEventNature1.Equals(SessionEventNature2);
 
         #endregion
 
@@ -366,18 +361,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-        {
+        public static Boolean operator < (SessionEventNatures SessionEventNature1,
+                                          SessionEventNatures SessionEventNature2)
 
-            if ((Object) SessionEventNature1 == null)
-                throw new ArgumentNullException(nameof(SessionEventNature1), "The given SessionEventNature1 must not be null!");
-
-            return SessionEventNature1.CompareTo(SessionEventNature2) < 0;
-
-        }
+            => SessionEventNature1.CompareTo(SessionEventNature2) < 0;
 
         #endregion
 
@@ -386,11 +376,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-            => !(SessionEventNature1 > SessionEventNature2);
+        public static Boolean operator <= (SessionEventNatures SessionEventNature1,
+                                           SessionEventNatures SessionEventNature2)
+
+            => SessionEventNature1.CompareTo(SessionEventNature2) <= 0;
 
         #endregion
 
@@ -399,18 +391,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-        {
+        public static Boolean operator > (SessionEventNatures SessionEventNature1,
+                                          SessionEventNatures SessionEventNature2)
 
-            if ((Object) SessionEventNature1 == null)
-                throw new ArgumentNullException(nameof(SessionEventNature1), "The given SessionEventNature1 must not be null!");
-
-            return SessionEventNature1.CompareTo(SessionEventNature2) > 0;
-
-        }
+            => SessionEventNature1.CompareTo(SessionEventNature2) > 0;
 
         #endregion
 
@@ -419,11 +406,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Compares two instances of this object.
         /// </summary>
-        /// <param name="SessionEventNature1">A meter type.</param>
-        /// <param name="SessionEventNature2">Another meter type.</param>
+        /// <param name="SessionEventNature1">A session event nature.</param>
+        /// <param name="SessionEventNature2">Another session event nature.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (SessionEventNatures SessionEventNature1, SessionEventNatures SessionEventNature2)
-            => !(SessionEventNature1 < SessionEventNature2);
+        public static Boolean operator >= (SessionEventNatures SessionEventNature1,
+                                           SessionEventNatures SessionEventNature2)
+
+            => SessionEventNature1.CompareTo(SessionEventNature2) >= 0;
 
         #endregion
 
@@ -434,40 +423,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event natures.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A session event nature to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is SessionEventNatures SessionEventNature))
-                throw new ArgumentException("The given object is not a meter type!",
-                                            nameof(Object));
-
-            return CompareTo(SessionEventNature);
-
-        }
+            => Object is SessionEventNatures sessionEventNature
+                   ? CompareTo(sessionEventNature)
+                   : throw new ArgumentException("The given object is not a session event nature!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(SessionEventNatures)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event natures.
         /// </summary>
-        /// <param name="SessionEventNatures">An object to compare with.</param>
+        /// <param name="SessionEventNatures">A session event nature to compare with.</param>
         public Int32 CompareTo(SessionEventNatures SessionEventNatures)
-        {
 
-            if ((Object) SessionEventNatures == null)
-                throw new ArgumentNullException(nameof(SessionEventNatures),  "The given meter type must not be null!");
-
-            return Code.CompareTo(SessionEventNatures.Code);
-
-        }
+            => Code.CompareTo(SessionEventNatures.Code);
 
         #endregion
 
@@ -478,41 +454,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event natures for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A session event nature to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is SessionEventNatures SessionEventNature))
-                return false;
-
-            return Equals(SessionEventNature);
-
-        }
+            => Object is SessionEventNatures sessionEventNature &&
+                   Equals(sessionEventNature);
 
         #endregion
 
         #region Equals(SessionEventNatures)
 
         /// <summary>
-        /// Compares two SessionEventNaturess for equality.
+        /// Compares two session event natures for equality.
         /// </summary>
-        /// <param name="SessionEventNatures">A meter type to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="SessionEventNatures">A session event nature to compare with.</param>
         public Boolean Equals(SessionEventNatures SessionEventNatures)
-        {
 
-            if ((Object) SessionEventNatures == null)
-                return false;
-
-            return Code.Equals(SessionEventNatures.Code);
-
-        }
+            => Code.Equals(SessionEventNatures.Code);
 
         #endregion
 
@@ -525,6 +485,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
+
             => Code.GetHashCode();
 
         #endregion
@@ -536,8 +497,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public override String ToString()
 
-            => String.Concat(Code,
-                             Description.IsNotNullOrEmpty() ? ": " + Description : "");
+            => $"{Code}{(Description.IsNotNullOrEmpty() ? ": " + Description : "")}";
 
         #endregion
 

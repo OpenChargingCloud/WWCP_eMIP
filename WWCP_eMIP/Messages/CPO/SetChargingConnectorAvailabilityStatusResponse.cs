@@ -191,7 +191,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                             );
 
 
-                if (CustomSendSetChargingConnectorAvailabilityStatusResponseParser != null)
+                if (CustomSendSetChargingConnectorAvailabilityStatusResponseParser is not null)
                     SetChargingConnectorAvailabilityStatusResponse = CustomSendSetChargingConnectorAvailabilityStatusResponseParser(SetChargingConnectorAvailabilityStatusResponseXML,
                                                                   SetChargingConnectorAvailabilityStatusResponse);
 
@@ -274,7 +274,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetChargingConnectorAvailabilityStatusResponseSerializer != null
+            return CustomSetChargingConnectorAvailabilityStatusResponseSerializer is not null
                        ? CustomSetChargingConnectorAvailabilityStatusResponseSerializer(this, XML)
                        : XML;
 
@@ -301,7 +301,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetChargingConnectorAvailabilityStatusResponse1 == null) || ((Object) SetChargingConnectorAvailabilityStatusResponse2 == null))
+            if (SetChargingConnectorAvailabilityStatusResponse1 is null || SetChargingConnectorAvailabilityStatusResponse2 is null)
                 return false;
 
             return SetChargingConnectorAvailabilityStatusResponse1.Equals(SetChargingConnectorAvailabilityStatusResponse2);

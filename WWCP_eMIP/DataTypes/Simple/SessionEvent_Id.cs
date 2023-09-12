@@ -25,6 +25,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for session event identifications.
+    /// </summary>
+    public static class SessionEventIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this session event identification is null or empty.
+        /// </summary>
+        /// <param name="SessionEventId">A session event identification.</param>
+        public static Boolean IsNullOrEmpty(this SessionEvent_Id? SessionEventId)
+            => !SessionEventId.HasValue || SessionEventId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this session event identification is NOT null or empty.
+        /// </summary>
+        /// <param name="SessionEventId">A session event identification.</param>
+        public static Boolean IsNotNullOrEmpty(this SessionEvent_Id? SessionEventId)
+            => SessionEventId.HasValue && SessionEventId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a session event.
     /// </summary>
     public readonly struct SessionEvent_Id : IId,
@@ -89,7 +112,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (static) Zero
 
         public static SessionEvent_Id Zero
-            => new SessionEvent_Id("0");
+            => new ("0");
 
         #endregion
 
@@ -103,20 +126,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static SessionEvent_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var sessionEventId))
+                return sessionEventId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a session event identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out SessionEvent_Id ServiceSessionId))
-                return ServiceSessionId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a session event identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a session event identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -131,10 +145,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static SessionEvent_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out SessionEvent_Id ServiceSessionId))
-                return ServiceSessionId;
+            if (TryParse(Text, out var serviceEventId))
+                return serviceEventId;
 
-            return new SessionEvent_Id?();
+            return null;
 
         }
 
@@ -152,8 +166,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -185,7 +198,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public SessionEvent_Id Clone
 
-            => new SessionEvent_Id(
+            => new (
                    new String(InternalId.ToCharArray())
                );
 
@@ -202,20 +215,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-        {
+        public static Boolean operator == (SessionEvent_Id SessionEventId1,
+                                           SessionEvent_Id SessionEventId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(SessionEventId1, SessionEventId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) SessionEventId1 == null) || ((Object) SessionEventId2 == null))
-                return false;
-
-            return SessionEventId1.Equals(SessionEventId2);
-
-        }
+            => SessionEventId1.Equals(SessionEventId2);
 
         #endregion
 
@@ -227,8 +230,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-            => !(SessionEventId1 == SessionEventId2);
+        public static Boolean operator != (SessionEvent_Id SessionEventId1,
+                                           SessionEvent_Id SessionEventId2)
+
+            => !SessionEventId1.Equals(SessionEventId2);
 
         #endregion
 
@@ -240,15 +245,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-        {
+        public static Boolean operator < (SessionEvent_Id SessionEventId1,
+                                          SessionEvent_Id SessionEventId2)
 
-            if ((Object) SessionEventId1 == null)
-                throw new ArgumentNullException(nameof(SessionEventId1), "The given SessionEventId1 must not be null!");
-
-            return SessionEventId1.CompareTo(SessionEventId2) < 0;
-
-        }
+            => SessionEventId1.CompareTo(SessionEventId2) < 0;
 
         #endregion
 
@@ -260,8 +260,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-            => !(SessionEventId1 > SessionEventId2);
+        public static Boolean operator <= (SessionEvent_Id SessionEventId1,
+                                           SessionEvent_Id SessionEventId2)
+
+            => SessionEventId1.CompareTo(SessionEventId2) <= 0;
 
         #endregion
 
@@ -273,15 +275,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-        {
+        public static Boolean operator > (SessionEvent_Id SessionEventId1,
+                                          SessionEvent_Id SessionEventId2)
 
-            if ((Object) SessionEventId1 == null)
-                throw new ArgumentNullException(nameof(SessionEventId1), "The given SessionEventId1 must not be null!");
-
-            return SessionEventId1.CompareTo(SessionEventId2) > 0;
-
-        }
+            => SessionEventId1.CompareTo(SessionEventId2) > 0;
 
         #endregion
 
@@ -293,97 +290,74 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventId1">A session event identification.</param>
         /// <param name="SessionEventId2">Another session event identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (SessionEvent_Id SessionEventId1, SessionEvent_Id SessionEventId2)
-            => !(SessionEventId1 < SessionEventId2);
+        public static Boolean operator >= (SessionEvent_Id SessionEventId1,
+                                           SessionEvent_Id SessionEventId2)
+
+            => SessionEventId1.CompareTo(SessionEventId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<SessionEventId> Members
+        #region IComparable<SessionEvent_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A session event identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is SessionEvent_Id SessionEventId))
-                throw new ArgumentException("The given object is not a session event identification!",
-                                            nameof(Object));
-
-            return CompareTo(SessionEventId);
-
-        }
+            => Object is SessionEvent_Id sessionEventId
+                   ? CompareTo(sessionEventId)
+                   : throw new ArgumentException("The given object is not a session event identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(SessionEventId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event identifications.
         /// </summary>
-        /// <param name="SessionEventId">An object to compare with.</param>
+        /// <param name="SessionEventId">A session event identification to compare with.</param>
         public Int32 CompareTo(SessionEvent_Id SessionEventId)
-        {
 
-            if ((Object) SessionEventId == null)
-                throw new ArgumentNullException(nameof(SessionEventId),  "The given session event identification must not be null!");
-
-            return String.Compare(InternalId, SessionEventId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              SessionEventId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<SessionEventId> Members
+        #region IEquatable<SessionEvent_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two session event identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A session event identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is SessionEvent_Id SessionEventId))
-                return false;
-
-            return Equals(SessionEventId);
-
-        }
+            => Object is SessionEvent_Id sessionEventId &&
+                   Equals(sessionEventId);
 
         #endregion
 
         #region Equals(SessionEventId)
 
         /// <summary>
-        /// Compares two SessionEventIds for equality.
+        /// Compares two session event identifications for equality.
         /// </summary>
         /// <param name="SessionEventId">A session event identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(SessionEvent_Id SessionEventId)
-        {
 
-            if ((Object) SessionEventId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(SessionEventId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             SessionEventId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -396,7 +370,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
@@ -406,7 +381,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

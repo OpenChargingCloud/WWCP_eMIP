@@ -27,12 +27,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for EVSE identifications.
+    /// </summary>
+    public static class EVSEIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this EVSE identification is null or empty.
+        /// </summary>
+        /// <param name="EVSEId">An EVSE identification.</param>
+        public static Boolean IsNullOrEmpty(this EVSE_Id? EVSEId)
+            => !EVSEId.HasValue || EVSEId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this EVSE identification is NOT null or empty.
+        /// </summary>
+        /// <param name="EVSEId">An EVSE identification.</param>
+        public static Boolean IsNotNullOrEmpty(this EVSE_Id? EVSEId)
+            => EVSEId.HasValue && EVSEId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of an Electric Vehicle Supply Equipment (EVSE).
     /// </summary>
     public readonly struct EVSE_Id : IId,
                                      IEquatable<EVSE_Id>,
                                      IComparable<EVSE_Id>
-
     {
 
         #region Data
@@ -158,26 +180,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Text),  "The given text representation of an EVSE identification must not be null or empty!");
 
             #endregion
 
-            var MatchCollection = EVSEId_RegEx.Matches(Text);
+            var matchCollection = EVSEId_RegEx.Matches(Text);
 
-            if (MatchCollection.Count != 1)
-                throw new ArgumentException("Illegal EVSE identification '" + Text + "'!",
+            if (matchCollection.Count != 1)
+                throw new ArgumentException($"Illegal EVSE identification '{Text}'!",
                                             nameof(Text));
 
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id _OperatorId))
-                return new EVSE_Id(_OperatorId,
-                                   MatchCollection[0].Groups[2].Value);
+            if (Operator_Id.TryParse(matchCollection[0].Groups[1].Value, out var operatorId))
+                return new EVSE_Id(operatorId,
+                                   matchCollection[0].Groups[2].Value);
 
-            throw new ArgumentException("Illegal EVSE identification '" + Text + "'!",
+            throw new ArgumentException($"Invalid text representation of an EVSE identification: '{Text}'!",
                                         nameof(Text));
 
         }
@@ -193,20 +214,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Suffix">The suffix of the EVSE identification.</param>
         public static EVSE_Id Parse(Operator_Id  OperatorId,
                                     String       Suffix)
-        {
 
-            switch (OperatorId.Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return Parse(OperatorId +  "E" + Suffix);
-
-                default:
-                    return Parse(OperatorId + "*E" + Suffix);
-
-            }
-
-        }
+            => OperatorId.Format switch {
+                   OperatorIdFormats.eMI3  => Parse(OperatorId +  "E" + Suffix),
+                   _                       => Parse(OperatorId + "*E" + Suffix),
+               };
 
         #endregion
 
@@ -219,10 +231,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static EVSE_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out EVSE_Id _EVSEId))
-                return _EVSEId;
+            if (TryParse(Text, out var evseId))
+                return evseId;
 
-            return new EVSE_Id?();
+            return null;
 
         }
 
@@ -240,8 +252,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -262,11 +273,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                     return false;
                 }
 
-                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
+                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out var operatorId))
                 {
 
-                    EVSEId = new EVSE_Id(OperatorId,
-                                         MatchCollection[0].Groups[2].Value);
+                    EVSEId = new EVSE_Id(
+                                 operatorId,
+                                 MatchCollection[0].Groups[2].Value
+                             );
 
                     return true;
 
@@ -290,8 +303,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public EVSE_Id Clone
 
-            => new EVSE_Id(OperatorId.Clone,
-                           new String(Suffix.ToCharArray()));
+            => new (OperatorId.Clone,
+                    new String(Suffix.ToCharArray()));
 
         #endregion
 
@@ -306,23 +319,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-        {
+        public static Boolean operator == (EVSE_Id EVSEId1,
+                                           EVSE_Id EVSEId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(EVSEId1, EVSEId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) EVSEId1 == null) || ((Object) EVSEId2 == null))
-                return false;
-
-            if ((Object) EVSEId1 == null)
-                throw new ArgumentNullException(nameof(EVSEId1),  "The given EVSE identification must not be null!");
-
-            return EVSEId1.Equals(EVSEId2);
-
-        }
+            => EVSEId1.Equals(EVSEId2);
 
         #endregion
 
@@ -334,8 +334,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-            => !(EVSEId1 == EVSEId2);
+        public static Boolean operator != (EVSE_Id EVSEId1,
+                                           EVSE_Id EVSEId2)
+
+            => !EVSEId1.Equals(EVSEId2);
 
         #endregion
 
@@ -347,15 +349,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-        {
+        public static Boolean operator < (EVSE_Id EVSEId1,
+                                          EVSE_Id EVSEId2)
 
-            if ((Object) EVSEId1 == null)
-                throw new ArgumentNullException(nameof(EVSEId1),  "The given EVSE identification must not be null!");
-
-            return EVSEId1.CompareTo(EVSEId2) < 0;
-
-        }
+            => EVSEId1.CompareTo(EVSEId2) < 0;
 
         #endregion
 
@@ -367,8 +364,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-            => !(EVSEId1 > EVSEId2);
+        public static Boolean operator <= (EVSE_Id EVSEId1,
+                                           EVSE_Id EVSEId2)
+
+            => EVSEId1.CompareTo(EVSEId2) <= 0;
 
         #endregion
 
@@ -380,15 +379,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-        {
+        public static Boolean operator > (EVSE_Id EVSEId1,
+                                          EVSE_Id EVSEId2)
 
-            if ((Object) EVSEId1 == null)
-                throw new ArgumentNullException(nameof(EVSEId1),  "The given EVSE identification must not be null!");
-
-            return EVSEId1.CompareTo(EVSEId2) > 0;
-
-        }
+            => EVSEId1.CompareTo(EVSEId2) > 0;
 
         #endregion
 
@@ -400,54 +394,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="EVSEId1">An EVSE identification.</param>
         /// <param name="EVSEId2">Another EVSE identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (EVSE_Id EVSEId1, EVSE_Id EVSEId2)
-            => !(EVSEId1 < EVSEId2);
+        public static Boolean operator >= (EVSE_Id EVSEId1,
+                                           EVSE_Id EVSEId2)
+
+            => EVSEId1.CompareTo(EVSEId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<EVSEId> Members
+        #region IComparable<EVSE_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two EVSE identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">An EVSE identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object),  "The given object must not be null!");
-
-            if (!(Object is EVSE_Id EVSEId))
-                throw new ArgumentException("The given object is not an EVSE identification!", nameof(Object));
-
-            return CompareTo(EVSEId);
-
-        }
+            => Object is EVSE_Id EVSEId
+                   ? CompareTo(EVSEId)
+                   : throw new ArgumentException("The given object is not an EVSE identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(EVSEId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two EVSE identifications.
         /// </summary>
-        /// <param name="EVSEId">An object to compare with.</param>
+        /// <param name="EVSEId">An EVSE identification to compare with.</param>
         public Int32 CompareTo(EVSE_Id EVSEId)
         {
 
-            if ((Object) EVSEId == null)
-                throw new ArgumentNullException(nameof(EVSEId),  "The given EVSE identification must not be null!");
+            var c = OperatorId.CompareTo(EVSEId.OperatorId);
 
-            var _Result = OperatorId.CompareTo(EVSEId.OperatorId);
+            if (c == 0)
+                c = String.Compare(MinSuffix,
+                                   EVSEId.MinSuffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(MinSuffix, EVSEId.MinSuffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -455,27 +444,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<EVSEId> Members
+        #region IEquatable<EVSE_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two EVSE identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">An EVSE identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is EVSE_Id EVSEId))
-                return false;
-
-            return Equals(EVSEId);
-
-        }
+            => Object is EVSE_Id EVSEId &&
+                   Equals(EVSEId);
 
         #endregion
 
@@ -485,17 +465,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Compares two EVSE identifications for equality.
         /// </summary>
         /// <param name="EVSEId">An EVSE identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(EVSE_Id EVSEId)
-        {
 
-            if ((Object) EVSEId == null)
-                return false;
+            => OperatorId.Equals(EVSEId.OperatorId) &&
 
-            return OperatorId.         Equals(EVSEId.OperatorId) &&
-                   MinSuffix.ToLower().Equals(EVSEId.MinSuffix.ToLower());
-
-        }
+               String.Equals(MinSuffix,
+                             EVSEId.MinSuffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -519,20 +495,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(OperatorId,  "E", Suffix);
-
-                default:
-                    return String.Concat(OperatorId, "*E", Suffix);
-
-            }
-
-        }
+            => Format switch {
+                   OperatorIdFormats.eMI3  => String.Concat(OperatorId,  "E", Suffix),
+                   _                       => String.Concat(OperatorId, "*E", Suffix)
+               };
 
         #endregion
 

@@ -194,7 +194,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                                 SessionEventXML.MapValueOrNullable   ("relatedSessionEventId",  SessionAction_Id.   Parse));
 
 
-                if (CustomSessionEventParser != null)
+                if (CustomSessionEventParser is not null)
                     SessionEvent = CustomSessionEventParser(SessionEventXML,
                                                             SessionEvent);
 
@@ -284,7 +284,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                       );
 
 
-            return CustomSessionEventSerializer != null
+            return CustomSessionEventSerializer is not null
                        ? CustomSessionEventSerializer(this, XML)
                        : XML;
 

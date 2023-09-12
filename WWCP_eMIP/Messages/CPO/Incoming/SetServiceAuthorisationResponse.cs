@@ -17,15 +17,13 @@
 
 #region Usings
 
-using System;
-using System.Linq;
 using System.Xml.Linq;
-using System.Collections.Generic;
+
+using Newtonsoft.Json.Linq;
 
 using org.GraphDefined.Vanaheimr.Illias;
-using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
-using Newtonsoft.Json.Linq;
+using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
@@ -122,57 +120,25 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
-                                                            XElement                                                  SetServiceAuthorisationResponseXML,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
-                                                            HTTPResponse                                              HTTPResponse                                      = null,
-                                                            OnExceptionDelegate                                       OnException                                       = null)
+        public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                             Request,
+                                                            XElement                                                   SetServiceAuthorisationResponseXML,
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>?  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                                            HTTPResponse?                                              HTTPResponse                                      = null,
+                                                            OnExceptionDelegate?                                       OnException                                       = null)
         {
 
             if (TryParse(Request,
                          SetServiceAuthorisationResponseXML,
-                         out SetServiceAuthorisationResponse setServiceAuthorisationResponse,
+                         out var setServiceAuthorisationResponse,
                          CustomSendSetServiceAuthorisationResponseParser,
                          HTTPResponse,
                          OnException))
             {
-                return setServiceAuthorisationResponse;
+                return setServiceAuthorisationResponse!;
             }
 
-            return null;
-
-        }
-
-        #endregion
-
-        #region (static) Parse   (Request, SetServiceAuthorisationResponseText, ..., OnException = null)
-
-        /// <summary>
-        /// Parse the given text representation of a SetServiceAuthorisation response.
-        /// </summary>
-        /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
-        /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
-        /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
-        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                            Request,
-                                                            String                                                    SetServiceAuthorisationResponseText,
-                                                            CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
-                                                            HTTPResponse                                              HTTPResponse                                      = null,
-                                                            OnExceptionDelegate                                       OnException                                       = null)
-        {
-
-            if (TryParse(Request,
-                         SetServiceAuthorisationResponseText,
-                         out SetServiceAuthorisationResponse setServiceAuthorisationResponse,
-                         CustomSendSetServiceAuthorisationResponseParser,
-                         HTTPResponse,
-                         OnException))
-            {
-                return setServiceAuthorisationResponse;
-            }
-
-            return null;
+            throw new ArgumentException($"Invalid text representation of a SetServiceAuthorisation response: '{SetServiceAuthorisationResponseXML}'!",
+                                        nameof(SetServiceAuthorisationResponseXML));
 
         }
 
@@ -189,12 +155,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
         /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
-                                       XElement                                                  SetServiceAuthorisationResponseXML,
-                                       out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
-                                       HTTPResponse                                              HTTPResponse                                      = null,
-                                       OnExceptionDelegate                                       OnException                                       = null)
+        public static Boolean TryParse(SetServiceAuthorisationRequest                             Request,
+                                       XElement                                                   SetServiceAuthorisationResponseXML,
+                                       out SetServiceAuthorisationResponse?                       SetServiceAuthorisationResponse,
+                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>?  CustomSendSetServiceAuthorisationResponseParser   = null,
+                                       HTTPResponse?                                              HTTPResponse                                      = null,
+                                       OnExceptionDelegate?                                       OnException                                       = null)
         {
 
             try
@@ -213,7 +179,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                   );
 
 
-                if (CustomSendSetServiceAuthorisationResponseParser != null)
+                if (CustomSendSetServiceAuthorisationResponseParser is not null)
                     SetServiceAuthorisationResponse = CustomSendSetServiceAuthorisationResponseParser(SetServiceAuthorisationResponseXML,
                                                                                                       SetServiceAuthorisationResponse);
 
@@ -234,58 +200,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) TryParse(Request, SetServiceAuthorisationResponseText, ..., out SetServiceAuthorisationResponse, OnException = null)
-
-        /// <summary>
-        /// Try to parse the given text representation of a SetServiceAuthorisation response.
-        /// </summary>
-        /// <param name="Request">The SetServiceAuthorisation request leading to this response.</param>
-        /// <param name="SetServiceAuthorisationResponseText">The text to parse.</param>
-        /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
-        /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
-        /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        public static Boolean TryParse(SetServiceAuthorisationRequest                            Request,
-                                       String                                                    SetServiceAuthorisationResponseText,
-                                       out SetServiceAuthorisationResponse                       SetServiceAuthorisationResponse,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationResponse>  CustomSendSetServiceAuthorisationResponseParser   = null,
-                                       HTTPResponse                                              HTTPResponse                                      = null,
-                                       OnExceptionDelegate                                       OnException                                       = null)
-        {
-
-            try
-            {
-
-                if (TryParse(Request,
-                             XDocument.Parse(SetServiceAuthorisationResponseText).Root,
-                             out SetServiceAuthorisationResponse,
-                             CustomSendSetServiceAuthorisationResponseParser,
-                             HTTPResponse,
-                             OnException))
-                {
-                    return true;
-                }
-
-            }
-            catch (Exception e)
-            {
-                OnException?.Invoke(Timestamp.Now, SetServiceAuthorisationResponseText, e);
-            }
-
-            SetServiceAuthorisationResponse = null;
-            return false;
-
-        }
-
-        #endregion
-
         #region ToXML(CustomSetServiceAuthorisationResponseSerializer = null)
 
         /// <summary>
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationResponse> CustomSetServiceAuthorisationResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationResponse>? CustomSetServiceAuthorisationResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationResponse",
@@ -300,7 +221,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetServiceAuthorisationResponseSerializer != null
+            return CustomSetServiceAuthorisationResponseSerializer is not null
                        ? CustomSetServiceAuthorisationResponseSerializer(this, XML)
                        : XML;
 
@@ -326,13 +247,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   JObject?                        CustomData                = null,
                                                                   UserDefinedDictionary?          InternalData              = null)
 
-            => new SetServiceAuthorisationResponse(Request,
-                                                   TransactionId,
-                                                   RequestStatus.SystemError,
-                                                   PartnerServiceSessionId,
-                                                   HTTPResponse,
-                                                   CustomData,
-                                                   InternalData);
+            => new (Request,
+                    TransactionId,
+                    RequestStatus.SystemError,
+                    PartnerServiceSessionId,
+                    HTTPResponse,
+                    CustomData,
+                    InternalData);
 
         #endregion
 
@@ -355,7 +276,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetServiceAuthorisationResponse1 == null) || ((Object) SetServiceAuthorisationResponse2 == null))
+            if (SetServiceAuthorisationResponse1 is null || SetServiceAuthorisationResponse2 is null)
                 return false;
 
             return SetServiceAuthorisationResponse1.Equals(SetServiceAuthorisationResponse2);
@@ -440,12 +361,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             unchecked
             {
 
-                return TransactionId.GetHashCode() * 7 ^
-                       RequestStatus.GetHashCode() * 5 ^
-
-                       (PartnerServiceSessionId.HasValue
-                            ? PartnerServiceSessionId.GetHashCode()
-                            : 0);
+                return TransactionId.           GetHashCode() * 5 ^
+                       RequestStatus.           GetHashCode() * 3 ^
+                      (PartnerServiceSessionId?.GetHashCode() ?? 0);
 
             }
         }
@@ -459,9 +377,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         public override String ToString()
 
-            => String.Concat(TransactionId,
-                             " -> ",
-                             RequestStatus);
+            => $"{TransactionId} -> {RequestStatus}";
 
         #endregion
 
@@ -472,7 +388,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Return a response builder.
         /// </summary>
         public Builder ToBuilder
-            => new Builder(this);
+
+            => new (this);
 
         #endregion
 
@@ -558,18 +475,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="SetServiceAuthorisationResponse">A SetServiceAuthorisation response to compare with.</param>
             /// <returns>True if both match; False otherwise.</returns>
             public override Boolean Equals(SetServiceAuthorisationResponse SetServiceAuthorisationResponse)
-            {
 
-                if ((Object) SetServiceAuthorisationResponse == null)
-                    return false;
+                => SetServiceAuthorisationResponse is not null &&
 
-                return TransactionId.Equals(SetServiceAuthorisationResponse.TransactionId) &&
-                       RequestStatus.Equals(SetServiceAuthorisationResponse.RequestStatus) &&
+                   TransactionId.Equals(SetServiceAuthorisationResponse.TransactionId) &&
+                   RequestStatus.Equals(SetServiceAuthorisationResponse.RequestStatus) &&
 
-                       ((!PartnerServiceSessionId.HasValue && !SetServiceAuthorisationResponse.PartnerServiceSessionId.HasValue) ||
-                         (PartnerServiceSessionId.HasValue &&  SetServiceAuthorisationResponse.PartnerServiceSessionId.HasValue && PartnerServiceSessionId.Value.Equals(SetServiceAuthorisationResponse.PartnerServiceSessionId.Value)));
-
-            }
+                ((!PartnerServiceSessionId.HasValue && !SetServiceAuthorisationResponse.PartnerServiceSessionId.HasValue) ||
+                  (PartnerServiceSessionId.HasValue &&  SetServiceAuthorisationResponse.PartnerServiceSessionId.HasValue && PartnerServiceSessionId.Value.Equals(SetServiceAuthorisationResponse.PartnerServiceSessionId.Value)));
 
             #endregion
 
@@ -581,10 +494,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="Builder">A SetServiceAuthorisationResponse response builder.</param>
             public static implicit operator SetServiceAuthorisationResponse(Builder Builder)
 
-                => new SetServiceAuthorisationResponse(Builder.Request,
-                                                       Builder.TransactionId,
-                                                       Builder.RequestStatus,
-                                                       Builder.PartnerServiceSessionId);
+                => new (Builder.Request,
+                        Builder.TransactionId,
+                        Builder.RequestStatus,
+                        Builder.PartnerServiceSessionId);
 
             #endregion
 

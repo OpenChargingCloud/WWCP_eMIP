@@ -230,7 +230,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                            );
 
 
-                if (CustomSetSessionEventReportResponseParser != null)
+                if (CustomSetSessionEventReportResponseParser is not null)
                     SetSessionEventReportResponse = CustomSetSessionEventReportResponseParser(SetSessionEventReportResponseXML,
                                                                                     SetSessionEventReportResponse);
 
@@ -315,7 +315,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetSessionEventReportResponseSerializer != null
+            return CustomSetSessionEventReportResponseSerializer is not null
                        ? CustomSetSessionEventReportResponseSerializer(this, XML)
                        : XML;
 

@@ -25,12 +25,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for contract identifications.
+    /// </summary>
+    public static class ContractIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this contract identification is null or empty.
+        /// </summary>
+        /// <param name="ContractId">A contract identification.</param>
+        public static Boolean IsNullOrEmpty(this Contract_Id? ContractId)
+            => !ContractId.HasValue || ContractId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this contract identification is NOT null or empty.
+        /// </summary>
+        /// <param name="ContractId">A contract identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Contract_Id? ContractId)
+            => ContractId.HasValue && ContractId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a contract.
     /// </summary>
     public readonly struct Contract_Id : IId,
                                          IEquatable <Contract_Id>,
                                          IComparable<Contract_Id>
-
     {
 
         #region Data
@@ -87,7 +109,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-
         #region (static) Parse   (Text)
 
         /// <summary>
@@ -97,20 +118,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Contract_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var contractId))
+                return contractId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a contract identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out Contract_Id PartnerServiceSessionId))
-                return PartnerServiceSessionId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a contract identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a contract identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -125,10 +137,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Contract_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Contract_Id PartnerServiceSessionId))
-                return PartnerServiceSessionId;
+            if (TryParse(Text, out var contractId))
+                return contractId;
 
-            return new Contract_Id?();
+            return null;
 
         }
 
@@ -146,8 +158,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -196,20 +207,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Contract_Id ContractId1, Contract_Id ContractId2)
-        {
+        public static Boolean operator == (Contract_Id ContractId1,
+                                           Contract_Id ContractId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ContractId1, ContractId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ContractId1 == null) || ((Object) ContractId2 == null))
-                return false;
-
-            return ContractId1.Equals(ContractId2);
-
-        }
+            => ContractId1.Equals(ContractId2);
 
         #endregion
 
@@ -221,8 +222,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Contract_Id ContractId1, Contract_Id ContractId2)
-            => !(ContractId1 == ContractId2);
+        public static Boolean operator != (Contract_Id ContractId1,
+                                           Contract_Id ContractId2)
+
+            => !ContractId1.Equals(ContractId2);
 
         #endregion
 
@@ -234,15 +237,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Contract_Id ContractId1, Contract_Id ContractId2)
-        {
+        public static Boolean operator < (Contract_Id ContractId1,
+                                          Contract_Id ContractId2)
 
-            if ((Object) ContractId1 == null)
-                throw new ArgumentNullException(nameof(ContractId1), "The given ContractId1 must not be null!");
-
-            return ContractId1.CompareTo(ContractId2) < 0;
-
-        }
+            => ContractId1.CompareTo(ContractId2) < 0;
 
         #endregion
 
@@ -254,8 +252,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Contract_Id ContractId1, Contract_Id ContractId2)
-            => !(ContractId1 > ContractId2);
+        public static Boolean operator <= (Contract_Id ContractId1,
+                                           Contract_Id ContractId2)
+
+            => ContractId1.CompareTo(ContractId2) <= 0;
 
         #endregion
 
@@ -267,15 +267,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Contract_Id ContractId1, Contract_Id ContractId2)
-        {
+        public static Boolean operator > (Contract_Id ContractId1,
+                                          Contract_Id ContractId2)
 
-            if ((Object) ContractId1 == null)
-                throw new ArgumentNullException(nameof(ContractId1), "The given ContractId1 must not be null!");
-
-            return ContractId1.CompareTo(ContractId2) > 0;
-
-        }
+            => ContractId1.CompareTo(ContractId2) > 0;
 
         #endregion
 
@@ -287,97 +282,74 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ContractId1">A contract identification.</param>
         /// <param name="ContractId2">Another contract identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Contract_Id ContractId1, Contract_Id ContractId2)
-            => !(ContractId1 < ContractId2);
+        public static Boolean operator >= (Contract_Id ContractId1,
+                                           Contract_Id ContractId2)
+
+            => ContractId1.CompareTo(ContractId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ContractId> Members
+        #region IComparable<Contract_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two contract identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A contract identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Contract_Id ContractId))
-                throw new ArgumentException("The given object is not a contract identification!",
-                                            nameof(Object));
-
-            return CompareTo(ContractId);
-
-        }
+            => Object is Contract_Id contractId
+                   ? CompareTo(contractId)
+                   : throw new ArgumentException("The given object is not a contract identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(ContractId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two contract identifications.
         /// </summary>
-        /// <param name="ContractId">An object to compare with.</param>
+        /// <param name="ContractId">A contract identification to compare with.</param>
         public Int32 CompareTo(Contract_Id ContractId)
-        {
 
-            if ((Object) ContractId == null)
-                throw new ArgumentNullException(nameof(ContractId),  "The given contract identification must not be null!");
-
-            return String.Compare(InternalId, ContractId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              ContractId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<ContractId> Members
+        #region IEquatable<Contract_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two contract identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A contract identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Contract_Id ContractId))
-                return false;
-
-            return Equals(ContractId);
-
-        }
+            => Object is Contract_Id contractId &&
+                   Equals(contractId);
 
         #endregion
 
         #region Equals(ContractId)
 
         /// <summary>
-        /// Compares two ContractIds for equality.
+        /// Compares two contract identifications for equality.
         /// </summary>
-        /// <param name="ContractId">A contract identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
+        /// <param name="Object">A contract identification to compare with.</param>
         public Boolean Equals(Contract_Id ContractId)
-        {
 
-            if ((Object) ContractId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(ContractId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             ContractId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -390,7 +362,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.GetHashCode() ?? 0;
 
         #endregion
 
@@ -400,7 +373,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

@@ -356,7 +356,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
                                      );
 
-                if (CustomChargeDetailRecordParser != null)
+                if (CustomChargeDetailRecordParser is not null)
                     ChargeDetailRecord = CustomChargeDetailRecordParser(ChargeDetailRecordXML,
                                                   ChargeDetailRecord);
 
@@ -487,7 +487,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
                       );
 
-            return CustomChargeDetailRecordSerializer != null
+            return CustomChargeDetailRecordSerializer is not null
                        ? CustomChargeDetailRecordSerializer(this, XML)
                        : XML;
 
@@ -514,7 +514,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) ChargeDetailRecord1 == null) || ((Object) ChargeDetailRecord2 == null))
+            if (ChargeDetailRecord1 is null || ChargeDetailRecord2 is null)
                 return false;
 
             return ChargeDetailRecord1.Equals(ChargeDetailRecord2);

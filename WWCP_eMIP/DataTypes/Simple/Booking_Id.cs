@@ -25,6 +25,29 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for booking identifications.
+    /// </summary>
+    public static class BookingIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this booking identification is null or empty.
+        /// </summary>
+        /// <param name="BookingId">A booking identification.</param>
+        public static Boolean IsNullOrEmpty(this Booking_Id? BookingId)
+            => !BookingId.HasValue || BookingId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this booking identification is NOT null or empty.
+        /// </summary>
+        /// <param name="BookingId">A booking identification.</param>
+        public static Boolean IsNotNullOrEmpty(this Booking_Id? BookingId)
+            => BookingId.HasValue && BookingId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a booking.
     /// </summary>
     public readonly struct Booking_Id : IId,
@@ -89,7 +112,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (static) Zero
 
         public static Booking_Id Zero
-            => new Booking_Id("0");
+            => new ("0");
 
         #endregion
 
@@ -103,20 +126,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Booking_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var bookingId))
+                return bookingId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a booking identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out Booking_Id BookingId))
-                return BookingId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a booking identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a booking identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -131,10 +145,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Booking_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out Booking_Id BookingId))
-                return BookingId;
+            if (TryParse(Text, out var bookingId))
+                return bookingId;
 
-            return new Booking_Id?();
+            return null;
 
         }
 
@@ -152,8 +166,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -185,7 +198,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public Booking_Id Clone
 
-            => new Booking_Id(
+            => new (
                    new String(InternalId.ToCharArray())
                );
 
@@ -202,20 +215,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (Booking_Id BookingId1, Booking_Id BookingId2)
-        {
+        public static Boolean operator == (Booking_Id BookingId1,
+                                           Booking_Id BookingId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(BookingId1, BookingId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) BookingId1 == null) || ((Object) BookingId2 == null))
-                return false;
-
-            return BookingId1.Equals(BookingId2);
-
-        }
+            => BookingId1.Equals(BookingId2);
 
         #endregion
 
@@ -227,8 +230,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (Booking_Id BookingId1, Booking_Id BookingId2)
-            => !(BookingId1 == BookingId2);
+        public static Boolean operator != (Booking_Id BookingId1,
+                                           Booking_Id BookingId2)
+
+            => !BookingId1.Equals(BookingId2);
 
         #endregion
 
@@ -240,15 +245,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (Booking_Id BookingId1, Booking_Id BookingId2)
-        {
+        public static Boolean operator < (Booking_Id BookingId1,
+                                          Booking_Id BookingId2)
 
-            if ((Object) BookingId1 == null)
-                throw new ArgumentNullException(nameof(BookingId1), "The given BookingId1 must not be null!");
-
-            return BookingId1.CompareTo(BookingId2) < 0;
-
-        }
+            => BookingId1.CompareTo(BookingId2) < 0;
 
         #endregion
 
@@ -260,8 +260,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (Booking_Id BookingId1, Booking_Id BookingId2)
-            => !(BookingId1 > BookingId2);
+        public static Boolean operator <= (Booking_Id BookingId1,
+                                           Booking_Id BookingId2)
+
+            => BookingId1.CompareTo(BookingId2) <= 0;
 
         #endregion
 
@@ -273,15 +275,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (Booking_Id BookingId1, Booking_Id BookingId2)
-        {
+        public static Boolean operator > (Booking_Id BookingId1,
+                                          Booking_Id BookingId2)
 
-            if ((Object) BookingId1 == null)
-                throw new ArgumentNullException(nameof(BookingId1), "The given BookingId1 must not be null!");
-
-            return BookingId1.CompareTo(BookingId2) > 0;
-
-        }
+            => BookingId1.CompareTo(BookingId2) > 0;
 
         #endregion
 
@@ -293,97 +290,74 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="BookingId1">A booking identification.</param>
         /// <param name="BookingId2">Another booking identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (Booking_Id BookingId1, Booking_Id BookingId2)
-            => !(BookingId1 < BookingId2);
+        public static Boolean operator >= (Booking_Id BookingId1,
+                                           Booking_Id BookingId2)
+
+            => BookingId1.CompareTo(BookingId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<BookingId> Members
+        #region IComparable<Booking_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two booking identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A booking identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is Booking_Id BookingId))
-                throw new ArgumentException("The given object is not a booking identification!",
-                                            nameof(Object));
-
-            return CompareTo(BookingId);
-
-        }
+            => Object is Booking_Id bookingId
+                   ? CompareTo(bookingId)
+                   : throw new ArgumentException("The given object is not a booking identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(BookingId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two booking identifications.
         /// </summary>
-        /// <param name="BookingId">An object to compare with.</param>
+        /// <param name="BookingId">A booking identification to compare with.</param>
         public Int32 CompareTo(Booking_Id BookingId)
-        {
 
-            if ((Object) BookingId == null)
-                throw new ArgumentNullException(nameof(BookingId),  "The given booking identification must not be null!");
-
-            return String.Compare(InternalId, BookingId.InternalId, StringComparison.OrdinalIgnoreCase);
-
-        }
+            => String.Compare(InternalId,
+                              BookingId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<BookingId> Members
+        #region IEquatable<Booking_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two booking identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A booking identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is Booking_Id BookingId))
-                return false;
-
-            return Equals(BookingId);
-
-        }
+            => Object is Booking_Id bookingId &&
+                   Equals(bookingId);
 
         #endregion
 
         #region Equals(BookingId)
 
         /// <summary>
-        /// Compares two BookingIds for equality.
+        /// Compares two booking identifications for equality.
         /// </summary>
         /// <param name="BookingId">A booking identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(Booking_Id BookingId)
-        {
 
-            if ((Object) BookingId == null)
-                return false;
-
-            return InternalId.ToLower().Equals(BookingId.InternalId.ToLower());
-
-        }
+            => String.Equals(InternalId,
+                             BookingId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -396,7 +370,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
@@ -406,7 +381,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

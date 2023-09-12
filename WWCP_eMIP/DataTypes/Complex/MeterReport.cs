@@ -241,7 +241,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                   MeterReportXML.MapValueOrFail    ("meterTypeId",  MeterTypes.Parse)
                               );
 
-                if (CustomMeterReportParser != null)
+                if (CustomMeterReportParser is not null)
                     MeterReport = CustomMeterReportParser(MeterReportXML, MeterReport);
 
                 return true;
@@ -316,7 +316,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                           new XElement("meterUnit",    Unit)
                       );
 
-            return CustomMeterReportSerializer != null
+            return CustomMeterReportSerializer is not null
                        ? CustomMeterReportSerializer(this, XML)
                        : XML;
 
@@ -367,7 +367,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) MeterReport1 == null) || ((Object) MeterReport2 == null))
+            if (MeterReport1 is null || MeterReport2 is null)
                 return false;
 
             return MeterReport1.Equals(MeterReport2);

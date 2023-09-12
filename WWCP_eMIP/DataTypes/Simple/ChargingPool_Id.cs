@@ -36,6 +36,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     {
 
         /// <summary>
+        /// Indicates whether this charging pool identification is null or empty.
+        /// </summary>
+        /// <param name="ChargingPoolId">A charging pool identification.</param>
+        public static Boolean IsNullOrEmpty(this ChargingPool_Id? ChargingPoolId)
+            => !ChargingPoolId.HasValue || ChargingPoolId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this charging pool identification is NOT null or empty.
+        /// </summary>
+        /// <param name="ChargingPoolId">A charging pool identification.</param>
+        public static Boolean IsNotNullOrEmpty(this ChargingPool_Id? ChargingPoolId)
+            => ChargingPoolId.HasValue && ChargingPoolId.Value.IsNotNullOrEmpty;
+
+
+        /// <summary>
         /// Create a new charging station identification based
         /// on the given charging pool identification.
         /// </summary>
@@ -62,7 +77,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     public readonly struct ChargingPool_Id : IId,
                                              IEquatable<ChargingPool_Id>,
                                              IComparable<ChargingPool_Id>
-
     {
 
         #region Data
@@ -170,12 +184,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="GeoLocation">The geo location of the charging pool.</param>
         /// <param name="Length">The maximum size of the generated charging pool identification suffix [12 &lt; n &lt; 50].</param>
         /// <param name="Mapper">A delegate to modify a generated charging pool identification suffix.</param>
-        public static ChargingPool_Id Generate(Operator_Id   OperatorId,
-                                               Address               Address,
-                                               GeoCoordinate?        GeoLocation  = null,
-                                               String                HelperId     = "",
-                                               Byte                  Length       = 15,
-                                               Func<String, String>  Mapper       = null)
+        public static ChargingPool_Id Generate(Operator_Id            OperatorId,
+                                               Address                Address,
+                                               GeoCoordinate?         GeoLocation   = null,
+                                               String                 HelperId      = "",
+                                               Byte                   Length        = 15,
+                                               Func<String, String>?  Mapper        = null)
         {
 
             if (Length < 12)
@@ -184,21 +198,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             if (Length > 50)
                 Length = 50;
 
-            var Suffíx = new SHA1CryptoServiceProvider().
-                             ComputeHash(Encoding.UTF8.GetBytes(
-                                             String.Concat(
-                                                 OperatorId.  ToString(),
-                                                 Address.     ToString(),
-                                                 GeoLocation?.ToString() ?? "",
-                                                 HelperId                ?? ""
-                                             )
-                                         )).
-                                         ToHexString().
-                                         SubstringMax(Length).
-                                         ToUpper();
+            var Suffíx = SHA1.HashData(Encoding.UTF8.GetBytes(
+                                           String.Concat(
+                                               OperatorId.  ToString(),
+                                               Address.     ToString(),
+                                               GeoLocation?.ToString() ?? "",
+                                               HelperId                ?? ""
+                                           )
+                                       )).
+                                       ToHexString().
+                                       SubstringMax(Length).
+                                       ToUpper();
 
             return Parse(OperatorId,
-                         Mapper != null
+                         Mapper is not null
                             ? Mapper(Suffíx)
                             : Suffíx);
 
@@ -215,8 +228,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Length">The desired length of the identification suffix.</param>
         /// <param name="Mapper">A delegate to modify the newly generated charging pool identification.</param>
         public static ChargingPool_Id Random(Operator_Id            OperatorId,
-                                             Byte                   Length  = 6,
-                                             Func<String, String>?  Mapper  = null)
+                                             Byte                   Length   = 6,
+                                             Func<String, String>?  Mapper   = null)
 
             => new (OperatorId,
                     (Mapper ?? (_ => _)) (RandomExtensions.RandomString((UInt16)(Length < 6 ? 6 : Length > 50 ? 50 : Length))));
@@ -240,18 +253,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #endregion
 
-            var MatchCollection = ChargingPoolId_RegEx.Matches(Text);
+            var matchCollection = ChargingPoolId_RegEx.Matches(Text);
 
-            if (MatchCollection.Count != 1)
-                throw new ArgumentException("Illegal text representation of a charging pool identification: '{Text}'!",
+            if (matchCollection.Count != 1)
+                throw new ArgumentException($"Illegal text representation of a charging pool identification: '{Text}'!",
                                             nameof(Text));
 
 
-            if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
-                return new ChargingPool_Id(OperatorId,
-                                           MatchCollection[0].Groups[2].Value);
+            if (Operator_Id.TryParse(matchCollection[0].Groups[1].Value, out var operatorId))
+                return new ChargingPool_Id(
+                           operatorId,
+                           matchCollection[0].Groups[2].Value
+                       );
 
-            throw new ArgumentException("Illegal charging pool identification '" + Text + "'!",
+            throw new ArgumentException($"Invalid text representation of a charging pool identification: '{Text}'!",
                                         nameof(Text));
 
         }
@@ -267,20 +282,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Suffix">The suffix of the charging pool identification.</param>
         public static ChargingPool_Id Parse(Operator_Id  OperatorId,
                                             String       Suffix)
-        {
 
-            switch (OperatorId.Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return Parse(OperatorId.ToString() +  "P" + Suffix);
-
-                default:
-                    return Parse(OperatorId.ToString() + "*P" + Suffix);
-
-            }
-
-        }
+            => OperatorId.Format switch {
+                   OperatorIdFormats.eMI3  => Parse(OperatorId.ToString() +  "P" + Suffix),
+                   _                       => Parse(OperatorId.ToString() + "*P" + Suffix),
+               };
 
         #endregion
 
@@ -293,8 +299,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static ChargingPool_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out ChargingPool_Id ChargingPoolId))
-                return ChargingPoolId;
+            if (TryParse(Text, out var chargingPoolId))
+                return chargingPoolId;
 
             return null;
 
@@ -314,8 +320,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -328,19 +333,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                var MatchCollection = ChargingPoolId_RegEx.Matches(Text);
+                var matchCollection = ChargingPoolId_RegEx.Matches(Text);
 
-                if (MatchCollection.Count != 1)
+                if (matchCollection.Count != 1)
                 {
                     ChargingPoolId = default;
                     return false;
                 }
 
-                if (Operator_Id.TryParse(MatchCollection[0].Groups[1].Value, out Operator_Id OperatorId))
+                if (Operator_Id.TryParse(matchCollection[0].Groups[1].Value, out var operatorId))
                 {
 
-                    ChargingPoolId = new ChargingPool_Id(OperatorId,
-                                                         MatchCollection[0].Groups[2].Value);
+                    ChargingPoolId = new ChargingPool_Id(
+                                         operatorId,
+                                         matchCollection[0].Groups[2].Value
+                                     );
 
                     return true;
 
@@ -364,8 +371,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public ChargingPool_Id Clone
 
-            => new ChargingPool_Id(OperatorId.Clone,
-                                   new String(Suffix.ToCharArray()));
+            => new (OperatorId.Clone,
+                    new String(Suffix.ToCharArray()));
 
         #endregion
 
@@ -380,20 +387,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-        {
+        public static Boolean operator == (ChargingPool_Id ChargingPoolId1,
+                                           ChargingPool_Id ChargingPoolId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(ChargingPoolId1, ChargingPoolId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) ChargingPoolId1 == null) || ((Object) ChargingPoolId2 == null))
-                return false;
-
-            return ChargingPoolId1.Equals(ChargingPoolId2);
-
-        }
+            => ChargingPoolId1.Equals(ChargingPoolId2);
 
         #endregion
 
@@ -405,8 +402,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-            => !(ChargingPoolId1 == ChargingPoolId2);
+        public static Boolean operator != (ChargingPool_Id ChargingPoolId1,
+                                           ChargingPool_Id ChargingPoolId2)
+
+            => !ChargingPoolId1.Equals(ChargingPoolId2);
 
         #endregion
 
@@ -418,15 +417,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-        {
+        public static Boolean operator < (ChargingPool_Id ChargingPoolId1,
+                                          ChargingPool_Id ChargingPoolId2)
 
-            if ((Object) ChargingPoolId1 == null)
-                throw new ArgumentNullException(nameof(ChargingPoolId1), "The given ChargingPoolId1 must not be null!");
-
-            return ChargingPoolId1.CompareTo(ChargingPoolId2) < 0;
-
-        }
+            => ChargingPoolId1.CompareTo(ChargingPoolId2) < 0;
 
         #endregion
 
@@ -438,8 +432,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-            => !(ChargingPoolId1 > ChargingPoolId2);
+        public static Boolean operator <= (ChargingPool_Id ChargingPoolId1,
+                                           ChargingPool_Id ChargingPoolId2)
+
+            => ChargingPoolId1.CompareTo(ChargingPoolId2) <= 0;
 
         #endregion
 
@@ -451,15 +447,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-        {
+        public static Boolean operator > (ChargingPool_Id ChargingPoolId1,
+                                          ChargingPool_Id ChargingPoolId2)
 
-            if ((Object) ChargingPoolId1 == null)
-                throw new ArgumentNullException(nameof(ChargingPoolId1), "The given ChargingPoolId1 must not be null!");
-
-            return ChargingPoolId1.CompareTo(ChargingPoolId2) > 0;
-
-        }
+            => ChargingPoolId1.CompareTo(ChargingPoolId2) > 0;
 
         #endregion
 
@@ -471,54 +462,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargingPoolId1">A charging pool identification.</param>
         /// <param name="ChargingPoolId2">Another charging pool identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (ChargingPool_Id ChargingPoolId1, ChargingPool_Id ChargingPoolId2)
-            => !(ChargingPoolId1 < ChargingPoolId2);
+        public static Boolean operator >= (ChargingPool_Id ChargingPoolId1,
+                                           ChargingPool_Id ChargingPoolId2)
+
+            => ChargingPoolId1.CompareTo(ChargingPoolId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<ChargingPoolId> Members
+        #region IComparable<ChargingPool_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging pool identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A charging pool identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object is null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is ChargingPool_Id ChargingPoolId))
-                throw new ArgumentException("The given object is not a ChargingPoolId!", nameof(Object));
-
-            return CompareTo(ChargingPoolId);
-
-        }
+            => Object is ChargingPool_Id chargingPoolId
+                   ? CompareTo(chargingPoolId)
+                   : throw new ArgumentException("The given object is not a charging pool identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(ChargingPoolId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging pool identifications.
         /// </summary>
-        /// <param name="ChargingPoolId">An object to compare with.</param>
+        /// <param name="ChargingPoolId">A charging pool identification to compare with.</param>
         public Int32 CompareTo(ChargingPool_Id ChargingPoolId)
         {
 
-            if ((Object) ChargingPoolId == null)
-                throw new ArgumentNullException(nameof(ChargingPoolId), "The given charging pool identification must not be null!");
+            var c = OperatorId.CompareTo(ChargingPoolId.OperatorId);
 
-            var _Result = OperatorId.CompareTo(ChargingPoolId.OperatorId);
+            if (c == 0)
+                c = String.Compare(MinSuffix,
+                                   ChargingPoolId.MinSuffix,
+                                   StringComparison.OrdinalIgnoreCase);
 
-            if (_Result == 0)
-                _Result = String.Compare(MinSuffix, ChargingPoolId.MinSuffix, StringComparison.OrdinalIgnoreCase);
-
-            return _Result;
+            return c;
 
         }
 
@@ -526,27 +512,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region IEquatable<ChargingPoolId> Members
+        #region IEquatable<ChargingPool_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two charging pool identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A charging pool identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object is null)
-                return false;
-
-            if (!(Object is ChargingPool_Id ChargingPoolId))
-                return false;
-
-            return Equals(ChargingPoolId);
-
-        }
+            => Object is ChargingPool_Id chargingPoolId &&
+                   Equals(chargingPoolId);
 
         #endregion
 
@@ -556,17 +533,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Compares two charging pool identifications for equality.
         /// </summary>
         /// <param name="ChargingPoolId">A charging pool identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(ChargingPool_Id ChargingPoolId)
-        {
 
-            if ((Object) ChargingPoolId == null)
-                return false;
+            => OperatorId.Equals(ChargingPoolId.OperatorId) &&
 
-            return OperatorId.         Equals(ChargingPoolId.OperatorId) &&
-                   MinSuffix.ToLower().Equals(ChargingPoolId.MinSuffix.ToLower());
-
-        }
+               String.Equals(MinSuffix,
+                             ChargingPoolId.MinSuffix,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -590,20 +563,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-        {
 
-            switch (Format)
-            {
-
-                case OperatorIdFormats.eMI3:
-                    return String.Concat(OperatorId,  "P", Suffix);
-
-                default:
-                    return String.Concat(OperatorId, "*P", Suffix);
-
-            }
-
-        }
+            => Format switch {
+                   OperatorIdFormats.eMI3  => String.Concat(OperatorId,  "P", Suffix),
+                   _                       => String.Concat(OperatorId, "*P", Suffix)
+               };
 
         #endregion
 

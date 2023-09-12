@@ -17,15 +17,11 @@
 
 #region Usings
 
-using System;
-using System.Linq;
 using System.Xml.Linq;
-using System.Threading;
-using System.Collections.Generic;
 
 using org.GraphDefined.Vanaheimr.Illias;
-using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
+using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 
 #endregion
 
@@ -249,80 +245,32 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetServiceAuthorisationRequest Parse(XElement                                                 SetServiceAuthorisationRequestXML,
-                                                           CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser   = null,
-                                                           CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser                          = null,
-                                                           OnExceptionDelegate                                      OnException                                      = null,
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        public static SetServiceAuthorisationRequest? Parse(XElement                                                  SetServiceAuthorisationRequestXML,
+                                                            CustomXMLParserDelegate<SetServiceAuthorisationRequest>?  CustomSendSetServiceAuthorisationRequestParser   = null,
+                                                            CustomXMLParserDelegate<MeterReport>?                     CustomMeterReportParser                          = null,
+                                                            OnExceptionDelegate?                                      OnException                                      = null,
 
-                                                           HTTPRequest                                              HTTPRequest                                      = null,
-                                                           DateTime?                                                Timestamp                                        = null,
-                                                           CancellationToken                                        CancellationToken                                = default,
-                                                           EventTracking_Id                                         EventTrackingId                                  = null,
-                                                           TimeSpan?                                                RequestTimeout                                   = null)
+                                                            HTTPRequest?                                              HTTPRequest                                      = null,
+                                                            DateTime?                                                 Timestamp                                        = null,
+                                                            EventTracking_Id?                                         EventTrackingId                                  = null,
+                                                            TimeSpan?                                                 RequestTimeout                                   = null,
+                                                            CancellationToken                                         CancellationToken                                = default)
         {
 
             if (TryParse(SetServiceAuthorisationRequestXML,
-                         out SetServiceAuthorisationRequest setServiceAuthorisationRequest,
+                         out var setServiceAuthorisationRequest,
                          CustomSendSetServiceAuthorisationRequestParser,
                          CustomMeterReportParser,
                          OnException,
 
                          HTTPRequest,
                          Timestamp,
-                         CancellationToken,
                          EventTrackingId,
-                         RequestTimeout))
-            {
-                return setServiceAuthorisationRequest;
-            }
-
-            return null;
-
-        }
-
-        #endregion
-
-        #region (static) Parse   (SetServiceAuthorisationRequestText, ..., OnException = null)
-
-        /// <summary>
-        /// Parse the given text representation of an eMIP heartbeat request.
-        /// </summary>
-        /// <param name="SetServiceAuthorisationRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
-        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        /// 
-        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
-        /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static SetServiceAuthorisationRequest Parse(String                                                   SetServiceAuthorisationRequestText,
-                                                           CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser   = null,
-                                                           CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser                          = null,
-                                                           OnExceptionDelegate                                      OnException                                      = null,
-
-                                                           HTTPRequest                                              HTTPRequest                                      = null,
-                                                           DateTime?                                                Timestamp                                        = null,
-                                                           CancellationToken                                        CancellationToken                                = default,
-                                                           EventTracking_Id                                         EventTrackingId                                  = null,
-                                                           TimeSpan?                                                RequestTimeout                                   = null)
-        {
-
-            if (TryParse(SetServiceAuthorisationRequestText,
-                         out SetServiceAuthorisationRequest setServiceAuthorisationRequest,
-                         CustomSendSetServiceAuthorisationRequestParser,
-                         CustomMeterReportParser,
-                         OnException,
-
-                         HTTPRequest,
-                         Timestamp,
-                         CancellationToken,
-                         EventTrackingId,
-                         RequestTimeout))
+                         RequestTimeout,
+                         CancellationToken))
             {
                 return setServiceAuthorisationRequest;
             }
@@ -346,20 +294,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(XElement                                                 SetServiceAuthorisationRequestXML,
-                                       out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser   = null,
-                                       CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser                          = null,
-                                       OnExceptionDelegate                                      OnException                                      = null,
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        public static Boolean TryParse(XElement                                                  SetServiceAuthorisationRequestXML,
+                                       out SetServiceAuthorisationRequest?                       SetServiceAuthorisationRequest,
+                                       CustomXMLParserDelegate<SetServiceAuthorisationRequest>?  CustomSendSetServiceAuthorisationRequestParser   = null,
+                                       CustomXMLParserDelegate<MeterReport>?                     CustomMeterReportParser                          = null,
+                                       OnExceptionDelegate?                                      OnException                                      = null,
 
-                                       HTTPRequest                                              HTTPRequest                                      = null,
-                                       DateTime?                                                Timestamp                                        = null,
-                                       CancellationToken                                        CancellationToken                                = default,
-                                       EventTracking_Id                                         EventTrackingId                                  = null,
-                                       TimeSpan?                                                RequestTimeout                                   = null)
+                                       HTTPRequest?                                              HTTPRequest                                      = null,
+                                       DateTime?                                                 Timestamp                                        = null,
+                                       EventTracking_Id?                                         EventTrackingId                                  = null,
+                                       TimeSpan?                                                 RequestTimeout                                   = null,
+                                       CancellationToken                                         CancellationToken                                = default)
         {
 
             try
@@ -404,9 +352,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                  );
 
 
-                if (CustomSendSetServiceAuthorisationRequestParser != null)
+                if (CustomSendSetServiceAuthorisationRequestParser is not null)
                     SetServiceAuthorisationRequest = CustomSendSetServiceAuthorisationRequestParser(SetServiceAuthorisationRequestXML,
-                                                                                                        SetServiceAuthorisationRequest);
+                                                                                                    SetServiceAuthorisationRequest);
 
                 return true;
 
@@ -425,66 +373,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        #region (static) TryParse(SetServiceAuthorisationRequestText, ..., out SetServiceAuthorisationRequest, OnException = null)
-
-        /// <summary>
-        /// Try to parse the given text representation of an eMIP heartbeat request.
-        /// </summary>
-        /// <param name="SetServiceAuthorisationRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetServiceAuthorisationRequestParser">An optional delegate to parse custom SetServiceAuthorisationRequest XML elements.</param>
-        /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="SetServiceAuthorisationRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        /// 
-        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
-        /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(String                                                   SetServiceAuthorisationRequestText,
-                                       out SetServiceAuthorisationRequest                       SetServiceAuthorisationRequest,
-                                       CustomXMLParserDelegate<SetServiceAuthorisationRequest>  CustomSendSetServiceAuthorisationRequestParser   = null,
-                                       CustomXMLParserDelegate<MeterReport>                     CustomMeterReportParser                          = null,
-                                       OnExceptionDelegate                                      OnException                                      = null,
-
-                                       HTTPRequest                                              HTTPRequest                                      = null,
-                                       DateTime?                                                Timestamp                                        = null,
-                                       CancellationToken                                        CancellationToken                                = default,
-                                       EventTracking_Id                                         EventTrackingId                                  = null,
-                                       TimeSpan?                                                RequestTimeout                                   = null)
-        {
-
-            try
-            {
-
-                if (TryParse(XDocument.Parse(SetServiceAuthorisationRequestText).Root,
-                             out SetServiceAuthorisationRequest,
-                             CustomSendSetServiceAuthorisationRequestParser,
-                             CustomMeterReportParser,
-                             OnException,
-
-                             HTTPRequest,
-                             Timestamp,
-                             CancellationToken,
-                             EventTrackingId,
-                             RequestTimeout))
-                {
-                    return true;
-                }
-
-            }
-            catch (Exception e)
-            {
-                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetServiceAuthorisationRequestText, e);
-            }
-
-            SetServiceAuthorisationRequest = null;
-            return false;
-
-        }
-
-        #endregion
-
         #region ToXML(CustomSetServiceAuthorisationRequestSerializer = null)
 
         /// <summary>
@@ -492,8 +380,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="CustomSetServiceAuthorisationRequestSerializer">A delegate to serialize custom set EVSE busy status request XML elements.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationRequest>  CustomSetServiceAuthorisationRequestSerializer  = null,
-                              CustomXMLSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                     = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetServiceAuthorisationRequest>?  CustomSetServiceAuthorisationRequestSerializer  = null,
+                              CustomXMLSerializerDelegate<MeterReport>?                     CustomMeterReportSerializer                     = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_ToIOP_SetServiceAuthorisationRequest",
@@ -545,7 +433,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomSetServiceAuthorisationRequestSerializer != null
+            return CustomSetServiceAuthorisationRequestSerializer is not null
                        ? CustomSetServiceAuthorisationRequestSerializer(this, XML)
                        : XML;
 
@@ -564,7 +452,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationRequest1">A heartbeat request.</param>
         /// <param name="SetServiceAuthorisationRequest2">Another heartbeat request.</param>
         /// <returns>True if both match; False otherwise.</returns>
-        public static Boolean operator == (SetServiceAuthorisationRequest SetServiceAuthorisationRequest1, SetServiceAuthorisationRequest SetServiceAuthorisationRequest2)
+        public static Boolean operator == (SetServiceAuthorisationRequest SetServiceAuthorisationRequest1,
+                                           SetServiceAuthorisationRequest SetServiceAuthorisationRequest2)
         {
 
             // If both are null, or both are same instance, return true.
@@ -572,7 +461,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetServiceAuthorisationRequest1 == null) || ((Object) SetServiceAuthorisationRequest2 == null))
+            if (SetServiceAuthorisationRequest1 is null || SetServiceAuthorisationRequest2 is null)
                 return false;
 
             return SetServiceAuthorisationRequest1.Equals(SetServiceAuthorisationRequest2);
@@ -589,7 +478,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetServiceAuthorisationRequest1">A heartbeat request.</param>
         /// <param name="SetServiceAuthorisationRequest2">Another heartbeat request.</param>
         /// <returns>False if both match; True otherwise.</returns>
-        public static Boolean operator != (SetServiceAuthorisationRequest SetServiceAuthorisationRequest1, SetServiceAuthorisationRequest SetServiceAuthorisationRequest2)
+        public static Boolean operator != (SetServiceAuthorisationRequest SetServiceAuthorisationRequest1,
+                                           SetServiceAuthorisationRequest SetServiceAuthorisationRequest2)
 
             => !(SetServiceAuthorisationRequest1 == SetServiceAuthorisationRequest2);
 
@@ -602,52 +492,37 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two SetServiceAuthorisation requests of this object.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A SetServiceAuthorisation request to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            var SetServiceAuthorisationRequest = Object as SetServiceAuthorisationRequest;
-            if ((Object) SetServiceAuthorisationRequest == null)
-                return false;
-
-            return Equals(SetServiceAuthorisationRequest);
-
-        }
+            => Object is SetServiceAuthorisationRequest setServiceAuthorisationRequest &&
+                   Equals(setServiceAuthorisationRequest);
 
         #endregion
 
         #region Equals(SetServiceAuthorisationRequest)
 
         /// <summary>
-        /// Compares two heartbeat requests for equality.
+        /// Compares two SetServiceAuthorisation requests of this object.
         /// </summary>
-        /// <param name="SetServiceAuthorisationRequest">A heartbeat request to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
-        public override Boolean Equals(SetServiceAuthorisationRequest SetServiceAuthorisationRequest)
-        {
+        /// <param name="SetServiceAuthorisationRequest">A SetServiceAuthorisation request to compare with.</param>
+        public override Boolean Equals(SetServiceAuthorisationRequest? SetServiceAuthorisationRequest)
 
-            if ((Object) SetServiceAuthorisationRequest == null)
-                return false;
+            => SetServiceAuthorisationRequest is not null &&
 
-            return ((!TransactionId.HasValue && !SetServiceAuthorisationRequest.TransactionId.HasValue) ||
-                     (TransactionId.HasValue && SetServiceAuthorisationRequest.TransactionId.HasValue && TransactionId.Value.Equals(SetServiceAuthorisationRequest.TransactionId.Value))) &&
+            ((!TransactionId.HasValue && !SetServiceAuthorisationRequest.TransactionId.HasValue) ||
+              (TransactionId.HasValue &&  SetServiceAuthorisationRequest.TransactionId.HasValue && TransactionId.Value.Equals(SetServiceAuthorisationRequest.TransactionId.Value))) &&
 
-                   PartnerId.         Equals(SetServiceAuthorisationRequest.PartnerId)          &&
-                   OperatorId.        Equals(SetServiceAuthorisationRequest.OperatorId)         &&
-                   EVSEId.            Equals(SetServiceAuthorisationRequest.EVSEId)             &&
-                   UserId.            Equals(SetServiceAuthorisationRequest.UserId)             &&
-                   RequestedServiceId.Equals(SetServiceAuthorisationRequest.RequestedServiceId);
+               PartnerId.         Equals(SetServiceAuthorisationRequest.PartnerId)          &&
+               OperatorId.        Equals(SetServiceAuthorisationRequest.OperatorId)         &&
+               EVSEId.            Equals(SetServiceAuthorisationRequest.EVSEId)             &&
+               UserId.            Equals(SetServiceAuthorisationRequest.UserId)             &&
+               RequestedServiceId.Equals(SetServiceAuthorisationRequest.RequestedServiceId);
 
-                   //((!PartnerServiceSessionId.HasValue && !SetServiceAuthorisationRequest.PartnerServiceSessionId.HasValue) ||
-                   //  (PartnerServiceSessionId.HasValue &&  SetServiceAuthorisationRequest.PartnerServiceSessionId.HasValue && PartnerServiceSessionId.Value.Equals(SetServiceAuthorisationRequest.PartnerServiceSessionId.Value)));
-
-        }
+               //((!PartnerServiceSessionId.HasValue && !SetServiceAuthorisationRequest.PartnerServiceSessionId.HasValue) ||
+               //  (PartnerServiceSessionId.HasValue &&  SetServiceAuthorisationRequest.PartnerServiceSessionId.HasValue && PartnerServiceSessionId.Value.Equals(SetServiceAuthorisationRequest.PartnerServiceSessionId.Value)));
 
         #endregion
 
@@ -664,15 +539,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             unchecked
             {
 
-                return (TransactionId.HasValue
-                            ? TransactionId.GetHashCode() * 19
-                            : 0) ^
-
-                       PartnerId.         GetHashCode() * 17 ^
-                       OperatorId.        GetHashCode() * 13 ^
-                       EVSEId.            GetHashCode() * 11 ^
-                       UserId.            GetHashCode() *  7 ^
-                       RequestedServiceId.GetHashCode() *  3;
+                return (TransactionId?.    GetHashCode() ?? 0) * 19 ^
+                        PartnerId.         GetHashCode()       * 17 ^
+                        OperatorId.        GetHashCode()       * 13 ^
+                        EVSEId.            GetHashCode()       * 11 ^
+                        UserId.            GetHashCode()       *  7 ^
+                        RequestedServiceId.GetHashCode()       *  3;
 
                        //(PartnerServiceSessionId.HasValue
                        //     ? PartnerServiceSessionId.GetHashCode()
@@ -690,11 +562,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// </summary>
         public override String ToString()
 
-            => String.Concat(PartnerId,  " / ",
-                             OperatorId, ": ",
-                             UserId,
-                             " (" + RequestedServiceId + ") @ ",
-                             EVSEId);
+            => $"{PartnerId} / {OperatorId}: {UserId} ({RequestedServiceId}) @ {EVSEId}";
 
         #endregion
 

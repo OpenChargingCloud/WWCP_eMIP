@@ -261,7 +261,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                     );
 
 
-                if (CustomSendSetChargeDetailRecordResponseParser != null)
+                if (CustomSendSetChargeDetailRecordResponseParser is not null)
                     SetChargeDetailRecordResponse = CustomSendSetChargeDetailRecordResponseParser(SetChargeDetailRecordResponseXML,
                                                                                                   SetChargeDetailRecordResponse);
 
@@ -354,7 +354,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetChargeDetailRecordResponseSerializer != null
+            return CustomSetChargeDetailRecordResponseSerializer is not null
                        ? CustomSetChargeDetailRecordResponseSerializer(this, XML)
                        : XML;
 
@@ -381,7 +381,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetChargeDetailRecordResponse1 == null) || ((Object) SetChargeDetailRecordResponse2 == null))
+            if (SetChargeDetailRecordResponse1 is null || SetChargeDetailRecordResponse2 is null)
                 return false;
 
             return SetChargeDetailRecordResponse1.Equals(SetChargeDetailRecordResponse2);

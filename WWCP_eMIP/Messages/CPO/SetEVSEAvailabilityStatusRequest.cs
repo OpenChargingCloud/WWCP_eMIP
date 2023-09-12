@@ -310,7 +310,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                    );
 
 
-                if (CustomSendSetEVSEAvailabilityStatusRequestParser != null)
+                if (CustomSendSetEVSEAvailabilityStatusRequestParser is not null)
                     SetEVSEAvailabilityStatusRequest = CustomSendSetEVSEAvailabilityStatusRequestParser(SetEVSEAvailabilityStatusRequestXML,
                                                                                                         SetEVSEAvailabilityStatusRequest);
 
@@ -426,7 +426,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                       );
 
 
-            return CustomSetEVSEAvailabilityStatusRequestSerializer != null
+            return CustomSetEVSEAvailabilityStatusRequestSerializer is not null
                        ? CustomSetEVSEAvailabilityStatusRequestSerializer(this, XML)
                        : XML;
 
@@ -453,7 +453,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return true;
 
             // If one is null, but not both, return false.
-            if (((Object) SetEVSEAvailabilityStatusRequest1 == null) || ((Object) SetEVSEAvailabilityStatusRequest2 == null))
+            if (SetEVSEAvailabilityStatusRequest1 is null || SetEVSEAvailabilityStatusRequest2 is null)
                 return false;
 
             return SetEVSEAvailabilityStatusRequest1.Equals(SetEVSEAvailabilityStatusRequest2);

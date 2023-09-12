@@ -25,12 +25,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for partner service session identifications.
+    /// </summary>
+    public static class PartnerServiceSessionIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this partner service session identification is null or empty.
+        /// </summary>
+        /// <param name="PartnerServiceSessionId">A partner service session identification.</param>
+        public static Boolean IsNullOrEmpty(this PartnerServiceSession_Id? PartnerServiceSessionId)
+            => !PartnerServiceSessionId.HasValue || PartnerServiceSessionId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this partner service session identification is NOT null or empty.
+        /// </summary>
+        /// <param name="PartnerServiceSessionId">A partner service session identification.</param>
+        public static Boolean IsNotNullOrEmpty(this PartnerServiceSession_Id? PartnerServiceSessionId)
+            => PartnerServiceSessionId.HasValue && PartnerServiceSessionId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a partner service session.
     /// </summary>
     public readonly struct PartnerServiceSession_Id : IId,
                                                       IEquatable <PartnerServiceSession_Id>,
                                                       IComparable<PartnerServiceSession_Id>
-
     {
 
         #region Data
@@ -90,7 +112,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region (static) Zero
 
         public static PartnerServiceSession_Id Zero
-            => new PartnerServiceSession_Id("0");
+            => new ("0");
 
         #endregion
 
@@ -104,20 +126,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static PartnerServiceSession_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var partnerServiceSessionId))
+                return partnerServiceSessionId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a partner service session identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out PartnerServiceSession_Id PartnerServiceSessionId))
-                return PartnerServiceSessionId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a partner service session identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a partner service session identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -132,10 +145,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static PartnerServiceSession_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out PartnerServiceSession_Id PartnerServiceSessionId))
-                return PartnerServiceSessionId;
+            if (TryParse(Text, out var partnerServiceSessionId))
+                return partnerServiceSessionId;
 
-            return new PartnerServiceSession_Id?();
+            return null;
 
         }
 
@@ -153,8 +166,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -186,7 +198,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public PartnerServiceSession_Id Clone
 
-            => new PartnerServiceSession_Id(
+            => new (
                    new String(InternalId.ToCharArray())
                );
 
@@ -203,20 +215,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-        {
+        public static Boolean operator == (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                           PartnerServiceSession_Id PartnerServiceSessionId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(PartnerServiceSessionId1, PartnerServiceSessionId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) PartnerServiceSessionId1 == null) || ((Object) PartnerServiceSessionId2 == null))
-                return false;
-
-            return PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
-
-        }
+            => PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
 
         #endregion
 
@@ -228,8 +230,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 == PartnerServiceSessionId2);
+        public static Boolean operator != (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                           PartnerServiceSession_Id PartnerServiceSessionId2)
+
+            => !PartnerServiceSessionId1.Equals(PartnerServiceSessionId2);
 
         #endregion
 
@@ -241,15 +245,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-        {
+        public static Boolean operator < (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                          PartnerServiceSession_Id PartnerServiceSessionId2)
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
-
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) < 0;
-
-        }
+            => PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) < 0;
 
         #endregion
 
@@ -261,8 +260,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 > PartnerServiceSessionId2);
+        public static Boolean operator <= (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                           PartnerServiceSession_Id PartnerServiceSessionId2)
+
+            => PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) <= 0;
 
         #endregion
 
@@ -274,15 +275,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-        {
+        public static Boolean operator > (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                          PartnerServiceSession_Id PartnerServiceSessionId2)
 
-            if ((Object) PartnerServiceSessionId1 == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId1), "The given PartnerServiceSessionId1 must not be null!");
-
-            return PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) > 0;
-
-        }
+            => PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) > 0;
 
         #endregion
 
@@ -294,52 +290,43 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerServiceSessionId1">A partner service session identification.</param>
         /// <param name="PartnerServiceSessionId2">Another partner service session identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (PartnerServiceSession_Id PartnerServiceSessionId1, PartnerServiceSession_Id PartnerServiceSessionId2)
-            => !(PartnerServiceSessionId1 < PartnerServiceSessionId2);
+        public static Boolean operator >= (PartnerServiceSession_Id PartnerServiceSessionId1,
+                                           PartnerServiceSession_Id PartnerServiceSessionId2)
+
+            => PartnerServiceSessionId1.CompareTo(PartnerServiceSessionId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerServiceSessionId> Members
+        #region IComparable<PartnerServiceSession_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner service session identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A partner service session identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is PartnerServiceSession_Id))
-                throw new ArgumentException("The given object is not a partner service session identification!",
-                                            nameof(Object));
-
-            return CompareTo((PartnerServiceSession_Id) Object);
-
-        }
+            => Object is PartnerServiceSession_Id partnerServiceSessionId
+                   ? CompareTo(partnerServiceSessionId)
+                   : throw new ArgumentException("The given object is not a partner service session identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(PartnerServiceSessionId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner service session identifications.
         /// </summary>
-        /// <param name="PartnerServiceSessionId">An object to compare with.</param>
+        /// <param name="PartnerServiceSessionId">A partner service session identification to compare with.</param>
         public Int32 CompareTo(PartnerServiceSession_Id PartnerServiceSessionId)
-        {
 
-            if ((Object) PartnerServiceSessionId == null)
-                throw new ArgumentNullException(nameof(PartnerServiceSessionId),  "The given partner service session identification must not be null!");
-
-            return String.Compare(InternalId, PartnerServiceSessionId.InternalId, StringComparison.Ordinal);
-
-        }
+            => String.Compare(InternalId,
+                              PartnerServiceSessionId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -350,41 +337,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner service session identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A partner service session identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is PartnerServiceSession_Id))
-                return false;
-
-            return Equals((PartnerServiceSession_Id) Object);
-
-        }
+            => Object is PartnerServiceSession_Id partnerServiceSessionId &&
+                   Equals(partnerServiceSessionId);
 
         #endregion
 
-        #region Equals(PartnerServiceSessionId)
+        #region Equals(PartnerServiceSession_Id)
 
         /// <summary>
-        /// Compares two PartnerServiceSessionIds for equality.
+        /// Compares two partner service session identifications for equality.
         /// </summary>
         /// <param name="PartnerServiceSessionId">A partner service session identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(PartnerServiceSession_Id PartnerServiceSessionId)
-        {
 
-            if ((Object) PartnerServiceSessionId == null)
-                return false;
-
-            return InternalId.Equals(PartnerServiceSessionId.InternalId);
-
-        }
+            => String.Equals(InternalId,
+                             PartnerServiceSessionId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -397,7 +370,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
@@ -407,7 +381,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

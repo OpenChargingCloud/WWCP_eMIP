@@ -17,10 +17,8 @@
 
 #region Usings
 
-using System;
-using System.Threading;
-using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Illias;
+using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion
 
@@ -52,38 +50,38 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The correlated HTTP request of this eMIP request.
         /// </summary>
-        public HTTPRequest              HTTPRequest                { get; }
+        public HTTPRequest        HTTPRequest          { get; }
 
         /// <summary>
         /// The partner identification.
         /// </summary>
-        public Partner_Id               PartnerId                  { get; }
+        public Partner_Id         PartnerId            { get; }
 
         /// <summary>
         /// The optional eMIP transaction identification.
         /// </summary>
-        public Transaction_Id?          TransactionId              { get; }
+        public Transaction_Id?    TransactionId        { get; }
 
 
         /// <summary>
         /// The optional timestamp of the request.
         /// </summary>
-        public DateTime?                Timestamp                  { get; }
+        public DateTime?          Timestamp            { get; }
 
         /// <summary>
         /// An optional token to cancel this request.
         /// </summary>
-        public CancellationToken        CancellationToken          { get; }
+        public CancellationToken  CancellationToken    { get; }
 
         /// <summary>
         /// An optional event tracking identification for correlating this request with other events.
         /// </summary>
-        public EventTracking_Id         EventTrackingId            { get; }
+        public EventTracking_Id   EventTrackingId      { get; }
 
         /// <summary>
         /// An optional timeout for this request.
         /// </summary>
-        public TimeSpan?                RequestTimeout             { get; }
+        public TimeSpan?          RequestTimeout       { get; }
 
         #endregion
 
@@ -114,9 +112,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             this.PartnerId          = PartnerId;
             this.TransactionId      = TransactionId;
 
-            this.Timestamp          = Timestamp                 ?? org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
-            this.EventTrackingId    = EventTrackingId           ?? EventTracking_Id.New;
-            this.RequestTimeout     = RequestTimeout            ?? DefaultRequestTimeout;
+            this.Timestamp          = Timestamp        ?? org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+            this.EventTrackingId    = EventTrackingId  ?? EventTracking_Id.New;
+            this.RequestTimeout     = RequestTimeout   ?? DefaultRequestTimeout;
             this.CancellationToken  = CancellationToken;
 
         }
@@ -130,7 +128,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Compare two abstract requests for equality.
         /// </summary>
         /// <param name="ARequest">Another abstract eMIP request.</param>
-        public abstract Boolean Equals(TRequest ARequest);
+        public abstract Boolean Equals(TRequest? ARequest);
 
         #endregion
 

@@ -244,7 +244,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                     );
 
 
-                if (CustomSendSetChargeDetailRecordResponseParser != null)
+                if (CustomSendSetChargeDetailRecordResponseParser is not null)
                     SetChargeDetailRecordResponse = CustomSendSetChargeDetailRecordResponseParser(SetChargeDetailRecordResponseXML,
                                                                                                   SetChargeDetailRecordResponse);
 
@@ -331,7 +331,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                       );
 
 
-            return CustomSetChargeDetailRecordResponseSerializer != null
+            return CustomSetChargeDetailRecordResponseSerializer is not null
                        ? CustomSetChargeDetailRecordResponseSerializer(this, XML)
                        : XML;
 

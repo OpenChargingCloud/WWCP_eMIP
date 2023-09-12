@@ -25,12 +25,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
     /// <summary>
+    /// Extension methods for partner product identifications.
+    /// </summary>
+    public static class PartnerProductIdExtensions
+    {
+
+        /// <summary>
+        /// Indicates whether this partner product identification is null or empty.
+        /// </summary>
+        /// <param name="PartnerProductId">A partner product identification.</param>
+        public static Boolean IsNullOrEmpty(this PartnerProduct_Id? PartnerProductId)
+            => !PartnerProductId.HasValue || PartnerProductId.Value.IsNullOrEmpty;
+
+        /// <summary>
+        /// Indicates whether this partner product identification is NOT null or empty.
+        /// </summary>
+        /// <param name="PartnerProductId">A partner product identification.</param>
+        public static Boolean IsNotNullOrEmpty(this PartnerProduct_Id? PartnerProductId)
+            => PartnerProductId.HasValue && PartnerProductId.Value.IsNotNullOrEmpty;
+
+    }
+
+
+    /// <summary>
     /// The unique identification of a partner product.
     /// </summary>
     public readonly struct PartnerProduct_Id : IId,
                                                IEquatable <PartnerProduct_Id>,
                                                IComparable<PartnerProduct_Id>
-
     {
 
         #region Data
@@ -88,20 +110,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static PartnerProduct_Id Parse(String Text)
         {
 
-            #region Initial checks
+            if (TryParse(Text, out var partnerProductId))
+                return partnerProductId;
 
-            if (Text != null)
-                Text = Text.Trim();
-
-            if (Text.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(Text), "The given text representation of a partner product identification must not be null or empty!");
-
-            #endregion
-
-            if (TryParse(Text, out PartnerProduct_Id PartnerProductId))
-                return PartnerProductId;
-
-            throw new ArgumentNullException(nameof(Text), "The given text representation of a partner product identification is invalid!");
+            throw new ArgumentException($"Invalid text representation of a partner product identification: '{Text}'!",
+                                        nameof(Text));
 
         }
 
@@ -116,10 +129,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static PartnerProduct_Id? TryParse(String Text)
         {
 
-            if (TryParse(Text, out PartnerProduct_Id PartnerProductId))
-                return PartnerProductId;
+            if (TryParse(Text, out var partnerProductId))
+                return partnerProductId;
 
-            return new PartnerProduct_Id?();
+            return null;
 
         }
 
@@ -137,8 +150,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (Text != null)
-                Text = Text.Trim();
+            Text = Text.Trim();
 
             if (Text.IsNullOrEmpty())
             {
@@ -170,7 +182,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public PartnerProduct_Id Clone
 
-            => new PartnerProduct_Id(
+            => new (
                    new String(InternalId.ToCharArray())
                );
 
@@ -187,20 +199,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator == (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-        {
+        public static Boolean operator == (PartnerProduct_Id PartnerProductId1,
+                                           PartnerProduct_Id PartnerProductId2)
 
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(PartnerProductId1, PartnerProductId2))
-                return true;
-
-            // If one is null, but not both, return false.
-            if (((Object) PartnerProductId1 == null) || ((Object) PartnerProductId2 == null))
-                return false;
-
-            return PartnerProductId1.Equals(PartnerProductId2);
-
-        }
+            => PartnerProductId1.Equals(PartnerProductId2);
 
         #endregion
 
@@ -212,8 +214,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator != (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-            => !(PartnerProductId1 == PartnerProductId2);
+        public static Boolean operator != (PartnerProduct_Id PartnerProductId1,
+                                           PartnerProduct_Id PartnerProductId2)
+
+            => !PartnerProductId1.Equals(PartnerProductId2);
 
         #endregion
 
@@ -225,15 +229,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator < (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-        {
+        public static Boolean operator < (PartnerProduct_Id PartnerProductId1,
+                                          PartnerProduct_Id PartnerProductId2)
 
-            if ((Object) PartnerProductId1 == null)
-                throw new ArgumentNullException(nameof(PartnerProductId1), "The given PartnerProductId1 must not be null!");
-
-            return PartnerProductId1.CompareTo(PartnerProductId2) < 0;
-
-        }
+            => PartnerProductId1.CompareTo(PartnerProductId2) < 0;
 
         #endregion
 
@@ -245,8 +244,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator <= (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-            => !(PartnerProductId1 > PartnerProductId2);
+        public static Boolean operator <= (PartnerProduct_Id PartnerProductId1,
+                                           PartnerProduct_Id PartnerProductId2)
+
+            => PartnerProductId1.CompareTo(PartnerProductId2) <= 0;
 
         #endregion
 
@@ -258,15 +259,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator > (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-        {
+        public static Boolean operator > (PartnerProduct_Id PartnerProductId1,
+                                          PartnerProduct_Id PartnerProductId2)
 
-            if ((Object) PartnerProductId1 == null)
-                throw new ArgumentNullException(nameof(PartnerProductId1), "The given PartnerProductId1 must not be null!");
-
-            return PartnerProductId1.CompareTo(PartnerProductId2) > 0;
-
-        }
+            => PartnerProductId1.CompareTo(PartnerProductId2) > 0;
 
         #endregion
 
@@ -278,97 +274,74 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="PartnerProductId1">A partner product identification.</param>
         /// <param name="PartnerProductId2">Another partner product identification.</param>
         /// <returns>true|false</returns>
-        public static Boolean operator >= (PartnerProduct_Id PartnerProductId1, PartnerProduct_Id PartnerProductId2)
-            => !(PartnerProductId1 < PartnerProductId2);
+        public static Boolean operator >= (PartnerProduct_Id PartnerProductId1,
+                                           PartnerProduct_Id PartnerProductId2)
+
+            => PartnerProductId1.CompareTo(PartnerProductId2) >= 0;
 
         #endregion
 
         #endregion
 
-        #region IComparable<PartnerProductId> Members
+        #region IComparable<PartnerProduct_Id> Members
 
         #region CompareTo(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner product identifications.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        public Int32 CompareTo(Object Object)
-        {
+        /// <param name="Object">A partner product identification to compare with.</param>
+        public Int32 CompareTo(Object? Object)
 
-            if (Object == null)
-                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
-
-            if (!(Object is PartnerProduct_Id))
-                throw new ArgumentException("The given object is not a partner product identification!",
-                                            nameof(Object));
-
-            return CompareTo((PartnerProduct_Id) Object);
-
-        }
+            => Object is PartnerProduct_Id partnerProductId
+                   ? CompareTo(partnerProductId)
+                   : throw new ArgumentException("The given object is not a partner product identification!",
+                                                 nameof(Object));
 
         #endregion
 
         #region CompareTo(PartnerProductId)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner product identifications.
         /// </summary>
-        /// <param name="PartnerProductId">An object to compare with.</param>
+        /// <param name="PartnerProductId">A partner product identification to compare with.</param>
         public Int32 CompareTo(PartnerProduct_Id PartnerProductId)
-        {
 
-            if ((Object) PartnerProductId == null)
-                throw new ArgumentNullException(nameof(PartnerProductId),  "The given partner product identification must not be null!");
-
-            return String.Compare(InternalId, PartnerProductId.InternalId, StringComparison.Ordinal);
-
-        }
+            => String.Compare(InternalId,
+                              PartnerProductId.InternalId,
+                              StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
         #endregion
 
-        #region IEquatable<PartnerProductId> Members
+        #region IEquatable<PartnerProduct_Id> Members
 
         #region Equals(Object)
 
         /// <summary>
-        /// Compares two instances of this object.
+        /// Compares two partner product identifications for equality.
         /// </summary>
-        /// <param name="Object">An object to compare with.</param>
-        /// <returns>true|false</returns>
-        public override Boolean Equals(Object Object)
-        {
+        /// <param name="Object">A partner product identification to compare with.</param>
+        public override Boolean Equals(Object? Object)
 
-            if (Object == null)
-                return false;
-
-            if (!(Object is PartnerProduct_Id))
-                return false;
-
-            return Equals((PartnerProduct_Id) Object);
-
-        }
+            => Object is PartnerProduct_Id partnerProductId &&
+                   Equals(partnerProductId);
 
         #endregion
 
         #region Equals(PartnerProductId)
 
         /// <summary>
-        /// Compares two PartnerProductIds for equality.
+        /// Compares two partner product identifications for equality.
         /// </summary>
         /// <param name="PartnerProductId">A partner product identification to compare with.</param>
-        /// <returns>True if both match; False otherwise.</returns>
         public Boolean Equals(PartnerProduct_Id PartnerProductId)
-        {
 
-            if ((Object) PartnerProductId == null)
-                return false;
-
-            return InternalId.Equals(PartnerProductId.InternalId);
-
-        }
+            => String.Equals(InternalId,
+                             PartnerProductId.InternalId,
+                             StringComparison.OrdinalIgnoreCase);
 
         #endregion
 
@@ -381,7 +354,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <returns>The HashCode of this object.</returns>
         public override Int32 GetHashCode()
-            => InternalId.GetHashCode();
+
+            => InternalId?.ToLower().GetHashCode() ?? 0;
 
         #endregion
 
@@ -391,7 +365,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a text representation of this object.
         /// </summary>
         public override String ToString()
-            => InternalId;
+
+            => InternalId ?? "-";
 
         #endregion
 

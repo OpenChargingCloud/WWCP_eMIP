@@ -32,7 +32,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
     public readonly struct ServiceSession_Id : IId,
                                                IEquatable <ServiceSession_Id>,
                                                IComparable<ServiceSession_Id>
-
     {
 
         #region Data

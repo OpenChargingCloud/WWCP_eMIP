@@ -53,7 +53,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         //private        readonly  EVSEStatusUpdate2EVSEStatusRecordDelegate              _EVSEStatusUpdate2EVSEStatusRecord;
 
-        private        readonly  WWCPChargeDetailRecord2ChargeDetailRecordDelegate    _WWCPChargeDetailRecord2eMIPChargeDetailRecord;
+        private        readonly  WWCPChargeDetailRecord2ChargeDetailRecordDelegate?   WWCPChargeDetailRecord2eMIPChargeDetailRecord;
 
         //private        readonly  EVSEDataRecord2XMLDelegate                             _EVSEDataRecord2XML;
 
@@ -68,11 +68,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         public  readonly static  TimeSpan                                             DefaultSendHeartbeatsEvery          = TimeSpan.FromMinutes(5);
 
-        private readonly         SemaphoreSlim                                        SendHeartbeatLock                   = new SemaphoreSlim(1, 1);
+        private readonly         SemaphoreSlim                                        SendHeartbeatLock                   = new (1, 1);
         private readonly         Timer                                                SendHeartbeatsTimer;
 
         private                  UInt64                                               _SendHeartbeatsRunId                = 1;
 
+        protected readonly CustomOperatorIdMapperDelegate?  CustomOperatorIdMapper;
+
+        protected readonly CustomEVSEIdMapperDelegate?      CustomEVSEIdMapper;
 
 
         /// <summary>
@@ -105,10 +108,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         public CPORoaming CPORoaming { get; }
 
-        public CPOClient CPOClient
+        public CPOClient? CPOClient
             => CPORoaming?.CPOClient;
 
-        public CPOServer CPOServer
+        public CPOServer? CPOServer
             => CPORoaming?.CPOServer;
 
 
@@ -116,25 +119,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The partner identification.
         /// </summary>
-        public Partner_Id  PartnerId { get; }
+        public Partner_Id                PartnerId                { get; }
 
 
         /// <summary>
         /// This service can be disabled, e.g. for debugging reasons.
         /// </summary>
-        public Boolean     DisableSendHeartbeats             { get; set; }
+        public Boolean                   DisableSendHeartbeats    { get; set; }
 
-        public TimeSpan    SendHeartbeatsEvery               { get; }
+        public TimeSpan                  SendHeartbeatsEvery      { get; }
 
         /// <summary>
         /// An optional default charging station operator identification.
         /// </summary>
-        public IChargingStationOperator  DefaultOperator     { get; }
-
-
-        protected readonly CustomOperatorIdMapperDelegate  CustomOperatorIdMapper;
-
-        protected readonly CustomEVSEIdMapperDelegate      CustomEVSEIdMapper;
+        public IChargingStationOperator  DefaultOperator          { get; }
 
         #endregion
 
@@ -266,57 +264,57 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="DisablePushStatus">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableAuthentication">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisableSendChargeDetailRecords">This service can be disabled, e.g. for debugging reasons.</param>
-        public WWCPCPOAdapter(CSORoamingProvider_Id                              Id,
-                              I18NString                                         Name,
-                              I18NString                                         Description,
-                              RoamingNetwork                                     RoamingNetwork,
-                              CPORoaming                                         CPORoaming,
+        public WWCPCPOAdapter(CSORoamingProvider_Id                               Id,
+                              I18NString                                          Name,
+                              I18NString                                          Description,
+                              RoamingNetwork                                      RoamingNetwork,
+                              CPORoaming                                          CPORoaming,
 
-                              Partner_Id                                         PartnerId,
-                              IChargingStationOperator                           DefaultOperator,
+                              Partner_Id                                          PartnerId,
+                              IChargingStationOperator                            DefaultOperator,
 
-                              IncludeEVSEIdDelegate                              IncludeEVSEIds                                  = null,
-                              IncludeEVSEDelegate                                IncludeEVSEs                                    = null,
-                              IncludeChargingStationIdDelegate                   IncludeChargingStationIds                       = null,
-                              IncludeChargingStationDelegate                     IncludeChargingStations                         = null,
-                              IncludeChargingPoolIdDelegate                      IncludeChargingPoolIds                          = null,
-                              IncludeChargingPoolDelegate                        IncludeChargingPools                            = null,
-                              ChargeDetailRecordFilterDelegate                   ChargeDetailRecordFilter                        = null,
-                              CustomOperatorIdMapperDelegate                     CustomOperatorIdMapper                          = null,
-                              CustomEVSEIdMapperDelegate                         CustomEVSEIdMapper                              = null,
+                              IncludeEVSEIdDelegate?                              IncludeEVSEIds                                  = null,
+                              IncludeEVSEDelegate?                                IncludeEVSEs                                    = null,
+                              IncludeChargingStationIdDelegate?                   IncludeChargingStationIds                       = null,
+                              IncludeChargingStationDelegate?                     IncludeChargingStations                         = null,
+                              IncludeChargingPoolIdDelegate?                      IncludeChargingPoolIds                          = null,
+                              IncludeChargingPoolDelegate?                        IncludeChargingPools                            = null,
+                              ChargeDetailRecordFilterDelegate?                   ChargeDetailRecordFilter                        = null,
+                              CustomOperatorIdMapperDelegate?                     CustomOperatorIdMapper                          = null,
+                              CustomEVSEIdMapperDelegate?                         CustomEVSEIdMapper                              = null,
 
-                              //EVSE2EVSEDataRecordDelegate                        EVSE2EVSEDataRecord                             = null,
-                              //EVSEStatusUpdate2EVSEStatusRecordDelegate          EVSEStatusUpdate2EVSEStatusRecord               = null,
-                              WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
+                              //EVSE2EVSEDataRecordDelegate                         EVSE2EVSEDataRecord                             = null,
+                              //EVSEStatusUpdate2EVSEStatusRecordDelegate           EVSEStatusUpdate2EVSEStatusRecord               = null,
+                              WWCPChargeDetailRecord2ChargeDetailRecordDelegate?  WWCPChargeDetailRecord2eMIPChargeDetailRecord   = null,
 
-                              TimeSpan?                                          SendHeartbeatsEvery                             = null,
-                              TimeSpan?                                          ServiceCheckEvery                               = null,
-                              TimeSpan?                                          StatusCheckEvery                                = null,
-                              TimeSpan?                                          CDRCheckEvery                                   = null,
+                              TimeSpan?                                           SendHeartbeatsEvery                             = null,
+                              TimeSpan?                                           ServiceCheckEvery                               = null,
+                              TimeSpan?                                           StatusCheckEvery                                = null,
+                              TimeSpan?                                           CDRCheckEvery                                   = null,
 
-                              Boolean                                            DisableSendHeartbeats                           = false,
-                              Boolean                                            DisablePushData                                 = false,
-                              Boolean                                            DisablePushAdminStatus                          = true,
-                              Boolean                                            DisablePushStatus                               = false,
-                              Boolean                                            DisableAuthentication                           = false,
-                              Boolean                                            DisableSendChargeDetailRecords                  = false,
+                              Boolean                                             DisableSendHeartbeats                           = false,
+                              Boolean                                             DisablePushData                                 = false,
+                              Boolean                                             DisablePushAdminStatus                          = true,
+                              Boolean                                             DisablePushStatus                               = false,
+                              Boolean                                             DisableAuthentication                           = false,
+                              Boolean                                             DisableSendChargeDetailRecords                  = false,
 
-                              String                                             EllipticCurve                                   = "P-256",
-                              ECPrivateKeyParameters                             PrivateKey                                      = null,
-                              PublicKeyCertificates                              PublicKeyCertificates                           = null,
+                              String                                              EllipticCurve                                   = "P-256",
+                              ECPrivateKeyParameters?                             PrivateKey                                      = null,
+                              PublicKeyCertificates?                              PublicKeyCertificates                           = null,
 
-                              Boolean?                                           IsDevelopment                                   = null,
-                              IEnumerable<String>?                               DevelopmentServers                              = null,
-                              Boolean?                                           DisableLogging                                  = false,
-                              String?                                            LoggingPath                                     = DefaultHTTPAPI_LoggingPath,
-                              String?                                            LoggingContext                                  = DefaultLoggingContext,
-                              String?                                            LogfileName                                     = DefaultHTTPAPI_LogfileName,
-                              LogfileCreatorDelegate?                            LogfileCreator                                  = null,
+                              Boolean?                                            IsDevelopment                                   = null,
+                              IEnumerable<String>?                                DevelopmentServers                              = null,
+                              Boolean?                                            DisableLogging                                  = false,
+                              String?                                             LoggingPath                                     = DefaultHTTPAPI_LoggingPath,
+                              String?                                             LoggingContext                                  = DefaultLoggingContext,
+                              String?                                             LogfileName                                     = DefaultHTTPAPI_LogfileName,
+                              LogfileCreatorDelegate?                             LogfileCreator                                  = null,
 
-                              String?                                            ClientsLoggingPath                              = DefaultHTTPAPI_LoggingPath,
-                              String?                                            ClientsLoggingContext                           = DefaultLoggingContext,
-                              LogfileCreatorDelegate?                            ClientsLogfileCreator                           = null,
-                              DNSClient?                                         DNSClient                                       = null)
+                              String?                                             ClientsLoggingPath                              = DefaultHTTPAPI_LoggingPath,
+                              String?                                             ClientsLoggingContext                           = DefaultLoggingContext,
+                              LogfileCreatorDelegate?                             ClientsLogfileCreator                           = null,
+                              DNSClient?                                          DNSClient                                       = null)
 
             : base(Id,
                    RoamingNetwork,
@@ -370,7 +368,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (Name.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(Name),        "The given roaming provider name must not be null or empty!");
 
-            if (CPORoaming == null)
+            if (CPORoaming is null)
                 throw new ArgumentNullException(nameof(CPORoaming),  "The given eMIP CPO Roaming object must not be null!");
 
             #endregion
@@ -381,7 +379,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             //this._EVSE2EVSEDataRecord                            = EVSE2EVSEDataRecord;
             //this._EVSEStatusUpdate2EVSEStatusRecord              = EVSEStatusUpdate2EVSEStatusRecord;
-            this._WWCPChargeDetailRecord2eMIPChargeDetailRecord  = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
+            this.WWCPChargeDetailRecord2eMIPChargeDetailRecord  = WWCPChargeDetailRecord2eMIPChargeDetailRecord;
 
             //this.eMIP_ChargeDetailRecords_Queue                  = new List<ChargeDetailRecord>();
 
@@ -482,9 +480,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #endregion
 
-                    var EVSEId = Request.EVSEId.ToWWCP();
+                    var evseId = Request.EVSEId.ToWWCP();
 
-                    if (!EVSEId.HasValue)
+                    if (!evseId.HasValue)
                         return new SetServiceAuthorisationResponse(
                                    Request,
                                    Request.TransactionId ?? Transaction_Id.Zero,
@@ -493,11 +491,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     var response = await RoamingNetwork.
                                              RemoteStart(CSORoamingProvider:    this,
-                                                         ChargingLocation:      ChargingLocation.FromEVSEId(EVSEId.Value),
+                                                         ChargingLocation:      ChargingLocation.FromEVSEId(evseId.Value),
                                                          ChargingProduct:       chargingProduct,
                                                          ReservationId:         null,
                                                          SessionId:             Request.ServiceSessionId.ToWWCP(),
-                                                         ProviderId:            Request.PartnerId.       ToWWCP_ProviderId(),
+                                                         ProviderId:            Request.OperatorId.      ToWWCP_ProviderId(),
                                                          RemoteAuthentication:  Request.UserId.          ToWWCP(),
 
                                                          Timestamp:             Request.Timestamp,
@@ -714,7 +712,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                  RemoteStop(CSORoamingProvider:    this,
                                                             SessionId:             Request.ServiceSessionId.ToWWCP(),
                                                             ReservationHandling:   ReservationHandling.Close,
-                                                            ProviderId:            Request.PartnerId.ToWWCP_ProviderId(),
+                                                            ProviderId:            Request.OperatorId.ToWWCP_ProviderId(),
                                                             RemoteAuthentication:  null,
 
                                                             Timestamp:             Request.Timestamp,
@@ -1984,7 +1982,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 try
                                 {
 
-                                    chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord));
+                                    chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord));
                                     SendCDRsResults.Add(SendCDRResult.Enqueued(DateTime.UtcNow,
                                                                                chargeDetailRecord));
 
@@ -2029,7 +2027,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                     response = await CPORoaming.SetChargeDetailRecord(PartnerId,
                                                                                       chargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
-                                                                                      chargeDetailRecord.ToEMIP(_WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                                                                      chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord),
                                                                                       Transaction_Id.Random(),
 
                                                                                       null,
@@ -2159,7 +2157,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region (timer) SendHeartbeat(State)
 
-        private void SendHeartbeat(Object State)
+        private void SendHeartbeat(Object? State)
         {
             if (!DisableSendHeartbeats)
                 SendHeartbeat2().Wait();

@@ -490,18 +490,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                );
 
                     var response = await RoamingNetwork.
-                                             RemoteStart(CSORoamingProvider:    this,
-                                                         ChargingLocation:      ChargingLocation.FromEVSEId(evseId.Value),
-                                                         ChargingProduct:       chargingProduct,
-                                                         ReservationId:         null,
-                                                         SessionId:             Request.ServiceSessionId.ToWWCP(),
-                                                         ProviderId:            Request.OperatorId.      ToWWCP_ProviderId(),
-                                                         RemoteAuthentication:  Request.UserId.          ToWWCP(),
+                                             RemoteStart(this,
+                                                         ChargingLocation.FromEVSEId(evseId.Value),
+                                                         chargingProduct,
+                                                         null,                                  // ReservationId
+                                                         Request.ServiceSessionId.ToWWCP(),
+                                                         Request.OperatorId.      ToWWCP_ProviderId(),
+                                                         Request.UserId.          ToWWCP(),
+                                                         WWCP.Auth_Path.Parse(Id.ToString()),   // Authentication path == CSO Roaming Provider identification!
 
-                                                         Timestamp:             Request.Timestamp,
-                                                         CancellationToken:     Request.CancellationToken,
-                                                         EventTrackingId:       Request.EventTrackingId,
-                                                         RequestTimeout:        Request.RequestTimeout).
+                                                         Request.Timestamp,
+                                                         Request.EventTrackingId,
+                                                         Request.RequestTimeout,
+                                                         Request.CancellationToken).
                                              ConfigureAwait(false);
 
 
@@ -709,16 +710,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     {
 
                         var response = await RoamingNetwork.
-                                                 RemoteStop(CSORoamingProvider:    this,
-                                                            SessionId:             Request.ServiceSessionId.ToWWCP(),
-                                                            ReservationHandling:   ReservationHandling.Close,
-                                                            ProviderId:            Request.OperatorId.ToWWCP_ProviderId(),
-                                                            RemoteAuthentication:  null,
+                                                 RemoteStop(this,
+                                                            Request.ServiceSessionId.ToWWCP(),
+                                                            ReservationHandling.Close,
+                                                            Request.OperatorId.ToWWCP_ProviderId(),
+                                                            null,
+                                                            WWCP.Auth_Path.Parse(Id.ToString()),   // Authentication path == CSO Roaming Provider identification!
 
-                                                            Timestamp:             Request.Timestamp,
-                                                            CancellationToken:     Request.CancellationToken,
-                                                            EventTrackingId:       Request.EventTrackingId,
-                                                            RequestTimeout:        Request.RequestTimeout).
+                                                            Request.Timestamp,
+                                                            Request.EventTrackingId,
+                                                            Request.RequestTimeout,
+                                                            Request.CancellationToken).
                                                  ConfigureAwait(false);
 
 

@@ -99,7 +99,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                     HTTPStatusCode  = HTTPStatusCode.BadRequest,
                     Server          = HTTPServer.DefaultServerName,
                     Date            = DateTime.Now,
-                    ContentType     = HTTPContentType.JSON_UTF8,
+                    ContentType     = HTTPContentType.Application.JSON_UTF8,
                     Content         = @"{ ""description"": ""Invalid RoamingNetworkId!"" }".ToUTF8Bytes()
                 };
 
@@ -117,7 +117,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                     HTTPStatusCode  = HTTPStatusCode.NotFound,
                     Server          = HTTPServer.DefaultServerName,
                     Date            = DateTime.Now,
-                    ContentType     = HTTPContentType.JSON_UTF8,
+                    ContentType     = HTTPContentType.Application.JSON_UTF8,
                     Content         = @"{ ""description"": ""Unknown RoamingNetworkId!"" }".ToUTF8Bytes()
                 };
 
@@ -326,11 +326,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 
             #region / (HTTPRoot)
 
-            HTTPServer.RegisterResourcesFolder(null,
-                                               HTTPHostname.Any,
-                                               URLPathPrefix,
-                                               "cloud.charging.open.protocols.eMIPv0_7_4.WebAPI.HTTPRoot",
-                                               DefaultFilename: "index.html");
+            //this.MapResourceAssemblyFolder(HTTPHostname.Any,
+            //                               URLPathPrefix,
+            //                               "cloud.charging.open.protocols.eMIPv0_7_4.WebAPI.HTTPRoot",
+            //                               DefaultFilename: "index.html");
 
             #endregion
 
@@ -345,7 +344,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                          HTTPHostname.Any,
                                          HTTPMethod.SET,
                                          URLPathPrefix + "/ResendAll",
-                                         //HTTPContentType.JSON_UTF8,
+                                         //HTTPContentType.Application.JSON_UTF8,
                                          //HTTPRequestLogger:  SendAuthStartEVSERequest,
                                          //HTTPResponseLogger: SendAuthStartEVSEResponse,
                                          HTTPDelegate: async Request => {

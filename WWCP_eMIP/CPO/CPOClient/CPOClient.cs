@@ -1023,7 +1023,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    HTTPAuthentication,
                    null,
                    null,
-                   HTTPContentType.XMLTEXT_UTF8,
+                   HTTPContentType.Text.XML_UTF8,
                    RequestTimeout,
                    TransmissionRetryDelay,
                    MaxNumberOfRetries,

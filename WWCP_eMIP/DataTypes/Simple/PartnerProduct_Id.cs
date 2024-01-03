@@ -366,7 +366,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         public override String ToString()
 
-            => InternalId ?? "-";
+            => InternalId ?? "";
 
         #endregion
 

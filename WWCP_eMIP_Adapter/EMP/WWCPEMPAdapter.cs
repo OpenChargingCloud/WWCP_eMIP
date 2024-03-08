@@ -963,7 +963,7 @@
 
 //                    #region Send SendHeartbeatStarted Event...
 
-//                    var StartTime = DateTime.UtcNow;
+//                    var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
 //                    SendHeartbeatStartedEvent?.Invoke(this,
 //                                                      StartTime,
@@ -976,7 +976,7 @@
 //                                                                               Operator_Id.Parse("DE*BDO"),
 //                                                                               Transaction_Id.Random(),
 
-//                                                                               DateTime.UtcNow,
+//                                                                               org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
 //                                                                               new CancellationTokenSource().Token,
 //                                                                               EventTracking_Id.New,
 //                                                                               DefaultRequestTimeout).
@@ -984,7 +984,7 @@
 
 //                    #region Send SendHeartbeatFinished Event...
 
-//                    var EndTime = DateTime.UtcNow;
+//                    var EndTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
 //                    SendHeartbeatFinishedEvent?.Invoke(this,
 //                                                       StartTime,
@@ -1008,7 +1008,7 @@
 
 //                DebugX.LogT(GetType().Name + ".SendHeartbeat '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
 
-//                //OnWWCPEMPAdapterException?.Invoke(DateTime.UtcNow,
+//                //OnWWCPEMPAdapterException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
 //                //                                  this,
 //                //                                  e);
 

@@ -511,34 +511,36 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     if (response.Session is not null)
                     {
 
-                        RoamingNetwork.SessionsStore.Update(response.Session.Id,
-                                                            session => {
+                        await RoamingNetwork.SessionsStore.UpdateSessionDetails(
+                                  response.Session.Id,
+                                  session => {
 
-                            //var Gireve = session.AddJSON("Gireve");
+                                      //var Gireve = session.AddJSON("Gireve");
 
-                            session.SetInternalData("Gireve.request",              Request.ToXML().ToString());
+                                      session.SetInternalData("Gireve.request",              Request.ToXML().ToString());
 
 
-                            if (Request.UserContractIdAlias.HasValue)
-                                session.SetInternalData("Gireve.userContractIdAlias",  Request.UserContractIdAlias.Value.ToString());
+                                      if (Request.UserContractIdAlias.HasValue)
+                                          session.SetInternalData("Gireve.userContractIdAlias",  Request.UserContractIdAlias.Value.ToString());
 
-                            if (Request.Parameter.IsNotNullOrEmpty())
-                                session.SetInternalData("Gireve.parameter",            Request.Parameter);
+                                      if (Request.Parameter.IsNotNullOrEmpty())
+                                          session.SetInternalData("Gireve.parameter",            Request.Parameter);
 
-                            if (Request.HTTPRequest != null)
-                            {
+                                      if (Request.HTTPRequest is not null)
+                                      {
 
-                                session.SetInternalData("Gireve.remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
+                                          session.SetInternalData("Gireve.remoteIPAddress",      Request.HTTPRequest.RemoteSocket.IPAddress.ToString());
 
-                                if (Request.HTTPRequest.X_Real_IP       != null)
-                                    session.SetInternalData("Gireve.realIP",           Request.HTTPRequest.X_Real_IP.ToString());
+                                          if (Request.HTTPRequest.X_Real_IP       is not null)
+                                              session.SetInternalData("Gireve.realIP",           Request.HTTPRequest.X_Real_IP.ToString());
 
-                                if (Request.HTTPRequest.X_Forwarded_For != null)
-                                    session.SetInternalData("Gireve.forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
+                                          if (Request.HTTPRequest.X_Forwarded_For is not null)
+                                              session.SetInternalData("Gireve.forwardedFor",     new JArray(Request.HTTPRequest.X_Forwarded_For.Select(addr => addr.ToString()).AggregateWith(',')));
 
-                            }
+                                      }
 
-                        });
+                                  }
+                              );
 
                     }
 
@@ -546,7 +548,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Response mapping
 
-                    if (response != null)
+                    if (response is not null)
                     {
                         switch (response.Result)
                         {
@@ -832,7 +834,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
             if (!Timestamp.HasValue)
-                Timestamp = DateTime.UtcNow;
+                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             if (EventTrackingId == null)
                 EventTrackingId = EventTracking_Id.New;
@@ -878,8 +880,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                       }
                                       catch (Exception e)
                                       {
+
                                           DebugX.  Log(e.Message);
-                                          Warnings.Add(Warning.Create(I18NString.Create(Languages.en, e.Message), evsestatusupdate));
+
+                                          Warnings.Add(
+                                              Warning.Create(
+                                                  e.Message,
+                                                  evsestatusupdate
+                                              )
+                                          );
+
                                       }
 
                                       return null;
@@ -895,7 +905,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnEVSEAdminStatusPush event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             //try
             //{
@@ -944,7 +954,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                          ConfigureAwait(false);
 
 
-                var Endtime = DateTime.UtcNow;
+                var Endtime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 var Runtime = Endtime - StartTime;
 
                 if (response.HTTPStatusCode == HTTPStatusCode.OK &&
@@ -977,8 +987,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                            new EVSEAdminStatusUpdate[] { evseAdminStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
                                                            response.HTTPBody != null
-                                                               ? Warnings.AddAndReturnList(I18NString.Create(Languages.en, response.HTTPBody.ToUTF8String()))
-                                                               : Warnings.AddAndReturnList(I18NString.Create(Languages.en, "No HTTP body received!")),
+                                                               ? Warnings.AddAndReturnList(I18NString.Create(response.HTTPBody.ToUTF8String()))
+                                                               : Warnings.AddAndReturnList(I18NString.Create("No HTTP body received!")),
                                                            Runtime));
 
             }
@@ -1013,7 +1023,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             return PushEVSEAdminStatusResult.Flatten(Id,
                                                      this,
                                                      results,
-                                                     DateTime.UtcNow - StartTime);
+                                                     org.GraphDefined.Vanaheimr.Illias.Timestamp.Now - StartTime);
 
         }
 
@@ -1048,7 +1058,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
             if (!Timestamp.HasValue)
-                Timestamp = DateTime.UtcNow;
+                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             if (EventTrackingId == null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1094,8 +1104,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                       }
                                       catch (Exception e)
                                       {
+
                                           DebugX.  Log(e.Message);
-                                          Warnings.Add(Warning.Create(I18NString.Create(Languages.en, e.Message), evsestatusupdate));
+
+                                          Warnings.Add(
+                                              Warning.Create(
+                                                  e.Message,
+                                                  evsestatusupdate
+                                              )
+                                          );
+
                                       }
 
                                       return null;
@@ -1104,14 +1122,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                   Where(evsestatusrecord => evsestatusrecord != null).
                                   ToArray();
 
-            PushEVSEStatusResult result = null;
+            PushEVSEStatusResult? result = null;
             var results = new List<PushEVSEStatusResult>();
 
             #endregion
 
             #region Send OnEVSEStatusPush event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             //try
             //{
@@ -1160,7 +1178,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                          ConfigureAwait(false);
 
 
-                var Endtime = DateTime.UtcNow;
+                var Endtime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 var Runtime = Endtime - StartTime;
 
                 if (response.HTTPStatusCode == HTTPStatusCode.OK &&
@@ -1193,8 +1211,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                            new EVSEStatusUpdate[] { evseStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
                                                            response.HTTPBody != null
-                                                               ? Warnings.AddAndReturnList(I18NString.Create(Languages.en, response.HTTPBody.ToUTF8String()))
-                                                               : Warnings.AddAndReturnList(I18NString.Create(Languages.en, "No HTTP body received!")),
+                                                               ? Warnings.AddAndReturnList(I18NString.Create(response.HTTPBody.ToUTF8String()))
+                                                               : Warnings.AddAndReturnList(I18NString.Create("No HTTP body received!")),
                                                            Runtime));
 
             }
@@ -1229,7 +1247,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             return PushEVSEStatusResult.Flatten(Id,
                                                 this,
                                                 results,
-                                                DateTime.UtcNow - StartTime);
+                                                org.GraphDefined.Vanaheimr.Illias.Timestamp.Now - StartTime);
 
         }
 
@@ -1350,7 +1368,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 //try
                 //{
 
-                //    OnEnqueueSendCDRRequest?.Invoke(DateTime.UtcNow,
+                //    OnEnqueueSendCDRRequest?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                 //                                    Timestamp.Value,
                 //                                    this,
                 //                                    EventTrackingId,
@@ -1479,7 +1497,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
             if (!Timestamp.HasValue)
-                Timestamp = DateTime.UtcNow;
+                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             if (EventTrackingId == null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1491,7 +1509,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnAuthorizeStartRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             try
             {
@@ -1529,7 +1547,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (ChargingLocation?.EVSEId == null)
             {
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
                 result   = AuthStartResult.UnknownLocation(Id,
                                                            this,
@@ -1541,7 +1559,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             else if (DisableAuthentication)
             {
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
                 result   = AuthStartResult.AdminDown(Id,
                                                          this,
@@ -1568,7 +1586,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   RequestTimeout:           RequestTimeout);
 
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
 
                 if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
@@ -1674,7 +1692,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (!Timestamp.HasValue)
-                Timestamp = DateTime.UtcNow;
+                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             if (EventTrackingId == null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1686,7 +1704,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnAuthorizeStopRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             try
             {
@@ -1722,7 +1740,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (ChargingLocation?.EVSEId is null)
             {
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
                 result   = AuthStopResult.UnknownLocation(Id,
                                                           this,
@@ -1734,7 +1752,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             else if (DisableAuthentication)
             {
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
                 result   = AuthStopResult.AdminDown(Id,
                                                     this,
@@ -1761,7 +1779,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   RequestTimeout:           RequestTimeout);
 
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
 
                 if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
@@ -1861,7 +1879,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             #region Initial checks
 
             if (!Timestamp.HasValue)
-                Timestamp = DateTime.UtcNow;
+                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             if (EventTrackingId == null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1883,9 +1901,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     ForwardedCDRs.Add(cdr);
 
                 else
-                    FilteredCDRs.Add(SendCDRResult.Filtered(DateTime.UtcNow,
-                                                            cdr,
-                                                            Warning.Create(I18NString.Create(Languages.en, "This charge detail record was filtered!"))));
+                    FilteredCDRs.Add(
+                        SendCDRResult.Filtered(
+                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                            Id,
+                            cdr,
+                            Warning.Create("This charge detail record was filtered!")
+                        )
+                    );
 
             }
 
@@ -1893,7 +1916,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendCDRsRequest event
 
-            var StartTime = DateTime.UtcNow;
+            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
             try
             {
@@ -1925,9 +1948,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (DisableSendChargeDetailRecords)
             {
 
-                Endtime  = DateTime.UtcNow;
+                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                 Runtime  = Endtime - StartTime;
-                results  = SendCDRsResult.AdminDown(DateTime.UtcNow,
+                results  = SendCDRsResult.AdminDown(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                     Id,
                                                     this,
                                                     ChargeDetailRecords,
@@ -1961,7 +1984,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                             try
                             {
 
-                                OnEnqueueSendCDRsRequest?.Invoke(DateTime.UtcNow,
+                                OnEnqueueSendCDRsRequest?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                  Timestamp.Value,
                                                                  this,
                                                                  Id.ToString(),
@@ -1985,28 +2008,40 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 {
 
                                     chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord));
-                                    SendCDRsResults.Add(SendCDRResult.Enqueued(DateTime.UtcNow,
-                                                                               chargeDetailRecord));
+                                    SendCDRsResults.Add(
+                                        SendCDRResult.Enqueued(
+                                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                            Id,
+                                            chargeDetailRecord
+                                        )
+                                    );
 
                                 }
                                 catch (Exception e)
                                 {
-                                    SendCDRsResults.Add(SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
-                                                                                               chargeDetailRecord,
-                                                                                               Warning.Create(I18NString.Create(Languages.en, e.Message))));
+                                    SendCDRsResults.Add(
+                                        SendCDRResult.CouldNotConvertCDRFormat(
+                                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                            Id,
+                                            chargeDetailRecord,
+                                            Warning.Create(e.Message)
+                                        )
+                                    );
                                 }
 
                             }
 
-                            Endtime      = DateTime.UtcNow;
+                            Endtime      = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                             Runtime      = Endtime - StartTime;
-                            results      = SendCDRsResult.Enqueued(DateTime.UtcNow,
-                                                                   Id,
-                                                                   this,
-                                                                   ChargeDetailRecords,
-                                                                   I18NString.Create(Languages.en, "Enqueued for at least " + FlushChargeDetailRecordsEvery.TotalSeconds + " seconds!"),
-                                                                   //SendCDRsResults.SafeWhere(cdrresult => cdrresult.Result != SendCDRResultTypes.Enqueued),
-                                                                   Runtime: Runtime);
+                            results      = SendCDRsResult.Enqueued(
+                                               org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                               Id,
+                                               this,
+                                               ChargeDetailRecords,
+                                               I18NString.Create($"Enqueued for at least {FlushChargeDetailRecordsEvery.TotalSeconds} seconds!"),
+                                               //SendCDRsResults.SafeWhere(cdrresult => cdrresult.Result != SendCDRResultTypes.Enqueued),
+                                               Runtime: Runtime
+                                           );
                             invokeTimer  = true;
 
                         }
@@ -2018,8 +2053,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                         else
                         {
 
-                            HTTPResponse<SetChargeDetailRecordResponse> response;
-                            SendCDRResult result;
+                            HTTPResponse<SetChargeDetailRecordResponse>  response;
+                            SendCDRResult                                result;
 
                             foreach (var chargeDetailRecord in ChargeDetailRecords)
                             {
@@ -2027,63 +2062,78 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 try
                                 {
 
-                                    response = await CPORoaming.SetChargeDetailRecord(PartnerId,
-                                                                                      chargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
-                                                                                      chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord),
-                                                                                      Transaction_Id.Random(),
+                                    response = await CPORoaming.SetChargeDetailRecord(
+                                                         PartnerId,
+                                                         chargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
+                                                         chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                                         Transaction_Id.Random(),
 
-                                                                                      null,
-                                                                                      Timestamp,
-                                                                                      CancellationToken,
-                                                                                      EventTrackingId,
-                                                                                      RequestTimeout);
+                                                         null,
+                                                         Timestamp,
+                                                         CancellationToken,
+                                                         EventTrackingId,
+                                                         RequestTimeout
+                                                     );
 
                                     if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
-                                        response.Content               != null              &&
+                                        response.Content               is not null          &&
                                         response.Content.RequestStatus == RequestStatus.Ok)
                                     {
 
-                                        result = SendCDRResult.Success(DateTime.UtcNow,
-                                                                       chargeDetailRecord);
+                                        result = SendCDRResult.Success(
+                                                     org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                     Id,
+                                                     chargeDetailRecord
+                                                 );
 
                                     }
 
                                     else
-                                        result = SendCDRResult.Error(DateTime.UtcNow,
-                                                                     chargeDetailRecord,
-                                                                     Warning.Create(I18NString.Create(Languages.en, response.HTTPBodyAsUTF8String)));
+                                        result = SendCDRResult.Error(
+                                                     org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                     Id,
+                                                     chargeDetailRecord,
+                                                     Warning.Create(response.HTTPBodyAsUTF8String)
+                                                 );
 
                                 }
                                 catch (Exception e)
                                 {
-                                    result = SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
-                                                                                    chargeDetailRecord,
-                                                                                    I18NString.Create(Languages.en, e.Message));
+                                    result = SendCDRResult.CouldNotConvertCDRFormat(
+                                                 org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                 Id,
+                                                 chargeDetailRecord,
+                                                 I18NString.Create(e.Message)
+                                             );
                                 }
 
                                 SendCDRsResults.Add(result);
-                                RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.SessionId, result);
+                                await RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.SessionId, result);
 
                             }
 
-                            Endtime  = DateTime.UtcNow;
+                            Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                             Runtime  = Endtime - StartTime;
 
                             if (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
-                                results = SendCDRsResult.Success(DateTime.UtcNow,
-                                                                 Id,
-                                                                 this,
-                                                                 ChargeDetailRecords,
-                                                                 Runtime: Runtime);
+                                results = SendCDRsResult.Success(
+                                              org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                              Id,
+                                              this,
+                                              ChargeDetailRecords,
+                                              Runtime: Runtime
+                                          );
 
                             else
-                                results = SendCDRsResult.Error(DateTime.UtcNow,
-                                                               Id,
-                                                               this,
-                                                               SendCDRsResults.
-                                                                   Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
-                                                                   Select(cdrresult => cdrresult.ChargeDetailRecord),
-                                                               Runtime: Runtime);
+                                results = SendCDRsResult.Error(
+                                              org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                              Id,
+                                              this,
+                                              SendCDRsResults.
+                                                  Where (cdrresult => cdrresult.Result != SendCDRResultTypes.Success).
+                                                  Select(cdrresult => cdrresult.ChargeDetailRecord),
+                                              Runtime: Runtime
+                                          );
 
                         }
 
@@ -2096,13 +2146,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     else
                     {
 
-                        Endtime  = DateTime.UtcNow;
+                        Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                         Runtime  = Endtime - StartTime;
-                        results  = SendCDRsResult.Timeout(DateTime.UtcNow,
+                        results  = SendCDRsResult.Timeout(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                           Id,
                                                           this,
                                                           ChargeDetailRecords,
-                                                          I18NString.Create(Languages.en, "Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!"),
+                                                          I18NString.Create("Could not " + (TransmissionType == TransmissionTypes.Enqueue ? "enqueue" : "send") + " charge detail records!"),
                                                           //ChargeDetailRecords.SafeSelect(cdr => new SendCDRResult(cdr, SendCDRResultTypes.Timeout)),
                                                           Runtime: Runtime);
 
@@ -2178,7 +2228,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Send SendHeartbeatStarted Event...
 
-                    var StartTime = DateTime.UtcNow;
+                    var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
                     SendHeartbeatStartedEvent?.Invoke(this,
                                                       StartTime,
@@ -2192,7 +2242,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                Transaction_Id.Random(),
 
                                                                                null,
-                                                                               DateTime.UtcNow,
+                                                                               org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                                new CancellationTokenSource().Token,
                                                                                EventTracking_Id.New,
                                                                                DefaultRequestTimeout).
@@ -2200,7 +2250,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Send SendHeartbeatFinished Event...
 
-                    var EndTime = DateTime.UtcNow;
+                    var EndTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
                     SendHeartbeatFinishedEvent?.Invoke(this,
                                                        StartTime,
@@ -2224,7 +2274,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 DebugX.LogT(GetType().Name + ".SendHeartbeat '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
 
-                //OnWWCPCPOAdapterException?.Invoke(DateTime.UtcNow,
+                //OnWWCPCPOAdapterException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                 //                                  this,
                 //                                  e);
 
@@ -2341,7 +2391,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 //if (EVSEsToAddTask.Result.Warnings.Any())
                 //{
 
-                //    SendOnWarnings(DateTime.UtcNow,
+                //    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                 //                   nameof(WWCPCPOAdapter) + Id,
                 //                   "EVSEsToAddTask",
                 //                   EVSEsToAddTask.Result.Warnings);
@@ -2375,7 +2425,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     //if (PushEVSEDataTask.Result.Warnings.Any())
                     //{
 
-                    //    SendOnWarnings(DateTime.UtcNow,
+                    //    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                     //                   nameof(WWCPCPOAdapter) + Id,
                     //                   "PushEVSEDataTask",
                     //                   PushEVSEDataTask.Result.Warnings);
@@ -2396,7 +2446,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var pushEVSEAdminStatusResult = await SetEVSEAvailabilityStatus(evseAdminStatusChangesDelayedQueueCopy,
 
-                                                                                DateTime.UtcNow,
+                                                                                org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                                 new CancellationTokenSource().Token,
                                                                                 EventTrackingId,
                                                                                 DefaultRequestTimeout).
@@ -2405,7 +2455,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (pushEVSEAdminStatusResult.Warnings.Any())
                 {
 
-                    SendOnWarnings(DateTime.UtcNow,
+                    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                    nameof(WWCPCPOAdapter) + Id,
                                    "SetEVSEAvailabilityStatus",
                                    pushEVSEAdminStatusResult.Warnings);
@@ -2424,7 +2474,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var pushEVSEStatusResult = await SetEVSEBusyStatus(evseStatusChangesDelayedQueueCopy,
 
-                                                                   DateTime.UtcNow,
+                                                                   org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                    new CancellationTokenSource().Token,
                                                                    EventTrackingId,
                                                                    DefaultRequestTimeout).
@@ -2433,7 +2483,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (pushEVSEStatusResult.Warnings.Any())
                 {
 
-                    SendOnWarnings(DateTime.UtcNow,
+                    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                    nameof(WWCPCPOAdapter) + Id,
                                    "SetEVSEBusyStatus",
                                    pushEVSEStatusResult.Warnings);
@@ -2463,7 +2513,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     //if (EVSEsToRemoveTask.Result.Warnings.Any())
                     //{
 
-                    //    SendOnWarnings(DateTime.UtcNow,
+                    //    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                     //                   nameof(WWCPCPOAdapter) + Id,
                     //                   "EVSEsToRemoveTask",
                     //                   EVSEsToRemoveTask.Result.Warnings);
@@ -2544,7 +2594,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var pushEVSEAdminStatusResult = await SetEVSEAvailabilityStatus(EVSEAdminStatusFastQueueCopy,
 
-                                                                                DateTime.UtcNow,
+                                                                                org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                                 new CancellationTokenSource().Token,
                                                                                 EventTrackingId,
                                                                                 DefaultRequestTimeout).
@@ -2553,7 +2603,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (pushEVSEAdminStatusResult.Warnings.Any())
                 {
 
-                    SendOnWarnings(DateTime.UtcNow,
+                    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                    nameof(WWCPCPOAdapter) + Id,
                                    "SetEVSEAvailabilityStatus",
                                    pushEVSEAdminStatusResult.Warnings);
@@ -2571,7 +2621,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var pushEVSEStatusResult = await SetEVSEBusyStatus(EVSEStatusFastQueueCopy,
 
-                                                                   DateTime.UtcNow,
+                                                                   org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                                    new CancellationTokenSource().Token,
                                                                    EventTrackingId,
                                                                    DefaultRequestTimeout).
@@ -2580,7 +2630,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (pushEVSEStatusResult.Warnings.Any())
                 {
 
-                    SendOnWarnings(DateTime.UtcNow,
+                    SendOnWarnings(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                    nameof(WWCPCPOAdapter) + Id,
                                    "SetEVSEBusyStatus",
                                    pushEVSEStatusResult.Warnings);
@@ -2603,8 +2653,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         protected override async Task FlushChargeDetailRecordsQueues(IEnumerable<ChargeDetailRecord> ChargeDetailRecords)
         {
 
-            HTTPResponse<SetChargeDetailRecordResponse> response;
-            SendCDRResult                               result;
+            HTTPResponse<SetChargeDetailRecordResponse>  response;
+            SendCDRResult                                result;
 
             foreach (var chargeDetailRecord in ChargeDetailRecords)
             {
@@ -2618,38 +2668,47 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                       Transaction_Id.Random(),
 
                                                                       null,
-                                                                      DateTime.UtcNow,
+                                                                      Timestamp.Now,
                                                                       new CancellationTokenSource().Token,
                                                                       EventTracking_Id.New,
                                                                       DefaultRequestTimeout);
 
                     if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
-                        response.Content               != null              &&
+                        response.Content               is not null          &&
                         response.Content.RequestStatus == RequestStatus.Ok)
                     {
 
-                        result = SendCDRResult.Success(DateTime.UtcNow,
-                                                       chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                       Runtime: response.Runtime);
+                        result = SendCDRResult.Success(
+                                     Timestamp.Now,
+                                     Id,
+                                     chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                     Runtime: response.Runtime
+                                 );
 
                     }
 
                     else
-                        result = SendCDRResult.Error(DateTime.UtcNow,
-                                                     chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                     Warning.Create(I18NString.Create(Languages.en, response.HTTPBodyAsUTF8String)),
-                                                     Runtime: response.Runtime);
+                        result = SendCDRResult.Error(
+                                     Timestamp.Now,
+                                     Id,
+                                     chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                     Warning.Create(response.HTTPBodyAsUTF8String),
+                                     Runtime: response.Runtime
+                                 );
 
                 }
                 catch (Exception e)
                 {
-                    result = SendCDRResult.CouldNotConvertCDRFormat(DateTime.UtcNow,
-                                                                    chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                                                    Warning.Create(I18NString.Create(Languages.en, e.Message)),
-                                                                    Runtime: TimeSpan.Zero);
+                    result = SendCDRResult.CouldNotConvertCDRFormat(
+                                 Timestamp.Now,
+                                 Id,
+                                 chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                 Warning.Create(e.Message),
+                                 Runtime: TimeSpan.Zero
+                             );
                 }
 
-                RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.ServiceSessionId.ToWWCP(), result);
+                await RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.ServiceSessionId.ToWWCP(), result);
 
             }
 

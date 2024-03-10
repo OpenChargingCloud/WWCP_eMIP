@@ -1852,6 +1852,38 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         #endregion
 
 
+        #region SendChargeDetailRecord (ChargeDetailRecord,  TransmissionType = Enqueue, ...)
+
+        /// <summary>
+        /// Send a charge detail record to an eMIP server.
+        /// </summary>
+        /// <param name="ChargeDetailRecord">A charge detail record.</param>
+        /// <param name="TransmissionType">Whether to send the CDR directly or enqueue it for a while.</param>
+        /// 
+        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
+        /// <param name="RequestTimeout">An optional timeout for this request.</param>
+        /// <param name="CancellationToken">An optional token to cancel this request.</param>
+        public async Task<SendCDRResult>
+
+            SendChargeDetailRecord(WWCP.ChargeDetailRecord  ChargeDetailRecord,
+                                   TransmissionTypes        TransmissionType    = TransmissionTypes.Enqueue,
+
+                                   DateTime?                Timestamp           = null,
+                                   EventTracking_Id?        EventTrackingId     = null,
+                                   TimeSpan?                RequestTimeout      = null,
+                                   CancellationToken        CancellationToken   = default)
+
+            => (await SendChargeDetailRecords(
+                      [ ChargeDetailRecord ],
+                      TransmissionType,
+                      Timestamp,
+                      EventTrackingId,
+                      RequestTimeout,
+                      CancellationToken)).First();
+
+        #endregion
+
         #region SendChargeDetailRecords(ChargeDetailRecords, TransmissionType = Enqueue, ...)
 
         /// <summary>
@@ -1906,7 +1938,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                             org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                             Id,
                             cdr,
-                            Warning.Create("This charge detail record was filtered!")
+                            Warnings: Warnings.Create("This charge detail record was filtered!")
                         )
                     );
 
@@ -2024,7 +2056,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                             org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                             Id,
                                             chargeDetailRecord,
-                                            Warning.Create(e.Message)
+                                            Warnings: Warnings.Create(e.Message)
                                         )
                                     );
                                 }
@@ -2093,7 +2125,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                      org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
                                                      Id,
                                                      chargeDetailRecord,
-                                                     Warning.Create(response.HTTPBodyAsUTF8String)
+                                                     Warnings: Warnings.Create(response.HTTPBodyAsUTF8String)
                                                  );
 
                                 }
@@ -2692,8 +2724,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                      Timestamp.Now,
                                      Id,
                                      chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                     Warning.Create(response.HTTPBodyAsUTF8String),
-                                     Runtime: response.Runtime
+                                     Warnings: Warnings.Create(response.HTTPBodyAsUTF8String),
+                                     Runtime:  response.Runtime
                                  );
 
                 }
@@ -2703,8 +2735,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                  Timestamp.Now,
                                  Id,
                                  chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                 Warning.Create(e.Message),
-                                 Runtime: TimeSpan.Zero
+                                 Warnings: Warnings.Create(e.Message),
+                                 Runtime:  TimeSpan.Zero
                              );
                 }
 
@@ -2936,7 +2968,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         public override String ToString()
 
-            => "eMIP" + Version.Number + " CPO Adapter " + Id;
+            => $"eMIP{Version.Number} CPO Adapter {Id}";
 
         #endregion
 

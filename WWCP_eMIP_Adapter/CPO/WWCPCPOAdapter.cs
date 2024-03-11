@@ -511,7 +511,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     if (response.Session is not null)
                     {
 
-                        await RoamingNetwork.SessionsStore.UpdateSessionDetails(
+                        await RoamingNetwork.SessionsStore.UpdateSession(
                                   response.Session.Id,
                                   session => {
 

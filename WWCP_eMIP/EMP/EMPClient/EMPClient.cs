@@ -344,32 +344,32 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="LoggingContext">An optional context for logging.</param>
         /// <param name="LogfileCreator">A delegate to create a log file from the given context and log file name.</param>
         /// <param name="DNSClient">The DNS client to use.</param>
-        public EMPClient(URL?                                 RemoteURL                    = null,
-                         HTTPHostname?                        VirtualHostname              = null,
-                         String?                              Description                  = null,
-                         Boolean?                             PreferIPv4                   = null,
-                         RemoteCertificateValidationHandler?  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionHandler?    ClientCertificateSelector    = null,
-                         X509Certificate?                     ClientCert                   = null,
-                         SslProtocols?                        TLSProtocol                  = null,
-                         String                               HTTPUserAgent                = DefaultHTTPUserAgent,
-                         IHTTPAuthentication?                 HTTPAuthentication           = null,
-                         TimeSpan?                            RequestTimeout               = null,
-                         TransmissionRetryDelayDelegate?      TransmissionRetryDelay       = null,
-                         UInt16?                              MaxNumberOfRetries           = null,
-                         UInt32?                              InternalBufferSize           = null,
-                         Boolean?                             DisableLogging               = false,
-                         String?                              LoggingPath                  = null,
-                         String?                              LoggingContext               = Logger.DefaultContext,
-                         LogfileCreatorDelegate?              LogfileCreator               = null,
-                         DNSClient?                           DNSClient                    = null)
+        public EMPClient(URL?                                                       RemoteURL                    = null,
+                         HTTPHostname?                                              VirtualHostname              = null,
+                         String?                                                    Description                  = null,
+                         Boolean?                                                   PreferIPv4                   = null,
+                         RemoteTLSServerCertificateValidationHandler<IHTTPClient>?  RemoteCertificateValidator   = null,
+                         LocalCertificateSelectionHandler?                          LocalCertificateSelector    = null,
+                         X509Certificate?                                           ClientCert                   = null,
+                         SslProtocols?                                              TLSProtocol                  = null,
+                         String                                                     HTTPUserAgent                = DefaultHTTPUserAgent,
+                         IHTTPAuthentication?                                       HTTPAuthentication           = null,
+                         TimeSpan?                                                  RequestTimeout               = null,
+                         TransmissionRetryDelayDelegate?                            TransmissionRetryDelay       = null,
+                         UInt16?                                                    MaxNumberOfRetries           = null,
+                         UInt32?                                                    InternalBufferSize           = null,
+                         Boolean?                                                   DisableLogging               = false,
+                         String?                                                    LoggingPath                  = null,
+                         String?                                                    LoggingContext               = Logger.DefaultContext,
+                         LogfileCreatorDelegate?                                    LogfileCreator               = null,
+                         DNSClient?                                                 DNSClient                    = null)
 
             : base(RemoteURL     ?? URL.Parse("???"),
                    VirtualHostname,
                    Description,
                    PreferIPv4,
                    RemoteCertificateValidator,
-                   ClientCertificateSelector,
+                   LocalCertificateSelector,
                    ClientCert,
                    TLSProtocol,
                    HTTPUserAgent ?? DefaultHTTPUserAgent,
@@ -389,10 +389,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         {
 
             base.HTTPLogger  = this.DisableLogging == false
-                                   ? new Logger(this,
-                                                LoggingPath,
-                                                LoggingContext,
-                                                LogfileCreator)
+                                   ? new Logger(
+                                         this,
+                                         LoggingPath,
+                                         LoggingContext,
+                                         LogfileCreator
+                                     )
                                    : null;
 
         }
@@ -467,7 +469,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                         Description,
                                                         PreferIPv4,
                                                         RemoteCertificateValidator,
-                                                        ClientCertificateSelector,
+                                                        LocalCertificateSelector,
                                                         ClientCert,
                                                         TLSProtocol,
                                                         HTTPUserAgent,
@@ -726,7 +728,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                         Description,
                                                         PreferIPv4,
                                                         RemoteCertificateValidator,
-                                                        ClientCertificateSelector,
+                                                        LocalCertificateSelector,
                                                         ClientCert,
                                                         TLSProtocol,
                                                         HTTPUserAgent,
@@ -1000,7 +1002,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                         Description,
                                                         PreferIPv4,
                                                         RemoteCertificateValidator,
-                                                        ClientCertificateSelector,
+                                                        LocalCertificateSelector,
                                                         ClientCert,
                                                         TLSProtocol,
                                                         HTTPUserAgent,

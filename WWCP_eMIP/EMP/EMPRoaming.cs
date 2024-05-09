@@ -80,7 +80,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <summary>
         /// The remote TLS certificate validator.
         /// </summary>
-        RemoteCertificateValidationHandler?  IHTTPClient.RemoteCertificateValidator
+        RemoteTLSServerCertificateValidationHandler<IHTTPClient>?  IHTTPClient.RemoteCertificateValidator
             => EMPClient.RemoteCertificateValidator;
 
         /// <summary>

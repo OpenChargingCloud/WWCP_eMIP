@@ -2140,9 +2140,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 }
 
                                 SendCDRsResults.Add(result);
-                                await RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.SessionId, result);
+                                //await RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.SessionId, result);
 
                             }
+
+                            await RoamingNetwork.ReceiveSendChargeDetailRecordResults(SendCDRsResults);
 
                             Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
                             Runtime  = Endtime - StartTime;
@@ -2740,7 +2742,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                              );
                 }
 
-                await RoamingNetwork.SessionsStore.CDRForwarded(chargeDetailRecord.ServiceSessionId.ToWWCP(), result);
+                await RoamingNetwork.ReceiveSendChargeDetailRecordResult(result);
 
             }
 

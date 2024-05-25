@@ -288,18 +288,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                            SalesPartnerSessionId:   null,//ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
                            SalesPartnerOperatorId:  null,
                            PartnerProductId:        ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
-                           MeterReports:            new MeterReport[] {
-                                                        MeterReport.Create(ChargeDetailRecord.Duration.HasValue
-                                                                               ?  ChargeDetailRecord.Duration.Value.TotalMinutes.ToString("0.##").Replace(',', '.')
-                                                                               : (ChargeDetailRecord.EnergyMeteringValues.Last().Timestamp - ChargeDetailRecord.EnergyMeteringValues.First().Timestamp).TotalMinutes.ToString("0.##").Replace(',', '.'),
-                                                                           "min",
-                                                                           MeterTypes.TotalDuration),
-                                                        MeterReport.Create(ChargeDetailRecord.ConsumedEnergy.HasValue
-                                                                               ?  ChargeDetailRecord.ConsumedEnergy.Value.ToString("0.##").Replace(',', '.')
-                                                                               : (ChargeDetailRecord.EnergyMeteringValues.Last().Value - ChargeDetailRecord.EnergyMeteringValues.First().Value).ToString("0.##").Replace(',', '.'),
-                                                                           "kWh",
-                                                                           MeterTypes.TotalEnergy),
-                                                    },
+                           MeterReports:            [
+                                                        MeterReport.Create(
+                                                            ChargeDetailRecord.Duration.HasValue
+                                                                ?  ChargeDetailRecord.Duration.Value.TotalMinutes.ToString("0.##").Replace(',', '.')
+                                                                : (ChargeDetailRecord.EnergyMeteringValues.Last().Timestamp - ChargeDetailRecord.EnergyMeteringValues.First().Timestamp).TotalMinutes.ToString("0.##").Replace(',', '.'),
+                                                            "min",
+                                                            MeterTypes.TotalDuration
+                                                        ),
+                                                        MeterReport.Create(
+                                                            ChargeDetailRecord.ConsumedEnergy.HasValue
+                                                                ?  ChargeDetailRecord.ConsumedEnergy.Value.kWh.ToString("0.##").Replace(',', '.')
+                                                                : (ChargeDetailRecord.EnergyMeteringValues.Last().WattHours - ChargeDetailRecord.EnergyMeteringValues.First().WattHours).kWh.ToString("0.##").Replace(',', '.'),
+                                                            "kWh",
+                                                            MeterTypes.TotalEnergy
+                                                        ),
+                                                    ],
                            InternalData:            new UserDefinedDictionary(
                                                         new Dictionary<String, Object?> {
                                                             { WWCP_CDR, ChargeDetailRecord }

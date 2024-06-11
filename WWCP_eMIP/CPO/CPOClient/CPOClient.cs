@@ -3692,9 +3692,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
-                                                                                                   SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer,
-                                                                                                                                    CustomChargeDetailRecordSerializer,
-                                                                                                                                    CustomMeterReportSerializer))),
+                                                                                                  SOAP.Encapsulation(Request.ToXML(CustomSetChargeDetailRecordRequestSerializer,
+                                                                                                                                   CustomChargeDetailRecordSerializer,
+                                                                                                                                   CustomMeterReportSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargeDetailRecordV1/",
                                                      RequestLogDelegate:   OnSetChargeDetailRecordSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargeDetailRecordSOAPResponse,
@@ -3800,7 +3800,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-               if (result == null)
+               if (result is null)
                     result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
                                  new SetChargeDetailRecordResponse(
                                      Request,

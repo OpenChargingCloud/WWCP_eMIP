@@ -18,6 +18,7 @@
 #region Usings
 
 using System.Xml.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
@@ -213,54 +214,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        #region (static) Parse   (SetSessionActionRequestText, ..., OnException = null)
-
-        /// <summary>
-        /// Parse the given text representation of an eMIP SetSessionAction request.
-        /// </summary>
-        /// <param name="SetSessionActionRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
-        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        /// 
-        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
-        /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        public static SetSessionActionRequestRequest? Parse(String                                                    SetSessionActionRequestText,
-                                                            CustomXMLParserDelegate<SetSessionActionRequestRequest>?  CustomSendSetSessionActionRequestParser   = null,
-                                                            CustomXMLParserDelegate<SessionAction>?                   CustomSessionActionParser                 = null,
-                                                            OnExceptionDelegate?                                      OnException                               = null,
-
-                                                            HTTPRequest?                                              HTTPRequest                               = null,
-                                                            DateTime?                                                 Timestamp                                 = null,
-                                                            EventTracking_Id?                                         EventTrackingId                           = null,
-                                                            TimeSpan?                                                 RequestTimeout                            = null,
-                                                            CancellationToken                                         CancellationToken                         = default)
-        {
-
-            if (TryParse(SetSessionActionRequestText,
-                         out var setSessionActionRequest,
-                         CustomSendSetSessionActionRequestParser,
-                         CustomSessionActionParser,
-                         OnException,
-
-                         HTTPRequest,
-                         Timestamp,
-                         EventTrackingId,
-                         RequestTimeout,
-                         CancellationToken))
-            {
-                return setSessionActionRequest;
-            }
-
-            return null;
-
-        }
-
-        #endregion
-
         #region (static) TryParse(SetSessionActionRequestXML,  ..., out SetSessionActionRequest, OnException = null)
 
         /// <summary>
@@ -278,7 +231,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         public static Boolean TryParse(XElement                                                  SetSessionActionRequestXML,
-                                       out SetSessionActionRequestRequest?                       SetSessionActionRequest,
+                                       [NotNullWhen(true)] out SetSessionActionRequestRequest?   SetSessionActionRequest,
                                        CustomXMLParserDelegate<SetSessionActionRequestRequest>?  CustomSendSetSessionActionRequestParser   = null,
                                        CustomXMLParserDelegate<SessionAction>?                   CustomSessionActionParser                 = null,
                                        OnExceptionDelegate?                                      OnException                               = null,
@@ -342,66 +295,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 return false;
 
             }
-
-        }
-
-        #endregion
-
-        #region (static) TryParse(SetSessionActionRequestText, ..., out SetSessionActionRequest, OnException = null)
-
-        /// <summary>
-        /// Try to parse the given text representation of an eMIP SetSessionAction request.
-        /// </summary>
-        /// <param name="SetSessionActionRequestText">The text to parse.</param>
-        /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
-        /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
-        /// <param name="SetSessionActionRequest">The parsed SetSessionAction request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
-        /// 
-        /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
-        /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
-        /// <param name="RequestTimeout">An optional timeout for this request.</param>
-        public static Boolean TryParse(String                                                    SetSessionActionRequestText,
-                                       out SetSessionActionRequestRequest?                       SetSessionActionRequest,
-                                       CustomXMLParserDelegate<SetSessionActionRequestRequest>?  CustomSendSetSessionActionRequestParser   = null,
-                                       CustomXMLParserDelegate<SessionAction>?                   CustomSessionActionParser                 = null,
-                                       OnExceptionDelegate?                                      OnException                               = null,
-
-                                       HTTPRequest?                                              HTTPRequest                               = null,
-                                       DateTime?                                                 Timestamp                                 = null,
-                                       EventTracking_Id?                                         EventTrackingId                           = null,
-                                       TimeSpan?                                                 RequestTimeout                            = null,
-                                       CancellationToken                                         CancellationToken                         = default)
-        {
-
-            try
-            {
-
-                if (TryParse(XDocument.Parse(SetSessionActionRequestText).Root,
-                             out SetSessionActionRequest,
-                             CustomSendSetSessionActionRequestParser,
-                             CustomSessionActionParser,
-                             OnException,
-
-                             HTTPRequest,
-                             Timestamp,
-                             EventTrackingId,
-                             RequestTimeout,
-                             CancellationToken))
-                {
-                    return true;
-                }
-
-            }
-            catch (Exception e)
-            {
-                OnException?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now, SetSessionActionRequestText, e);
-            }
-
-            SetSessionActionRequest = null;
-            return false;
 
         }
 

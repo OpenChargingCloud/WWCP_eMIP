@@ -18,6 +18,7 @@
 #region Usings
 
 using System.Xml.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
@@ -294,7 +295,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
         public static Boolean TryParse(XElement                                                  SetServiceAuthorisationRequestXML,
-                                       out SetServiceAuthorisationRequest?                       SetServiceAuthorisationRequest,
+                                       [NotNullWhen(true)] out SetServiceAuthorisationRequest?   SetServiceAuthorisationRequest,
                                        CustomXMLParserDelegate<SetServiceAuthorisationRequest>?  CustomSendSetServiceAuthorisationRequestParser   = null,
                                        CustomXMLParserDelegate<MeterReport>?                     CustomMeterReportParser                          = null,
                                        OnExceptionDelegate?                                      OnException                                      = null,
@@ -386,43 +387,43 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             var xml = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest",
 
                           TransactionId.HasValue
-                              ? new XElement("transactionId",         TransactionId.          ToString())
+                              ? new XElement("transactionId",              TransactionId.          ToString())
                               : null,
 
-                          new XElement("partnerIdType",               PartnerId.Format.       AsText()),
-                          new XElement("partnerId",                   PartnerId.              ToString()),
+                                new XElement("partnerIdType",              PartnerId.Format.       AsText()),
+                                new XElement("partnerId",                  PartnerId.              ToString()),
 
-                          new XElement("operatorIdType",              OperatorId.Format.      AsText()),
-                          new XElement("operatorId",                  OperatorId.             ToString()),
+                                new XElement("operatorIdType",             OperatorId.Format.      AsText()),
+                                new XElement("operatorId",                 OperatorId.             ToString()),
 
-                          new XElement("targetOperatorIdType",        TargetOperatorId.Format.AsText()),
-                          new XElement("targetOperatorId",            TargetOperatorId.       ToString()),
+                                new XElement("targetOperatorIdType",       TargetOperatorId.Format.AsText()),
+                                new XElement("targetOperatorId",           TargetOperatorId.       ToString()),
 
-                          new XElement("EVSEIdType",                  EVSEId.Format.          AsText()),
-                          new XElement("EVSEId",                      EVSEId.                 ToString()),
+                                new XElement("EVSEIdType",                 EVSEId.Format.          AsText()),
+                                new XElement("EVSEId",                     EVSEId.                 ToString()),
 
-                          new XElement("userIdType",                  UserId.Format.          AsText()),
-                          new XElement("userId",                      UserId.                 ToString()),
+                                new XElement("userIdType",                 UserId.Format.          AsText()),
+                                new XElement("userId",                     UserId.                 ToString()),
 
-                          new XElement("requestedServiceId",          RequestedServiceId.     ToString()),
-                          new XElement("serviceSessionId",            ServiceSessionId.       ToString()),
-                          new XElement("authorisationValue",          AuthorisationValue.     ToString()),
-                          new XElement("intermediateCDRRequested",    IntermediateCDRRequested ? "1" : "0"),
+                                new XElement("requestedServiceId",         RequestedServiceId.     ToString()),
+                                new XElement("serviceSessionId",           ServiceSessionId.       ToString()),
+                                new XElement("authorisationValue",         AuthorisationValue.     AsText()),
+                                new XElement("intermediateCDRRequested",   IntermediateCDRRequested ? "1" : "0"),
 
                           UserContractIdAlias.HasValue
-                              ? new XElement("userContractIdAlias",   UserContractIdAlias.    ToString())
+                              ? new XElement("userContractIdAlias",        UserContractIdAlias.    ToString())
                               : null,
 
                           MeterLimits.Any()
-                              ? new XElement("meterLimitList",        MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer)))
+                              ? new XElement("meterLimitList",             MeterLimits.Select(meterreport => meterreport.ToXML(CustomMeterReportSerializer: CustomMeterReportSerializer)))
                               : null,
 
                           Parameter.IsNotNullOrEmpty()
-                              ? new XElement("parameter",             Parameter)
+                              ? new XElement("parameter",                  Parameter)
                               : null,
 
                           BookingId.HasValue
-                              ? new XElement("bookingId",             BookingId.              ToString())
+                              ? new XElement("bookingId",                  BookingId.              ToString())
                               : null
 
                       );

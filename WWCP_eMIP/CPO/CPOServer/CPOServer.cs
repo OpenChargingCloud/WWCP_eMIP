@@ -372,11 +372,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     }
 
                     //"Could not forward the incoming SetServiceAuthorisation request!",
-                    if (Response is null)
-                        Response = SetServiceAuthorisationResponse.SystemError(
-                                       setServiceAuthorisationRequest,
-                                       setServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
-                                   );
+                    Response ??= SetServiceAuthorisationResponse.SystemError(
+                                     setServiceAuthorisationRequest,
+                                     setServiceAuthorisationRequest.TransactionId ?? Transaction_Id.Zero
+                                 );
 
                     #endregion
 

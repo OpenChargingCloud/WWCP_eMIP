@@ -183,6 +183,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         }
 
 
+        //public static EMobilityAccount_Id ToWWCP(this Contract_Id ContractId)
+        //    => EMobilityAccount_Id.Parse(ContractId.ToString());
+
+        public static Contract_Id ToEMIP(this EMobilityAccount_Id EMobilityAccountId)
+            => Contract_Id.Parse(EMobilityAccountId.ToString());
+
+
         public static ServiceSession_Id ToEMIP(this ChargingSession_Id ChargingSessionId)
             => ServiceSession_Id.Parse(ChargingSessionId.ToString());
 
@@ -221,6 +228,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             return null;
 
+        }
+
+        public static RemoteAuthentication ToWWCP(this Contract_Id ContractId)
+        {
+            return RemoteAuthentication.FromRemoteIdentification(EMobilityAccount_Id.Parse(ContractId.ToString()));
         }
 
 

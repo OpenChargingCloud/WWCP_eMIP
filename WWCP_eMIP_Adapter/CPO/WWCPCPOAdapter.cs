@@ -493,11 +493,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              RemoteStart(this,
                                                          ChargingLocation.FromEVSEId(evseId.Value),
                                                          chargingProduct,
-                                                         null,                                  // ReservationId
-                                                         Request.ServiceSessionId.ToWWCP(),
-                                                         Request.OperatorId.      ToWWCP_ProviderId(),
-                                                         Request.UserId.          ToWWCP(),
-                                                         WWCP.Auth_Path.Parse(Id.ToString()),   // Authentication path == CSO Roaming Provider identification!
+                                                         null,                               // ReservationId
+                                                         Request.ServiceSessionId.    ToWWCP(),
+                                                         Request.OperatorId.          ToWWCP_ProviderId(),
+                                                         Request.UserContractIdAlias?.ToWWCP()
+                                                             ?? Request.UserId.       ToWWCP(),
+                                                         Auth_Path.Parse(Id.ToString()),     // Authentication path == CSO Roaming Provider identification!
 
                                                          Request.Timestamp,
                                                          Request.EventTrackingId,

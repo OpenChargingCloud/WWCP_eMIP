@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-#region Usings
-
-using System;
-
-#endregion
-
 namespace cloud.charging.open.protocols.eMIPv0_7_4
 {
 
@@ -94,23 +88,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="RemoteStartStopValue">An remote start/stop value.</param>
         public static String AsText(this RemoteStartStopValues RemoteStartStopValue)
-        {
 
-            switch (RemoteStartStopValue)
-            {
-
-                case RemoteStartStopValues.Start:
-                    return "1";
-
-                case RemoteStartStopValues.Stop:
-                    return "2";
-
-                default:
-                    return "undefined";
-
-            }
-
-        }
+            => RemoteStartStopValue switch {
+                   RemoteStartStopValues.Start  => "1",
+                   RemoteStartStopValues.Stop   => "2",
+                   _                            => "undefined",
+               };
 
         #endregion
 
@@ -121,23 +104,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="RemoteStartStopValue">An remote start/stop value.</param>
         public static Byte AsNumber(this RemoteStartStopValues RemoteStartStopValue)
-        {
 
-            switch (RemoteStartStopValue)
-            {
-
-                case RemoteStartStopValues.Start:
-                    return 1;
-
-                case RemoteStartStopValues.Stop:
-                    return 2;
-
-                default:
-                    return 0;
-
-            }
-
-        }
+            => RemoteStartStopValue switch {
+                   RemoteStartStopValues.Start  => 1,
+                   RemoteStartStopValues.Stop   => 2,
+                   _                            => 0,
+               };
 
         #endregion
 

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using org.GraphDefined.Vanaheimr.Illias;
 //using WWCP = cloud.charging.open.protocols.WWCP;
 using cloud.charging.open.protocols.WWCP;
+using System.Runtime.CompilerServices;
 
 #endregion
 
@@ -270,9 +271,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         }
 
+        public static Contract_Id? ToContractId(this AAuthentication Authentication)
+        {
+
+            // Might be a DIN or ISO!!!
+            if (Authentication.RemoteIdentification.HasValue)
+                return Contract_Id.Parse(Authentication.RemoteIdentification.Value.ToString());
+
+            return null;
+
+        }
 
 
-        #region ToEMIP(this ChargeDetailRecord, WWCPChargeDetailRecord2ChargeDetailRecord = null)
+        #region ToEMIP(this ChargeDetailRecord, ChargingSession = null, WWCPChargeDetailRecord2ChargeDetailRecord = null)
 
         public static String WWCP_CDR = "WWCP.CDR";
 
@@ -280,52 +291,62 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Convert a WWCP charge detail record into a corresponding eMIP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecord">A WWCP charge detail record.</param>
+        /// <param name="ChargingSession">The optional charging session.</param>
         /// <param name="WWCPChargeDetailRecord2ChargeDetailRecord">A delegate which allows you to modify the convertion from WWCP charge detail records to eMIP charge detail records.</param>
-        public static ChargeDetailRecord ToEMIP(this WWCP.ChargeDetailRecord                           ChargeDetailRecord,
-                                                CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate  WWCPChargeDetailRecord2ChargeDetailRecord = null)
+        public static ChargeDetailRecord ToEMIP(this WWCP.ChargeDetailRecord                            ChargeDetailRecord,
+                                                WWCP.ChargingSession?                                   ChargingSession                             = null,
+                                                CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate?  WWCPChargeDetailRecord2ChargeDetailRecord   = null)
 
         {
 
-            var CDR  = new ChargeDetailRecord(
-                           CDRNature:               CDRNatures.Final,
-                           ServiceSessionId:        ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
-                           RequestedServiceId:      Service_Id.GenericChargeService,
-                           EVSEId:                  ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
-                           UserId:                  ChargeDetailRecord.AuthenticationStart.ToEMIP().Value,
-                           StartTime:               ChargeDetailRecord.SessionTime.StartTime,
-                           EndTime:                 ChargeDetailRecord.SessionTime.EndTime.Value,
-                           UserContractIdAlias:     null,
-                           ExecPartnerSessionId:    null,
-                           ExecPartnerOperatorId:   null,
-                           SalesPartnerSessionId:   null,//ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
-                           SalesPartnerOperatorId:  null,
-                           PartnerProductId:        ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
-                           MeterReports:            [
-                                                        MeterReport.Create(
-                                                            ChargeDetailRecord.Duration.HasValue
-                                                                ?  ChargeDetailRecord.Duration.Value.TotalMinutes.ToString("0.##").Replace(',', '.')
-                                                                : (ChargeDetailRecord.EnergyMeteringValues.Last().Timestamp - ChargeDetailRecord.EnergyMeteringValues.First().Timestamp).TotalMinutes.ToString("0.##").Replace(',', '.'),
-                                                            "min",
-                                                            MeterTypes.TotalDuration
-                                                        ),
-                                                        MeterReport.Create(
-                                                            ChargeDetailRecord.ConsumedEnergy.HasValue
-                                                                ?  ChargeDetailRecord.ConsumedEnergy.Value.kWh.ToString("0.##").Replace(',', '.')
-                                                                : (ChargeDetailRecord.EnergyMeteringValues.Last().WattHours - ChargeDetailRecord.EnergyMeteringValues.First().WattHours).kWh.ToString("0.##").Replace(',', '.'),
-                                                            "kWh",
-                                                            MeterTypes.TotalEnergy
-                                                        ),
-                                                    ],
-                           InternalData:            new UserDefinedDictionary(
-                                                        new Dictionary<String, Object?> {
-                                                            { WWCP_CDR, ChargeDetailRecord }
-                                                        }
-                                                    ));
+            // We store the eMIP userId/userIdType only within the additional session data!
+            var _userId      = ChargingSession?.GetInternalData("eMIP.UserId")     as String;
+            var _userIdType  = ChargingSession?.GetInternalData("eMIP.UserIdType") as String;
+            var userId       = (_userId.IsNotNullOrEmpty() && _userIdType.IsNotNullOrEmpty()
+                                    ? User_Id.TryParse(_userId, UserIdFormatsExtensions.Parse(_userIdType))
+                                    : null)
+                                   ?? ChargeDetailRecord.AuthenticationStart.ToEMIP();
+
+            var cdr          = new ChargeDetailRecord(
+                                   CDRNature:               CDRNatures.Final,
+                                   ServiceSessionId:        ServiceSession_Id.Parse(ChargeDetailRecord.SessionId.ToString()),
+                                   RequestedServiceId:      Service_Id.GenericChargeService,
+                                   EVSEId:                  ChargeDetailRecord.EVSEId.Value.ToEMIP().Value,
+                                   UserId:                  ChargeDetailRecord.AuthenticationStart.ToEMIP().Value,
+                                   StartTime:               ChargeDetailRecord.SessionTime.StartTime,
+                                   EndTime:                 ChargeDetailRecord.SessionTime.EndTime.Value,
+                                   UserContractIdAlias:     ChargeDetailRecord.AuthenticationStart.ToContractId().Value,
+                                   ExecPartnerSessionId:    null,
+                                   ExecPartnerOperatorId:   null,
+                                   SalesPartnerSessionId:   null,//ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),
+                                   SalesPartnerOperatorId:  null,
+                                   PartnerProductId:        ChargeDetailRecord.ChargingProduct?.Id.ToEMIP(),
+                                   MeterReports:            [
+                                                                MeterReport.Create(
+                                                                    ChargeDetailRecord.Duration.HasValue
+                                                                        ?  ChargeDetailRecord.Duration.Value.TotalMinutes.ToString("0.##").Replace(',', '.')
+                                                                        : (ChargeDetailRecord.EnergyMeteringValues.Last().Timestamp - ChargeDetailRecord.EnergyMeteringValues.First().Timestamp).TotalMinutes.ToString("0.##").Replace(',', '.'),
+                                                                    "min",
+                                                                    MeterTypes.TotalDuration
+                                                                ),
+                                                                MeterReport.Create(
+                                                                    ChargeDetailRecord.ConsumedEnergy.HasValue
+                                                                        ?  ChargeDetailRecord.ConsumedEnergy.Value.kWh.ToString("0.##").Replace(',', '.')
+                                                                        : (ChargeDetailRecord.EnergyMeteringValues.Last().WattHours - ChargeDetailRecord.EnergyMeteringValues.First().WattHours).kWh.ToString("0.##").Replace(',', '.'),
+                                                                    "kWh",
+                                                                    MeterTypes.TotalEnergy
+                                                                ),
+                                                            ],
+                                   InternalData:            new UserDefinedDictionary(
+                                                                new Dictionary<String, Object?> {
+                                                                    { WWCP_CDR, ChargeDetailRecord }
+                                                                }
+                                                            ));
 
             if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
-                CDR = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, CDR);
+                cdr = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, cdr);
 
-            return CDR;
+            return cdr;
 
         }
 

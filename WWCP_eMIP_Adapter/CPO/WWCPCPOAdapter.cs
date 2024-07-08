@@ -489,22 +489,26 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                    RequestStatus.EVSENotReachable
                                );
 
-                    var response = await RoamingNetwork.
-                                             RemoteStart(this,
-                                                         ChargingLocation.FromEVSEId(evseId.Value),
-                                                         chargingProduct,
-                                                         null,                               // ReservationId
-                                                         Request.ServiceSessionId.    ToWWCP(),
-                                                         Request.OperatorId.          ToWWCP_ProviderId(),
-                                                         Request.UserContractIdAlias?.ToWWCP()
-                                                             ?? Request.UserId.       ToWWCP(),
-                                                         Auth_Path.Parse(Id.ToString()),     // Authentication path == CSO Roaming Provider identification!
+                    var response = await RoamingNetwork.RemoteStart(
+                                             CSORoamingProvider:       this,
+                                             ChargingLocation:         ChargingLocation.FromEVSEId(evseId.Value),
+                                             ChargingProduct:          chargingProduct,
+                                             ReservationId:            null,
+                                             SessionId:                Request.ServiceSessionId.    ToWWCP(),
+                                             ProviderId:               Request.OperatorId.          ToWWCP_ProviderId(),
+                                             RemoteAuthentication:     Request.UserContractIdAlias?.ToWWCP()
+                                                                           ?? Request.UserId.       ToWWCP(),
+                                             AdditionalSessionInfos:   JSONObject.Create(
+                                                                           new JProperty("eMIP.userIdType",  Request.UserId.Format.AsText()),
+                                                                           new JProperty("eMIP.userId",      Request.UserId.       ToString())
+                                                                       ),
+                                             AuthenticationPath:       Auth_Path.Parse(Id.ToString()),  // CSO Roaming Provider identification!
 
-                                                         Request.Timestamp,
-                                                         Request.EventTrackingId,
-                                                         Request.RequestTimeout,
-                                                         Request.CancellationToken).
-                                             ConfigureAwait(false);
+                                             Timestamp:                Request.Timestamp,
+                                             EventTrackingId:          Request.EventTrackingId,
+                                             RequestTimeout:           Request.RequestTimeout,
+                                             CancellationToken:        Request.CancellationToken
+                                         ).ConfigureAwait(false);
 
 
                     #region Add additional Gireve session infos
@@ -2040,7 +2044,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 try
                                 {
 
-                                    chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord));
+                                    chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(
+                                                                     RoamingNetwork.GetChargingSessionById(chargeDetailRecord.SessionId),
+                                                                     WWCPChargeDetailRecord2eMIPChargeDetailRecord
+                                                                 ));
+
                                     SendCDRsResults.Add(
                                         SendCDRResult.Enqueued(
                                             org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
@@ -2098,7 +2106,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                     response = await CPORoaming.SetChargeDetailRecord(
                                                          PartnerId,
                                                          chargeDetailRecord.EVSEId.Value.OperatorId.ToEMIP(CustomOperatorIdMapper),
-                                                         chargeDetailRecord.ToEMIP(WWCPChargeDetailRecord2eMIPChargeDetailRecord),
+                                                         chargeDetailRecord.ToEMIP(
+                                                             RoamingNetwork.GetChargingSessionById(chargeDetailRecord.SessionId),
+                                                             WWCPChargeDetailRecord2eMIPChargeDetailRecord
+                                                         ),
                                                          Transaction_Id.Random(),
 
                                                          null,

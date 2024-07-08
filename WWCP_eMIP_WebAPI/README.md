@@ -10,7 +10,7 @@ on this protocol please visit http://www.gireve.com.
 
 ### Requirements & Configuration
 
-1. You need .NET 4.7+
+1. You need .NET8++
 
 ### Your participation
 

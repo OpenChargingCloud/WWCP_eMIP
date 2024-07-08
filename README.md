@@ -17,7 +17,7 @@ project has reached its end of life.
 
 ### Requirements & Configuration
 
-1. You need .NET6
+1. You need .NET8++
 
 ### Your participation
 

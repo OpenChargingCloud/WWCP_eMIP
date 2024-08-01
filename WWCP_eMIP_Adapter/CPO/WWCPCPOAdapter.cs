@@ -504,7 +504,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                        ),
                                              AuthenticationPath:       Auth_Path.Parse(Id.ToString()),  // CSO Roaming Provider identification!
 
-                                             Timestamp:                Request.Timestamp,
+                                             RequestTimestamp:         Request.Timestamp,
                                              EventTrackingId:          Request.EventTrackingId,
                                              RequestTimeout:           Request.RequestTimeout,
                                              CancellationToken:        Request.CancellationToken
@@ -1865,7 +1865,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="ChargeDetailRecord">A charge detail record.</param>
         /// <param name="TransmissionType">Whether to send the CDR directly or enqueue it for a while.</param>
         /// 
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="RequestTimestamp">The optional timestamp of the request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -1874,7 +1874,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             SendChargeDetailRecord(WWCP.ChargeDetailRecord  ChargeDetailRecord,
                                    TransmissionTypes        TransmissionType    = TransmissionTypes.Enqueue,
 
-                                   DateTime?                Timestamp           = null,
+                                   DateTime?                RequestTimestamp    = null,
                                    EventTracking_Id?        EventTrackingId     = null,
                                    TimeSpan?                RequestTimeout      = null,
                                    CancellationToken        CancellationToken   = default)
@@ -1882,7 +1882,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             => (await SendChargeDetailRecords(
                       [ ChargeDetailRecord ],
                       TransmissionType,
-                      Timestamp,
+                      RequestTimestamp,
                       EventTrackingId,
                       RequestTimeout,
                       CancellationToken)).First();
@@ -1897,7 +1897,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="ChargeDetailRecords">An enumeration of charge detail records.</param>
         /// <param name="TransmissionType">Whether to send the CDR directly or enqueue it for a while.</param>
         /// 
-        /// <param name="Timestamp">The optional timestamp of the request.</param>
+        /// <param name="RequestTimestamp">The optional timestamp of the request.</param>
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
@@ -1906,7 +1906,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             SendChargeDetailRecords(IEnumerable<WWCP.ChargeDetailRecord>  ChargeDetailRecords,
                                     TransmissionTypes                     TransmissionType,
 
-                                    DateTime?                             Timestamp,
+                                    DateTime?                             RequestTimestamp,
                                     EventTracking_Id?                     EventTrackingId,
                                     TimeSpan?                             RequestTimeout,
                                     CancellationToken                     CancellationToken)
@@ -1915,14 +1915,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (!Timestamp.HasValue)
-                Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
-
-            if (EventTrackingId == null)
-                EventTrackingId = EventTracking_Id.New;
-
-            if (!RequestTimeout.HasValue)
-                RequestTimeout = CPORoaming.CPOClient.RequestTimeout;
+            RequestTimestamp ??= Timestamp.Now;
+            EventTrackingId  ??= EventTracking_Id.New;
+            RequestTimeout   ??= CPORoaming.CPOClient.RequestTimeout;
 
             #endregion
 
@@ -1940,7 +1935,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 else
                     FilteredCDRs.Add(
                         SendCDRResult.Filtered(
-                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                            Timestamp.Now,
                             Id,
                             cdr,
                             Warnings: Warnings.Create("This charge detail record was filtered!")
@@ -1953,13 +1948,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnSendCDRsRequest event
 
-            var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+            var StartTime = Timestamp.Now;
 
             try
             {
 
                 OnSendCDRsRequest?.Invoke(StartTime,
-                                          Timestamp.Value,
+                                          RequestTimestamp.Value,
                                           this,
                                           Id.ToString(),
                                           EventTrackingId,
@@ -1985,9 +1980,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (DisableSendChargeDetailRecords)
             {
 
-                Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                Endtime  = Timestamp.Now;
                 Runtime  = Endtime - StartTime;
-                results  = SendCDRsResult.AdminDown(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                results  = SendCDRsResult.AdminDown(Timestamp.Now,
                                                     Id,
                                                     this,
                                                     ChargeDetailRecords,
@@ -2021,8 +2016,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                             try
                             {
 
-                                OnEnqueueSendCDRsRequest?.Invoke(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
-                                                                 Timestamp.Value,
+                                OnEnqueueSendCDRsRequest?.Invoke(Timestamp.Now,
+                                                                 RequestTimestamp.Value,
                                                                  this,
                                                                  Id.ToString(),
                                                                  EventTrackingId,
@@ -2051,7 +2046,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                     SendCDRsResults.Add(
                                         SendCDRResult.Enqueued(
-                                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                            Timestamp.Now,
                                             Id,
                                             chargeDetailRecord
                                         )
@@ -2062,7 +2057,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 {
                                     SendCDRsResults.Add(
                                         SendCDRResult.CouldNotConvertCDRFormat(
-                                            org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                            Timestamp.Now,
                                             Id,
                                             chargeDetailRecord,
                                             Warnings: Warnings.Create(e.Message)
@@ -2072,10 +2067,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                             }
 
-                            Endtime      = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                            Endtime      = Timestamp.Now;
                             Runtime      = Endtime - StartTime;
                             results      = SendCDRsResult.Enqueued(
-                                               org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                               Timestamp.Now,
                                                Id,
                                                this,
                                                ChargeDetailRecords,
@@ -2113,7 +2108,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                          Transaction_Id.Random(),
 
                                                          null,
-                                                         Timestamp,
+                                                         RequestTimestamp,
                                                          CancellationToken,
                                                          EventTrackingId,
                                                          RequestTimeout
@@ -2125,7 +2120,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                     {
 
                                         result = SendCDRResult.Success(
-                                                     org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                     Timestamp.Now,
                                                      Id,
                                                      chargeDetailRecord
                                                  );
@@ -2134,7 +2129,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                     else
                                         result = SendCDRResult.Error(
-                                                     org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                     Timestamp.Now,
                                                      Id,
                                                      chargeDetailRecord,
                                                      Warnings: Warnings.Create(response.HTTPBodyAsUTF8String)
@@ -2144,7 +2139,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 catch (Exception e)
                                 {
                                     result = SendCDRResult.CouldNotConvertCDRFormat(
-                                                 org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                                 Timestamp.Now,
                                                  Id,
                                                  chargeDetailRecord,
                                                  I18NString.Create(e.Message)
@@ -2158,12 +2153,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                             await RoamingNetwork.ReceiveSendChargeDetailRecordResults(SendCDRsResults);
 
-                            Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                            Endtime  = Timestamp.Now;
                             Runtime  = Endtime - StartTime;
 
                             if (SendCDRsResults.All(cdrresult => cdrresult.Result == SendCDRResultTypes.Success))
                                 results = SendCDRsResult.Success(
-                                              org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                              Timestamp.Now,
                                               Id,
                                               this,
                                               ChargeDetailRecords,
@@ -2172,7 +2167,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                             else
                                 results = SendCDRsResult.Error(
-                                              org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                                              Timestamp.Now,
                                               Id,
                                               this,
                                               SendCDRsResults.
@@ -2192,9 +2187,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     else
                     {
 
-                        Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                        Endtime  = Timestamp.Now;
                         Runtime  = Endtime - StartTime;
-                        results  = SendCDRsResult.Timeout(org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
+                        results  = SendCDRsResult.Timeout(Timestamp.Now,
                                                           Id,
                                                           this,
                                                           ChargeDetailRecords,
@@ -2225,7 +2220,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 OnSendCDRsResponse?.Invoke(Endtime,
-                                           Timestamp.Value,
+                                           RequestTimestamp.Value,
                                            this,
                                            Id.ToString(),
                                            EventTrackingId,

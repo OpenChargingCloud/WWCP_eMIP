@@ -315,7 +315,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                    UserId:                  ChargeDetailRecord.AuthenticationStart.ToEMIP().Value,
                                    StartTime:               ChargeDetailRecord.SessionTime.StartTime,
                                    EndTime:                 ChargeDetailRecord.SessionTime.EndTime.Value,
-                                   UserContractIdAlias:     ChargeDetailRecord.AuthenticationStart.ToContractId().Value,
+                                   UserContractIdAlias:     ChargeDetailRecord.AuthenticationStart.ToContractId(),
                                    ExecPartnerSessionId:    null,
                                    ExecPartnerOperatorId:   null,
                                    SalesPartnerSessionId:   null,//ChargeDetailRecord.GetCustomDataAs<PartnerSession_Id?>("eMIP.PartnerSessionId"),

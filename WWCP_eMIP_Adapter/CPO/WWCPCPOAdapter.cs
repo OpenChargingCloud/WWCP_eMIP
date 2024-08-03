@@ -1561,7 +1561,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             }
 
-            else if (DisableAuthentication)
+            else if (DisableAuthorization)
             {
 
                 Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
@@ -1754,7 +1754,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             }
 
-            else if (DisableAuthentication)
+            else if (DisableAuthorization)
             {
 
                 Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;

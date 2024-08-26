@@ -53,7 +53,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         OnSetServiceAuthorisationRequestDelegate(DateTime                   LogTimestamp,
                                                  DateTime                   RequestTimestamp,
                                                  CPOServer                  Sender,
-                                                 String                     SenderId,
+                                                 //String                     SenderId,
                                                  EventTracking_Id           EventTrackingId,
 
                                                  Partner_Id                 PartnerId,
@@ -109,7 +109,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         OnSetServiceAuthorisationResponseDelegate(DateTime                             Timestamp,
                                                   CPOServer                            Sender,
-                                                  String                               SenderId,
+                                                  //String                               SenderId,
                                                   EventTracking_Id                     EventTrackingId,
 
                                                   Partner_Id                           PartnerId,
@@ -158,7 +158,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         OnSetSessionActionRequestDelegate(DateTime                   LogTimestamp,
                                           DateTime                   RequestTimestamp,
                                           CPOServer                  Sender,
-                                          String                     SenderId,
+                                          //String                     SenderId,
                                           EventTracking_Id           EventTrackingId,
 
                                           Partner_Id                 PartnerId,
@@ -180,8 +180,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<SetSessionActionRequestResponse>
 
-        OnSetSessionActionDelegate(DateTime                 Timestamp,
-                                   CPOServer                Sender,
+        OnSetSessionActionDelegate(DateTime                        Timestamp,
+                                   CPOServer                       Sender,
                                    SetSessionActionRequestRequest  Request);
 
 
@@ -208,7 +208,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         OnSetSessionActionResponseDelegate(DateTime                   Timestamp,
                                            CPOServer                  Sender,
-                                           String                     SenderId,
+                                           //String                     SenderId,
                                            EventTracking_Id           EventTrackingId,
 
                                            Partner_Id                 PartnerId,

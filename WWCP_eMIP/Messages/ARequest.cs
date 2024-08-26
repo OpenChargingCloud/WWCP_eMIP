@@ -64,14 +64,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
 
         /// <summary>
-        /// The optional timestamp of the request.
+        /// The timestamp of the request.
         /// </summary>
-        public DateTime?          Timestamp            { get; }
-
-        /// <summary>
-        /// An optional token to cancel this request.
-        /// </summary>
-        public CancellationToken  CancellationToken    { get; }
+        public DateTime           Timestamp            { get; }
 
         /// <summary>
         /// An optional event tracking identification for correlating this request with other events.
@@ -82,6 +77,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// An optional timeout for this request.
         /// </summary>
         public TimeSpan?          RequestTimeout       { get; }
+
+        /// <summary>
+        /// An optional token to cancel this request.
+        /// </summary>
+        public CancellationToken  CancellationToken    { get; }
 
         #endregion
 

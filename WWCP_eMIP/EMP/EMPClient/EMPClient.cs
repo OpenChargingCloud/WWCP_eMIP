@@ -346,10 +346,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="DNSClient">The DNS client to use.</param>
         public EMPClient(URL?                                                       RemoteURL                    = null,
                          HTTPHostname?                                              VirtualHostname              = null,
-                         String?                                                    Description                  = null,
+                         I18NString?                                                Description                  = null,
                          Boolean?                                                   PreferIPv4                   = null,
                          RemoteTLSServerCertificateValidationHandler<IHTTPClient>?  RemoteCertificateValidator   = null,
-                         LocalCertificateSelectionHandler?                          LocalCertificateSelector    = null,
+                         LocalCertificateSelectionHandler?                          LocalCertificateSelector     = null,
                          X509Certificate?                                           ClientCert                   = null,
                          SslProtocols?                                              TLSProtocol                  = null,
                          String                                                     HTTPUserAgent                = DefaultHTTPUserAgent,
@@ -437,13 +437,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSendHeartbeatRequest != null)
+                if (OnSendHeartbeatRequest is not null)
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
                                        Cast<OnSendHeartbeatRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
@@ -616,13 +615,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSendHeartbeatResponse != null)
+                if (OnSendHeartbeatResponse is not null)
                     await Task.WhenAll(OnSendHeartbeatResponse.GetInvocationList().
                                        Cast<OnSendHeartbeatResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
@@ -682,13 +680,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSetServiceAuthorisationRequest != null)
+                if (OnSetServiceAuthorisationRequest is not null)
                     await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
                                        Cast<OnSetServiceAuthorisationRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -883,13 +880,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSetServiceAuthorisationResponse != null)
+                if (OnSetServiceAuthorisationResponse is not null)
                     await Task.WhenAll(OnSetServiceAuthorisationResponse.GetInvocationList().
                                        Cast<OnSetServiceAuthorisationResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -964,13 +960,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSetSessionActionRequest != null)
+                if (OnSetSessionActionRequest is not null)
                     await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
                                        Cast<OnSetSessionActionRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1159,13 +1154,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             try
             {
 
-                if (OnSetSessionActionResponse != null)
+                if (OnSetSessionActionResponse is not null)
                     await Task.WhenAll(OnSetSessionActionResponse.GetInvocationList().
                                        Cast<OnSetSessionActionResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,

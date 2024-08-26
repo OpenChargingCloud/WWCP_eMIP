@@ -345,7 +345,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                             await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                                Cast<OnGetServiceAuthorisationRequestDelegate>().
                                                Select(e => e(StartTime,
-                                                              _GetServiceAuthorisationRequest.Timestamp.Value,
+                                                              _GetServiceAuthorisationRequest.Timestamp,
                                                               this,
                                                               ServiceName,
                                                               _GetServiceAuthorisationRequest.EventTrackingId,
@@ -541,7 +541,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                             await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                                Cast<OnSetSessionEventReportRequestDelegate>().
                                                Select(e => e(StartTime,
-                                                             _SetSessionEventReportRequest.Timestamp.Value,
+                                                             _SetSessionEventReportRequest.Timestamp,
                                                              this,
                                                              ServiceName,
                                                              _SetSessionEventReportRequest.EventTrackingId,
@@ -739,7 +739,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                             await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                                Cast<OnSetChargeDetailRecordRequestDelegate>().
                                                Select(e => e(StartTime,
-                                                              _SetChargeDetailRecordRequest.Timestamp.Value,
+                                                              _SetChargeDetailRecordRequest.Timestamp,
                                                               this,
                                                               ServiceName,
                                                               _SetChargeDetailRecordRequest.EventTrackingId,

@@ -17,10 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
 using org.GraphDefined.Vanaheimr.Illias;
 
 #endregion
@@ -36,7 +32,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSendHeartbeatRequestDelegate (DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
                                                          IEMPClient                               Sender,
-                                                         String                                   SenderId,
+                                                         //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
                                                          Partner_Id                               PartnerId,
                                                          Operator_Id                              OperatorId,
@@ -49,7 +45,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
                                                          IEMPClient                               Sender,
-                                                         String                                   SenderId,
+                                                         //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
                                                          Partner_Id                               PartnerId,
                                                          Operator_Id                              OperatorId,
@@ -69,7 +65,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSetServiceAuthorisationRequestDelegate (DateTime                          LogTimestamp,
                                                                    DateTime                          RequestTimestamp,
                                                                    IEMPClient                        Sender,
-                                                                   String                            SenderId,
+                                                                   //String                            SenderId,
                                                                    EventTracking_Id                  EventTrackingId,
 
                                                                    Partner_Id                        PartnerId,
@@ -96,7 +92,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSetServiceAuthorisationResponseDelegate(DateTime                          LogTimestamp,
                                                                    DateTime                          RequestTimestamp,
                                                                    IEMPClient                        Sender,
-                                                                   String                            SenderId,
+                                                                   //String                            SenderId,
                                                                    EventTracking_Id                  EventTrackingId,
 
                                                                    Partner_Id                        PartnerId,
@@ -129,7 +125,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSetSessionActionRequestDelegate (DateTime                   LogTimestamp,
                                                             DateTime                   RequestTimestamp,
                                                             IEMPClient                 Sender,
-                                                            String                     SenderId,
+                                                            //String                     SenderId,
                                                             EventTracking_Id           EventTrackingId,
 
                                                             Partner_Id                 PartnerId,
@@ -148,7 +144,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     public delegate Task OnSetSessionActionResponseDelegate(DateTime                   LogTimestamp,
                                                             DateTime                   RequestTimestamp,
                                                             IEMPClient                 Sender,
-                                                            String                     SenderId,
+                                                            //String                     SenderId,
                                                             EventTracking_Id           EventTrackingId,
 
                                                             Partner_Id                 PartnerId,

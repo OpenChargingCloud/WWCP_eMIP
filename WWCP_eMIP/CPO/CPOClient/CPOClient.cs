@@ -981,10 +981,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="DNSClient">The DNS client to use.</param>
         public CPOClient(URL?                                                       RemoteURL                                = null,
                          HTTPHostname?                                              VirtualHostname                          = null,
-                         String?                                                    Description                              = null,
+                         I18NString?                                                Description                              = null,
                          Boolean?                                                   PreferIPv4                               = null,
                          RemoteTLSServerCertificateValidationHandler<IHTTPClient>?  RemoteCertificateValidator               = null,
-                         LocalCertificateSelectionHandler?                          LocalCertificateSelector                = null,
+                         LocalCertificateSelectionHandler?                          LocalCertificateSelector                 = null,
                          X509Certificate?                                           ClientCert                               = null,
                          SslProtocols?                                              TLSProtocol                              = null,
                          String                                                     HTTPUserAgent                            = DefaultHTTPUserAgent,
@@ -1099,9 +1099,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
                                        Cast<OnSendHeartbeatRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Id,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
@@ -1120,27 +1120,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             // No retransmissions for heartbeats!
             using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                    VirtualHostname,
-                                                    false,
-                                                    Description,
-                                                    PreferIPv4,
-                                                    RemoteCertificateValidator,
-                                                    LocalCertificateSelector,
-                                                    ClientCert,
-                                                    TLSProtocol,
-                                                    HTTPUserAgent,
-                                                    HTTPAuthentication,
-                                                    URLPathPrefix,
-                                                    null,
-                                                    null,
-                                                    RequestTimeout,
-                                                    TransmissionRetryDelay,
-                                                    MaxNumberOfRetries,
-                                                    InternalBufferSize,
-                                                    false,
-                                                    false,
-                                                    null,
-                                                    DNSClient))
+                                                   VirtualHostname,
+                                                   false,
+                                                   Description,
+                                                   PreferIPv4,
+                                                   RemoteCertificateValidator,
+                                                   LocalCertificateSelector,
+                                                   ClientCert,
+                                                   TLSProtocol,
+                                                   HTTPUserAgent,
+                                                   HTTPAuthentication,
+                                                   URLPathPrefix,
+                                                   null,
+                                                   null,
+                                                   RequestTimeout,
+                                                   TransmissionRetryDelay,
+                                                   MaxNumberOfRetries,
+                                                   InternalBufferSize,
+                                                   false,
+                                                   false,
+                                                   null,
+                                                   DNSClient))
             {
 
                 result = await eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
@@ -1279,9 +1279,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSendHeartbeatResponse.GetInvocationList().
                                        Cast<OnSendHeartbeatResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
                                                      Request.PartnerId,
                                                      Request.OperatorId,
@@ -1347,9 +1347,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1393,27 +1393,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper(Request,
@@ -1557,9 +1557,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1632,9 +1632,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1678,27 +1678,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingStationAvailabilityStatusSOAPRequestMapper(Request,
@@ -1842,9 +1842,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1916,9 +1916,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -1963,27 +1963,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
@@ -2127,9 +2127,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2201,9 +2201,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2247,27 +2247,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper(Request,
@@ -2410,9 +2410,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2485,9 +2485,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2531,27 +2531,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
@@ -2694,9 +2694,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSEBusyStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2768,9 +2768,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -2818,27 +2818,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSESyntheticStatusSOAPRequestMapper(Request,
@@ -2982,9 +2982,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetEVSESyntheticStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3061,9 +3061,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3271,9 +3271,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3346,9 +3346,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                        Cast<OnSetSessionEventReportRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3552,9 +3552,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetSessionEventReportResponse.GetInvocationList().
                                        Cast<OnSetSessionEventReportResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3626,9 +3626,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordRequestDelegate>().
                                        Select(e => e(StartTime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,
@@ -3668,27 +3668,27 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.Delay(TransmissionRetryDelay(TransmissionRetry));
 
                 using (var eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       HTTPUserAgent,
+                                                       HTTPAuthentication,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargeDetailRecordSOAPRequestMapper(Request,
@@ -3834,9 +3834,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordResponseDelegate>().
                                        Select(e => e(Endtime,
-                                                     Request.Timestamp.Value,
+                                                     Request.Timestamp,
                                                      this,
-                                                     Description,
+                                                     //Description,
                                                      Request.EventTrackingId,
 
                                                      Request.PartnerId,

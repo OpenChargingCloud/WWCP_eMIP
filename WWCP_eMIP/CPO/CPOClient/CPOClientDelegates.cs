@@ -42,7 +42,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSendHeartbeatRequestDelegate (DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
                                                          ICPOClient                               Sender,
-                                                         String                                   SenderId,
+                                                         //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
                                                          Partner_Id                               PartnerId,
                                                          Operator_Id                              OperatorId,
@@ -55,7 +55,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
                                                          DateTime                                 RequestTimestamp,
                                                          ICPOClient                               Sender,
-                                                         String                                   SenderId,
+                                                         //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
                                                          Partner_Id                               PartnerId,
                                                          Operator_Id                              OperatorId,
@@ -75,7 +75,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingPoolAvailabilityStatusRequestDelegate (DateTime                                    LogTimestamp,
                                                                              DateTime                                    RequestTimestamp,
                                                                              ICPOClient                                  Sender,
-                                                                             String                                      SenderId,
+                                                                             //String                                      SenderId,
                                                                              EventTracking_Id                            EventTrackingId,
 
                                                                              Partner_Id                                  PartnerId,
@@ -95,7 +95,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingPoolAvailabilityStatusResponseDelegate(DateTime                                    LogTimestamp,
                                                                              DateTime                                    RequestTimestamp,
                                                                              ICPOClient                                  Sender,
-                                                                             String                                      SenderId,
+                                                                             //String                                      SenderId,
                                                                              EventTracking_Id                            EventTrackingId,
 
                                                                              Partner_Id                                  PartnerId,
@@ -121,7 +121,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingStationAvailabilityStatusRequestDelegate (DateTime                                       LogTimestamp,
                                                                                 DateTime                                       RequestTimestamp,
                                                                                 ICPOClient                                     Sender,
-                                                                                String                                         SenderId,
+                                                                                //String                                         SenderId,
                                                                                 EventTracking_Id                               EventTrackingId,
 
                                                                                 Partner_Id                                     PartnerId,
@@ -141,7 +141,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingStationAvailabilityStatusResponseDelegate(DateTime                                       LogTimestamp,
                                                                                 DateTime                                       RequestTimestamp,
                                                                                 ICPOClient                                     Sender,
-                                                                                String                                         SenderId,
+                                                                                //String                                         SenderId,
                                                                                 EventTracking_Id                               EventTrackingId,
 
                                                                                 Partner_Id                                     PartnerId,
@@ -167,7 +167,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                            LogTimestamp,
                                                                      DateTime                            RequestTimestamp,
                                                                      ICPOClient                          Sender,
-                                                                     String                              SenderId,
+                                                                     //String                              SenderId,
                                                                      EventTracking_Id                    EventTrackingId,
 
                                                                      Partner_Id                          PartnerId,
@@ -187,7 +187,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                            LogTimestamp,
                                                                      DateTime                            RequestTimestamp,
                                                                      ICPOClient                          Sender,
-                                                                     String                              SenderId,
+                                                                     //String                              SenderId,
                                                                      EventTracking_Id                    EventTrackingId,
 
                                                                      Partner_Id                          PartnerId,
@@ -213,7 +213,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingConnectorAvailabilityStatusRequestDelegate (DateTime                                         LogTimestamp,
                                                                                   DateTime                                         RequestTimestamp,
                                                                                   ICPOClient                                       Sender,
-                                                                                  String                                           SenderId,
+                                                                                  //String                                           SenderId,
                                                                                   EventTracking_Id                                 EventTrackingId,
 
                                                                                   Partner_Id                                       PartnerId,
@@ -233,7 +233,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargingConnectorAvailabilityStatusResponseDelegate(DateTime                                         LogTimestamp,
                                                                                   DateTime                                         RequestTimestamp,
                                                                                   ICPOClient                                       Sender,
-                                                                                  String                                           SenderId,
+                                                                                  //String                                           SenderId,
                                                                                   EventTracking_Id                                 EventTrackingId,
 
                                                                                   Partner_Id                                       PartnerId,
@@ -260,7 +260,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSEBusyStatusRequestDelegate (DateTime                                 LogTimestamp,
                                                              DateTime                                 RequestTimestamp,
                                                              ICPOClient                               Sender,
-                                                             String                                   SenderId,
+                                                             //String                                   SenderId,
                                                              EventTracking_Id                         EventTrackingId,
 
                                                              Partner_Id                               PartnerId,
@@ -280,7 +280,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSEBusyStatusResponseDelegate(DateTime                                 LogTimestamp,
                                                              DateTime                                 RequestTimestamp,
                                                              ICPOClient                               Sender,
-                                                             String                                   SenderId,
+                                                             //String                                   SenderId,
                                                              EventTracking_Id                         EventTrackingId,
 
                                                              Partner_Id                               PartnerId,
@@ -306,7 +306,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSESyntheticStatusRequestDelegate (DateTime                                 LogTimestamp,
                                                                   DateTime                                 RequestTimestamp,
                                                                   ICPOClient                               Sender,
-                                                                  String                                   SenderId,
+                                                                  //String                                   SenderId,
                                                                   EventTracking_Id                         EventTrackingId,
 
                                                                   Partner_Id                               PartnerId,
@@ -330,7 +330,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetEVSESyntheticStatusResponseDelegate(DateTime                                 LogTimestamp,
                                                                   DateTime                                 RequestTimestamp,
                                                                   ICPOClient                               Sender,
-                                                                  String                                   SenderId,
+                                                                  //String                                   SenderId,
                                                                   EventTracking_Id                         EventTrackingId,
 
                                                                   Partner_Id                               PartnerId,
@@ -361,7 +361,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnGetServiceAuthorisationRequestDelegate (DateTime                                 LogTimestamp,
                                                                    DateTime                                 RequestTimestamp,
                                                                    ICPOClient                               Sender,
-                                                                   String                                   SenderId,
+                                                                   //String                                   SenderId,
                                                                    EventTracking_Id                         EventTrackingId,
 
                                                                    Partner_Id                               PartnerId,
@@ -380,7 +380,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnGetServiceAuthorisationResponseDelegate(DateTime                                 LogTimestamp,
                                                                    DateTime                                 RequestTimestamp,
                                                                    ICPOClient                               Sender,
-                                                                   String                                   SenderId,
+                                                                   //String                                   SenderId,
                                                                    EventTracking_Id                         EventTrackingId,
 
                                                                    Partner_Id                               PartnerId,
@@ -405,7 +405,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetSessionEventReportRequestDelegate (DateTime                        LogTimestamp,
                                                                  DateTime                        RequestTimestamp,
                                                                  ICPOClient                      Sender,
-                                                                 String                          SenderId,
+                                                                 //String                          SenderId,
                                                                  EventTracking_Id                EventTrackingId,
 
                                                                  Partner_Id                      PartnerId,
@@ -424,7 +424,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetSessionEventReportResponseDelegate(DateTime                        LogTimestamp,
                                                                  DateTime                        RequestTimestamp,
                                                                  ICPOClient                      Sender,
-                                                                 String                          SenderId,
+                                                                 //String                          SenderId,
                                                                  EventTracking_Id                EventTrackingId,
 
                                                                  Partner_Id                      PartnerId,
@@ -450,7 +450,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargeDetailRecordRequestDelegate (DateTime                                 LogTimestamp,
                                                                  DateTime                                 RequestTimestamp,
                                                                  ICPOClient                               Sender,
-                                                                 String                                   SenderId,
+                                                                 //String                                   SenderId,
                                                                  EventTracking_Id                         EventTrackingId,
 
                                                                  Partner_Id                               PartnerId,
@@ -466,7 +466,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     public delegate Task OnSetChargeDetailRecordResponseDelegate(DateTime                                 LogTimestamp,
                                                                  DateTime                                 RequestTimestamp,
                                                                  ICPOClient                               Sender,
-                                                                 String                                   SenderId,
+                                                                 //String                                   SenderId,
                                                                  EventTracking_Id                         EventTrackingId,
 
                                                                  Partner_Id                               PartnerId,

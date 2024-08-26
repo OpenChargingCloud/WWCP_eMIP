@@ -326,9 +326,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                             await Task.WhenAll(OnSetServiceAuthorisationRequest.GetInvocationList().
                                                Cast<OnSetServiceAuthorisationRequestDelegate>().
                                                Select(e => e(startTime,
-                                                             setServiceAuthorisationRequest.Timestamp ?? Timestamp.Now,
+                                                             setServiceAuthorisationRequest.Timestamp,
                                                              this,
-                                                             ServiceName,
+                                                             //ServiceName,
                                                              setServiceAuthorisationRequest.EventTrackingId,
                                                              setServiceAuthorisationRequest.PartnerId,
                                                              setServiceAuthorisationRequest.OperatorId,
@@ -391,7 +391,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                Cast<OnSetServiceAuthorisationResponseDelegate>().
                                                Select(e => e(endTime,
                                                              this,
-                                                             ServiceName,
+                                                             //ServiceName,
                                                              setServiceAuthorisationRequest.EventTrackingId,
                                                              setServiceAuthorisationRequest.PartnerId,
                                                              setServiceAuthorisationRequest.OperatorId,
@@ -539,9 +539,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                             await Task.WhenAll(OnSetSessionActionRequest.GetInvocationList().
                                                Cast<OnSetSessionActionRequestDelegate>().
                                                Select(e => e(startTime,
-                                                             setSessionActionRequest.Timestamp ?? Timestamp.Now,
+                                                             setSessionActionRequest.Timestamp,
                                                              this,
-                                                             ServiceName,
+                                                             //ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
 
                                                              setSessionActionRequest.PartnerId,
@@ -600,7 +600,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                Cast<OnSetSessionActionResponseDelegate>().
                                                Select(e => e(endTime,
                                                              this,
-                                                             ServiceName,
+                                                             //ServiceName,
                                                              setSessionActionRequest.EventTrackingId,
 
                                                              setSessionActionRequest.PartnerId,

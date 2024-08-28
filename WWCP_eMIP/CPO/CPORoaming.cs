@@ -156,6 +156,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         DNSClient                            IHTTPClient.DNSClient
             => CPOClient.DNSClient;
 
+        Boolean IHTTPClient.Connected
+            => CPOClient.Connected;
+
+        IIPAddress? IHTTPClient.RemoteIPAddress
+            => CPOClient.RemoteIPAddress;
+
         #endregion
 
 

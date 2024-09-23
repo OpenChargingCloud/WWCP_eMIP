@@ -385,7 +385,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 
                                              return new HTTPResponse.Builder(Request) {
                                                         HTTPStatusCode  = HTTPStatusCode.OK,
-                                                        Connection      = "close"
+                                                        Connection      = ConnectionType.Close
                                                     };
 
                                    }, AllowReplacement: URLReplacement.Fail);

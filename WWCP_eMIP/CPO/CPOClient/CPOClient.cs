@@ -175,7 +175,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<HeartbeatRequest, HeartbeatRequest> _CustomHeartbeatRequestMapper = _ => _;
 
-        public Func<HeartbeatRequest, HeartbeatRequest> CustomHeartbeatRequestMapper
+        public Func<HeartbeatRequest, HeartbeatRequest>? CustomHeartbeatRequestMapper
         {
 
             get
@@ -185,7 +185,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomHeartbeatRequestMapper = value;
             }
 
@@ -197,7 +197,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<HeartbeatRequest, XElement, XElement> _CustomHeartbeatSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<HeartbeatRequest, XElement, XElement> CustomHeartbeatSOAPRequestMapper
+        public Func<HeartbeatRequest, XElement, XElement>? CustomHeartbeatSOAPRequestMapper
         {
 
             get
@@ -207,7 +207,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomHeartbeatSOAPRequestMapper = value;
             }
 
@@ -215,11 +215,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<HeartbeatResponse> CustomHeartbeatParser   { get; set; }
+        public CustomXMLParserDelegate<HeartbeatResponse>?                                  CustomHeartbeatParser                                          { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<HeartbeatRequest>                              CustomHeartbeatRequestSerializer                               { get; set; }
+        public CustomXMLSerializerDelegate<HeartbeatRequest>?                               CustomHeartbeatRequestSerializer                               { get; set; }
 
 
 
@@ -239,7 +239,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingPoolAvailabilityStatusRequestMapper = value;
             }
 
@@ -261,7 +261,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -269,11 +269,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse> CustomSetChargingPoolAvailabilityStatusParser   { get; set; }
+        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse>?          CustomSetChargingPoolAvailabilityStatusParser                  { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetChargingPoolAvailabilityStatusRequest>      CustomSetChargingPoolAvailabilityStatusRequestSerializer       { get; set; }
+        public CustomXMLSerializerDelegate<SetChargingPoolAvailabilityStatusRequest>?       CustomSetChargingPoolAvailabilityStatusRequestSerializer       { get; set; }
 
 
         #region CustomSetChargingStationAvailabilityStatusRequestMapper
@@ -292,7 +292,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingStationAvailabilityStatusRequestMapper = value;
             }
 
@@ -314,7 +314,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -322,11 +322,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse> CustomSetChargingStationAvailabilityStatusParser   { get; set; }
+        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>?       CustomSetChargingStationAvailabilityStatusParser               { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetChargingStationAvailabilityStatusRequest>   CustomSetChargingStationAvailabilityStatusRequestSerializer    { get; set; }
+        public CustomXMLSerializerDelegate<SetChargingStationAvailabilityStatusRequest>?    CustomSetChargingStationAvailabilityStatusRequestSerializer    { get; set; }
 
 
         #region CustomSetEVSEAvailabilityStatusRequestMapper
@@ -345,7 +345,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSEAvailabilityStatusRequestMapper = value;
             }
 
@@ -367,7 +367,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSEAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -375,11 +375,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse> CustomSetEVSEAvailabilityStatusParser   { get; set; }
+        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>?                  CustomSetEVSEAvailabilityStatusParser                          { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSEAvailabilityStatusRequest>              CustomSetEVSEAvailabilityStatusRequestSerializer               { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSEAvailabilityStatusRequest>?               CustomSetEVSEAvailabilityStatusRequestSerializer               { get; set; }
 
 
         #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
@@ -398,7 +398,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingConnectorAvailabilityStatusRequestMapper = value;
             }
 
@@ -420,7 +420,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -428,11 +428,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse> CustomSetChargingConnectorAvailabilityStatusParser { get; set; }
+        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse>?     CustomSetChargingConnectorAvailabilityStatusParser             { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestSerializer  { get; set; }
+        public CustomXMLSerializerDelegate<SetChargingConnectorAvailabilityStatusRequest>?  CustomSetChargingConnectorAvailabilityStatusRequestSerializer  { get; set; }
 
 
 
@@ -452,7 +452,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSEBusyStatusRequestMapper = value;
             }
 
@@ -474,7 +474,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSEBusyStatusSOAPRequestMapper = value;
             }
 
@@ -482,11 +482,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse> CustomSetEVSEBusyStatusParser   { get; set; }
+        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse>?                          CustomSetEVSEBusyStatusParser                                  { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>                      CustomSetEVSEBusyStatusRequestSerializer                       { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSEBusyStatusRequest>?                       CustomSetEVSEBusyStatusRequestSerializer                       { get; set; }
 
 
         #region CustomSetEVSESyntheticStatusRequestMapper
@@ -505,7 +505,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSESyntheticStatusRequestMapper = value;
             }
 
@@ -527,7 +527,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetEVSESyntheticStatusSOAPRequestMapper = value;
             }
 
@@ -535,11 +535,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetEVSESyntheticStatusResponse> CustomSetEVSESyntheticStatusParser   { get; set; }
+        public CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>?                     CustomSetEVSESyntheticStatusParser                             { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetEVSESyntheticStatusRequest>                 CustomSetEVSESyntheticStatusRequestSerializer                  { get; set; }
+        public CustomXMLSerializerDelegate<SetEVSESyntheticStatusRequest>?                  CustomSetEVSESyntheticStatusRequestSerializer                  { get; set; }
 
 
 
@@ -559,7 +559,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomGetServiceAuthorisationRequestMapper = value;
             }
 
@@ -581,7 +581,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomGetServiceAuthorisationSOAPRequestMapper = value;
             }
 
@@ -589,11 +589,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationParser { get; set; }
+        public CustomXMLParserDelegate<GetServiceAuthorisationResponse>?                    CustomGetServiceAuthorisationParser                            { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>                CustomGetServiceAuthorisationRequestSerializer                 { get; set; }
+        public CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>?                 CustomGetServiceAuthorisationRequestSerializer                 { get; set; }
 
 
 
@@ -613,7 +613,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetSessionEventReportRequestMapper = value;
             }
 
@@ -635,7 +635,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetSessionEventReportSOAPRequestMapper = value;
             }
 
@@ -643,11 +643,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetSessionEventReportResponse> CustomSetSessionEventReportParser { get; set; }
+        public CustomXMLParserDelegate<SetSessionEventReportResponse>?                      CustomSetSessionEventReportParser                              { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetSessionEventReportRequest>                  CustomSetSessionEventReportRequestSerializer                   { get; set; }
+        public CustomXMLSerializerDelegate<SetSessionEventReportRequest>?                   CustomSetSessionEventReportRequestSerializer                   { get; set; }
 
 
 
@@ -667,7 +667,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargeDetailRecordRequestMapper = value;
             }
 
@@ -689,7 +689,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetChargeDetailRecordSOAPRequestMapper = value;
             }
 
@@ -697,19 +697,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargeDetailRecordResponse> CustomSetChargeDetailRecordParser { get; set; }
+        public CustomXMLParserDelegate<SetChargeDetailRecordResponse>?                      CustomSetChargeDetailRecordParser                              { get; set; }
 
         #endregion
 
-        public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>                  CustomSetChargeDetailRecordRequestSerializer                   { get; set; }
+        public CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>?                   CustomSetChargeDetailRecordRequestSerializer                   { get; set; }
 
 
 
-        public CustomXMLSerializerDelegate<ChargeDetailRecord>                            CustomChargeDetailRecordSerializer                             { get; set; }
-        public CustomXMLParserDelegate<ChargeDetailRecord>                                CustomChargeDetailRecordParser                                 { get; set; }
+        public CustomXMLSerializerDelegate<ChargeDetailRecord>?                             CustomChargeDetailRecordSerializer                             { get; set; }
+        public CustomXMLParserDelegate<ChargeDetailRecord>?                                 CustomChargeDetailRecordParser                                 { get; set; }
 
-        public CustomXMLSerializerDelegate<MeterReport>                                   CustomMeterReportSerializer                                    { get; set; }
-        public CustomXMLParserDelegate<MeterReport>                                       CustomMeterReportParser                                        { get; set; }
+        public CustomXMLSerializerDelegate<MeterReport>?                                    CustomMeterReportSerializer                                    { get; set; }
+        public CustomXMLParserDelegate<MeterReport>?                                        CustomMeterReportParser                                        { get; set; }
 
         #endregion
 
@@ -720,22 +720,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending a heartbeat will be send.
         /// </summary>
-        public event OnSendHeartbeatRequestDelegate   OnSendHeartbeatRequest;
+        public event OnSendHeartbeatRequestDelegate?    OnSendHeartbeatRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending a heartbeat will be send.
         /// </summary>
-        public event ClientRequestLogHandler          OnSendHeartbeatSOAPRequest;
+        public event ClientRequestLogHandler?           OnSendHeartbeatSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a heartbeat SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler         OnSendHeartbeatSOAPResponse;
+        public event ClientResponseLogHandler?          OnSendHeartbeatSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a heartbeat request had been received.
         /// </summary>
-        public event OnSendHeartbeatResponseDelegate  OnSendHeartbeatResponse;
+        public event OnSendHeartbeatResponseDelegate?   OnSendHeartbeatResponse;
 
         #endregion
 
@@ -745,22 +745,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending a charging pool availability status will be send.
         /// </summary>
-        public event OnSetChargingPoolAvailabilityStatusRequestDelegate   OnSetChargingPoolAvailabilityStatusRequest;
+        public event OnSetChargingPoolAvailabilityStatusRequestDelegate?    OnSetChargingPoolAvailabilityStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending a charging pool availability status will be send.
         /// </summary>
-        public event ClientRequestLogHandler                              OnSetChargingPoolAvailabilityStatusSOAPRequest;
+        public event ClientRequestLogHandler?                               OnSetChargingPoolAvailabilityStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a charging pool availability status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                             OnSetChargingPoolAvailabilityStatusSOAPResponse;
+        public event ClientResponseLogHandler?                              OnSetChargingPoolAvailabilityStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a charging pool availability status request had been received.
         /// </summary>
-        public event OnSetChargingPoolAvailabilityStatusResponseDelegate  OnSetChargingPoolAvailabilityStatusResponse;
+        public event OnSetChargingPoolAvailabilityStatusResponseDelegate?   OnSetChargingPoolAvailabilityStatusResponse;
 
         #endregion
 
@@ -769,22 +769,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending a charging station availability status will be send.
         /// </summary>
-        public event OnSetChargingStationAvailabilityStatusRequestDelegate   OnSetChargingStationAvailabilityStatusRequest;
+        public event OnSetChargingStationAvailabilityStatusRequestDelegate?    OnSetChargingStationAvailabilityStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending a charging station availability status will be send.
         /// </summary>
-        public event ClientRequestLogHandler                                 OnSetChargingStationAvailabilityStatusSOAPRequest;
+        public event ClientRequestLogHandler?                                  OnSetChargingStationAvailabilityStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a charging station availability status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                                OnSetChargingStationAvailabilityStatusSOAPResponse;
+        public event ClientResponseLogHandler?                                 OnSetChargingStationAvailabilityStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a charging station availability status request had been received.
         /// </summary>
-        public event OnSetChargingStationAvailabilityStatusResponseDelegate  OnSetChargingStationAvailabilityStatusResponse;
+        public event OnSetChargingStationAvailabilityStatusResponseDelegate?   OnSetChargingStationAvailabilityStatusResponse;
 
         #endregion
 
@@ -793,22 +793,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending an EVSE availability status will be send.
         /// </summary>
-        public event OnSetEVSEAvailabilityStatusRequestDelegate   OnSetEVSEAvailabilityStatusRequest;
+        public event OnSetEVSEAvailabilityStatusRequestDelegate?    OnSetEVSEAvailabilityStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending an EVSE availability status will be send.
         /// </summary>
-        public event ClientRequestLogHandler                      OnSetEVSEAvailabilityStatusSOAPRequest;
+        public event ClientRequestLogHandler?                       OnSetEVSEAvailabilityStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE availability status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                     OnSetEVSEAvailabilityStatusSOAPResponse;
+        public event ClientResponseLogHandler?                      OnSetEVSEAvailabilityStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE availability status request had been received.
         /// </summary>
-        public event OnSetEVSEAvailabilityStatusResponseDelegate  OnSetEVSEAvailabilityStatusResponse;
+        public event OnSetEVSEAvailabilityStatusResponseDelegate?   OnSetEVSEAvailabilityStatusResponse;
 
         #endregion
 
@@ -817,22 +817,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending a charging connector availability status will be send.
         /// </summary>
-        public event OnSetChargingConnectorAvailabilityStatusRequestDelegate   OnSetChargingConnectorAvailabilityStatusRequest;
+        public event OnSetChargingConnectorAvailabilityStatusRequestDelegate?    OnSetChargingConnectorAvailabilityStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending a charging connector availability status will be send.
         /// </summary>
-        public event ClientRequestLogHandler                                   OnSetChargingConnectorAvailabilityStatusSOAPRequest;
+        public event ClientRequestLogHandler?                                    OnSetChargingConnectorAvailabilityStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a charging connector availability status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                                  OnSetChargingConnectorAvailabilityStatusSOAPResponse;
+        public event ClientResponseLogHandler?                                   OnSetChargingConnectorAvailabilityStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a charging connector availability status request had been received.
         /// </summary>
-        public event OnSetChargingConnectorAvailabilityStatusResponseDelegate  OnSetChargingConnectorAvailabilityStatusResponse;
+        public event OnSetChargingConnectorAvailabilityStatusResponseDelegate?   OnSetChargingConnectorAvailabilityStatusResponse;
 
         #endregion
 
@@ -842,22 +842,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending an EVSE busy status will be send.
         /// </summary>
-        public event OnSetEVSEBusyStatusRequestDelegate   OnSetEVSEBusyStatusRequest;
+        public event OnSetEVSEBusyStatusRequestDelegate?    OnSetEVSEBusyStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending an EVSE busy status will be send.
         /// </summary>
-        public event ClientRequestLogHandler              OnSetEVSEBusyStatusSOAPRequest;
+        public event ClientRequestLogHandler?               OnSetEVSEBusyStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE busy status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler             OnSetEVSEBusyStatusSOAPResponse;
+        public event ClientResponseLogHandler?              OnSetEVSEBusyStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE busy status request had been received.
         /// </summary>
-        public event OnSetEVSEBusyStatusResponseDelegate  OnSetEVSEBusyStatusResponse;
+        public event OnSetEVSEBusyStatusResponseDelegate?   OnSetEVSEBusyStatusResponse;
 
         #endregion
 
@@ -866,22 +866,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a request sending an EVSE synthetic status will be send.
         /// </summary>
-        public event OnSetEVSESyntheticStatusRequestDelegate   OnSetEVSESyntheticStatusRequest;
+        public event OnSetEVSESyntheticStatusRequestDelegate?    OnSetEVSESyntheticStatusRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP request sending an EVSE synthetic status will be send.
         /// </summary>
-        public event ClientRequestLogHandler                   OnSetEVSESyntheticStatusSOAPRequest;
+        public event ClientRequestLogHandler?                    OnSetEVSESyntheticStatusSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE synthetic status SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                  OnSetEVSESyntheticStatusSOAPResponse;
+        public event ClientResponseLogHandler?                   OnSetEVSESyntheticStatusSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to an EVSE synthetic status request had been received.
         /// </summary>
-        public event OnSetEVSESyntheticStatusResponseDelegate  OnSetEVSESyntheticStatusResponse;
+        public event OnSetEVSESyntheticStatusResponseDelegate?   OnSetEVSESyntheticStatusResponse;
 
         #endregion
 
@@ -891,22 +891,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a GetServiceAuthorisation request will be send.
         /// </summary>
-        public event OnGetServiceAuthorisationRequestDelegate   OnGetServiceAuthorisationRequest;
+        public event OnGetServiceAuthorisationRequestDelegate?    OnGetServiceAuthorisationRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP GetServiceAuthorisation request will be send.
         /// </summary>
-        public event ClientRequestLogHandler                    OnGetServiceAuthorisationSOAPRequest;
+        public event ClientRequestLogHandler?                     OnGetServiceAuthorisationSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a GetServiceAuthorisationn SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                   OnGetServiceAuthorisationSOAPResponse;
+        public event ClientResponseLogHandler?                    OnGetServiceAuthorisationSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a GetServiceAuthorisation request had been received.
         /// </summary>
-        public event OnGetServiceAuthorisationResponseDelegate  OnGetServiceAuthorisationResponse;
+        public event OnGetServiceAuthorisationResponseDelegate?   OnGetServiceAuthorisationResponse;
 
         #endregion
 
@@ -915,22 +915,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a SetSessionEventReport request will be send.
         /// </summary>
-        public event OnSetSessionEventReportRequestDelegate   OnSetSessionEventReportRequest;
+        public event OnSetSessionEventReportRequestDelegate?    OnSetSessionEventReportRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP SetSessionEventReport request will be send.
         /// </summary>
-        public event ClientRequestLogHandler                  OnSetSessionEventReportSOAPRequest;
+        public event ClientRequestLogHandler?                   OnSetSessionEventReportSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a SetSessionEventReport SOAP request had been received.
         /// </summary>
-        public event ClientResponseLogHandler                 OnSetSessionEventReportSOAPResponse;
+        public event ClientResponseLogHandler?                  OnSetSessionEventReportSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a SetSessionEventReport request had been received.
         /// </summary>
-        public event OnSetSessionEventReportResponseDelegate  OnSetSessionEventReportResponse;
+        public event OnSetSessionEventReportResponseDelegate?   OnSetSessionEventReportResponse;
 
         #endregion
 
@@ -940,22 +940,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event fired whenever a charge detail record will be send.
         /// </summary>
-        public event OnSetChargeDetailRecordRequestDelegate   OnSetChargeDetailRecordRequest;
+        public event OnSetChargeDetailRecordRequestDelegate?    OnSetChargeDetailRecordRequest;
 
         /// <summary>
         /// An event fired whenever a SOAP charge detail record will be send.
         /// </summary>
-        public event ClientRequestLogHandler                  OnSetChargeDetailRecordSOAPRequest;
+        public event ClientRequestLogHandler?                   OnSetChargeDetailRecordSOAPRequest;
 
         /// <summary>
         /// An event fired whenever a response to a SOAP charge detail record had been received.
         /// </summary>
-        public event ClientResponseLogHandler                 OnSetChargeDetailRecordSOAPResponse;
+        public event ClientResponseLogHandler?                  OnSetChargeDetailRecordSOAPResponse;
 
         /// <summary>
         /// An event fired whenever a response to a charge detail record had been received.
         /// </summary>
-        public event OnSetChargeDetailRecordResponseDelegate  OnSetChargeDetailRecordResponse;
+        public event OnSetChargeDetailRecordResponseDelegate?   OnSetChargeDetailRecordResponse;
 
         #endregion
 
@@ -971,6 +971,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="Description">An optional description of this CPO client.</param>
         /// <param name="RemoteCertificateValidator">The remote TLS certificate validator.</param>
         /// <param name="ClientCert">The TLS client certificate to use of HTTP authentication.</param>
+        /// <param name="Accept">The optional HTTP accept header.</param>
+        /// <param name="Authentication">The optional HTTP authentication to use, e.g. HTTP Basic Auth.</param>
         /// <param name="HTTPUserAgent">The HTTP user agent identification.</param>
         /// <param name="RequestTimeout">An optional request timeout.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
@@ -987,8 +989,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          LocalCertificateSelectionHandler?                          LocalCertificateSelector                 = null,
                          X509Certificate?                                           ClientCert                               = null,
                          SslProtocols?                                              TLSProtocol                              = null,
-                         String                                                     HTTPUserAgent                            = DefaultHTTPUserAgent,
-                         IHTTPAuthentication?                                       HTTPAuthentication                       = null,
+                         AcceptTypes?                                               Accept                                   = null,
+                         IHTTPAuthentication?                                       Authentication                           = null,
+                         String?                                                    HTTPUserAgent                            = DefaultHTTPUserAgent,
                          TimeSpan?                                                  RequestTimeout                           = null,
                          TransmissionRetryDelayDelegate?                            TransmissionRetryDelay                   = null,
                          UInt16?                                                    MaxNumberOfRetries                       = null,
@@ -1019,11 +1022,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    LocalCertificateSelector,
                    ClientCert,
                    TLSProtocol,
+                   HTTPContentType.Application.XML_UTF8,
+                   Accept,
+                   Authentication,
                    HTTPUserAgent ?? DefaultHTTPUserAgent,
-                   HTTPAuthentication,
                    null,
                    null,
-                   HTTPContentType.Text.XML_UTF8,
+                   ConnectionType.Close,
                    RequestTimeout,
                    TransmissionRetryDelay,
                    MaxNumberOfRetries,
@@ -1128,8 +1133,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                    LocalCertificateSelector,
                                                    ClientCert,
                                                    TLSProtocol,
+                                                   ContentType,
+                                                   Accept,
+                                                   Authentication,
                                                    HTTPUserAgent,
-                                                   HTTPAuthentication,
                                                    URLPathPrefix,
                                                    null,
                                                    null,
@@ -1250,15 +1257,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             }
 
-            if (result == null)
-                result = HTTPResponse<HeartbeatResponse>.OK(
-                             new HeartbeatResponse(
-                                 Request,
-                                 Request.TransactionId ?? Transaction_Id.Zero,
-                                 RequestStatus.SystemError
-                                 //"HTTP request failed!"
-                             )
-                         );
+            result ??= HTTPResponse<HeartbeatResponse>.OK(
+                           new HeartbeatResponse(
+                               Request,
+                               Request.TransactionId ?? Transaction_Id.Zero,
+                               RequestStatus.SystemError
+                               //"HTTP request failed!"
+                           )
+                       );
 
 
             #region Send OnSendHeartbeatResponse event
@@ -1401,8 +1407,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -1523,15 +1531,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
-                                 new SetChargingPoolAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.OK(
+                               new SetChargingPoolAvailabilityStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -1686,8 +1693,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -1808,15 +1817,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
-                                 new SetChargingStationAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetChargingStationAvailabilityStatusResponse>.OK(
+                               new SetChargingStationAvailabilityStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -1971,8 +1979,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -2093,15 +2103,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
-                                 new SetEVSEAvailabilityStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetEVSEAvailabilityStatusResponse>.OK(
+                               new SetEVSEAvailabilityStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -2255,8 +2264,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -2539,8 +2550,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -2826,8 +2839,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -2948,15 +2963,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
-                                 new SetEVSESyntheticStatusResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetEVSESyntheticStatusResponse>.OK(
+                               new SetEVSESyntheticStatusResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -3114,8 +3128,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -3237,15 +3253,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<GetServiceAuthorisationResponse>.OK(
-                                 new GetServiceAuthorisationResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<GetServiceAuthorisationResponse>.OK(
+                               new GetServiceAuthorisationResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -3386,8 +3401,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -3516,17 +3533,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetSessionEventReportResponse>.OK(
-                                 new SetSessionEventReportResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError,
-                                     ServiceSession_Id.Zero,
-                                     SessionAction_Id.Zero
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetSessionEventReportResponse>.OK(
+                               new SetSessionEventReportResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError,
+                                   ServiceSession_Id.Zero,
+                                   SessionAction_Id.Zero
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||
@@ -3676,8 +3692,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        LocalCertificateSelector,
                                                        ClientCert,
                                                        TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
                                                        HTTPUserAgent,
-                                                       HTTPAuthentication,
                                                        URLPathPrefix,
                                                        null,
                                                        null,
@@ -3800,15 +3818,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-               if (result is null)
-                    result = HTTPResponse<SetChargeDetailRecordResponse>.OK(
-                                 new SetChargeDetailRecordResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+               result ??= HTTPResponse<SetChargeDetailRecordResponse>.OK(
+                              new SetChargeDetailRecordResponse(
+                                  Request,
+                                  Request.TransactionId ?? Transaction_Id.Zero,
+                                  RequestStatus.SystemError
+                                  //"HTTP request failed!"
+                              )
+                          );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||

@@ -336,6 +336,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="Description">An optional description of this CPO client.</param>
         /// <param name="RemoteCertificateValidator">The remote TLS certificate validator.</param>
         /// <param name="ClientCert">The TLS client certificate to use of HTTP authentication.</param>
+        /// <param name="Accept">The optional HTTP accept header.</param>
+        /// <param name="Authentication">The optional HTTP authentication to use, e.g. HTTP Basic Auth.</param>
         /// <param name="HTTPUserAgent">The HTTP user agent identification.</param>
         /// <param name="RequestTimeout">An optional request timeout.</param>
         /// <param name="TransmissionRetryDelay">The delay between transmission retries.</param>
@@ -352,8 +354,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                          LocalCertificateSelectionHandler?                          LocalCertificateSelector     = null,
                          X509Certificate?                                           ClientCert                   = null,
                          SslProtocols?                                              TLSProtocol                  = null,
-                         String                                                     HTTPUserAgent                = DefaultHTTPUserAgent,
-                         IHTTPAuthentication?                                       HTTPAuthentication           = null,
+                         AcceptTypes?                                               Accept                       = null,
+                         IHTTPAuthentication?                                       Authentication               = null,
+                         String?                                                    HTTPUserAgent                = DefaultHTTPUserAgent,
                          TimeSpan?                                                  RequestTimeout               = null,
                          TransmissionRetryDelayDelegate?                            TransmissionRetryDelay       = null,
                          UInt16?                                                    MaxNumberOfRetries           = null,
@@ -372,11 +375,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                    LocalCertificateSelector,
                    ClientCert,
                    TLSProtocol,
-                   HTTPUserAgent ?? DefaultHTTPUserAgent,
-                   HTTPAuthentication,
-                   null,
-                   null,
                    HTTPContentType.Text.XML_UTF8,
+                   Accept,
+                   Authentication,
+                   HTTPUserAgent ?? DefaultHTTPUserAgent,
+                   null,
+                   null,
+                   ConnectionType.Close,
                    RequestTimeout,
                    TransmissionRetryDelay,
                    MaxNumberOfRetries,
@@ -462,31 +467,33 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                using (var eMIPClient = new SOAPClient(RemoteURL,
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
+                                                       HTTPUserAgent,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomHeartbeatSOAPRequestMapper(Request,
                                                                                        SOAP.Encapsulation(Request.ToXML(CustomHeartbeatRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_HeartBeatV1/",
                                                      RequestLogDelegate:   OnSendHeartbeatSOAPRequest,
@@ -593,15 +600,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<HeartbeatResponse>.OK(
-                                 new HeartbeatResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError
-                                     //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<HeartbeatResponse>.OK(
+                               new HeartbeatResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
@@ -719,31 +725,33 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                using (var eMIPClient = new SOAPClient(RemoteURL,
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
+                                                       HTTPUserAgent,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetServiceAuthorisationSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetServiceAuthorisationSOAPRequestMapper(Request,
                                                                                                      SOAP.Encapsulation(Request.ToXML(CustomSetServiceAuthorisationRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetServiceAuthorisationV1/",
                                                      RequestLogDelegate:   OnSetServiceAuthorisationSOAPRequest,
@@ -857,16 +865,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetServiceAuthorisationResponse>.OK(
-                                 new SetServiceAuthorisationResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError,
-                                     ServiceSession_Id.Zero
-                                 //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetServiceAuthorisationResponse>.OK(
+                               new SetServiceAuthorisationResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError,
+                                   ServiceSession_Id.Zero
+                               //"HTTP request failed!"
+                               )
+                           );
 
             }
             while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&
@@ -991,31 +998,33 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             do
             {
 
-                using (var _eMIPClient = new SOAPClient(RemoteURL,
-                                                        VirtualHostname,
-                                                        false,
-                                                        Description,
-                                                        PreferIPv4,
-                                                        RemoteCertificateValidator,
-                                                        LocalCertificateSelector,
-                                                        ClientCert,
-                                                        TLSProtocol,
-                                                        HTTPUserAgent,
-                                                        HTTPAuthentication,
-                                                        URLPathPrefix,
-                                                        null,
-                                                        null,
-                                                        RequestTimeout,
-                                                        TransmissionRetryDelay,
-                                                        MaxNumberOfRetries,
-                                                        InternalBufferSize,
-                                                        false,
-                                                        false,
-                                                        null,
-                                                        DNSClient))
+                using (var eMIPClient = new SOAPClient(RemoteURL,
+                                                       VirtualHostname,
+                                                       false,
+                                                       Description,
+                                                       PreferIPv4,
+                                                       RemoteCertificateValidator,
+                                                       LocalCertificateSelector,
+                                                       ClientCert,
+                                                       TLSProtocol,
+                                                       ContentType,
+                                                       Accept,
+                                                       Authentication,
+                                                       HTTPUserAgent,
+                                                       URLPathPrefix,
+                                                       null,
+                                                       null,
+                                                       RequestTimeout,
+                                                       TransmissionRetryDelay,
+                                                       MaxNumberOfRetries,
+                                                       InternalBufferSize,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       DNSClient))
                 {
 
-                    result = await _eMIPClient.Query(_CustomSetSessionActionSOAPRequestMapper(Request,
+                    result = await eMIPClient.Query(_CustomSetSessionActionSOAPRequestMapper(Request,
                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetSessionActionRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetSessionActionRequestV1/",
                                                      RequestLogDelegate:   OnSetSessionActionSOAPRequest,
@@ -1130,17 +1139,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                 }
 
-                if (result == null)
-                    result = HTTPResponse<SetSessionActionResponse>.OK(
-                                 new SetSessionActionResponse(
-                                     Request,
-                                     Request.TransactionId ?? Transaction_Id.Zero,
-                                     RequestStatus.SystemError,
-                                     ServiceSession_Id.Zero,
-                                     SessionAction_Id.Zero
-                                 //"HTTP request failed!"
-                                 )
-                             );
+                result ??= HTTPResponse<SetSessionActionResponse>.OK(
+                               new SetSessionActionResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError,
+                                   ServiceSession_Id.Zero,
+                                   SessionAction_Id.Zero
+                               //"HTTP request failed!"
+                               )
+                           );
 
             }
             while (result.HTTPStatusCode == HTTPStatusCode.RequestTimeout &&

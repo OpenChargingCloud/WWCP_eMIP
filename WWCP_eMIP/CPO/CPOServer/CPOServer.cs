@@ -438,7 +438,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
-                    Connection      = "close"
+                    Connection      = ConnectionType.Close
                 };
 
                 #endregion
@@ -642,7 +642,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
-                    Connection      = "close"
+                    Connection      = ConnectionType.Close
                 };
 
                 #endregion

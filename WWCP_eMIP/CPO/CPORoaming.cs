@@ -103,6 +103,30 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             => CPOClient.PreferIPv4;
 
         /// <summary>
+        /// The optional HTTP connection type.
+        /// </summary>
+        ConnectionType?                      IHTTPClient.Connection
+            => CPOClient.Connection;
+
+        /// <summary>
+        /// The optional HTTP content type.
+        /// </summary>
+        HTTPContentType?                     IHTTPClient.ContentType
+            => CPOClient.ContentType;
+
+        /// <summary>
+        /// The optional HTTP accept header.
+        /// </summary>
+        AcceptTypes?                         IHTTPClient.Accept
+            => CPOClient.Accept;
+
+        /// <summary>
+        /// The optional HTTP authentication to use.
+        /// </summary>
+        IHTTPAuthentication?                 IHTTPClient.Authentication
+            => CPOClient.Authentication;
+
+        /// <summary>
         /// The HTTP user agent identification.
         /// </summary>
         String                               IHTTPClient.HTTPUserAgent

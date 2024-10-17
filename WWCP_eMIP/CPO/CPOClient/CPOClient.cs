@@ -1022,8 +1022,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    LocalCertificateSelector,
                    ClientCert,
                    TLSProtocol,
-                   HTTPContentType.Application.XML_UTF8,
-                   Accept,
+                   HTTPContentType.Application.SOAPXML_UTF8,
+                   Accept        ?? new AcceptTypes(new AcceptType(HTTPContentType.Application.SOAPXML_UTF8)),
                    Authentication,
                    HTTPUserAgent ?? DefaultHTTPUserAgent,
                    null,
@@ -1040,22 +1040,26 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         {
 
-            this.Counters  = new CPOCounters(SendHeartbeat,
-                                             SetChargingPoolAvailabilityStatus,
-                                             SetChargingStationAvailabilityStatus,
-                                             SetEVSEAvailabilityStatus,
-                                             SetChargingConnectorAvailabilityStatus,
-                                             SetEVSEBusyStatus,
-                                             SetEVSESyntheticStatus,
-                                             GetServiceAuthorisation,
-                                             SetSessionEventReport,
-                                             SetChargeDetailRecord);
+            this.Counters    = new CPOCounters(
+                                   SendHeartbeat,
+                                   SetChargingPoolAvailabilityStatus,
+                                   SetChargingStationAvailabilityStatus,
+                                   SetEVSEAvailabilityStatus,
+                                   SetChargingConnectorAvailabilityStatus,
+                                   SetEVSEBusyStatus,
+                                   SetEVSESyntheticStatus,
+                                   GetServiceAuthorisation,
+                                   SetSessionEventReport,
+                                   SetChargeDetailRecord
+                               );
 
             base.HTTPLogger  = this.DisableLogging == false
-                                   ? new Logger(this,
-                                                LoggingPath,
-                                                LoggingContext,
-                                                LogfileCreator)
+                                   ? new Logger(
+                                         this,
+                                         LoggingPath,
+                                         LoggingContext,
+                                         LogfileCreator
+                                     )
                                    : null;
 
         }
@@ -2568,109 +2572,109 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSEBusyStatusSOAPRequestMapper(Request,
-                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSEBusyStatusRequestSerializer))),
-                                                     "eMIP_ToIOP_SetEVSEBusyStatusV1/",
-                                                     RequestLogDelegate:   OnSetEVSEBusyStatusSOAPRequest,
-                                                     ResponseLogDelegate:  OnSetEVSEBusyStatusSOAPResponse,
-                                                     CancellationToken:    Request.CancellationToken,
-                                                     EventTrackingId:      Request.EventTrackingId,
-                                                     RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
-                                                     NumberOfRetry:        TransmissionRetry,
+                                                                                              SOAP.Encapsulation(Request.ToXML(CustomSetEVSEBusyStatusRequestSerializer))),
+                                                    "eMIP_ToIOP_SetEVSEBusyStatusV1/",
+                                                    RequestLogDelegate:   OnSetEVSEBusyStatusSOAPRequest,
+                                                    ResponseLogDelegate:  OnSetEVSEBusyStatusSOAPResponse,
+                                                    CancellationToken:    Request.CancellationToken,
+                                                    EventTrackingId:      Request.EventTrackingId,
+                                                    RequestTimeout:       Request.RequestTimeout ?? RequestTimeout,
+                                                    NumberOfRetry:        TransmissionRetry,
 
-                                                     #region OnSuccess
+                                                    #region OnSuccess
 
-                                                     OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
-                                                                                                          (request, xml, httpResonse, onexception) =>
-                                                                                                              SetEVSEBusyStatusResponse.Parse(request,
-                                                                                                                                              xml,
-                                                                                                                                              CustomSetEVSEBusyStatusParser,
-                                                                                                                                              httpResonse,
-                                                                                                                                              onexception)),
+                                                    OnSuccess: XMLResponse => XMLResponse.ConvertContent(Request,
+                                                                                                         (request, xml, httpResonse, onexception) =>
+                                                                                                             SetEVSEBusyStatusResponse.Parse(request,
+                                                                                                                                             xml,
+                                                                                                                                             CustomSetEVSEBusyStatusParser,
+                                                                                                                                             httpResonse,
+                                                                                                                                             onexception)),
 
-                                                     #endregion
+                                                    #endregion
 
-                                                     #region OnSOAPFault
+                                                    #region OnSOAPFault
 
-                                                     OnSOAPFault: (timestamp, soapclient, httpresponse) => {
+                                                    OnSOAPFault: (timestamp, soapclient, httpresponse) => {
 
-                                                         SendSOAPError(timestamp, this, httpresponse.Content);
+                                                        SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
-                                                                    httpresponse,
-                                                                    new SetEVSEBusyStatusResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.DataError,
-                                                                        httpresponse
-                                                                    )
-                                                                );
+                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                                   httpresponse,
+                                                                   new SetEVSEBusyStatusResponse(
+                                                                       Request,
+                                                                       Request.TransactionId ?? Transaction_Id.Zero,
+                                                                       RequestStatus.DataError,
+                                                                       httpresponse
+                                                                   )
+                                                               );
 
-                                                     },
+                                                    },
 
-                                                     #endregion
+                                                    #endregion
 
-                                                     #region OnHTTPError
+                                                    #region OnHTTPError
 
-                                                     OnHTTPError: (timestamp, soapclient, httpresponse) => {
+                                                    OnHTTPError: (timestamp, soapclient, httpresponse) => {
 
-                                                         SendHTTPError(timestamp, this, httpresponse);
-
-
-                                                         if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
-                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
-
-                                                             return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
-                                                                        httpresponse,
-                                                                        new SetEVSEBusyStatusResponse(
-                                                                            Request,
-                                                                            Request.TransactionId ?? Transaction_Id.Zero,
-                                                                            RequestStatus.HTTPError,
-                                                                            httpresponse
-                                                                        )
-                                                                    );
+                                                        SendHTTPError(timestamp, this, httpresponse);
 
 
-                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
-                                                                    httpresponse,
-                                                                    new SetEVSEBusyStatusResponse(
-                                                                        Request,
-                                                                        Request.TransactionId ?? Transaction_Id.Zero,
-                                                                        RequestStatus.SystemError,
-                                                                        httpresponse
-                                                                    )
-                                                                );
+                                                        if (httpresponse.HTTPStatusCode == HTTPStatusCode.ServiceUnavailable ||
+                                                            httpresponse.HTTPStatusCode == HTTPStatusCode.Unauthorized       ||
+                                                            httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
+                                                            httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                     },
+                                                            return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                                       httpresponse,
+                                                                       new SetEVSEBusyStatusResponse(
+                                                                           Request,
+                                                                           Request.TransactionId ?? Transaction_Id.Zero,
+                                                                           RequestStatus.HTTPError,
+                                                                           httpresponse
+                                                                       )
+                                                                   );
 
-                                                     #endregion
 
-                                                     #region OnException
+                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                                   httpresponse,
+                                                                   new SetEVSEBusyStatusResponse(
+                                                                       Request,
+                                                                       Request.TransactionId ?? Transaction_Id.Zero,
+                                                                       RequestStatus.SystemError,
+                                                                       httpresponse
+                                                                   )
+                                                               );
 
-                                                     OnException: (timestamp, sender, exception) => {
+                                                    },
 
-                                                         SendException(timestamp, sender, exception);
+                                                    #endregion
 
-                                                         return HTTPResponse<SetEVSEBusyStatusResponse>.ExceptionThrown(
+                                                    #region OnException
 
-                                                                new SetEVSEBusyStatusResponse(
-                                                                    Request,
-                                                                    Request.TransactionId ?? Transaction_Id.Zero,
-                                                                    RequestStatus.ServiceNotAvailable
-                                                                    //httpresponse.HTTPStatusCode.ToString(),
-                                                                    //httpresponse.HTTPBody.      ToUTF8String()
-                                                                ),
+                                                    OnException: (timestamp, sender, exception) => {
 
-                                                                Exception: exception
+                                                        SendException(timestamp, sender, exception);
 
-                                                            );
+                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.ExceptionThrown(
 
-                                                     }
+                                                               new SetEVSEBusyStatusResponse(
+                                                                   Request,
+                                                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                                                   RequestStatus.ServiceNotAvailable
+                                                                   //httpresponse.HTTPStatusCode.ToString(),
+                                                                   //httpresponse.HTTPBody.      ToUTF8String()
+                                                               ),
 
-                                                     #endregion
+                                                               Exception: exception
 
-                                                    );
+                                                           );
+
+                                                    }
+
+                                                    #endregion
+
+                                                  );
 
                 }
 

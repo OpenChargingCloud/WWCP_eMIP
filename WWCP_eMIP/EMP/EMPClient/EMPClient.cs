@@ -376,7 +376,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                    ClientCert,
                    TLSProtocol,
                    HTTPContentType.Application.SOAPXML_UTF8,
-                   Accept        ?? new AcceptTypes(new AcceptType(HTTPContentType.Application.SOAPXML_UTF8)),
+                   Accept        ?? AcceptTypes.FromHTTPContentTypes(HTTPContentType.Application.SOAPXML_UTF8),
                    Authentication,
                    HTTPUserAgent ?? DefaultHTTPUserAgent,
                    null,

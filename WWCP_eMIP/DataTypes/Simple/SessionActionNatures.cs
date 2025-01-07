@@ -277,17 +277,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this session action nature.
         /// </summary>
-        public SessionActionNatures Clone
+        public SessionActionNatures Clone()
 
-            => new (Code,
-                    Description is not null && Description.IsNotNullOrEmpty()
-                        ? new String(Description.ToCharArray())
-                        : null);
+            => new (
+                   Code,
+                   Description is not null && Description.IsNotNullOrEmpty()
+                       ? Description.CloneString()
+                       : null
+               );
 
         #endregion
 

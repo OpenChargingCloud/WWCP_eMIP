@@ -296,15 +296,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Return a clone of this EVSE identification.
         /// </summary>
-        public EVSE_Id Clone
+        public EVSE_Id Clone()
 
-            => new (OperatorId.Clone,
-                    new String(Suffix.ToCharArray()));
+            => new (
+                   OperatorId.Clone(),
+                   Suffix.    CloneString()
+               );
 
         #endregion
 

@@ -234,15 +234,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this user identification.
         /// </summary>
-        public User_Id Clone
+        public User_Id Clone()
 
-            => new User_Id(new String(Value.ToCharArray()),
-                           Format);
+            => new (
+                   Value.CloneString(),
+                   Format
+               );
 
         #endregion
 

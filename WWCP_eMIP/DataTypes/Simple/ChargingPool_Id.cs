@@ -364,15 +364,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Return a clone of this charging pool identification.
         /// </summary>
-        public ChargingPool_Id Clone
+        public ChargingPool_Id Clone()
 
-            => new (OperatorId.Clone,
-                    new String(Suffix.ToCharArray()));
+            => new (
+                   OperatorId.Clone(),
+                   Suffix.    CloneString()
+               );
 
         #endregion
 

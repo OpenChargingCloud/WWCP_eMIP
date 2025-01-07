@@ -167,15 +167,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this charging session identification.
         /// </summary>
-        public ServiceSession_Id Clone
+        public ServiceSession_Id Clone()
 
-            => new ServiceSession_Id(
-                   new String(InternalId?.ToCharArray())
+            => new (
+                   InternalId.CloneString()
                );
 
         #endregion

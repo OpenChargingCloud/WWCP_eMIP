@@ -277,17 +277,19 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this request status.
         /// </summary>
-        public RequestStatus Clone
+        public RequestStatus Clone()
 
-            => new (Code,
-                    Description is not null
-                        ? new String(Description.ToCharArray())
-                        : null);
+            => new (
+                   Code,
+                   Description is not null
+                       ? Description.CloneString()
+                       : null
+               );
 
         #endregion
 

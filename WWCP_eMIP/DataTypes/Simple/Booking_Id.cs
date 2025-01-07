@@ -191,15 +191,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this booking identification.
         /// </summary>
-        public Booking_Id Clone
+        public Booking_Id Clone()
 
             => new (
-                   new String(InternalId.ToCharArray())
+                   InternalId.CloneString()
                );
 
         #endregion

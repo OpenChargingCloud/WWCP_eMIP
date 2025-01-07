@@ -180,15 +180,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this user identification.
         /// </summary>
-        public Service_Id Clone
+        public Service_Id Clone()
 
-            => new Service_Id(
-                   new String(InternalId?.ToCharArray())
+            => new (
+                   InternalId.CloneString()
                );
 
         #endregion

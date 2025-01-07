@@ -183,15 +183,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this contract identification.
         /// </summary>
-        public Contract_Id Clone
+        public Contract_Id Clone()
 
-            => new Contract_Id(
-                   new String(InternalId.ToCharArray())
+            => new (
+                   InternalId.CloneString()
                );
 
         #endregion

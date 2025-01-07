@@ -380,16 +380,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this charging operator identification.
         /// </summary>
-        public Operator_Id Clone
+        public Operator_Id Clone()
 
-            => new (CountryCode,
-                    new String(Suffix.ToCharArray()),
-                    Format);
+            => new (
+                   CountryCode.Clone(),
+                   Suffix.     CloneString(),
+                   Format
+               );
 
         #endregion
 

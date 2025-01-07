@@ -175,15 +175,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #endregion
 
-        #region Clone
+        #region Clone()
 
         /// <summary>
         /// Clone this partner product identification.
         /// </summary>
-        public PartnerProduct_Id Clone
+        public PartnerProduct_Id Clone()
 
             => new (
-                   new String(InternalId.ToCharArray())
+                   InternalId.CloneString()
                );
 
         #endregion

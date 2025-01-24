@@ -132,22 +132,22 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="EVSEAdminStatusType"></param>
         /// <returns></returns>
-        public static EVSEAvailabilityStatusTypes ToEMIP(this EVSEAdminStatusTypes EVSEAdminStatusType)
+        public static EVSEAvailabilityStatusTypes ToEMIP(this EVSEAdminStatusType EVSEAdminStatusType)
         {
 
-            if (EVSEAdminStatusType == EVSEAdminStatusTypes.OutOfService ||
-                EVSEAdminStatusType == EVSEAdminStatusTypes.Blocked ||
-                EVSEAdminStatusType == EVSEAdminStatusTypes.InternalUse)
+            if (EVSEAdminStatusType == EVSEAdminStatusType.OutOfService ||
+                EVSEAdminStatusType == EVSEAdminStatusType.Blocked ||
+                EVSEAdminStatusType == EVSEAdminStatusType.InternalUse)
                 return EVSEAvailabilityStatusTypes.OutOfOrder;
 
-            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Operational)
+            else if (EVSEAdminStatusType == EVSEAdminStatusType.Operational)
                 return EVSEAvailabilityStatusTypes.InService;
 
-            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Planned ||
-                     EVSEAdminStatusType == EVSEAdminStatusTypes.InDeployment)
+            else if (EVSEAdminStatusType == EVSEAdminStatusType.Planned ||
+                     EVSEAdminStatusType == EVSEAdminStatusType.InDeployment)
                 return EVSEAvailabilityStatusTypes.Future;
 
-            else if (EVSEAdminStatusType == EVSEAdminStatusTypes.Deleted)
+            else if (EVSEAdminStatusType == EVSEAdminStatusType.Deleted)
                 return EVSEAvailabilityStatusTypes.Deleted;
 
             else

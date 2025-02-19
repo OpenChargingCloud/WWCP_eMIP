@@ -1289,12 +1289,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             if (!EVSEAdminStatusUpdates.Any())
                 return PushEVSEAdminStatusResult.NoOperation(Id,
-                                                         this);
+                                                             this);
 
             if (DisableSendStatus)
                 return PushEVSEAdminStatusResult.AdminDown(Id,
                                                            this,
                                                            EVSEAdminStatusUpdates);
+
+            EventTrackingId ??= EventTracking_Id.New;
+
+            PushEVSEAdminStatusResult? result = null;
 
             #endregion
 
@@ -1303,28 +1307,72 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (TransmissionType == TransmissionTypes.Enqueue)
             {
 
-                return await UpdateStatus(this,
-                                          EVSEAdminStatusUpdates,
+                var invokeTimer  = false;
+                var lockTaken    = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime, CancellationToken);
 
-                                          Timestamp,
-                                          CancellationToken,
-                                          EventTrackingId,
-                                          RequestTimeout).
+                try
+                {
 
-                             ConfigureAwait(false);
+                    if (lockTaken)
+                    {
+
+                        var filteredUpdates = EVSEAdminStatusUpdates.Where(adminstatusupdate => IncludeEVSEIds(adminstatusupdate.Id)).
+                                                                        ToArray();
+
+                        if (filteredUpdates.Length > 0)
+                        {
+
+                            foreach (var Update in filteredUpdates)
+                            {
+
+                                // Delay the status update until the EVSE data had been uploaded!
+                                if (!DisablePushData && evsesToAddQueue.Any(evse => evse.Id == Update.Id))
+                                    evseAdminStatusChangesDelayedQueue.Add(Update);
+
+                                else
+                                    evseAdminStatusChangesFastQueue.Add(Update);
+
+                            }
+
+                            invokeTimer = true;
+
+                            result = PushEVSEAdminStatusResult.Enqueued(Id, this);
+
+                        }
+
+                        result = PushEVSEAdminStatusResult.NoOperation(Id, this);
+
+                    }
+
+                }
+                finally
+                {
+                    if (lockTaken)
+                        DataAndStatusLock.Release();
+                }
+
+                if (!lockTaken)
+                    return PushEVSEAdminStatusResult.Error(Id, this, Description: "Could not acquire DataAndStatusLock!");
+
+                if (invokeTimer)
+                    FlushEVSEFastStatusTimer.Change(FlushEVSEFastStatusEvery, TimeSpan.FromMilliseconds(-1));
+
+                return result ?? PushEVSEAdminStatusResult.Error(Id, this, Description: "Empty result!");
 
             }
 
             #endregion
 
-            return await SetEVSEAvailabilityStatus(EVSEAdminStatusUpdates,
+            return await SetEVSEAvailabilityStatus(
 
-                                                   Timestamp,
-                                                   CancellationToken,
-                                                   EventTrackingId,
-                                                   RequestTimeout).
+                             EVSEAdminStatusUpdates,
 
-                         ConfigureAwait(false);
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout
+
+                         ).ConfigureAwait(false);
 
         }
 
@@ -1359,6 +1407,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (!EVSEStatusUpdates.Any())
                 return PushEVSEStatusResult.NoOperation(Id, this);
 
+            EventTrackingId ??= EventTracking_Id.New;
+
             PushEVSEStatusResult? result = null;
 
             #endregion
@@ -1390,21 +1440,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 #endregion
 
                 var invokeTimer  = false;
-                var LockTaken    = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime);
+                var lockTaken    = await DataAndStatusLock.WaitAsync(MaxLockWaitingTime, CancellationToken);
 
                 try
                 {
 
-                    if (LockTaken)
+                    if (lockTaken)
                     {
 
-                        var FilteredUpdates = EVSEStatusUpdates.Where(statusupdate => IncludeEVSEIds(statusupdate.Id)).
-                                                            ToArray();
+                        var filteredUpdates = EVSEStatusUpdates.Where(statusupdate => IncludeEVSEIds(statusupdate.Id)).
+                                                                ToArray();
 
-                        if (FilteredUpdates.Length > 0)
+                        if (filteredUpdates.Length > 0)
                         {
 
-                            foreach (var update in FilteredUpdates)
+                            foreach (var update in filteredUpdates)
                             {
 
                                 // Delay the status update until the EVSE data had been uploaded!
@@ -1429,30 +1479,32 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 }
                 finally
                 {
-                    if (LockTaken)
+                    if (lockTaken)
                         DataAndStatusLock.Release();
                 }
 
-                if (!LockTaken)
+                if (!lockTaken)
                     return PushEVSEStatusResult.Error(Id, this, Description: "Could not acquire DataAndStatusLock!");
 
                 if (invokeTimer)
                     FlushEVSEFastStatusTimer.Change(FlushEVSEFastStatusEvery, TimeSpan.FromMilliseconds(-1));
 
-                return result;
+                return result ?? PushEVSEStatusResult.Error(Id, this, Description: "Empty result!");
 
             }
 
             #endregion
 
-            return await SetEVSEBusyStatus(EVSEStatusUpdates,
+            return await SetEVSEBusyStatus(
 
-                                           Timestamp,
-                                           CancellationToken,
-                                           EventTrackingId,
-                                           RequestTimeout).
+                             EVSEStatusUpdates,
 
-                         ConfigureAwait(false);
+                             Timestamp,
+                             CancellationToken,
+                             EventTrackingId,
+                             RequestTimeout
+
+                         ).ConfigureAwait(false);
 
         }
 

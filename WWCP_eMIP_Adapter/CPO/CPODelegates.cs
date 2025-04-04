@@ -28,7 +28,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 {
 
     ///// <summary>
-    ///// A delegate which allows you to modify the convertion from WWCP EVSEs to EVSE data records.
+    ///// A delegate which allows you to modify the conversion from WWCP EVSEs to EVSE data records.
     ///// </summary>
     ///// <param name="EVSE">A WWCP EVSE.</param>
     ///// <param name="EVSEDataRecord">An EVSE data record.</param>
@@ -36,7 +36,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     //                                                                                      EVSEDataRecord           EVSEDataRecord);
 
     ///// <summary>
-    ///// A delegate which allows you to modify the convertion from WWCP EVSE status updates to EVSE status records.
+    ///// A delegate which allows you to modify the conversion from WWCP EVSE status updates to EVSE status records.
     ///// </summary>
     ///// <param name="EVSEStatusUpdate">A WWCP EVSE status update.</param>
     ///// <param name="EVSEStatusRecord">An eMIP EVSE status record.</param>
@@ -44,7 +44,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     //                                                                                      EVSEStatusRecord         EVSEStatusRecord);
 
     /// <summary>
-    /// A delegate which allows you to modify the convertion from WWCP charge detail records to eMIP charge detail records.
+    /// A delegate which allows you to modify the conversion from WWCP charge detail records to eMIP charge detail records.
     /// </summary>
     /// <param name="WWCPChargeDetailRecord">A WWCP charge detail record.</param>
     /// <param name="eMIPChargeDetailRecord">An eMIP charge detail record.</param>
@@ -52,7 +52,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                           ChargeDetailRecord       eMIPChargeDetailRecord);
 
     /// <summary>
-    /// A delegate which allows you to modify the convertion from eMIP charge detail records to WWCP charge detail records.
+    /// A delegate which allows you to modify the conversion from eMIP charge detail records to WWCP charge detail records.
     /// </summary>
     /// <param name="eMIPChargeDetailRecord">An eMIP charge detail record.</param>
     /// <param name="WWCPChargeDetailRecord">A WWCP charge detail record.</param>

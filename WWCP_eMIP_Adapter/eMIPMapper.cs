@@ -292,7 +292,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="ChargeDetailRecord">A WWCP charge detail record.</param>
         /// <param name="ChargingSession">The optional charging session.</param>
-        /// <param name="WWCPChargeDetailRecord2ChargeDetailRecord">A delegate which allows you to modify the convertion from WWCP charge detail records to eMIP charge detail records.</param>
+        /// <param name="WWCPChargeDetailRecord2ChargeDetailRecord">A delegate which allows you to modify the conversion from WWCP charge detail records to eMIP charge detail records.</param>
         public static ChargeDetailRecord ToEMIP(this WWCP.ChargeDetailRecord                            ChargeDetailRecord,
                                                 WWCP.ChargingSession?                                   ChargingSession                             = null,
                                                 CPO.WWCPChargeDetailRecord2ChargeDetailRecordDelegate?  WWCPChargeDetailRecord2ChargeDetailRecord   = null)
@@ -358,7 +358,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Convert an eMIP charge detail record into a corresponding WWCP charge detail record.
         /// </summary>
         /// <param name="ChargeDetailRecord">An eMIP charge detail record.</param>
-        /// <param name="ChargeDetailRecord2WWCPChargeDetailRecord">A delegate which allows you to modify the convertion from eMIP charge detail records to WWCP charge detail records.</param>
+        /// <param name="ChargeDetailRecord2WWCPChargeDetailRecord">A delegate which allows you to modify the conversion from eMIP charge detail records to WWCP charge detail records.</param>
         public static WWCP.ChargeDetailRecord ToWWCP(this ChargeDetailRecord                                ChargeDetailRecord,
                                                      CPO.ChargeDetailRecord2WWCPChargeDetailRecordDelegate  ChargeDetailRecord2WWCPChargeDetailRecord = null)
         {

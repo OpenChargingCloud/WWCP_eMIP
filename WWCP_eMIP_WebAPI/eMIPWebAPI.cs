@@ -39,7 +39,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
 {
 
     /// <summary>
-    /// eMIP+ HTTP API extention methods.
+    /// eMIP+ HTTP API extension methods.
     /// </summary>
     public static class ExtensionMethods
     {

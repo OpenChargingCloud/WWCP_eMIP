@@ -476,8 +476,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                               ? new XElement("partnerProductId",             PartnerProductId.            Value.ToString())
                               : null,
 
-                          new XElement("startTime",                          StartTime.                         ToIso8601(false)),
-                          new XElement("endTime",                            EndTime.                           ToIso8601(false)),
+                          new XElement("startTime",                          StartTime.                         ToISO8601(false)),
+                          new XElement("endTime",                            EndTime.                           ToISO8601(false)),
 
                           new XElement("meterReportList",
                               MeterReports.Any()

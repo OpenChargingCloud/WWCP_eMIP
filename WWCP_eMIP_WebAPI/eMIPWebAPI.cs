@@ -418,7 +418,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                                                              PartnerServiceSessionId,
                                                                              RequestTimeout) => await DebugLog.SubmitEvent("GetServiceAuthorisationRequest",
                                                                                                                            JSONObject.Create(
-                                                                                                                               new JProperty("timestamp",                      RequestTimestamp.    ToIso8601()),
+                                                                                                                               new JProperty("timestamp",                      RequestTimestamp.    ToISO8601()),
                                                                                                                                new JProperty("eventTrackingId",                EventTrackingId.     ToString()),
                                                                                                                                //new JProperty("roamingNetworkId",               RoamingNetworkId.    ToString()),
                                                                                                                                //EMPRoamingProviderId.HasValue
@@ -457,7 +457,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                                                              Result,
                                                                              Runtime) => await DebugLog.SubmitEvent("GetServiceAuthorisationResponse",
                                                                                                                     JSONObject.Create(
-                                                                                                                        new JProperty("timestamp",                   RequestTimestamp.    ToIso8601()),
+                                                                                                                        new JProperty("timestamp",                   RequestTimestamp.    ToISO8601()),
                                                                                                                         new JProperty("eventTrackingId",             EventTrackingId.     ToString()),
                                                                                                                         //new JProperty("roamingNetworkId",            RoamingNetwork.Id.   ToString()),
                                                                                                                         //EMPRoamingProviderId.HasValue

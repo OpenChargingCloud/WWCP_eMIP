@@ -329,7 +329,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartbeatResponse",
 
                           new XElement(eMIPNS.Default + "heartBeatPeriod",  HeartbeatPeriod.TotalSeconds.ToString()),
-                          new XElement(eMIPNS.Default + "currentTime",      CurrentTime.                 ToIso8601()),
+                          new XElement(eMIPNS.Default + "currentTime",      CurrentTime.                 ToISO8601()),
                           new XElement(eMIPNS.Default + "transactionId",    TransactionId.               ToString()),
                           new XElement(eMIPNS.Default + "requestStatus",    RequestStatus.               ToString())
 

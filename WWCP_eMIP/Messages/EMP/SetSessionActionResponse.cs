@@ -107,9 +107,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         //          <sessionActionId>00969e30-78a0-435e-a368-ea50ef20e878</sessionActionId>
         //
         //          <!--       1: OK-Normal:  Normal successful completion! -->
-        //          <!--     205: OK-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE! -->
-        //          <!--     206: OK-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)! -->
-        //          <!--   10201: Ko-Error:   The autorisation request is rejected: Unknown error! -->
+        //          <!--     205: OK-Warning: The authorisation request is rejected by CPO: The requested service is not available on this EVSE! -->
+        //          <!--     206: OK-Warning: The authorisation request is rejected by CPO: The EVSE is not technically reachable (communication)! -->
+        //          <!--   10201: Ko-Error:   The authorisation request is rejected: Unknown error! -->
         //          <!--  <10000: OK:         Reserved for future use! -->
         //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
         //          <requestStatus>?</requestStatus>

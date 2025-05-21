@@ -1273,15 +1273,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        async Task<PushEVSEAdminStatusResult>
+        public async Task<PushEVSEAdminStatusResult>
 
-            ISendAdminStatus.UpdateEVSEAdminStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
-                                                   TransmissionTypes                   TransmissionType,
+            UpdateEVSEAdminStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
+                                  TransmissionTypes                   TransmissionType    = TransmissionTypes.Enqueue,
 
-                                                   DateTime?                           Timestamp,
-                                                   EventTracking_Id?                   EventTrackingId,
-                                                   TimeSpan?                           RequestTimeout,
-                                                   CancellationToken                   CancellationToken)
+                                  DateTime?                           Timestamp           = null,
+                                  EventTracking_Id?                   EventTrackingId     = null,
+                                  TimeSpan?                           RequestTimeout      = null,
+                                  User_Id?                            CurrentUserId       = null,
+                                  CancellationToken                   CancellationToken   = default)
 
         {
 
@@ -1390,15 +1391,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        async Task<PushEVSEStatusResult>
+        public async Task<PushEVSEStatusResult>
 
-            ISendStatus.UpdateEVSEStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
-                                         TransmissionTypes              TransmissionType,
+            UpdateEVSEStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
+                             TransmissionTypes              TransmissionType    = TransmissionTypes.Enqueue,
 
-                                         DateTime?                      Timestamp,
-                                         EventTracking_Id?              EventTrackingId,
-                                         TimeSpan?                      RequestTimeout,
-                                         CancellationToken              CancellationToken)
+                             DateTime?                      Timestamp           = null,
+                             EventTracking_Id?              EventTrackingId     = null,
+                             TimeSpan?                      RequestTimeout      = null,
+                             User_Id?                       CurrentUserId       = null,
+                             CancellationToken              CancellationToken   = default)
 
         {
 

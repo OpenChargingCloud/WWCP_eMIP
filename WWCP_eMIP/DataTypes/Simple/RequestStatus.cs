@@ -326,24 +326,24 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => new (203,       "The eMSP of the end-user cannot be identified!");
 
         /// <summary>
-        /// Ok-Warning: The autorisation request is rejected by CPO: The requested service is not available on this EVSE!
+        /// Ok-Warning: The authorisation request is rejected by CPO: The requested service is not available on this EVSE!
         /// </summary>
         public static RequestStatus EVSEServiceNotAvailable
-            => new (205,       "The autorisation request is rejected by CPO: The requested service is not available on this EVSE!");
+            => new (205,       "The authorisation request is rejected by CPO: The requested service is not available on this EVSE!");
 
         /// <summary>
-        /// Ok-Warning: The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!
+        /// Ok-Warning: The authorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!
         /// </summary>
         public static RequestStatus EVSENotReachable
-            => new (206,       "The autorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!");
+            => new (206,       "The authorisation request is rejected by CPO: The EVSE is not technically reachable (communication)!");
 
 
 
         /// <summary>
-        /// KO-Error 201: The autorisation request is rejected: Unknown error!
+        /// KO-Error 201: The authorisation request is rejected: Unknown error!
         /// </summary>
         public static RequestStatus UnknownAuthError
-            => new (10201,     "The autorisation request is rejected: Unknown error!");
+            => new (10201,     "The authorisation request is rejected: Unknown error!");
 
         /// <summary>
         /// KO-Error 207: The CPO of the EVSE is not reachable!

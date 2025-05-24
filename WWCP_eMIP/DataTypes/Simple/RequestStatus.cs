@@ -398,7 +398,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// KO-Error 507: The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!
         /// </summary>
-        public static RequestStatus CPOorEMSP_ActionOrReportErrorOccured
+        public static RequestStatus CPOorEMSP_ActionOrReportErrorOccurred
             => new (10507,     "The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!");
 
         /// <summary>

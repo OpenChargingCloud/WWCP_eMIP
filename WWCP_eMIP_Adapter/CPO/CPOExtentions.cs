@@ -78,10 +78,10 @@ namespace cloud.charging.open.protocols.WWCP
         /// <param name="EVSEDataRecord2XML">A delegate to process the XML representation of an EVSE data record, e.g. before pushing it to the roaming provider.</param>
         /// <param name="WWCPChargeDetailRecord2eMIPChargeDetailRecord">A delegate to process a charge detail record, e.g. before pushing it to the roaming provider.</param>
         /// 
-        /// <param name="SendHeartbeatsEvery">The heartbeat intervall.</param>
-        /// <param name="ServiceCheckEvery">The service check intervall.</param>
-        /// <param name="StatusCheckEvery">The status check intervall.</param>
-        /// <param name="CDRCheckEvery">The charge detail record intervall.</param>
+        /// <param name="SendHeartbeatsEvery">The heartbeat interval.</param>
+        /// <param name="ServiceCheckEvery">The service check interval.</param>
+        /// <param name="StatusCheckEvery">The status check interval.</param>
+        /// <param name="CDRCheckEvery">The charge detail record interval.</param>
         /// 
         /// <param name="DisableSendHeartbeats">This service can be disabled, e.g. for debugging reasons.</param>
         /// <param name="DisablePushData">This service can be disabled, e.g. for debugging reasons.</param>

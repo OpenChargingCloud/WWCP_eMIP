@@ -71,10 +71,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 return EMPClient.Description;
             }
 
-            set
-            {
-                EMPClient.Description = value;
-            }
+            //set
+            //{
+            //    EMPClient.Description = value;
+            //}
 
         }
 
@@ -93,8 +93,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <summary>
         /// The TLS protocol to use.
         /// </summary>
-        SslProtocols                         IHTTPClient.TLSProtocol
-            => EMPClient.TLSProtocol;
+        SslProtocols                         IHTTPClient.TLSProtocols
+            => EMPClient.TLSProtocols;
 
         /// <summary>
         /// Prefer IPv4 instead of IPv6.

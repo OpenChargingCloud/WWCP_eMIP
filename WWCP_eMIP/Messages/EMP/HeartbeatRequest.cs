@@ -64,7 +64,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                 Transaction_Id?    TransactionId       = null,
 
                                 HTTPRequest?       HTTPRequest         = null,
-                                DateTime?          Timestamp           = null,
+                                DateTimeOffset?    Timestamp           = null,
                                 CancellationToken  CancellationToken   = default,
                                 EventTracking_Id?  EventTrackingId     = null,
                                 TimeSpan?          RequestTimeout      = null)
@@ -131,7 +131,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                              OnExceptionDelegate                        OnException         = null,
 
                                              HTTPRequest                                HTTPRequest         = null,
-                                             DateTime?                                  Timestamp           = null,
+                                             DateTimeOffset?                            Timestamp           = null,
                                              CancellationToken                          CancellationToken   = default,
                                              EventTracking_Id                           EventTrackingId     = null,
                                              TimeSpan?                                  RequestTimeout      = null)
@@ -176,7 +176,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                              OnExceptionDelegate?                       OnException         = null,
 
                                              HTTPRequest?                               HTTPRequest         = null,
-                                             DateTime?                                  Timestamp           = null,
+                                             DateTimeOffset?                            Timestamp           = null,
                                              CancellationToken                          CancellationToken   = default,
                                              EventTracking_Id?                          EventTrackingId     = null,
                                              TimeSpan?                                  RequestTimeout      = null)
@@ -223,7 +223,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                        OnExceptionDelegate?                       OnException         = null,
 
                                        HTTPRequest?                               HTTPRequest         = null,
-                                       DateTime?                                  Timestamp           = null,
+                                       DateTimeOffset?                            Timestamp           = null,
                                        CancellationToken                          CancellationToken   = default,
                                        EventTracking_Id?                          EventTrackingId     = null,
                                        TimeSpan?                                  RequestTimeout      = null)
@@ -294,7 +294,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                        OnExceptionDelegate?                       OnException         = null,
 
                                        HTTPRequest?                               HTTPRequest         = null,
-                                       DateTime?                                  Timestamp           = null,
+                                       DateTimeOffset?                            Timestamp           = null,
                                        CancellationToken                          CancellationToken   = default,
                                        EventTracking_Id?                          EventTrackingId     = null,
                                        TimeSpan?                                  RequestTimeout      = null)

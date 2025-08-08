@@ -76,12 +76,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// Start time of the charging session.
         /// </summary>
-        public DateTime                  StartTime                { get; }
+        public DateTimeOffset            StartTime                { get; }
 
         /// <summary>
         /// End time of the charging session, or the timestamp of the meter reading for intermediate charge detail records.
         /// </summary>
-        public DateTime                  EndTime                  { get; }
+        public DateTimeOffset            EndTime                  { get; }
 
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                   Service_Id                 RequestedServiceId,
                                   EVSE_Id                    EVSEId,
                                   User_Id                    UserId,
-                                  DateTime                   StartTime,
-                                  DateTime                   EndTime,
+                                  DateTimeOffset             StartTime,
+                                  DateTimeOffset             EndTime,
 
                                   Contract_Id?               UserContractIdAlias      = null,
                                   ServiceSession_Id?         ExecPartnerSessionId     = null,
@@ -834,12 +834,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             /// <summary>
             /// Start time of the charging session.
             /// </summary>
-            public DateTime                  StartTime                { get; set; }
+            public DateTimeOffset            StartTime                { get; set; }
 
             /// <summary>
             /// End time of the charging session, or the timestamp of the meter reading for intermediate charge detail records.
             /// </summary>
-            public DateTime                  EndTime                  { get; set; }
+            public DateTimeOffset            EndTime                  { get; set; }
 
 
             /// <summary>

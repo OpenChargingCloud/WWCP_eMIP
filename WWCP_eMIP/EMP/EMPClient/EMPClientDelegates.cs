@@ -29,8 +29,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a heartbeat will be send upstream.
     /// </summary>
-    public delegate Task OnSendHeartbeatRequestDelegate (DateTime                                 LogTimestamp,
-                                                         DateTime                                 RequestTimestamp,
+    public delegate Task OnSendHeartbeatRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                         DateTimeOffset                           RequestTimestamp,
                                                          IEMPClient                               Sender,
                                                          //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
@@ -42,8 +42,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a heartbeat had been sent upstream.
     /// </summary>
-    public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
-                                                         DateTime                                 RequestTimestamp,
+    public delegate Task OnSendHeartbeatResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                         DateTimeOffset                           RequestTimestamp,
                                                          IEMPClient                               Sender,
                                                          //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
@@ -62,8 +62,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a SetServiceAuthorisation will be send upstream.
     /// </summary>
-    public delegate Task OnSetServiceAuthorisationRequestDelegate (DateTime                          LogTimestamp,
-                                                                   DateTime                          RequestTimestamp,
+    public delegate Task OnSetServiceAuthorisationRequestDelegate (DateTimeOffset                    LogTimestamp,
+                                                                   DateTimeOffset                    RequestTimestamp,
                                                                    IEMPClient                        Sender,
                                                                    //String                            SenderId,
                                                                    EventTracking_Id                  EventTrackingId,
@@ -89,8 +89,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a SetServiceAuthorisation had been sent upstream.
     /// </summary>
-    public delegate Task OnSetServiceAuthorisationResponseDelegate(DateTime                          LogTimestamp,
-                                                                   DateTime                          RequestTimestamp,
+    public delegate Task OnSetServiceAuthorisationResponseDelegate(DateTimeOffset                    LogTimestamp,
+                                                                   DateTimeOffset                    RequestTimestamp,
                                                                    IEMPClient                        Sender,
                                                                    //String                            SenderId,
                                                                    EventTracking_Id                  EventTrackingId,
@@ -122,8 +122,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a SetSessionAction will be send upstream.
     /// </summary>
-    public delegate Task OnSetSessionActionRequestDelegate (DateTime                   LogTimestamp,
-                                                            DateTime                   RequestTimestamp,
+    public delegate Task OnSetSessionActionRequestDelegate (DateTimeOffset             LogTimestamp,
+                                                            DateTimeOffset             RequestTimestamp,
                                                             IEMPClient                 Sender,
                                                             //String                     SenderId,
                                                             EventTracking_Id           EventTrackingId,
@@ -141,8 +141,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// A delegate called whenever a SetSessionAction had been sent upstream.
     /// </summary>
-    public delegate Task OnSetSessionActionResponseDelegate(DateTime                   LogTimestamp,
-                                                            DateTime                   RequestTimestamp,
+    public delegate Task OnSetSessionActionResponseDelegate(DateTimeOffset             LogTimestamp,
+                                                            DateTimeOffset             RequestTimestamp,
                                                             IEMPClient                 Sender,
                                                             //String                     SenderId,
                                                             EventTracking_Id           EventTrackingId,

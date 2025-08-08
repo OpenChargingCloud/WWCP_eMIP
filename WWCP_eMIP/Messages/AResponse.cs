@@ -58,7 +58,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        public DateTime        ResponseTimestamp    { get; }
+        public DateTimeOffset  ResponseTimestamp    { get; }
 
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         protected AResponse(TRequest                Request,
                             Transaction_Id          TransactionId,
                             RequestStatus           RequestStatus,
-                            DateTime?               ResponseTimestamp   = null,
+                            DateTimeOffset?         ResponseTimestamp   = null,
                             HTTPResponse?           HTTPResponse        = null,
                             JObject?                CustomData          = null,
                             UserDefinedDictionary?  InternalData        = null)

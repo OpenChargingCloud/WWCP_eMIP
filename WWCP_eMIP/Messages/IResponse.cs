@@ -33,7 +33,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        DateTime        ResponseTimestamp    { get; }
+        DateTimeOffset  ResponseTimestamp    { get; }
 
         /// <summary>
         /// The eMIP transaction identification.

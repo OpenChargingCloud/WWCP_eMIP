@@ -44,7 +44,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The optional timestamp of the request.
         /// </summary>
-        DateTime           Timestamp           { get; }
+        DateTimeOffset     Timestamp           { get; }
 
         /// <summary>
         /// An optional token to cancel this request.

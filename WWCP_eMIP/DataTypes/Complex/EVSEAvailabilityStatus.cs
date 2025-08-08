@@ -42,7 +42,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The timestamp of the status change.
         /// </summary>
-        public DateTime                     StatusEventDate              { get; }
+        public DateTimeOffset               StatusEventDate              { get; }
 
         /// <summary>
         /// The EVSE availability status.
@@ -52,7 +52,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The optional timestamp until which the given availability status is valid.
         /// </summary>
-        public DateTime?                    AvailabilityStatusUntil      { get; }
+        public DateTimeOffset?              AvailabilityStatusUntil      { get; }
 
         /// <summary>
         /// The optional comment about the availability status.
@@ -72,10 +72,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="AvailabilityStatusUntil">An optional timestamp until which the given availability status is valid.</param>
         /// <param name="AvailabilityStatusComment">An optional comment about the availability status.</param>
         public EVSEAvailabilityStatus(EVSE_Id                      EVSEId,
-                                      DateTime                     StatusEventDate,
+                                      DateTimeOffset               StatusEventDate,
                                       EVSEAvailabilityStatusTypes  AvailabilityStatus,
-                                      DateTime?                    AvailabilityStatusUntil     = null,
-                                      String                       AvailabilityStatusComment   = null)
+                                      DateTimeOffset?              AvailabilityStatusUntil     = null,
+                                      String?                      AvailabilityStatusComment   = null)
         {
 
             this.EVSEId                     = EVSEId;

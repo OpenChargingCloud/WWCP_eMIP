@@ -52,7 +52,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The timestamp of the EVSE availability status change.
         /// </summary>
-        public DateTime?                     AvailabilityStatusEventDate    { get; }
+        public DateTimeOffset?               AvailabilityStatusEventDate    { get; }
 
         /// <summary>
         /// The EVSE availability status.
@@ -62,7 +62,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The optional timestamp until which the given availability status is valid.
         /// </summary>
-        public DateTime?                     AvailabilityStatusUntil        { get; }
+        public DateTimeOffset?               AvailabilityStatusUntil        { get; }
 
         /// <summary>
         /// The optional comment about the availability status.
@@ -73,7 +73,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The timestamp of the EVSE busy status change.
         /// </summary>
-        public DateTime?                     BusyStatusEventDate            { get; }
+        public DateTimeOffset?               BusyStatusEventDate            { get; }
 
         /// <summary>
         /// The EVSE busy status.
@@ -83,7 +83,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The optional timestamp until which the given busy status is valid.
         /// </summary>
-        public DateTime?                     BusyStatusUntil                { get; }
+        public DateTimeOffset?               BusyStatusUntil                { get; }
 
         /// <summary>
         /// The optional comment about the busy status.
@@ -121,17 +121,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              Operator_Id                   OperatorId,
                                              EVSE_Id                       EVSEId,
                                              Transaction_Id?               TransactionId                 = null,
-                                             DateTime?                     AvailabilityStatusEventDate   = null,
+                                             DateTimeOffset?               AvailabilityStatusEventDate   = null,
                                              EVSEAvailabilityStatusTypes?  AvailabilityStatus            = null,
-                                             DateTime?                     AvailabilityStatusUntil       = null,
+                                             DateTimeOffset?               AvailabilityStatusUntil       = null,
                                              String?                       AvailabilityStatusComment     = null,
-                                             DateTime?                     BusyStatusEventDate           = null,
+                                             DateTimeOffset?               BusyStatusEventDate           = null,
                                              EVSEBusyStatusTypes?          BusyStatus                    = null,
-                                             DateTime?                     BusyStatusUntil               = null,
+                                             DateTimeOffset?               BusyStatusUntil               = null,
                                              String?                       BusyStatusComment             = null,
 
                                              HTTPRequest?                  HTTPRequest                   = null,
-                                             DateTime?                     Timestamp                     = null,
+                                             DateTimeOffset?               Timestamp                     = null,
                                              CancellationToken             CancellationToken             = default,
                                              EventTracking_Id?             EventTrackingId               = null,
                                              TimeSpan?                     RequestTimeout                = null)
@@ -230,7 +230,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                           OnExceptionDelegate                                     OnException         = null,
 
                                                           HTTPRequest                                             HTTPRequest         = null,
-                                                          DateTime?                                               Timestamp           = null,
+                                                          DateTimeOffset?                                         Timestamp           = null,
                                                           CancellationToken                                       CancellationToken   = default,
                                                           EventTracking_Id                                        EventTrackingId     = null,
                                                           TimeSpan?                                               RequestTimeout      = null)
@@ -275,7 +275,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                           OnExceptionDelegate                                     OnException         = null,
 
                                                           HTTPRequest                                             HTTPRequest         = null,
-                                                          DateTime?                                               Timestamp           = null,
+                                                          DateTimeOffset?                                         Timestamp           = null,
                                                           CancellationToken                                       CancellationToken   = default,
                                                           EventTracking_Id                                        EventTrackingId     = null,
                                                           TimeSpan?                                               RequestTimeout      = null)
@@ -322,7 +322,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        OnExceptionDelegate                                     OnException         = null,
 
                                        HTTPRequest                                             HTTPRequest         = null,
-                                       DateTime?                                               Timestamp           = null,
+                                       DateTimeOffset?                                         Timestamp           = null,
                                        CancellationToken                                       CancellationToken   = default,
                                        EventTracking_Id                                        EventTrackingId     = null,
                                        TimeSpan?                                               RequestTimeout      = null)
@@ -426,7 +426,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                        OnExceptionDelegate                                     OnException         = null,
 
                                        HTTPRequest                                             HTTPRequest         = null,
-                                       DateTime?                                               Timestamp           = null,
+                                       DateTimeOffset?                                         Timestamp           = null,
                                        CancellationToken                                       CancellationToken   = default,
                                        EventTracking_Id                                        EventTrackingId     = null,
                                        TimeSpan?                                               RequestTimeout      = null)

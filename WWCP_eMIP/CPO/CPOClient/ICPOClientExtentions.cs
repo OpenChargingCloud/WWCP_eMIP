@@ -58,11 +58,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                           Operator_Id         OperatorId,
                           Transaction_Id?     TransactionId       = null,
 
-                          HTTPRequest         HTTPRequest         = null,
-                          DateTime?           Timestamp           = null,
-                          CancellationToken   CancellationToken   = default,
-                          EventTracking_Id    EventTrackingId     = null,
-                          TimeSpan?           RequestTimeout      = null)
+                          HTTPRequest?        HTTPRequest         = null,
+                          DateTimeOffset?     Timestamp           = null,
+                          EventTracking_Id?   EventTrackingId     = null,
+                          TimeSpan?           RequestTimeout      = null,
+                          CancellationToken   CancellationToken   = default)
 
 
                 => CPOClient.SendHeartbeat(new HeartbeatRequest(PartnerId,
@@ -71,9 +71,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                 HTTPRequest,
                                                                 Timestamp,
-                                                                CancellationToken,
                                                                 EventTrackingId,
-                                                                RequestTimeout ?? CPOClient.RequestTimeout));
+                                                                RequestTimeout ?? CPOClient.RequestTimeout,
+                                                                CancellationToken));
 
         #endregion
 
@@ -105,17 +105,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                       Partner_Id                   PartnerId,
                                       Operator_Id                  OperatorId,
                                       EVSE_Id                      EVSEId,
-                                      DateTime                     StatusEventDate,
+                                      DateTimeOffset               StatusEventDate,
                                       EVSEAvailabilityStatusTypes  AvailabilityStatus,
                                       Transaction_Id?              TransactionId               = null,
-                                      DateTime?                    AvailabilityStatusUntil     = null,
-                                      String                       AvailabilityStatusComment   = null,
+                                      DateTimeOffset?              AvailabilityStatusUntil     = null,
+                                      String?                      AvailabilityStatusComment   = null,
 
-                                      HTTPRequest                  HTTPRequest                 = null,
-                                      DateTime?                    Timestamp                   = null,
-                                      CancellationToken            CancellationToken           = default,
-                                      EventTracking_Id             EventTrackingId             = null,
-                                      TimeSpan?                    RequestTimeout              = null)
+                                      HTTPRequest?                 HTTPRequest                 = null,
+                                      DateTimeOffset?              Timestamp                   = null,
+                                      EventTracking_Id?            EventTrackingId             = null,
+                                      TimeSpan?                    RequestTimeout              = null,
+                                      CancellationToken            CancellationToken           = default)
 
 
                 => CPOClient.SetEVSEAvailabilityStatus(new SetEVSEAvailabilityStatusRequest(PartnerId,
@@ -129,9 +129,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                                             HTTPRequest,
                                                                                             Timestamp,
-                                                                                            CancellationToken,
                                                                                             EventTrackingId,
-                                                                                            RequestTimeout ?? CPOClient.RequestTimeout));
+                                                                                            RequestTimeout ?? CPOClient.RequestTimeout,
+                                                                                            CancellationToken));
 
         #endregion
 
@@ -162,17 +162,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               Partner_Id           PartnerId,
                               Operator_Id          OperatorId,
                               EVSE_Id              EVSEId,
-                              DateTime             StatusEventDate,
+                              DateTimeOffset       StatusEventDate,
                               EVSEBusyStatusTypes  BusyStatus,
                               Transaction_Id?      TransactionId       = null,
-                              DateTime?            BusyStatusUntil     = null,
-                              String               BusyStatusComment   = null,
+                              DateTimeOffset?      BusyStatusUntil     = null,
+                              String?              BusyStatusComment   = null,
 
-                              HTTPRequest          HTTPRequest         = null,
-                              DateTime?            Timestamp           = null,
-                              CancellationToken    CancellationToken   = default,
-                              EventTracking_Id     EventTrackingId     = null,
-                              TimeSpan?            RequestTimeout      = null)
+                              HTTPRequest?         HTTPRequest         = null,
+                              DateTimeOffset?      Timestamp           = null,
+                              EventTracking_Id?    EventTrackingId     = null,
+                              TimeSpan?            RequestTimeout      = null,
+                              CancellationToken    CancellationToken   = default)
 
 
                 => CPOClient.SetEVSEBusyStatus(new SetEVSEBusyStatusRequest(PartnerId,
@@ -186,9 +186,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                             HTTPRequest,
                                                                             Timestamp,
-                                                                            CancellationToken,
                                                                             EventTrackingId,
-                                                                            RequestTimeout ?? CPOClient.RequestTimeout));
+                                                                            RequestTimeout ?? CPOClient.RequestTimeout,
+                                                                            CancellationToken));
 
         #endregion
 
@@ -224,11 +224,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                     Transaction_Id?            TransactionId             = null,
                                     PartnerServiceSession_Id?  PartnerServiceSessionId   = null,
 
-                                    HTTPRequest                HTTPRequest               = null,
-                                    DateTime?                  Timestamp                 = null,
-                                    CancellationToken          CancellationToken         = default,
-                                    EventTracking_Id           EventTrackingId           = null,
-                                    TimeSpan?                  RequestTimeout            = null)
+                                    HTTPRequest?               HTTPRequest               = null,
+                                    DateTimeOffset?            Timestamp                 = null,
+                                    EventTracking_Id?          EventTrackingId           = null,
+                                    TimeSpan?                  RequestTimeout            = null,
+                                    CancellationToken          CancellationToken         = default)
 
 
                 => CPOClient.GetServiceAuthorisation(new GetServiceAuthorisationRequest(PartnerId,
@@ -241,9 +241,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                                         HTTPRequest,
                                                                                         Timestamp,
-                                                                                        CancellationToken,
                                                                                         EventTrackingId,
-                                                                                        RequestTimeout ?? CPOClient.RequestTimeout));
+                                                                                        RequestTimeout ?? CPOClient.RequestTimeout,
+                                                                                        CancellationToken));
 
         #endregion
 
@@ -272,11 +272,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                   ChargeDetailRecord  ChargeDetailRecord,
                                   Transaction_Id?     TransactionId       = null,
 
-                                  HTTPRequest         HTTPRequest         = null,
-                                  DateTime?           Timestamp           = null,
-                                  CancellationToken   CancellationToken   = default,
-                                  EventTracking_Id    EventTrackingId     = null,
-                                  TimeSpan?           RequestTimeout      = null)
+                                  HTTPRequest?        HTTPRequest         = null,
+                                  DateTimeOffset?     Timestamp           = null,
+                                  EventTracking_Id?   EventTrackingId     = null,
+                                  TimeSpan?           RequestTimeout      = null,
+                                  CancellationToken   CancellationToken   = default)
 
 
                 => CPOClient.SetChargeDetailRecord(new SetChargeDetailRecordRequest(PartnerId,
@@ -286,9 +286,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                                     HTTPRequest,
                                                                                     Timestamp,
-                                                                                    CancellationToken,
                                                                                     EventTrackingId,
-                                                                                    RequestTimeout ?? CPOClient.RequestTimeout));
+                                                                                    RequestTimeout ?? CPOClient.RequestTimeout,
+                                                                                    CancellationToken));
 
         #endregion
 

@@ -42,7 +42,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The timestamp of the status change.
         /// </summary>
-        public DateTime             StatusEventDate      { get; }
+        public DateTimeOffset       StatusEventDate      { get; }
 
         /// <summary>
         /// The EVSE busy status.
@@ -52,7 +52,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The optional timestamp until which the given busy status is valid.
         /// </summary>
-        public DateTime?            BusyStatusUntil      { get; }
+        public DateTimeOffset?      BusyStatusUntil      { get; }
 
         /// <summary>
         /// The optional comment about the busy status.
@@ -72,10 +72,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="BusyStatusUntil">An optional timestamp until which the given busy status is valid.</param>
         /// <param name="BusyStatusComment">An optional comment about the busy status.</param>
         public EVSEBusyStatus(EVSE_Id              EVSEId,
-                              DateTime             StatusEventDate,
+                              DateTimeOffset       StatusEventDate,
                               EVSEBusyStatusTypes  BusyStatus,
-                              DateTime?            BusyStatusUntil     = null,
-                              String               BusyStatusComment   = null)
+                              DateTimeOffset?      BusyStatusUntil     = null,
+                              String?              BusyStatusComment   = null)
         {
 
             this.EVSEId             = EVSEId;

@@ -50,8 +50,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="RequestTimeout">The timeout of this request.</param>
     public delegate Task
 
-        OnSetServiceAuthorisationRequestDelegate(DateTime                   LogTimestamp,
-                                                 DateTime                   RequestTimestamp,
+        OnSetServiceAuthorisationRequestDelegate(DateTimeOffset             LogTimestamp,
+                                                 DateTimeOffset             RequestTimestamp,
                                                  CPOServer                  Sender,
                                                  //String                     SenderId,
                                                  EventTracking_Id           EventTrackingId,
@@ -82,7 +82,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<SetServiceAuthorisationResponse>
 
-        OnSetServiceAuthorisationDelegate(DateTime                        Timestamp,
+        OnSetServiceAuthorisationDelegate(DateTimeOffset                  Timestamp,
                                           CPOServer                       Sender,
                                           SetServiceAuthorisationRequest  Request);
 
@@ -107,7 +107,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="Duration">The time between request and response.</param>
     public delegate Task
 
-        OnSetServiceAuthorisationResponseDelegate(DateTime                             Timestamp,
+        OnSetServiceAuthorisationResponseDelegate(DateTimeOffset                       Timestamp,
                                                   CPOServer                            Sender,
                                                   //String                               SenderId,
                                                   EventTracking_Id                     EventTrackingId,
@@ -155,8 +155,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="RequestTimeout">The timeout of this request.</param>
     public delegate Task
 
-        OnSetSessionActionRequestDelegate(DateTime                   LogTimestamp,
-                                          DateTime                   RequestTimestamp,
+        OnSetSessionActionRequestDelegate(DateTimeOffset             LogTimestamp,
+                                          DateTimeOffset             RequestTimestamp,
                                           CPOServer                  Sender,
                                           //String                     SenderId,
                                           EventTracking_Id           EventTrackingId,
@@ -180,7 +180,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<SetSessionActionRequestResponse>
 
-        OnSetSessionActionDelegate(DateTime                        Timestamp,
+        OnSetSessionActionDelegate(DateTimeOffset                  Timestamp,
                                    CPOServer                       Sender,
                                    SetSessionActionRequestRequest  Request);
 
@@ -206,7 +206,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <param name="Duration">The time between request and response.</param>
     public delegate Task
 
-        OnSetSessionActionResponseDelegate(DateTime                   Timestamp,
+        OnSetSessionActionResponseDelegate(DateTimeOffset             Timestamp,
                                            CPOServer                  Sender,
                                            //String                     SenderId,
                                            EventTracking_Id           EventTrackingId,

@@ -219,12 +219,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region SendHeartbeat
 
-        public delegate void SendHeartbeatStartedDelegate(WWCPCPOAdapter Sender, DateTime StartTime, TimeSpan Every, UInt64 RunId);
+        public delegate void SendHeartbeatStartedDelegate(WWCPCPOAdapter Sender, DateTimeOffset StartTime, TimeSpan Every, UInt64 RunId);
 
         public event SendHeartbeatStartedDelegate SendHeartbeatStartedEvent;
 
 
-        public delegate void SendHeartbeatFinishedDelegate(WWCPCPOAdapter Sender, DateTime StartTime, DateTime EndTime, TimeSpan Runtime, TimeSpan Every, UInt64 RunId);
+        public delegate void SendHeartbeatFinishedDelegate(WWCPCPOAdapter Sender, DateTimeOffset StartTime, DateTimeOffset EndTime, TimeSpan Runtime, TimeSpan Every, UInt64 RunId);
 
         public event SendHeartbeatFinishedDelegate SendHeartbeatFinishedEvent;
 
@@ -825,7 +825,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             SetEVSEAvailabilityStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
 
-                                      DateTime?                           Timestamp           = null,
+                                      DateTimeOffset?                     Timestamp           = null,
                                       CancellationToken                   CancellationToken   = default,
                                       EventTracking_Id                    EventTrackingId     = null,
                                       TimeSpan?                           RequestTimeout      = null)
@@ -952,9 +952,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                    null,
                                                                    Timestamp,
-                                                                   CancellationToken,
                                                                    EventTrackingId,
-                                                                   RequestTimeout).
+                                                                   RequestTimeout,
+                                                                   CancellationToken).
 
                                          ConfigureAwait(false);
 
@@ -1049,7 +1049,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             SetEVSEBusyStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
 
-                              DateTime?                      Timestamp           = null,
+                              DateTimeOffset?                Timestamp           = null,
                               CancellationToken              CancellationToken   = default,
                               EventTracking_Id               EventTrackingId     = null,
                               TimeSpan?                      RequestTimeout      = null)
@@ -1176,9 +1176,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                            null,
                                                            Timestamp,
-                                                           CancellationToken,
                                                            EventTrackingId,
-                                                           RequestTimeout).
+                                                           RequestTimeout,
+                                                           CancellationToken).
 
                                          ConfigureAwait(false);
 
@@ -1278,7 +1278,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             UpdateEVSEAdminStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
                                   TransmissionTypes                   TransmissionType    = TransmissionTypes.Enqueue,
 
-                                  DateTime?                           Timestamp           = null,
+                                  DateTimeOffset?                     Timestamp           = null,
                                   EventTracking_Id?                   EventTrackingId     = null,
                                   TimeSpan?                           RequestTimeout      = null,
                                   User_Id?                            CurrentUserId       = null,
@@ -1396,7 +1396,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             UpdateEVSEStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
                              TransmissionTypes              TransmissionType    = TransmissionTypes.Enqueue,
 
-                             DateTime?                      Timestamp           = null,
+                             DateTimeOffset?                Timestamp           = null,
                              EventTracking_Id?              EventTrackingId     = null,
                              TimeSpan?                      RequestTimeout      = null,
                              User_Id?                       CurrentUserId       = null,
@@ -1542,7 +1542,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                            ChargingSession_Id?          CPOPartnerSessionId   = null,
                            ChargingStationOperator_Id?  OperatorId            = null,
 
-                           DateTime?                    Timestamp             = null,
+                           DateTimeOffset?              Timestamp             = null,
                            EventTracking_Id?            EventTrackingId       = null,
                            TimeSpan?                    RequestTimeout        = null,
                            CancellationToken            CancellationToken     = default)
@@ -1599,8 +1599,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             #endregion
 
 
-            DateTime             Endtime;
-            TimeSpan             Runtime;
+            DateTimeOffset   Endtime;
+            TimeSpan         Runtime;
             AuthStartResult  result;
 
             if (ChargingLocation?.EVSEId == null)
@@ -1742,7 +1742,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                           ChargingSession_Id?          CPOPartnerSessionId   = null,
                           ChargingStationOperator_Id?  OperatorId            = null,
 
-                          DateTime?                    Timestamp             = null,
+                          DateTimeOffset?              Timestamp             = null,
                           EventTracking_Id?            EventTrackingId       = null,
                           TimeSpan?                    RequestTimeout        = null,
                           CancellationToken            CancellationToken     = default)
@@ -1792,7 +1792,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             #endregion
 
 
-            DateTime        Endtime;
+            DateTimeOffset  Endtime;
             TimeSpan        Runtime;
             AuthStopResult  result;
 
@@ -1928,7 +1928,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             SendChargeDetailRecord(WWCP.ChargeDetailRecord  ChargeDetailRecord,
                                    TransmissionTypes        TransmissionType    = TransmissionTypes.Enqueue,
 
-                                   DateTime?                RequestTimestamp    = null,
+                                   DateTimeOffset?          RequestTimestamp    = null,
                                    EventTracking_Id?        EventTrackingId     = null,
                                    TimeSpan?                RequestTimeout      = null,
                                    CancellationToken        CancellationToken   = default)
@@ -1960,7 +1960,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             SendChargeDetailRecords(IEnumerable<WWCP.ChargeDetailRecord>  ChargeDetailRecords,
                                     TransmissionTypes                     TransmissionType,
 
-                                    DateTime?                             RequestTimestamp,
+                                    DateTimeOffset?                       RequestTimestamp,
                                     EventTracking_Id?                     EventTrackingId,
                                     TimeSpan?                             RequestTimeout,
                                     CancellationToken                     CancellationToken)
@@ -2027,7 +2027,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region if disabled => 'AdminDown'...
 
-            DateTime        Endtime;
+            DateTimeOffset  Endtime;
             TimeSpan        Runtime;
             SendCDRsResult  results;
 
@@ -2163,9 +2163,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          null,
                                                          RequestTimestamp,
-                                                         CancellationToken,
                                                          EventTrackingId,
-                                                         RequestTimeout
+                                                         RequestTimeout,
+                                                         CancellationToken
                                                      );
 
                                     if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
@@ -2323,7 +2323,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     #region Send SendHeartbeatStarted Event...
 
-                    var StartTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                    var StartTime = Timestamp.Now;
 
                     SendHeartbeatStartedEvent?.Invoke(this,
                                                       StartTime,
@@ -2337,15 +2337,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                Transaction_Id.Random(),
 
                                                                                null,
-                                                                               org.GraphDefined.Vanaheimr.Illias.Timestamp.Now,
-                                                                               new CancellationTokenSource().Token,
+                                                                               Timestamp.Now,
                                                                                EventTracking_Id.New,
-                                                                               DefaultRequestTimeout).
+                                                                               DefaultRequestTimeout,
+                                                                               new CancellationTokenSource().Token).
                                                                  ConfigureAwait(false);
 
                     #region Send SendHeartbeatFinished Event...
 
-                    var EndTime = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
+                    var EndTime = Timestamp.Now;
 
                     SendHeartbeatFinishedEvent?.Invoke(this,
                                                        StartTime,
@@ -2764,9 +2764,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                                       null,
                                                                       Timestamp.Now,
-                                                                      new CancellationTokenSource().Token,
                                                                       EventTracking_Id.New,
-                                                                      DefaultRequestTimeout);
+                                                                      DefaultRequestTimeout,
+                                                                      new CancellationTokenSource().Token);
 
                     if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
                         response.Content               is not null          &&

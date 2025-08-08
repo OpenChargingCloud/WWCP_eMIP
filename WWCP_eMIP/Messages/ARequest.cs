@@ -66,7 +66,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The timestamp of the request.
         /// </summary>
-        public DateTime           Timestamp            { get; }
+        public DateTimeOffset     Timestamp            { get; }
 
         /// <summary>
         /// An optional event tracking identification for correlating this request with other events.
@@ -102,7 +102,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                         Partner_Id          PartnerId,
                         Transaction_Id?     TransactionId       = null,
 
-                        DateTime?           Timestamp           = null,
+                        DateTimeOffset?     Timestamp           = null,
                         EventTracking_Id?   EventTrackingId     = null,
                         TimeSpan?           RequestTimeout      = null,
                         CancellationToken   CancellationToken   = default)

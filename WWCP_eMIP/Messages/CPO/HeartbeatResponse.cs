@@ -44,12 +44,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The heartbeat period.
         /// </summary>
-        public TimeSpan  HeartbeatPeriod    { get; }
+        public TimeSpan        HeartbeatPeriod    { get; }
 
         /// <summary>
         /// The current time.
         /// </summary>
-        public DateTime  CurrentTime        { get; }
+        public DateTimeOffset  CurrentTime        { get; }
 
         #endregion
 
@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CustomData">Optional additional customer-specific data.</param>
         public HeartbeatResponse(HeartbeatRequest        Request,
                                  TimeSpan                HeartbeatPeriod,
-                                 DateTime                CurrentTime,
+                                 DateTimeOffset          CurrentTime,
                                  Transaction_Id          TransactionId,
                                  RequestStatus           RequestStatus,
 
@@ -501,17 +501,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <summary>
             /// The current time.
             /// </summary>
-            public DateTime        CurrentTime        { get; set; }
+            public DateTimeOffset  CurrentTime        { get; set; }
 
-            /// <summary>
-            /// The transaction identification.
-            /// </summary>
-            public Transaction_Id  TransactionId      { get; set; }
+            ///// <summary>
+            ///// The transaction identification.
+            ///// </summary>
+            //public Transaction_Id  TransactionId      { get; set; }
 
-            /// <summary>
-            /// The status of the request.
-            /// </summary>
-            public RequestStatus   RequestStatus      { get; set; }
+            ///// <summary>
+            ///// The status of the request.
+            ///// </summary>
+            //public RequestStatus   RequestStatus      { get; set; }
 
             #endregion
 

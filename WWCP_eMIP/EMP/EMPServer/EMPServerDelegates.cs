@@ -52,8 +52,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="RequestTimeout">The timeout of this request.</param>
     public delegate Task
 
-        OnGetServiceAuthorisationRequestDelegate(DateTime            LogTimestamp,
-                                                 DateTime            RequestTimestamp,
+        OnGetServiceAuthorisationRequestDelegate(DateTimeOffset      LogTimestamp,
+                                                 DateTimeOffset      RequestTimestamp,
                                                  EMPServer           Sender,
                                                  String              SenderId,
                                                  EventTracking_Id    EventTrackingId,
@@ -79,7 +79,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<GetServiceAuthorisationResponse>
 
-        OnGetServiceAuthorisationDelegate(DateTime                        Timestamp,
+        OnGetServiceAuthorisationDelegate(DateTimeOffset                  Timestamp,
                                           EMPServer                       Sender,
                                           GetServiceAuthorisationRequest  Request);
 
@@ -107,7 +107,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Duration">The time between request and response.</param>
     public delegate Task
 
-        OnGetServiceAuthorisationResponseDelegate(DateTime                         Timestamp,
+        OnGetServiceAuthorisationResponseDelegate(DateTimeOffset                   Timestamp,
                                                   EMPServer                        Sender,
                                                   String                           SenderId,
                                                   EventTracking_Id                 EventTrackingId,
@@ -151,8 +151,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="RequestTimeout">The timeout of this request.</param>
     public delegate Task
 
-        OnSetSessionEventReportRequestDelegate(DateTime                    LogTimestamp,
-                                               DateTime                    RequestTimestamp,
+        OnSetSessionEventReportRequestDelegate(DateTimeOffset              LogTimestamp,
+                                               DateTimeOffset              RequestTimestamp,
                                                EMPServer                   Sender,
                                                String                      SenderId,
                                                EventTracking_Id            EventTrackingId,
@@ -177,7 +177,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<SetSessionEventReportResponse>
 
-        OnSetSessionEventReportDelegate(DateTime                      Timestamp,
+        OnSetSessionEventReportDelegate(DateTimeOffset                Timestamp,
                                         EMPServer                     Sender,
                                         SetSessionEventReportRequest  Request);
 
@@ -204,7 +204,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Duration">The time between request and response.</param>
     public delegate Task
 
-        OnSetSessionEventReportResponseDelegate(DateTime                        Timestamp,
+        OnSetSessionEventReportResponseDelegate(DateTimeOffset                  Timestamp,
                                                 EMPServer                       Sender,
                                                 String                          SenderId,
                                                 EventTracking_Id                EventTrackingId,
@@ -243,8 +243,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="RequestTimeout">The timeout of this request.</param>
     public delegate Task
 
-        OnSetChargeDetailRecordRequestDelegate(DateTime             LogTimestamp,
-                                               DateTime             RequestTimestamp,
+        OnSetChargeDetailRecordRequestDelegate(DateTimeOffset       LogTimestamp,
+                                               DateTimeOffset       RequestTimestamp,
                                                EMPServer            Sender,
                                                String               SenderId,
                                                EventTracking_Id     EventTrackingId,
@@ -265,7 +265,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Request">A 'set service authorisation' request.</param>
     public delegate Task<SetChargeDetailRecordResponse>
 
-        OnSetChargeDetailRecordDelegate(DateTime                      Timestamp,
+        OnSetChargeDetailRecordDelegate(DateTimeOffset                Timestamp,
                                         EMPServer                     Sender,
                                         SetChargeDetailRecordRequest  Request);
 
@@ -288,7 +288,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <param name="Duration">The time between request and response.</param>
     public delegate Task
 
-        OnSetChargeDetailRecordResponseDelegate(DateTime                          Timestamp,
+        OnSetChargeDetailRecordResponseDelegate(DateTimeOffset                    Timestamp,
                                                   EMPServer                       Sender,
                                                   String                          SenderId,
                                                   EventTracking_Id                EventTrackingId,

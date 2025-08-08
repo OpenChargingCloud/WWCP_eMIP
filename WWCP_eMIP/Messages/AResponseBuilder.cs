@@ -58,7 +58,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <summary>
         /// The timestamp of the response message creation.
         /// </summary>
-        public DateTime        ResponseTimestamp   { get; set; }
+        public DateTimeOffset  ResponseTimestamp   { get; set; }
 
         /// <summary>
         /// The transaction identification.
@@ -101,7 +101,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         ///// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         ///// <param name="CustomData">Optional customer-specific data of the response.</param>
         //protected AResponseBuilder(TRequest                Request,
-        //                           DateTime?               ResponseTimestamp   = null,
+        //                           DateTimeOffset?         ResponseTimestamp   = null,
         //                           JObject?                CustomData          = null,
         //                           UserDefinedDictionary?  InternalData        = null)
 
@@ -146,7 +146,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ResponseTimestamp">The timestamp of the response creation.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                Request,
-                                   DateTime?               ResponseTimestamp   = null,
+                                   DateTimeOffset?         ResponseTimestamp   = null,
                                    JObject?                CustomData          = null,
                                    UserDefinedDictionary?  InternalData        = null)
 

@@ -39,8 +39,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a heartbeat will be send upstream.
     /// </summary>
-    public delegate Task OnSendHeartbeatRequestDelegate (DateTime                                 LogTimestamp,
-                                                         DateTime                                 RequestTimestamp,
+    public delegate Task OnSendHeartbeatRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                         DateTimeOffset                           RequestTimestamp,
                                                          ICPOClient                               Sender,
                                                          //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
@@ -52,8 +52,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a heartbeat had been sent upstream.
     /// </summary>
-    public delegate Task OnSendHeartbeatResponseDelegate(DateTime                                 LogTimestamp,
-                                                         DateTime                                 RequestTimestamp,
+    public delegate Task OnSendHeartbeatResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                         DateTimeOffset                           RequestTimestamp,
                                                          ICPOClient                               Sender,
                                                          //String                                   SenderId,
                                                          EventTracking_Id                         EventTrackingId,
@@ -72,8 +72,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging pool availability status will be send upstream.
     /// </summary>
-    public delegate Task OnSetChargingPoolAvailabilityStatusRequestDelegate (DateTime                                    LogTimestamp,
-                                                                             DateTime                                    RequestTimestamp,
+    public delegate Task OnSetChargingPoolAvailabilityStatusRequestDelegate (DateTimeOffset                              LogTimestamp,
+                                                                             DateTimeOffset                              RequestTimestamp,
                                                                              ICPOClient                                  Sender,
                                                                              //String                                      SenderId,
                                                                              EventTracking_Id                            EventTrackingId,
@@ -81,10 +81,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                              Partner_Id                                  PartnerId,
                                                                              Operator_Id                                 OperatorId,
                                                                              ChargingPool_Id                             ChargingPoolId,
-                                                                             DateTime                                    StatusEventDate,
+                                                                             DateTimeOffset                              StatusEventDate,
                                                                              ChargingPoolAvailabilityStatusTypes         AvailabilityStatus,
                                                                              Transaction_Id?                             TransactionId,
-                                                                             DateTime?                                   AvailabilityStatusUntil,
+                                                                             DateTimeOffset?                             AvailabilityStatusUntil,
                                                                              String                                      AvailabilityStatusComment,
 
                                                                              TimeSpan                                    RequestTimeout);
@@ -92,8 +92,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging pool availability status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetChargingPoolAvailabilityStatusResponseDelegate(DateTime                                    LogTimestamp,
-                                                                             DateTime                                    RequestTimestamp,
+    public delegate Task OnSetChargingPoolAvailabilityStatusResponseDelegate(DateTimeOffset                              LogTimestamp,
+                                                                             DateTimeOffset                              RequestTimestamp,
                                                                              ICPOClient                                  Sender,
                                                                              //String                                      SenderId,
                                                                              EventTracking_Id                            EventTrackingId,
@@ -101,10 +101,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                              Partner_Id                                  PartnerId,
                                                                              Operator_Id                                 OperatorId,
                                                                              ChargingPool_Id                             ChargingPoolId,
-                                                                             DateTime                                    StatusEventDate,
+                                                                             DateTimeOffset                              StatusEventDate,
                                                                              ChargingPoolAvailabilityStatusTypes         AvailabilityStatus,
                                                                              Transaction_Id?                             TransactionId,
-                                                                             DateTime?                                   AvailabilityStatusUntil,
+                                                                             DateTimeOffset?                             AvailabilityStatusUntil,
                                                                              String                                      AvailabilityStatusComment,
 
                                                                              TimeSpan                                    RequestTimeout,
@@ -118,8 +118,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging station availability status will be send upstream.
     /// </summary>
-    public delegate Task OnSetChargingStationAvailabilityStatusRequestDelegate (DateTime                                       LogTimestamp,
-                                                                                DateTime                                       RequestTimestamp,
+    public delegate Task OnSetChargingStationAvailabilityStatusRequestDelegate (DateTimeOffset                                 LogTimestamp,
+                                                                                DateTimeOffset                                 RequestTimestamp,
                                                                                 ICPOClient                                     Sender,
                                                                                 //String                                         SenderId,
                                                                                 EventTracking_Id                               EventTrackingId,
@@ -127,10 +127,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                 Partner_Id                                     PartnerId,
                                                                                 Operator_Id                                    OperatorId,
                                                                                 ChargingStation_Id                             ChargingStationId,
-                                                                                DateTime                                       StatusEventDate,
+                                                                                DateTimeOffset                                 StatusEventDate,
                                                                                 ChargingStationAvailabilityStatusTypes         AvailabilityStatus,
                                                                                 Transaction_Id?                                TransactionId,
-                                                                                DateTime?                                      AvailabilityStatusUntil,
+                                                                                DateTimeOffset?                                AvailabilityStatusUntil,
                                                                                 String                                         AvailabilityStatusComment,
 
                                                                                 TimeSpan                                       RequestTimeout);
@@ -138,8 +138,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging station availability status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetChargingStationAvailabilityStatusResponseDelegate(DateTime                                       LogTimestamp,
-                                                                                DateTime                                       RequestTimestamp,
+    public delegate Task OnSetChargingStationAvailabilityStatusResponseDelegate(DateTimeOffset                                 LogTimestamp,
+                                                                                DateTimeOffset                                 RequestTimestamp,
                                                                                 ICPOClient                                     Sender,
                                                                                 //String                                         SenderId,
                                                                                 EventTracking_Id                               EventTrackingId,
@@ -147,10 +147,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                 Partner_Id                                     PartnerId,
                                                                                 Operator_Id                                    OperatorId,
                                                                                 ChargingStation_Id                             ChargingStationId,
-                                                                                DateTime                                       StatusEventDate,
+                                                                                DateTimeOffset                                 StatusEventDate,
                                                                                 ChargingStationAvailabilityStatusTypes         AvailabilityStatus,
                                                                                 Transaction_Id?                                TransactionId,
-                                                                                DateTime?                                      AvailabilityStatusUntil,
+                                                                                DateTimeOffset?                                AvailabilityStatusUntil,
                                                                                 String                                         AvailabilityStatusComment,
 
                                                                                 TimeSpan                                       RequestTimeout,
@@ -164,8 +164,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE availability status will be send upstream.
     /// </summary>
-    public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTime                            LogTimestamp,
-                                                                     DateTime                            RequestTimestamp,
+    public delegate Task OnSetEVSEAvailabilityStatusRequestDelegate (DateTimeOffset                      LogTimestamp,
+                                                                     DateTimeOffset                      RequestTimestamp,
                                                                      ICPOClient                          Sender,
                                                                      //String                              SenderId,
                                                                      EventTracking_Id                    EventTrackingId,
@@ -173,10 +173,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                      Partner_Id                          PartnerId,
                                                                      Operator_Id                         OperatorId,
                                                                      EVSE_Id                             EVSEId,
-                                                                     DateTime                            StatusEventDate,
+                                                                     DateTimeOffset                      StatusEventDate,
                                                                      EVSEAvailabilityStatusTypes         AvailabilityStatus,
                                                                      Transaction_Id?                     TransactionId,
-                                                                     DateTime?                           AvailabilityStatusUntil,
+                                                                     DateTimeOffset?                     AvailabilityStatusUntil,
                                                                      String                              AvailabilityStatusComment,
 
                                                                      TimeSpan                            RequestTimeout);
@@ -184,8 +184,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE availability status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTime                            LogTimestamp,
-                                                                     DateTime                            RequestTimestamp,
+    public delegate Task OnSetEVSEAvailabilityStatusResponseDelegate(DateTimeOffset                      LogTimestamp,
+                                                                     DateTimeOffset                      RequestTimestamp,
                                                                      ICPOClient                          Sender,
                                                                      //String                              SenderId,
                                                                      EventTracking_Id                    EventTrackingId,
@@ -193,10 +193,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                      Partner_Id                          PartnerId,
                                                                      Operator_Id                         OperatorId,
                                                                      EVSE_Id                             EVSEId,
-                                                                     DateTime                            StatusEventDate,
+                                                                     DateTimeOffset                      StatusEventDate,
                                                                      EVSEAvailabilityStatusTypes         AvailabilityStatus,
                                                                      Transaction_Id?                     TransactionId,
-                                                                     DateTime?                           AvailabilityStatusUntil,
+                                                                     DateTimeOffset?                     AvailabilityStatusUntil,
                                                                      String                              AvailabilityStatusComment,
 
                                                                      TimeSpan                            RequestTimeout,
@@ -210,8 +210,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging connector availability status will be send upstream.
     /// </summary>
-    public delegate Task OnSetChargingConnectorAvailabilityStatusRequestDelegate (DateTime                                         LogTimestamp,
-                                                                                  DateTime                                         RequestTimestamp,
+    public delegate Task OnSetChargingConnectorAvailabilityStatusRequestDelegate (DateTimeOffset                                   LogTimestamp,
+                                                                                  DateTimeOffset                                   RequestTimestamp,
                                                                                   ICPOClient                                       Sender,
                                                                                   //String                                           SenderId,
                                                                                   EventTracking_Id                                 EventTrackingId,
@@ -219,10 +219,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                   Partner_Id                                       PartnerId,
                                                                                   Operator_Id                                      OperatorId,
                                                                                   ChargingConnector_Id                             ChargingConnectorId,
-                                                                                  DateTime                                         StatusEventDate,
+                                                                                  DateTimeOffset                                   StatusEventDate,
                                                                                   ChargingConnectorAvailabilityStatusTypes         AvailabilityStatus,
                                                                                   Transaction_Id?                                  TransactionId,
-                                                                                  DateTime?                                        AvailabilityStatusUntil,
+                                                                                  DateTimeOffset?                                  AvailabilityStatusUntil,
                                                                                   String                                           AvailabilityStatusComment,
 
                                                                                   TimeSpan                                         RequestTimeout);
@@ -230,8 +230,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charging connector availability status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetChargingConnectorAvailabilityStatusResponseDelegate(DateTime                                         LogTimestamp,
-                                                                                  DateTime                                         RequestTimestamp,
+    public delegate Task OnSetChargingConnectorAvailabilityStatusResponseDelegate(DateTimeOffset                                   LogTimestamp,
+                                                                                  DateTimeOffset                                   RequestTimestamp,
                                                                                   ICPOClient                                       Sender,
                                                                                   //String                                           SenderId,
                                                                                   EventTracking_Id                                 EventTrackingId,
@@ -239,10 +239,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                                   Partner_Id                                       PartnerId,
                                                                                   Operator_Id                                      OperatorId,
                                                                                   ChargingConnector_Id                             ChargingConnectorId,
-                                                                                  DateTime                                         StatusEventDate,
+                                                                                  DateTimeOffset                                   StatusEventDate,
                                                                                   ChargingConnectorAvailabilityStatusTypes         AvailabilityStatus,
                                                                                   Transaction_Id?                                  TransactionId,
-                                                                                  DateTime?                                        AvailabilityStatusUntil,
+                                                                                  DateTimeOffset?                                  AvailabilityStatusUntil,
                                                                                   String                                           AvailabilityStatusComment,
 
                                                                                   TimeSpan                                         RequestTimeout,
@@ -257,8 +257,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE busy status will be send upstream.
     /// </summary>
-    public delegate Task OnSetEVSEBusyStatusRequestDelegate (DateTime                                 LogTimestamp,
-                                                             DateTime                                 RequestTimestamp,
+    public delegate Task OnSetEVSEBusyStatusRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                             DateTimeOffset                           RequestTimestamp,
                                                              ICPOClient                               Sender,
                                                              //String                                   SenderId,
                                                              EventTracking_Id                         EventTrackingId,
@@ -266,10 +266,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              Partner_Id                               PartnerId,
                                                              Operator_Id                              OperatorId,
                                                              EVSE_Id                                  EVSEId,
-                                                             DateTime                                 StatusEventDate,
+                                                             DateTimeOffset                           StatusEventDate,
                                                              EVSEBusyStatusTypes                      BusyStatus,
                                                              Transaction_Id?                          TransactionId,
-                                                             DateTime?                                BusyStatusUntil,
+                                                             DateTimeOffset?                          BusyStatusUntil,
                                                              String                                   BusyStatusComment,
 
                                                              TimeSpan                                 RequestTimeout);
@@ -277,8 +277,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE busy status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetEVSEBusyStatusResponseDelegate(DateTime                                 LogTimestamp,
-                                                             DateTime                                 RequestTimestamp,
+    public delegate Task OnSetEVSEBusyStatusResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                             DateTimeOffset                           RequestTimestamp,
                                                              ICPOClient                               Sender,
                                                              //String                                   SenderId,
                                                              EventTracking_Id                         EventTrackingId,
@@ -286,10 +286,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              Partner_Id                               PartnerId,
                                                              Operator_Id                              OperatorId,
                                                              EVSE_Id                                  EVSEId,
-                                                             DateTime                                 StatusEventDate,
+                                                             DateTimeOffset                           StatusEventDate,
                                                              EVSEBusyStatusTypes                      BusyStatus,
                                                              Transaction_Id?                          TransactionId,
-                                                             DateTime?                                BusyStatusUntil,
+                                                             DateTimeOffset?                          BusyStatusUntil,
                                                              String                                   BusyStatusComment,
 
                                                              TimeSpan                                 RequestTimeout,
@@ -303,8 +303,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE synthetic status will be send upstream.
     /// </summary>
-    public delegate Task OnSetEVSESyntheticStatusRequestDelegate (DateTime                                 LogTimestamp,
-                                                                  DateTime                                 RequestTimestamp,
+    public delegate Task OnSetEVSESyntheticStatusRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                                  DateTimeOffset                           RequestTimestamp,
                                                                   ICPOClient                               Sender,
                                                                   //String                                   SenderId,
                                                                   EventTracking_Id                         EventTrackingId,
@@ -313,13 +313,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   Operator_Id                              OperatorId,
                                                                   EVSE_Id                                  EVSEId,
                                                                   Transaction_Id?                          TransactionId,
-                                                                  DateTime?                                AvailabilityStatusEventDate,
+                                                                  DateTimeOffset?                          AvailabilityStatusEventDate,
                                                                   EVSEAvailabilityStatusTypes?             AvailabilityStatus,
-                                                                  DateTime?                                AvailabilityStatusUntil,
+                                                                  DateTimeOffset?                          AvailabilityStatusUntil,
                                                                   String                                   AvailabilityStatusComment,
-                                                                  DateTime?                                BusyStatusEventDate,
+                                                                  DateTimeOffset?                          BusyStatusEventDate,
                                                                   EVSEBusyStatusTypes?                     BusyStatus,
-                                                                  DateTime?                                BusyStatusUntil,
+                                                                  DateTimeOffset?                          BusyStatusUntil,
                                                                   String                                   BusyStatusComment,
 
                                                                   TimeSpan                                 RequestTimeout);
@@ -327,8 +327,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever an EVSE synthetic status had been sent upstream.
     /// </summary>
-    public delegate Task OnSetEVSESyntheticStatusResponseDelegate(DateTime                                 LogTimestamp,
-                                                                  DateTime                                 RequestTimestamp,
+    public delegate Task OnSetEVSESyntheticStatusResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                                  DateTimeOffset                           RequestTimestamp,
                                                                   ICPOClient                               Sender,
                                                                   //String                                   SenderId,
                                                                   EventTracking_Id                         EventTrackingId,
@@ -337,13 +337,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   Operator_Id                              OperatorId,
                                                                   EVSE_Id                                  EVSEId,
                                                                   Transaction_Id?                          TransactionId,
-                                                                  DateTime?                                AvailabilityStatusEventDate,
+                                                                  DateTimeOffset?                          AvailabilityStatusEventDate,
                                                                   EVSEAvailabilityStatusTypes?             AvailabilityStatus,
-                                                                  DateTime?                                AvailabilityStatusUntil,
+                                                                  DateTimeOffset?                          AvailabilityStatusUntil,
                                                                   String                                   AvailabilityStatusComment,
-                                                                  DateTime?                                BusyStatusEventDate,
+                                                                  DateTimeOffset?                          BusyStatusEventDate,
                                                                   EVSEBusyStatusTypes?                     BusyStatus,
-                                                                  DateTime?                                BusyStatusUntil,
+                                                                  DateTimeOffset?                          BusyStatusUntil,
                                                                   String                                   BusyStatusComment,
 
                                                                   TimeSpan                                 RequestTimeout,
@@ -358,8 +358,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a GetServiceAuthorisation request will be send upstream.
     /// </summary>
-    public delegate Task OnGetServiceAuthorisationRequestDelegate (DateTime                                 LogTimestamp,
-                                                                   DateTime                                 RequestTimestamp,
+    public delegate Task OnGetServiceAuthorisationRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                                   DateTimeOffset                           RequestTimestamp,
                                                                    ICPOClient                               Sender,
                                                                    //String                                   SenderId,
                                                                    EventTracking_Id                         EventTrackingId,
@@ -377,8 +377,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a GetServiceAuthorisation request had been sent upstream.
     /// </summary>
-    public delegate Task OnGetServiceAuthorisationResponseDelegate(DateTime                                 LogTimestamp,
-                                                                   DateTime                                 RequestTimestamp,
+    public delegate Task OnGetServiceAuthorisationResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                                   DateTimeOffset                           RequestTimestamp,
                                                                    ICPOClient                               Sender,
                                                                    //String                                   SenderId,
                                                                    EventTracking_Id                         EventTrackingId,
@@ -402,8 +402,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a SetSessionEventReport request will be send upstream.
     /// </summary>
-    public delegate Task OnSetSessionEventReportRequestDelegate (DateTime                        LogTimestamp,
-                                                                 DateTime                        RequestTimestamp,
+    public delegate Task OnSetSessionEventReportRequestDelegate (DateTimeOffset                  LogTimestamp,
+                                                                 DateTimeOffset                  RequestTimestamp,
                                                                  ICPOClient                      Sender,
                                                                  //String                          SenderId,
                                                                  EventTracking_Id                EventTrackingId,
@@ -421,8 +421,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a SetSessionEventReport request had been sent upstream.
     /// </summary>
-    public delegate Task OnSetSessionEventReportResponseDelegate(DateTime                        LogTimestamp,
-                                                                 DateTime                        RequestTimestamp,
+    public delegate Task OnSetSessionEventReportResponseDelegate(DateTimeOffset                  LogTimestamp,
+                                                                 DateTimeOffset                  RequestTimestamp,
                                                                  ICPOClient                      Sender,
                                                                  //String                          SenderId,
                                                                  EventTracking_Id                EventTrackingId,
@@ -447,8 +447,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever new charge detail record will be send upstream.
     /// </summary>
-    public delegate Task OnSetChargeDetailRecordRequestDelegate (DateTime                                 LogTimestamp,
-                                                                 DateTime                                 RequestTimestamp,
+    public delegate Task OnSetChargeDetailRecordRequestDelegate (DateTimeOffset                           LogTimestamp,
+                                                                 DateTimeOffset                           RequestTimestamp,
                                                                  ICPOClient                               Sender,
                                                                  //String                                   SenderId,
                                                                  EventTracking_Id                         EventTrackingId,
@@ -463,8 +463,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// A delegate called whenever a charge detail record had been sent upstream.
     /// </summary>
-    public delegate Task OnSetChargeDetailRecordResponseDelegate(DateTime                                 LogTimestamp,
-                                                                 DateTime                                 RequestTimestamp,
+    public delegate Task OnSetChargeDetailRecordResponseDelegate(DateTimeOffset                           LogTimestamp,
+                                                                 DateTimeOffset                           RequestTimestamp,
                                                                  ICPOClient                               Sender,
                                                                  //String                                   SenderId,
                                                                  EventTracking_Id                         EventTrackingId,

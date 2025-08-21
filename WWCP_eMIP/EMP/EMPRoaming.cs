@@ -177,7 +177,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <summary>
         /// The DNS client defines which DNS servers to use.
         /// </summary>
-        DNSClient                            IHTTPClient.DNSClient
+        IDNSClient                           IHTTPClient.DNSClient
             => EMPClient.DNSClient;
 
         Boolean                              IHTTPClient.Connected

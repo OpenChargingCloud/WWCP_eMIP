@@ -110,7 +110,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation SOAP request was received.
         /// </summary>
-        public event RequestLogHandler?                          OnSetServiceAuthorisationSOAPRequest;
+        public event HTTPRequestLogHandlerX?                     OnSetServiceAuthorisationSOAPRequest;
 
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation request was received.
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a response to a SetServiceAuthorisation SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler?                           OnSetServiceAuthorisationSOAPResponse;
+        public event HTTPResponseLogHandlerX?                    OnSetServiceAuthorisationSOAPResponse;
 
         #endregion
 
@@ -139,7 +139,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetSessionAction SOAP request was received.
         /// </summary>
-        public event RequestLogHandler?                   OnSetSessionActionSOAPRequest;
+        public event HTTPRequestLogHandlerX?              OnSetSessionActionSOAPRequest;
 
         /// <summary>
         /// An event sent whenever a SetSessionAction request was received.
@@ -159,7 +159,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a response to a SetSessionAction SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler?                    OnSetSessionActionSOAPResponse;
+        public event HTTPResponseLogHandlerX?             OnSetSessionActionSOAPResponse;
 
         #endregion
 
@@ -208,7 +208,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             RegisterURITemplates();
 
             if (AutoStart)
-                Start();
+                SOAPServer.HTTPServer.Start().GetAwaiter().GetResult();
 
         }
 
@@ -288,10 +288,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     if (OnSetServiceAuthorisationSOAPRequest is not null)
                         await Task.WhenAll(OnSetServiceAuthorisationSOAPRequest.GetInvocationList().
-                                           Cast<RequestLogHandler>().
+                                           Cast<HTTPRequestLogHandlerX>().
                                            Select(e => e(startTime,
-                                                         SOAPServer.HTTPServer,
-                                                         HTTPRequest))).
+                                                         API,
+                                                         HTTPRequest,
+                                                         CancellationToken.None))).
                                            ConfigureAwait(false);
 
                 }
@@ -434,7 +435,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
-                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Server          = SOAPServer.HTTPServer.HTTPServerName,
                     Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
@@ -450,11 +451,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     if (OnSetServiceAuthorisationSOAPResponse is not null)
                         await Task.WhenAll(OnSetServiceAuthorisationSOAPResponse.GetInvocationList().
-                                           Cast<AccessLogHandler>().
+                                           Cast<HTTPResponseLogHandlerX>().
                                            Select(e => e(HTTPResponse.Timestamp,
-                                                         SOAPServer.HTTPServer,
+                                                         API,
                                                          HTTPRequest,
-                                                         HTTPResponse))).
+                                                         HTTPResponse,
+                                                         CancellationToken.None))).
                                            ConfigureAwait(false);
 
                 }
@@ -501,10 +503,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     if (OnSetSessionActionSOAPRequest is not null)
                         await Task.WhenAll(OnSetSessionActionSOAPRequest.GetInvocationList().
-                                           Cast<RequestLogHandler>().
+                                           Cast<HTTPRequestLogHandlerX>().
                                            Select(e => e(startTime,
-                                                         SOAPServer.HTTPServer,
-                                                         HTTPRequest))).
+                                                         API,
+                                                         HTTPRequest,
+                                                         CancellationToken.None))).
                                            ConfigureAwait(false);
 
                 }
@@ -638,7 +641,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.OK,
-                    Server          = SOAPServer.HTTPServer.DefaultServerName,
+                    Server          = SOAPServer.HTTPServer.HTTPServerName,
                     Date            = Timestamp.Now,
                     ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
                     Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
@@ -654,11 +657,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     if (OnSetSessionActionSOAPResponse is not null)
                         await Task.WhenAll(OnSetSessionActionSOAPResponse.GetInvocationList().
-                                           Cast<AccessLogHandler>().
+                                           Cast<HTTPResponseLogHandlerX>().
                                            Select(e => e(HTTPResponse.Timestamp,
-                                                         SOAPServer.HTTPServer,
+                                                         API,
                                                          HTTPRequest,
-                                                         HTTPResponse))).
+                                                         HTTPResponse,
+                                                         CancellationToken.None))).
                                            ConfigureAwait(false);
 
                 }

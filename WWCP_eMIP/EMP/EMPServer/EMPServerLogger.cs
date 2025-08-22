@@ -31,7 +31,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
     /// <summary>
     /// An eMIP EMP server logger.
     /// </summary>
-    public class EMPServerLogger : HTTPServerLogger
+    public class EMPServerLogger : HTTPServerLoggerX
     {
 
         #region Data

@@ -591,49 +591,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #region Start    (EventTrackingId = null)
 
-        /// <summary>
-        /// Start this HTTP API.
-        /// </summary>
-        /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
-        public async Task<Boolean> Start(EventTracking_Id? EventTrackingId = null)
-        {
+        ///// <summary>
+        ///// Start this HTTP API.
+        ///// </summary>
+        ///// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+        //public async Task<Boolean> Start(EventTracking_Id? EventTrackingId = null)
+        //{
 
-            var result = await EMPServer.Start(
-                                   EventTrackingId ?? EventTracking_Id.New
-                               );
+        //    var result = await EMPServer.Start(
+        //                           EventTrackingId ?? EventTracking_Id.New
+        //                       );
 
-            //SendStarted(this, CurrentTimestamp);
+        //    //SendStarted(this, CurrentTimestamp);
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         #endregion
 
         #region Shutdown (EventTrackingId = null, Message = null, Wait = true)
 
-        /// <summary>
-        /// Shutdown this HTTP API.
-        /// </summary>
-        /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
-        /// <param name="Message">An optional shutdown message.</param>
-        /// <param name="Wait">Whether to wait for the shutdown to complete.</param>
-        public async virtual Task<Boolean> Shutdown(EventTracking_Id?  EventTrackingId   = null,
-                                                    String?            Message           = null,
-                                                    Boolean            Wait              = true)
-        {
+        ///// <summary>
+        ///// Shutdown this HTTP API.
+        ///// </summary>
+        ///// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+        ///// <param name="Message">An optional shutdown message.</param>
+        ///// <param name="Wait">Whether to wait for the shutdown to complete.</param>
+        //public async virtual Task<Boolean> Shutdown(EventTracking_Id?  EventTrackingId   = null,
+        //                                            String?            Message           = null,
+        //                                            Boolean            Wait              = true)
+        //{
 
-            var result = await EMPServer.Shutdown(
-                                   EventTrackingId ?? EventTracking_Id.New,
-                                   Message,
-                                   Wait
-                               );
+        //    var result = await EMPServer.Shutdown(
+        //                           EventTrackingId ?? EventTracking_Id.New,
+        //                           Message,
+        //                           Wait
+        //                       );
 
-            //SendShutdown(this, CurrentTimestamp);
+        //    //SendShutdown(this, CurrentTimestamp);
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         #endregion
 

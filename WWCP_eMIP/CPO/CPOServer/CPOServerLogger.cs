@@ -28,7 +28,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// An eMIP CPO server logger.
     /// </summary>
-    public class CPOServerLogger : HTTPServerLogger
+    public class CPOServerLogger : HTTPServerLoggerX
     {
 
         #region Data
@@ -152,37 +152,37 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Register SetServiceAuthorisation log events
 
-            RegisterEvent("SetServiceAuthorisationRequest",
+            RegisterEvent2("SetServiceAuthorisationRequest",
                           handler => CPOServer.OnSetServiceAuthorisationSOAPRequest += handler,
                           handler => CPOServer.OnSetServiceAuthorisationSOAPRequest -= handler,
                           "SetServiceAuthorisation", "Request", "All").
-                RegisterDefaultConsoleLogTarget(this).
-                RegisterDefaultDiscLogTarget(this);
+                RegisterDefaultConsoleLogTargetX(this).
+                RegisterDefaultDiscLogTargetX(this);
 
-            RegisterEvent("SetServiceAuthorisationResponse",
+            RegisterEvent2("SetServiceAuthorisationResponse",
                           handler => CPOServer.OnSetServiceAuthorisationSOAPResponse += handler,
                           handler => CPOServer.OnSetServiceAuthorisationSOAPResponse -= handler,
                           "SetServiceAuthorisation", "Response", "All").
-                RegisterDefaultConsoleLogTarget(this).
-                RegisterDefaultDiscLogTarget(this);
+                RegisterDefaultConsoleLogTargetX(this).
+                RegisterDefaultDiscLogTargetX(this);
 
             #endregion
 
             #region Register SetSessionAction log events
 
-            RegisterEvent("SetSessionActionRequest",
+            RegisterEvent2("SetSessionActionRequest",
                           handler => CPOServer.OnSetSessionActionSOAPRequest += handler,
                           handler => CPOServer.OnSetSessionActionSOAPRequest -= handler,
                           "SetSessionAction", "Request", "All").
-                RegisterDefaultConsoleLogTarget(this).
-                RegisterDefaultDiscLogTarget(this);
+                RegisterDefaultConsoleLogTargetX(this).
+                RegisterDefaultDiscLogTargetX(this);
 
-            RegisterEvent("SetSessionActionResponse",
+            RegisterEvent2("SetSessionActionResponse",
                           handler => CPOServer.OnSetSessionActionSOAPResponse += handler,
                           handler => CPOServer.OnSetSessionActionSOAPResponse -= handler,
                           "SetSessionAction", "Response", "All").
-                RegisterDefaultConsoleLogTarget(this).
-                RegisterDefaultDiscLogTarget(this);
+                RegisterDefaultConsoleLogTargetX(this).
+                RegisterDefaultDiscLogTargetX(this);
 
             #endregion
 

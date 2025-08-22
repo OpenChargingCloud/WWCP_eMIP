@@ -975,7 +975,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetServiceAuthorisation SOAP request was received.
         /// </summary>
-        public event RequestLogHandler OnSetServiceAuthorisationSOAPRequest
+        public event HTTPRequestLogHandlerX OnSetServiceAuthorisationSOAPRequest
         {
 
             add
@@ -1047,7 +1047,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a response to a SetServiceAuthorisation SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler OnSetServiceAuthorisationSOAPResponse
+        public event HTTPResponseLogHandlerX OnSetServiceAuthorisationSOAPResponse
         {
 
             add
@@ -1069,7 +1069,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a SetSessionAction SOAP request was received.
         /// </summary>
-        public event RequestLogHandler OnSetSessionActionSOAPRequest
+        public event HTTPRequestLogHandlerX OnSetSessionActionSOAPRequest
         {
 
             add
@@ -1141,7 +1141,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// An event sent whenever a response to a SetSessionAction SOAP request was sent.
         /// </summary>
-        public event AccessLogHandler OnSetSessionActionSOAPResponse
+        public event HTTPResponseLogHandlerX OnSetSessionActionSOAPResponse
         {
 
             add
@@ -1829,49 +1829,49 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region Start    (EventTrackingId = null)
 
-        /// <summary>
-        /// Start this HTTP API.
-        /// </summary>
-        /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
-        public async Task<Boolean> Start(EventTracking_Id? EventTrackingId = null)
-        {
+        ///// <summary>
+        ///// Start this HTTP API.
+        ///// </summary>
+        ///// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+        //public async Task<Boolean> Start(EventTracking_Id? EventTrackingId = null)
+        //{
 
-            var result = await CPOServer.Start(
-                                   EventTrackingId ?? EventTracking_Id.New
-                               );
+        //    var result = await CPOServer.Start(
+        //                           EventTrackingId ?? EventTracking_Id.New
+        //                       );
 
-            //SendStarted(this, CurrentTimestamp);
+        //    //SendStarted(this, CurrentTimestamp);
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         #endregion
 
         #region Shutdown (EventTrackingId = null, Message = null, Wait = true)
 
-        /// <summary>
-        /// Shutdown this HTTP API.
-        /// </summary>
-        /// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
-        /// <param name="Message">An optional shutdown message.</param>
-        /// <param name="Wait">Whether to wait for the shutdown to complete.</param>
-        public async virtual Task<Boolean> Shutdown(EventTracking_Id?  EventTrackingId   = null,
-                                                    String?            Message           = null,
-                                                    Boolean            Wait              = true)
-        {
+        ///// <summary>
+        ///// Shutdown this HTTP API.
+        ///// </summary>
+        ///// <param name="EventTrackingId">An unique event tracking identification for correlating this request with other events.</param>
+        ///// <param name="Message">An optional shutdown message.</param>
+        ///// <param name="Wait">Whether to wait for the shutdown to complete.</param>
+        //public async virtual Task<Boolean> Shutdown(EventTracking_Id?  EventTrackingId   = null,
+        //                                            String?            Message           = null,
+        //                                            Boolean            Wait              = true)
+        //{
 
-            var result = await CPOServer.Shutdown(
-                                   EventTrackingId ?? EventTracking_Id.New,
-                                   Message,
-                                   Wait
-                               );
+        //    var result = await CPOServer.Shutdown(
+        //                           EventTrackingId ?? EventTracking_Id.New,
+        //                           Message,
+        //                           Wait
+        //                       );
 
-            //SendShutdown(this, CurrentTimestamp);
+        //    //SendShutdown(this, CurrentTimestamp);
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         #endregion
 

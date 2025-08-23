@@ -1012,7 +1012,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          String?                                                    LoggingPath                              = null,
                          String?                                                    LoggingContext                           = Logger.DefaultContext,
                          LogfileCreatorDelegate?                                    LogfileCreator                           = null,
-                         DNSClient?                                                 DNSClient                                = null)
+                         IDNSClient?                                                DNSClient                                = null)
 
             : base(RemoteURL     ?? URL.Parse("???"),
                    VirtualHostname,

@@ -62,15 +62,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                                   out HTTPResponse                             HTTPResponse)
         {
 
-            if (HTTPServer == null)
-                Console.WriteLine("HTTPServer == null!");
+            if (HTTPServer is null)
+                Console.WriteLine("HTTPServer is null!");
 
             #region Initial checks
 
-            if (HTTPRequest == null)
+            if (HTTPRequest is null)
                 throw new ArgumentNullException("HTTPRequest",  "The given HTTP request must not be null!");
 
-            if (HTTPServer == null)
+            if (HTTPServer is null)
                 throw new ArgumentNullException("HTTPServer",   "The given HTTP server must not be null!");
 
             #endregion
@@ -111,7 +111,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                   GetAllTenants(HTTPRequest.Host).
                                   FirstOrDefault(roamingnetwork => roamingnetwork.Id == RoamingNetworkId);
 
-            if (RoamingNetwork == null) {
+            if (RoamingNetwork is null) {
 
                 HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
                     HTTPStatusCode  = HTTPStatusCode.NotFound,
@@ -350,7 +350,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
                                          HTTPDelegate: async Request => {
 
                                              var Adapter = _CPOAdapters.FirstOrDefault();
-                                             if (Adapter != null)
+                                             if (Adapter is not null)
                                              {
 
                                                  var AllEVSEs = Adapter.RoamingNetwork.EVSEs.Where(evse => Adapter.IncludeEVSEIds(evse.Id) && Adapter.IncludeEVSEs(evse)).ToArray();

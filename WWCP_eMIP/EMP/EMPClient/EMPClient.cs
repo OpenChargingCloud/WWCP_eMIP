@@ -104,7 +104,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomHeartbeatRequestMapper = value;
             }
 
@@ -126,7 +126,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomHeartbeatSOAPRequestMapper = value;
             }
 
@@ -157,7 +157,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetServiceAuthorisationRequestMapper = value;
             }
 
@@ -179,7 +179,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetServiceAuthorisationSOAPRequestMapper = value;
             }
 
@@ -210,7 +210,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetSessionActionRequestMapper = value;
             }
 
@@ -232,7 +232,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     _CustomSetSessionActionSOAPRequestMapper = value;
             }
 
@@ -421,12 +421,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SendHeartbeat request must not be null!");
 
             Request = _CustomHeartbeatRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SendHeartbeat request must not be null!");
 
 
@@ -665,12 +665,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetServiceAuthorisation request must not be null!");
 
             Request = _CustomSetServiceAuthorisationRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetServiceAuthorisation request must not be null!");
 
 
@@ -946,12 +946,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetSessionActionRequest request must not be null!");
 
             Request = _CustomSetSessionActionRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetSessionActionRequest request must not be null!");
 
 

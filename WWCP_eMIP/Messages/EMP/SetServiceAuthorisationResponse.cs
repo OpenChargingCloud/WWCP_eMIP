@@ -381,7 +381,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             if (!(Object is SetServiceAuthorisationResponse))

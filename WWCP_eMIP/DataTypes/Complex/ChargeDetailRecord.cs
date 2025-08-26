@@ -548,7 +548,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Boolean operator < (ChargeDetailRecord ChargeDetailRecord1, ChargeDetailRecord ChargeDetailRecord2)
         {
 
-            if ((Object) ChargeDetailRecord1 == null)
+            if ((Object) ChargeDetailRecord1 is null)
                 throw new ArgumentNullException(nameof(ChargeDetailRecord1), "The given ChargeDetailRecord1 must not be null!");
 
             return ChargeDetailRecord1.CompareTo(ChargeDetailRecord2) < 0;
@@ -581,7 +581,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Boolean operator > (ChargeDetailRecord ChargeDetailRecord1, ChargeDetailRecord ChargeDetailRecord2)
         {
 
-            if ((Object)ChargeDetailRecord1 == null)
+            if ((Object)ChargeDetailRecord1 is null)
                 throw new ArgumentNullException(nameof(ChargeDetailRecord1), "The given ChargeDetailRecord1 must not be null!");
 
             return ChargeDetailRecord1.CompareTo(ChargeDetailRecord2) > 0;
@@ -616,11 +616,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
             var ChargeDetailRecord = Object as ChargeDetailRecord;
-            if ((Object) ChargeDetailRecord == null)
+            if ((Object) ChargeDetailRecord is null)
                 throw new ArgumentException("The given object is not a charge detail record identification!", nameof(Object));
 
             return CompareTo(ChargeDetailRecord);
@@ -638,7 +638,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public Int32 CompareTo(ChargeDetailRecord ChargeDetailRecord)
         {
 
-            if ((Object) ChargeDetailRecord == null)
+            if ((Object) ChargeDetailRecord is null)
                 throw new ArgumentNullException(nameof(ChargeDetailRecord), "The given charge detail record must not be null!");
 
             return ServiceSessionId.CompareTo(ChargeDetailRecord.ServiceSessionId);
@@ -661,11 +661,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var ChargeDetailRecord = Object as ChargeDetailRecord;
-            if ((Object) ChargeDetailRecord == null)
+            if ((Object) ChargeDetailRecord is null)
                 return false;
 
             return Equals(ChargeDetailRecord);
@@ -684,7 +684,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public Boolean Equals(ChargeDetailRecord ChargeDetailRecord)
         {
 
-            if ((Object) ChargeDetailRecord == null)
+            if ((Object) ChargeDetailRecord is null)
                 return false;
 
             return CDRNature.          Equals(ChargeDetailRecord.CDRNature)           &&
@@ -928,11 +928,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             public override Boolean Equals(Object Object)
             {
 
-                if (Object == null)
+                if (Object is null)
                     return false;
 
                 var ChargeDetailRecordBuilder = Object as Builder;
-                if (ChargeDetailRecordBuilder == null)
+                if (ChargeDetailRecordBuilder is null)
                     return false;
 
                 return Equals(ChargeDetailRecordBuilder);
@@ -951,7 +951,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             public Boolean Equals(ChargeDetailRecord ChargeDetailRecord)
             {
 
-                if ((Object) ChargeDetailRecord == null)
+                if ((Object) ChargeDetailRecord is null)
                     return false;
 
                 return CDRNature.             Equals(ChargeDetailRecord.CDRNature)              &&
@@ -984,7 +984,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             public Boolean Equals(Builder ChargeDetailRecordBuilder)
             {
 
-                if (ChargeDetailRecordBuilder == null)
+                if (ChargeDetailRecordBuilder is null)
                     return false;
 
                 return CDRNature.             Equals(ChargeDetailRecordBuilder.CDRNature)              &&

@@ -504,11 +504,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var SetChargingConnectorAvailabilityStatusRequest = Object as SetChargingConnectorAvailabilityStatusRequest;
-            if ((Object) SetChargingConnectorAvailabilityStatusRequest == null)
+            if ((Object) SetChargingConnectorAvailabilityStatusRequest is null)
                 return false;
 
             return Equals(SetChargingConnectorAvailabilityStatusRequest);
@@ -527,7 +527,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(SetChargingConnectorAvailabilityStatusRequest SetChargingConnectorAvailabilityStatusRequest)
         {
 
-            if ((Object) SetChargingConnectorAvailabilityStatusRequest == null)
+            if ((Object) SetChargingConnectorAvailabilityStatusRequest is null)
                 return false;
 
             return ((!TransactionId.HasValue && !SetChargingConnectorAvailabilityStatusRequest.TransactionId.HasValue) ||

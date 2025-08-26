@@ -337,11 +337,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var SetChargingStationAvailabilityStatusResponse = Object as SetChargingStationAvailabilityStatusResponse;
-            if ((Object) SetChargingStationAvailabilityStatusResponse == null)
+            if ((Object) SetChargingStationAvailabilityStatusResponse is null)
                 return false;
 
             return Equals(SetChargingStationAvailabilityStatusResponse);
@@ -360,7 +360,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(SetChargingStationAvailabilityStatusResponse SetChargingStationAvailabilityStatusResponse)
         {
 
-            if ((Object) SetChargingStationAvailabilityStatusResponse == null)
+            if ((Object) SetChargingStationAvailabilityStatusResponse is null)
                 return false;
 
             return TransactionId.Equals(SetChargingStationAvailabilityStatusResponse.TransactionId) &&
@@ -502,7 +502,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             public override Boolean Equals(SetChargingStationAvailabilityStatusResponse SetChargingStationAvailabilityStatusResponse)
             {
 
-                if ((Object) SetChargingStationAvailabilityStatusResponse == null)
+                if ((Object) SetChargingStationAvailabilityStatusResponse is null)
                     return false;
 
                 return TransactionId.Equals(SetChargingStationAvailabilityStatusResponse.TransactionId) &&

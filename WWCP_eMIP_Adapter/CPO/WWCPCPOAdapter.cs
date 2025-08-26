@@ -417,7 +417,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     //ChargingProduct         ChargingProduct    = null;
                     //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
 
-                    //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
+                    //if (PartnerProductId is not null && PartnerProductId.ToString().IsNotNullOrEmpty())
                     //{
 
                     //    // The PartnerProductId is a simple string...
@@ -641,7 +641,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     //ChargingProduct         ChargingProduct    = null;
                     //PartnerProduct_Id?      PartnerProductId   = Request.PartnerProductId;
 
-                    //if (PartnerProductId != null && PartnerProductId.ToString().IsNotNullOrEmpty())
+                    //if (PartnerProductId is not null && PartnerProductId.ToString().IsNotNullOrEmpty())
                     //{
 
                     //    // The PartnerProductId is a simple string...
@@ -733,7 +733,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                         #region Response mapping
 
-                        if (response != null)
+                        if (response is not null)
                         {
                             switch (response.Result)
                             {
@@ -834,14 +834,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (EVSEAdminStatusUpdates == null || !EVSEAdminStatusUpdates.Any())
+            if (EVSEAdminStatusUpdates is null || !EVSEAdminStatusUpdates.Any())
                 return PushEVSEAdminStatusResult.NoOperation(Id, this);
 
 
             if (!Timestamp.HasValue)
                 Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
-            if (EventTrackingId == null)
+            if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
 
             if (!RequestTimeout.HasValue)
@@ -900,7 +900,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                       return null;
 
                                   }).
-                                  Where(evsestatusrecord => evsestatusrecord != null).
+                                  Where(evsestatusrecord => evsestatusrecord is not null).
                                   ToArray();
 
             PushEVSEAdminStatusResult result = null;
@@ -963,7 +963,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 var Runtime = Endtime - StartTime;
 
                 if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-                    response.Content        != null)
+                    response.Content        is not null)
                 {
 
                     if (response.Content.RequestStatus == RequestStatus.Ok)
@@ -991,7 +991,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                            this,
                                                            new EVSEAdminStatusUpdate[] { evseAdminStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
-                                                           response.HTTPBody != null
+                                                           response.HTTPBody is not null
                                                                ? Warnings.AddAndReturnList(I18NString.Create(response.HTTPBody.ToUTF8String()))
                                                                : Warnings.AddAndReturnList(I18NString.Create("No HTTP body received!")),
                                                            Runtime));
@@ -1058,14 +1058,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (EVSEStatusUpdates == null || !EVSEStatusUpdates.Any())
+            if (EVSEStatusUpdates is null || !EVSEStatusUpdates.Any())
                 return PushEVSEStatusResult.NoOperation(Id, this);
 
 
             if (!Timestamp.HasValue)
                 Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
-            if (EventTrackingId == null)
+            if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
 
             if (!RequestTimeout.HasValue)
@@ -1124,7 +1124,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                       return null;
 
                                   }).
-                                  Where(evsestatusrecord => evsestatusrecord != null).
+                                  Where(evsestatusrecord => evsestatusrecord is not null).
                                   ToArray();
 
             PushEVSEStatusResult? result = null;
@@ -1187,7 +1187,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 var Runtime = Endtime - StartTime;
 
                 if (response.HTTPStatusCode == HTTPStatusCode.OK &&
-                    response.Content        != null)
+                    response.Content        is not null)
                 {
 
                     if (response.Content.RequestStatus == RequestStatus.Ok)
@@ -1215,7 +1215,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                            this,
                                                            new EVSEStatusUpdate[] { evseStatus.Value.Key },
                                                            response.HTTPStatusCode.ToString(),
-                                                           response.HTTPBody != null
+                                                           response.HTTPBody is not null
                                                                ? Warnings.AddAndReturnList(I18NString.Create(response.HTTPBody.ToUTF8String()))
                                                                : Warnings.AddAndReturnList(I18NString.Create("No HTTP body received!")),
                                                            Runtime));
@@ -1551,14 +1551,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (AuthIdentification == null)
+            if (AuthIdentification is null)
                 throw new ArgumentNullException(nameof(AuthIdentification),  "The given authentication token must not be null!");
 
 
             if (!Timestamp.HasValue)
                 Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
-            if (EventTrackingId == null)
+            if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
 
             if (!RequestTimeout.HasValue)
@@ -1603,7 +1603,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             TimeSpan         Runtime;
             AuthStartResult  result;
 
-            if (ChargingLocation?.EVSEId == null)
+            if (ChargingLocation?.EVSEId is null)
             {
 
                 Endtime  = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
@@ -1753,7 +1753,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (!Timestamp.HasValue)
                 Timestamp = org.GraphDefined.Vanaheimr.Illias.Timestamp.Now;
 
-            if (EventTrackingId == null)
+            if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
 
             if (!RequestTimeout.HasValue)
@@ -2364,7 +2364,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             catch (Exception e)
             {
 
-                while (e.InnerException != null)
+                while (e.InnerException is not null)
                     e = e.InnerException;
 
                 DebugX.LogT(GetType().Name + ".SendHeartbeat '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
@@ -2936,7 +2936,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Int32 CompareTo(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
             if (!(Object is WWCPCPOAdapter))
@@ -2980,7 +2980,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             if (!(Object is WWCPCPOAdapter))

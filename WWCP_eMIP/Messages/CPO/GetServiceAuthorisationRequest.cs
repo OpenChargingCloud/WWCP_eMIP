@@ -481,11 +481,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var GetServiceAuthorisationRequest = Object as GetServiceAuthorisationRequest;
-            if ((Object) GetServiceAuthorisationRequest == null)
+            if ((Object) GetServiceAuthorisationRequest is null)
                 return false;
 
             return Equals(GetServiceAuthorisationRequest);
@@ -504,7 +504,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(GetServiceAuthorisationRequest GetServiceAuthorisationRequest)
         {
 
-            if ((Object) GetServiceAuthorisationRequest == null)
+            if ((Object) GetServiceAuthorisationRequest is null)
                 return false;
 
             return ((!TransactionId.HasValue && !GetServiceAuthorisationRequest.TransactionId.HasValue) ||

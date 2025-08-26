@@ -48,10 +48,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (SOAPBody == null)
+            if (SOAPBody is null)
                 throw new ArgumentNullException(nameof(SOAPBody),  "The given XML must not be null!");
 
-            if (XMLNamespaces == null)
+            if (XMLNamespaces is null)
                 XMLNamespaces = xml => xml;
 
             #endregion

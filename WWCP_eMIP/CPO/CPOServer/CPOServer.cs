@@ -598,7 +598,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     try
                     {
 
-                        if (OnSetSessionActionResponse != null)
+                        if (OnSetSessionActionResponse is not null)
                             await Task.WhenAll(OnSetSessionActionResponse.GetInvocationList().
                                                Cast<OnSetSessionActionResponseDelegate>().
                                                Select(e => e(endTime,

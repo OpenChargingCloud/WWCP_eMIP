@@ -1254,7 +1254,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingPoolAvailabilityStatusRequestMapper = value;
             }
 
@@ -1274,7 +1274,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -1313,7 +1313,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingStationAvailabilityStatusRequestMapper = value;
             }
 
@@ -1333,7 +1333,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -1372,7 +1372,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetEVSEAvailabilityStatusRequestMapper = value;
             }
 
@@ -1392,7 +1392,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetEVSEAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -1431,7 +1431,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingConnectorAvailabilityStatusRequestMapper = value;
             }
 
@@ -1451,7 +1451,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = value;
             }
 
@@ -1491,7 +1491,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetEVSEBusyStatusRequestMapper = value;
             }
 
@@ -1511,7 +1511,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetEVSEBusyStatusSOAPRequestMapper = value;
             }
 
@@ -1551,7 +1551,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomGetServiceAuthorisationRequestMapper = value;
             }
 
@@ -1571,7 +1571,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomGetServiceAuthorisationSOAPRequestMapper = value;
             }
 
@@ -1611,7 +1611,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargeDetailRecordRequestMapper = value;
             }
 
@@ -1631,7 +1631,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             set
             {
-                if (value != null)
+                if (value is not null)
                     CPOClient.CustomSetChargeDetailRecordSOAPRequestMapper = value;
             }
 

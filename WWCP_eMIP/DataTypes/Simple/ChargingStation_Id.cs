@@ -257,7 +257,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             #region Initial checks
 
-            if (EVSEIds == null)
+            if (EVSEIds is null)
                 return null;
 
             var _EVSEIds = EVSEIds.ToArray();
@@ -355,7 +355,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                              ToUpper();
 
             return Parse(_EVSEIds[0].OperatorId,
-                         Mapper != null
+                         Mapper is not null
                             ? Mapper(Suffíx)
                             : Suffíx);
 

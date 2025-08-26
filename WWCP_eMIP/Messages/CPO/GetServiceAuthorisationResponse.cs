@@ -586,11 +586,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var GetServiceAuthorisationResponse = Object as GetServiceAuthorisationResponse;
-            if ((Object) GetServiceAuthorisationResponse == null)
+            if ((Object) GetServiceAuthorisationResponse is null)
                 return false;
 
             return Equals(GetServiceAuthorisationResponse);
@@ -609,7 +609,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(GetServiceAuthorisationResponse GetServiceAuthorisationResponse)
         {
 
-            if ((Object) GetServiceAuthorisationResponse == null)
+            if ((Object) GetServiceAuthorisationResponse is null)
                 return false;
 
             return TransactionId.           Equals(GetServiceAuthorisationResponse.TransactionId)            &&
@@ -831,7 +831,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             public override Boolean Equals(GetServiceAuthorisationResponse GetServiceAuthorisationResponse)
             {
 
-                if ((Object) GetServiceAuthorisationResponse == null)
+                if ((Object) GetServiceAuthorisationResponse is null)
                     return false;
 
                 return TransactionId.           Equals(GetServiceAuthorisationResponse.TransactionId)            &&

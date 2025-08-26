@@ -399,11 +399,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var HeartbeatResponse = Object as HeartbeatResponse;
-            if ((Object) HeartbeatResponse == null)
+            if ((Object) HeartbeatResponse is null)
                 return false;
 
             return Equals(HeartbeatResponse);
@@ -422,7 +422,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         public override Boolean Equals(HeartbeatResponse HeartbeatResponse)
         {
 
-            if ((Object) HeartbeatResponse == null)
+            if ((Object) HeartbeatResponse is null)
                 return false;
 
             return HeartbeatPeriod.Equals(HeartbeatResponse.HeartbeatPeriod) &&
@@ -584,7 +584,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             public override Boolean Equals(HeartbeatResponse HeartbeatResponse)
             {
 
-                if ((Object) HeartbeatResponse == null)
+                if ((Object) HeartbeatResponse is null)
                     return false;
 
                 return HeartbeatPeriod.Equals(HeartbeatResponse.HeartbeatPeriod) &&

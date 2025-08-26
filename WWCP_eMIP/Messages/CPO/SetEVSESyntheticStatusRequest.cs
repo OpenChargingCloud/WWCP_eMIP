@@ -587,11 +587,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var SetEVSESyntheticStatusRequest = Object as SetEVSESyntheticStatusRequest;
-            if ((Object) SetEVSESyntheticStatusRequest == null)
+            if ((Object) SetEVSESyntheticStatusRequest is null)
                 return false;
 
             return Equals(SetEVSESyntheticStatusRequest);
@@ -610,7 +610,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(SetEVSESyntheticStatusRequest SetEVSESyntheticStatusRequest)
         {
 
-            if ((Object) SetEVSESyntheticStatusRequest == null)
+            if ((Object) SetEVSESyntheticStatusRequest is null)
                 return false;
 
             return ((!TransactionId.HasValue && !SetEVSESyntheticStatusRequest.TransactionId.HasValue) ||

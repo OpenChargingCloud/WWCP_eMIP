@@ -460,11 +460,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var SetChargeDetailRecordRequest = Object as SetChargeDetailRecordRequest;
-            if ((Object) SetChargeDetailRecordRequest == null)
+            if ((Object) SetChargeDetailRecordRequest is null)
                 return false;
 
             return Equals(SetChargeDetailRecordRequest);
@@ -483,7 +483,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(SetChargeDetailRecordRequest SetChargeDetailRecordRequest)
         {
 
-            if ((Object) SetChargeDetailRecordRequest == null)
+            if ((Object) SetChargeDetailRecordRequest is null)
                 return false;
 
             return ((!TransactionId.HasValue && !SetChargeDetailRecordRequest.TransactionId.HasValue) ||

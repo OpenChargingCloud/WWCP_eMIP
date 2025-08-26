@@ -169,7 +169,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Operator_Id ToEMIP(this ChargingStationOperator_Id  OperatorId,
                                          CustomOperatorIdMapperDelegate   CustomOperatorIdMapper = null)
 
-            => Operator_Id.Parse(CustomOperatorIdMapper != null
+            => Operator_Id.Parse(CustomOperatorIdMapper is not null
                                      ? CustomOperatorIdMapper(OperatorId.ToString())
                                      : OperatorId.ToString());
 
@@ -343,7 +343,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                                                 }
                                                             ));
 
-            if (WWCPChargeDetailRecord2ChargeDetailRecord != null)
+            if (WWCPChargeDetailRecord2ChargeDetailRecord is not null)
                 cdr = WWCPChargeDetailRecord2ChargeDetailRecord(ChargeDetailRecord, cdr);
 
             return cdr;
@@ -416,7 +416,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
             //                                      );
 
-            //if (ChargeDetailRecord2WWCPChargeDetailRecord != null)
+            //if (ChargeDetailRecord2WWCPChargeDetailRecord is not null)
             //    CDR = ChargeDetailRecord2WWCPChargeDetailRecord(ChargeDetailRecord, CDR);
 
             return null;

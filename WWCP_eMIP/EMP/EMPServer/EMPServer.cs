@@ -307,7 +307,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnGetServiceAuthorisationSOAPRequest != null)
+                    if (OnGetServiceAuthorisationSOAPRequest is not null)
                         await Task.WhenAll(OnGetServiceAuthorisationSOAPRequest.GetInvocationList().
                                            Cast<HTTPRequestLogHandlerX>().
                                            Select(e => e(StartTime,
@@ -342,7 +342,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnGetServiceAuthorisationRequest != null)
+                        if (OnGetServiceAuthorisationRequest is not null)
                             await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                                Cast<OnGetServiceAuthorisationRequestDelegate>().
                                                Select(e => e(StartTime,
@@ -373,7 +373,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Call async subscribers
 
-                    if (OnGetServiceAuthorisation != null)
+                    if (OnGetServiceAuthorisation is not null)
                     {
 
                         var results = await Task.WhenAll(OnGetServiceAuthorisation.GetInvocationList().
@@ -387,7 +387,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     }
 
-                    //if (Response == null)
+                    //if (Response is null)
                     //    Response = Response<EMP.GetServiceAuthorisationRequest>.SystemError(
                     //                         _GetServiceAuthorisationRequest,
                     //                         "Could not process the incoming GetServiceAuthorisation request!",
@@ -405,7 +405,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnGetServiceAuthorisationResponse != null)
+                        if (OnGetServiceAuthorisationResponse is not null)
                             await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
                                                Cast<OnGetServiceAuthorisationResponseDelegate>().
                                                Select(e => e(EndTime,
@@ -461,7 +461,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnGetServiceAuthorisationSOAPResponse != null)
+                    if (OnGetServiceAuthorisationSOAPResponse is not null)
                         await Task.WhenAll(OnGetServiceAuthorisationSOAPResponse.GetInvocationList().
                                            Cast<HTTPResponseLogHandlerX>().
                                            Select(e => e(HTTPResponse.Timestamp,
@@ -504,7 +504,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnSetSessionEventReportSOAPRequest != null)
+                    if (OnSetSessionEventReportSOAPRequest is not null)
                         await Task.WhenAll(OnSetSessionEventReportSOAPRequest.GetInvocationList().
                                            Cast<HTTPRequestLogHandlerX>().
                                            Select(e => e(StartTime,
@@ -540,7 +540,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnSetSessionEventReportRequest != null)
+                        if (OnSetSessionEventReportRequest is not null)
                             await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                                Cast<OnSetSessionEventReportRequestDelegate>().
                                                Select(e => e(StartTime,
@@ -571,7 +571,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Call async subscribers
 
-                    if (OnSetSessionEventReport != null)
+                    if (OnSetSessionEventReport is not null)
                     {
 
                         var results = await Task.WhenAll(OnSetSessionEventReport.GetInvocationList().
@@ -585,7 +585,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     }
 
-                    //if (Response == null)
+                    //if (Response is null)
                     //    Response = Response<EMP.SetSessionEventReportRequest>.SystemError(
                     //                         _SetSessionEventReportRequest,
                     //                         "Could not process the incoming SetSessionEventReport request!",
@@ -603,7 +603,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnSetSessionEventReportResponse != null)
+                        if (OnSetSessionEventReportResponse is not null)
                             await Task.WhenAll(OnSetSessionEventReportResponse.GetInvocationList().
                                                Cast<OnSetSessionEventReportResponseDelegate>().
                                                Select(e => e(EndTime,
@@ -660,7 +660,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnSetSessionEventReportSOAPResponse != null)
+                    if (OnSetSessionEventReportSOAPResponse is not null)
                         await Task.WhenAll(OnSetSessionEventReportSOAPResponse.GetInvocationList().
                                            Cast<HTTPResponseLogHandlerX>().
                                            Select(e => e(HTTPResponse.Timestamp,
@@ -703,7 +703,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnSetChargeDetailRecordSOAPRequest != null)
+                    if (OnSetChargeDetailRecordSOAPRequest is not null)
                         await Task.WhenAll(OnSetChargeDetailRecordSOAPRequest.GetInvocationList().
                                            Cast<HTTPRequestLogHandlerX>().
                                            Select(e => e(StartTime,
@@ -740,7 +740,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnSetChargeDetailRecordRequest != null)
+                        if (OnSetChargeDetailRecordRequest is not null)
                             await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                                Cast<OnSetChargeDetailRecordRequestDelegate>().
                                                Select(e => e(StartTime,
@@ -767,7 +767,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     #region Call async subscribers
 
-                    if (OnSetChargeDetailRecord != null)
+                    if (OnSetChargeDetailRecord is not null)
                     {
 
                         var results = await Task.WhenAll(OnSetChargeDetailRecord.GetInvocationList().
@@ -781,7 +781,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                     }
 
-                    //if (Response == null)
+                    //if (Response is null)
                     //    Response = Response<EMP.SetChargeDetailRecordRequest>.SystemError(
                     //                         _SetChargeDetailRecordRequest,
                     //                         "Could not process the incoming SetChargeDetailRecord request!",
@@ -799,7 +799,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                     try
                     {
 
-                        if (OnSetChargeDetailRecordResponse != null)
+                        if (OnSetChargeDetailRecordResponse is not null)
                             await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().
                                                Cast<OnSetChargeDetailRecordResponseDelegate>().
                                                Select(e => e(EndTime,
@@ -852,7 +852,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                 try
                 {
 
-                    if (OnSetChargeDetailRecordSOAPResponse != null)
+                    if (OnSetChargeDetailRecordSOAPResponse is not null)
                         await Task.WhenAll(OnSetChargeDetailRecordSOAPResponse.GetInvocationList().
                                            Cast<HTTPResponseLogHandlerX>().
                                            Select(e => e(HTTPResponse.Timestamp,

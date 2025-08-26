@@ -412,7 +412,7 @@
 //            if (Name.IsNullOrEmpty())
 //                throw new ArgumentNullException(nameof(Name),        "The given roaming provider name must not be null or empty!");
 
-//            if (EMPRoaming == null)
+//            if (EMPRoaming is null)
 //                throw new ArgumentNullException(nameof(EMPRoaming),  "The given eMIP EMP Roaming object must not be null!");
 
 //            #endregion
@@ -1003,7 +1003,7 @@
 //            catch (Exception e)
 //            {
 
-//                while (e.InnerException != null)
+//                while (e.InnerException is not null)
 //                    e = e.InnerException;
 
 //                DebugX.LogT(GetType().Name + ".SendHeartbeat '" + Id + "' led to an exception: " + e.Message + Environment.NewLine + e.StackTrace);
@@ -1052,7 +1052,7 @@
 //                return true;
 
 //            // If one is null, but not both, return false.
-//            if (((Object) WWCPEMPAdapter1 == null) || ((Object) WWCPEMPAdapter2 == null))
+//            if (((Object) WWCPEMPAdapter1 is null) || ((Object) WWCPEMPAdapter2 is null))
 //                return false;
 
 //            return WWCPEMPAdapter1.Equals(WWCPEMPAdapter2);
@@ -1087,7 +1087,7 @@
 //                                          WWCPEMPAdapter  WWCPEMPAdapter2)
 //        {
 
-//            if ((Object) WWCPEMPAdapter1 == null)
+//            if ((Object) WWCPEMPAdapter1 is null)
 //                throw new ArgumentNullException(nameof(WWCPEMPAdapter1),  "The given WWCPEMPAdapter must not be null!");
 
 //            return WWCPEMPAdapter1.CompareTo(WWCPEMPAdapter2) < 0;
@@ -1123,7 +1123,7 @@
 //                                          WWCPEMPAdapter WWCPEMPAdapter2)
 //        {
 
-//            if ((Object) WWCPEMPAdapter1 == null)
+//            if ((Object) WWCPEMPAdapter1 is null)
 //                throw new ArgumentNullException(nameof(WWCPEMPAdapter1),  "The given WWCPEMPAdapter must not be null!");
 
 //            return WWCPEMPAdapter1.CompareTo(WWCPEMPAdapter2) > 0;
@@ -1160,11 +1160,11 @@
 //        public Int32 CompareTo(Object Object)
 //        {
 
-//            if (Object == null)
+//            if (Object is null)
 //                throw new ArgumentNullException(nameof(Object), "The given object must not be null!");
 
 //            var WWCPEMPAdapter = Object as WWCPEMPAdapter;
-//            if ((Object) WWCPEMPAdapter == null)
+//            if ((Object) WWCPEMPAdapter is null)
 //                throw new ArgumentException("The given object is not an WWCPEMPAdapter!", nameof(Object));
 
 //            return CompareTo(WWCPEMPAdapter);
@@ -1182,7 +1182,7 @@
 //        public Int32 CompareTo(WWCPEMPAdapter WWCPEMPAdapter)
 //        {
 
-//            if ((Object) WWCPEMPAdapter == null)
+//            if ((Object) WWCPEMPAdapter is null)
 //                throw new ArgumentNullException(nameof(WWCPEMPAdapter), "The given WWCPEMPAdapter must not be null!");
 
 //            return Id.CompareTo(WWCPEMPAdapter.Id);
@@ -1205,11 +1205,11 @@
 //        public override Boolean Equals(Object Object)
 //        {
 
-//            if (Object == null)
+//            if (Object is null)
 //                return false;
 
 //            var WWCPEMPAdapter = Object as WWCPEMPAdapter;
-//            if ((Object) WWCPEMPAdapter == null)
+//            if ((Object) WWCPEMPAdapter is null)
 //                return false;
 
 //            return Equals(WWCPEMPAdapter);
@@ -1228,7 +1228,7 @@
 //        public Boolean Equals(WWCPEMPAdapter WWCPEMPAdapter)
 //        {
 
-//            if ((Object) WWCPEMPAdapter == null)
+//            if ((Object) WWCPEMPAdapter is null)
 //                return false;
 
 //            return Id.Equals(WWCPEMPAdapter.Id);

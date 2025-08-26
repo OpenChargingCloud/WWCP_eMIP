@@ -1081,12 +1081,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SendHeartbeat request must not be null!");
 
             Request = _CustomHeartbeatRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SendHeartbeat request must not be null!");
 
 
@@ -1104,7 +1104,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SendHeartbeat.IncRequests_OK();
 
-                if (OnSendHeartbeatRequest != null)
+                if (OnSendHeartbeatRequest is not null)
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
                                        Cast<OnSendHeartbeatRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -1285,7 +1285,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SendHeartbeat.IncResponses_Error();
 
 
-                if (OnSendHeartbeatResponse != null)
+                if (OnSendHeartbeatResponse is not null)
                     await Task.WhenAll(OnSendHeartbeatResponse.GetInvocationList().
                                        Cast<OnSendHeartbeatResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -1330,12 +1330,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetChargingPoolAvailabilityStatus request must not be null!");
 
             Request = _CustomSetChargingPoolAvailabilityStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingPoolAvailabilityStatus request must not be null!");
 
 
@@ -1353,7 +1353,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetChargingPoolAvailabilityStatus.IncRequests_OK();
 
-                if (OnSetChargingPoolAvailabilityStatusRequest != null)
+                if (OnSetChargingPoolAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -1564,7 +1564,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetChargingPoolAvailabilityStatus.IncResponses_Error();
 
 
-                if (OnSetChargingPoolAvailabilityStatusResponse != null)
+                if (OnSetChargingPoolAvailabilityStatusResponse is not null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -1616,12 +1616,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetChargingStationAvailabilityStatus request must not be null!");
 
             Request = _CustomSetChargingStationAvailabilityStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingStationAvailabilityStatus request must not be null!");
 
 
@@ -1639,7 +1639,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetChargingStationAvailabilityStatus.IncRequests_OK();
 
-                if (OnSetChargingStationAvailabilityStatusRequest != null)
+                if (OnSetChargingStationAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -1850,7 +1850,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetChargingStationAvailabilityStatus.IncResponses_Error();
 
 
-                if (OnSetChargingStationAvailabilityStatusResponse != null)
+                if (OnSetChargingStationAvailabilityStatusResponse is not null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -1901,12 +1901,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetEVSEAvailabilityStatus request must not be null!");
 
             Request = _CustomSetEVSEAvailabilityStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEAvailabilityStatus request must not be null!");
 
 
@@ -1924,7 +1924,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetEVSEAvailabilityStatus.IncRequests_OK();
 
-                if (OnSetEVSEAvailabilityStatusRequest != null)
+                if (OnSetEVSEAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -2136,7 +2136,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetEVSEAvailabilityStatus.IncResponses_Error();
 
 
-                if (OnSetEVSEAvailabilityStatusResponse != null)
+                if (OnSetEVSEAvailabilityStatusResponse is not null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -2187,12 +2187,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetChargingConnectorAvailabilityStatus request must not be null!");
 
             Request = _CustomSetChargingConnectorAvailabilityStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingConnectorAvailabilityStatus request must not be null!");
 
 
@@ -2210,7 +2210,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetChargingConnectorAvailabilityStatus.IncRequests_OK();
 
-                if (OnSetChargingConnectorAvailabilityStatusRequest != null)
+                if (OnSetChargingConnectorAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -2421,7 +2421,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetChargingConnectorAvailabilityStatus.IncResponses_Error();
 
 
-                if (OnSetChargingConnectorAvailabilityStatusResponse != null)
+                if (OnSetChargingConnectorAvailabilityStatusResponse is not null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusResponse.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -2473,12 +2473,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetEVSEBusyStatus request must not be null!");
 
             Request = _CustomSetEVSEBusyStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEBusyStatus request must not be null!");
 
 
@@ -2496,7 +2496,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetEVSEBusyStatus.IncRequests_OK();
 
-                if (OnSetEVSEBusyStatusRequest != null)
+                if (OnSetEVSEBusyStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -2707,7 +2707,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetEVSEBusyStatus.IncResponses_Error();
 
 
-                if (OnSetEVSEBusyStatusResponse != null)
+                if (OnSetEVSEBusyStatusResponse is not null)
                     await Task.WhenAll(OnSetEVSEBusyStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -2758,12 +2758,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetEVSESyntheticStatus request must not be null!");
 
             Request = _CustomSetEVSESyntheticStatusRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSESyntheticStatus request must not be null!");
 
 
@@ -2781,7 +2781,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetEVSESyntheticStatus.IncRequests_OK();
 
-                if (OnSetEVSESyntheticStatusRequest != null)
+                if (OnSetEVSESyntheticStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -2996,7 +2996,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetEVSESyntheticStatus.IncResponses_Error();
 
 
-                if (OnSetEVSESyntheticStatusResponse != null)
+                if (OnSetEVSESyntheticStatusResponse is not null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusResponse.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -3052,12 +3052,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given GetServiceAuthorisation request must not be null!");
 
             Request = _CustomGetServiceAuthorisationRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped GetServiceAuthorisation request must not be null!");
 
 
@@ -3075,7 +3075,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.GetServiceAuthorisation.IncRequests_OK();
 
-                if (OnGetServiceAuthorisationRequest != null)
+                if (OnGetServiceAuthorisationRequest is not null)
                     await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -3286,7 +3286,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.GetServiceAuthorisation.IncResponses_Error();
 
 
-                if (OnGetServiceAuthorisationResponse != null)
+                if (OnGetServiceAuthorisationResponse is not null)
                     await Task.WhenAll(OnGetServiceAuthorisationResponse.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -3338,12 +3338,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetSessionEventReport request must not be null!");
 
             Request = _CustomSetSessionEventReportRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetSessionEventReport request must not be null!");
 
 
@@ -3361,7 +3361,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetSessionEventReport.IncRequests_OK();
 
-                if (OnSetSessionEventReportRequest != null)
+                if (OnSetSessionEventReportRequest is not null)
                     await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                        Cast<OnSetSessionEventReportRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -3568,7 +3568,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetSessionEventReport.IncResponses_Error();
 
 
-                if (OnSetSessionEventReportResponse != null)
+                if (OnSetSessionEventReportResponse is not null)
                     await Task.WhenAll(OnSetSessionEventReportResponse.GetInvocationList().
                                        Cast<OnSetSessionEventReportResponseDelegate>().
                                        Select(e => e(Endtime,
@@ -3619,12 +3619,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The given SetChargeDetailRecord request must not be null!");
 
             Request = _CustomSetChargeDetailRecordRequestMapper(Request);
 
-            if (Request == null)
+            if (Request is null)
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargeDetailRecord request must not be null!");
 
 
@@ -3642,7 +3642,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 Counters.SetChargeDetailRecord.IncRequests_OK();
 
-                if (OnSetChargeDetailRecordRequest != null)
+                if (OnSetChargeDetailRecordRequest is not null)
                     await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordRequestDelegate>().
                                        Select(e => e(StartTime,
@@ -3851,7 +3851,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Counters.SetChargeDetailRecord.IncResponses_Error();
 
 
-                if (OnSetChargeDetailRecordResponse != null)
+                if (OnSetChargeDetailRecordResponse is not null)
                     await Task.WhenAll(OnSetChargeDetailRecordResponse.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordResponseDelegate>().
                                        Select(e => e(Endtime,

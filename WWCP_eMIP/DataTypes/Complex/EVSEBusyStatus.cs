@@ -144,11 +144,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             var EVSEBusyStatus = Object as EVSEBusyStatus;
-            if ((Object) EVSEBusyStatus == null)
+            if ((Object) EVSEBusyStatus is null)
                 return false;
 
             return Equals(EVSEBusyStatus);
@@ -167,7 +167,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public Boolean Equals(EVSEBusyStatus EVSEBusyStatus)
         {
 
-            if ((Object) EVSEBusyStatus == null)
+            if ((Object) EVSEBusyStatus is null)
                 return false;
 
             return EVSEId.         Equals(EVSEBusyStatus.EVSEId)          &&

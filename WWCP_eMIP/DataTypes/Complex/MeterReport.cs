@@ -401,7 +401,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Boolean operator < (MeterReport MeterReport1, MeterReport MeterReport2)
         {
 
-            if ((Object) MeterReport1 == null)
+            if ((Object) MeterReport1 is null)
                 throw new ArgumentNullException(nameof(MeterReport1), "The given MeterReport1 must not be null!");
 
             return MeterReport1.CompareTo(MeterReport2) < 0;
@@ -434,7 +434,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Boolean operator > (MeterReport MeterReport1, MeterReport MeterReport2)
         {
 
-            if ((Object)MeterReport1 == null)
+            if ((Object)MeterReport1 is null)
                 throw new ArgumentNullException(nameof(MeterReport1), "The given MeterReport1 must not be null!");
 
             return MeterReport1.CompareTo(MeterReport2) > 0;
@@ -490,7 +490,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public Int32 CompareTo(MeterReport MeterReport)
         {
 
-            if ((Object) MeterReport == null)
+            if ((Object) MeterReport is null)
                 throw new ArgumentNullException(nameof(MeterReport), "The given meter report must not be null!");
 
             var _Result = String.Compare(Value, MeterReport.Value, StringComparison.OrdinalIgnoreCase);
@@ -543,7 +543,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public Boolean Equals(MeterReport MeterReport)
         {
 
-            if ((Object) MeterReport == null)
+            if ((Object) MeterReport is null)
                 return false;
 
             return Value.ToLower().Equals(MeterReport.Value.ToLower()) &&

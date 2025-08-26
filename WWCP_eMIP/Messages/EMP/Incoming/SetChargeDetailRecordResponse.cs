@@ -395,7 +395,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         public override Boolean Equals(Object Object)
         {
 
-            if (Object == null)
+            if (Object is null)
                 return false;
 
             if (!(Object is SetChargeDetailRecordResponse SetChargeDetailRecordResponse))
@@ -417,7 +417,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         public override Boolean Equals(SetChargeDetailRecordResponse SetChargeDetailRecordResponse)
         {
 
-            if ((Object) SetChargeDetailRecordResponse == null)
+            if ((Object) SetChargeDetailRecordResponse is null)
                 return false;
 
             return TransactionId.Equals(SetChargeDetailRecordResponse.TransactionId) &&

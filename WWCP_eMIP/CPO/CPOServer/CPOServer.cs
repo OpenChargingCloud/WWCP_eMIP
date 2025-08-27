@@ -23,6 +23,7 @@ using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.Logging;
+using org.GraphDefined.Vanaheimr.Hermod.HTTPTest;
 
 #endregion
 
@@ -55,7 +56,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public     const           String           DefaultAuthorisationURL    = "";
+        public     static readonly HTTPPath         DefaultAuthorisationURL    = HTTPPath.Root;
 
         /// <summary>
         /// The default HTTP/SOAP/XML content type.
@@ -74,12 +75,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The identification of this HTTP/SOAP service.
         /// </summary>
-        public String  ServiceName         { get; }
+        public String    ServiceName         { get; }
 
         /// <summary>
         /// The HTTP/SOAP/XML URI for eMIP authorization requests.
         /// </summary>
-        public String  AuthorisationURL    { get; }
+        public HTTPPath  AuthorisationURL    { get; }
 
         #endregion
 
@@ -185,7 +186,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          IPPort?           HTTPServerPort            = null,
                          String?           ServiceName               = null,
                          HTTPPath?         URLPathPrefix             = null,
-                         String            AuthorisationURL          = DefaultAuthorisationURL,
+                         HTTPPath?         AuthorisationURL          = null,
                          HTTPContentType?  ContentType               = null,
                          Boolean           RegisterHTTPRootService   = true,
                          DNSClient?        DNSClient                 = null,
@@ -226,7 +227,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public CPOServer(SOAPServer               SOAPServer,
                          String?                  ServiceName       = null,
                          HTTPPath?                URLPathPrefix     = null,
-                         String                   AuthorisationURL  = DefaultAuthorisationURL,
+                         HTTPPath?                AuthorisationURL  = null,
 
                          String                   LoggingPath       = "",
                          String?                  LoggingContext    = null,
@@ -264,14 +265,24 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         protected void RegisterURITemplates()
         {
 
+            var httpAPI = SOAPServer.HTTPServer.AddHTTPAPI(
+                              URLPrefix,
+                              null,
+                              (a, b) => new HTTPAPIX(
+                                            SOAPServer.HTTPServer,
+                                            null,
+                                            URLPrefix
+                                        )
+                          );
+
             #region ~/ - SetServiceAuthorisation
 
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@GireveTests/SetServiceAuthorisationRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            SOAPServer.RegisterSOAPDelegate(null,
+            SOAPServer.RegisterSOAPDelegate(httpAPI,
                                             HTTPHostname.Any,
-                                            URLPrefix + AuthorisationURL,
+                                            AuthorisationURL,
                                             "SetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetServiceAuthorisationXML) => {
@@ -433,14 +444,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 #region Create SOAPResponse
 
-                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
-                    HTTPStatusCode  = HTTPStatusCode.OK,
-                    Server          = SOAPServer.HTTPServer.HTTPServerName,
-                    Date            = Timestamp.Now,
-                    ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
-                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
-                    Connection      = ConnectionType.Close
-                };
+                var httpResponse = new HTTPResponse.Builder(HTTPRequest) {
+                                       HTTPStatusCode  = HTTPStatusCode.OK,
+                                       Server          = SOAPServer.HTTPServer.HTTPServerName,
+                                       Date            = Timestamp.Now,
+                                       ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
+                                       Content         = SOAP.Encapsulation(Response.ToXML(CustomSetServiceAuthorisationResponseSerializer)).ToUTF8Bytes(),
+                                       Connection      = ConnectionType.Close
+                                   };
 
                 #endregion
 
@@ -452,10 +463,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     if (OnSetServiceAuthorisationSOAPResponse is not null)
                         await Task.WhenAll(OnSetServiceAuthorisationSOAPResponse.GetInvocationList().
                                            Cast<HTTPResponseLogHandlerX>().
-                                           Select(e => e(HTTPResponse.Timestamp,
+                                           Select(e => e(httpResponse.Timestamp,
                                                          API,
                                                          HTTPRequest,
-                                                         HTTPResponse,
+                                                         httpResponse,
                                                          CancellationToken.None))).
                                            ConfigureAwait(false);
 
@@ -467,7 +478,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 #endregion
 
-                return HTTPResponse;
+                return httpResponse;
 
             });
 
@@ -484,9 +495,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             // curl -v -X POST  -H "Content-Type: application/soap+xml" -H "Accept: application/soap+xml" --data-binary "@Tests/SetSessionActionRequestRequest001.xml" http://127.0.0.1:3004/RNs/Prod/IO/Gireve
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            SOAPServer.RegisterSOAPDelegate(null,
+            SOAPServer.RegisterSOAPDelegate(httpAPI,
                                             HTTPHostname.Any,
-                                            URLPrefix + AuthorisationURL,
+                                            AuthorisationURL,
                                             "SetSessionActionRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetSessionActionXML) => {
@@ -639,14 +650,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 #region Create SOAPResponse
 
-                var HTTPResponse = new HTTPResponse.Builder(HTTPRequest) {
-                    HTTPStatusCode  = HTTPStatusCode.OK,
-                    Server          = SOAPServer.HTTPServer.HTTPServerName,
-                    Date            = Timestamp.Now,
-                    ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
-                    Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
-                    Connection      = ConnectionType.Close
-                };
+                var httpResponse = new HTTPResponse.Builder(HTTPRequest) {
+                                       HTTPStatusCode  = HTTPStatusCode.OK,
+                                       Server          = SOAPServer.HTTPServer.HTTPServerName,
+                                       Date            = Timestamp.Now,
+                                       ContentType     = HTTPContentType.Application.SOAPXML_UTF8,
+                                       Content         = SOAP.Encapsulation(Response.ToXML(CustomSetSessionActionResponseSerializer)).ToUTF8Bytes(),
+                                       Connection      = ConnectionType.Close
+                                   };
 
                 #endregion
 
@@ -658,10 +669,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     if (OnSetSessionActionSOAPResponse is not null)
                         await Task.WhenAll(OnSetSessionActionSOAPResponse.GetInvocationList().
                                            Cast<HTTPResponseLogHandlerX>().
-                                           Select(e => e(HTTPResponse.Timestamp,
+                                           Select(e => e(httpResponse.Timestamp,
                                                          API,
                                                          HTTPRequest,
-                                                         HTTPResponse,
+                                                         httpResponse,
                                                          CancellationToken.None))).
                                            ConfigureAwait(false);
 
@@ -673,7 +684,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 #endregion
 
-                return HTTPResponse;
+                return httpResponse;
 
             });
 

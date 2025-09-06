@@ -200,7 +200,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Generic Charge Service ("1")
         /// </summary>
         public static Service_Id GenericChargeService
-            => new Service_Id("1");
+            => new ("1");
 
         #endregion
 

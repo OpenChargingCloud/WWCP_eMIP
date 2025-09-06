@@ -18,7 +18,6 @@
 #region Usings
 
 using System.Xml.Linq;
-using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
@@ -1014,14 +1013,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          LogfileCreatorDelegate?                                    LogfileCreator                           = null,
                          IDNSClient?                                                DNSClient                                = null)
 
-            : base(RemoteURL     ?? URL.Parse("???"),
+            : base(RemoteURL     ?? URL.Parse("https://api-iop.gireve.com"),
                    VirtualHostname,
                    Description,
                    PreferIPv4,
                    RemoteCertificateValidator,
                    LocalCertificateSelector,
                    ClientCert,
-                   TLSProtocol,
+                   TLSProtocol   ?? SslProtocols.Tls12 | SslProtocols.Tls13,
                    HTTPContentType.Application.SOAPXML_UTF8,
                    Accept        ?? AcceptTypes.FromHTTPContentTypes(HTTPContentType.Application.SOAPXML_UTF8),
                    Authentication,
@@ -3822,14 +3821,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                 }
 
-               result ??= HTTPResponse<SetChargeDetailRecordResponse>.OK(
-                              new SetChargeDetailRecordResponse(
-                                  Request,
-                                  Request.TransactionId ?? Transaction_Id.Zero,
-                                  RequestStatus.SystemError
-                                  //"HTTP request failed!"
-                              )
-                          );
+                result ??= HTTPResponse<SetChargeDetailRecordResponse>.OK(
+                               new SetChargeDetailRecordResponse(
+                                   Request,
+                                   Request.TransactionId ?? Transaction_Id.Zero,
+                                   RequestStatus.SystemError
+                                   //"HTTP request failed!"
+                               )
+                           );
 
             }
             while ((result.HTTPStatusCode.IsServerError ||

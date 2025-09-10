@@ -265,15 +265,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         protected void RegisterURITemplates()
         {
 
-            var httpAPI = SOAPServer.HTTPServer.AddHTTPAPI(
-                              URLPrefix,
-                              null,
-                              (a, b) => new HTTPAPIX(
-                                            SOAPServer.HTTPServer,
-                                            null,
-                                            URLPrefix
-                                        )
-                          );
+            var httpAPI = SOAPServer.HTTPServer.DefaultAPI;
 
             #region ~/ - SetServiceAuthorisation
 
@@ -282,7 +274,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(httpAPI,
                                             HTTPHostname.Any,
-                                            AuthorisationURL,
+                                            URLPrefix + AuthorisationURL,
                                             "SetServiceAuthorisationRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetServiceAuthorisationRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetServiceAuthorisationXML) => {
@@ -497,7 +489,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             SOAPServer.RegisterSOAPDelegate(httpAPI,
                                             HTTPHostname.Any,
-                                            AuthorisationURL,
+                                            URLPrefix + AuthorisationURL,
                                             "SetSessionActionRequest",
                                             XML => XML.Descendants(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestRequest").FirstOrDefault(),
                                             async (HTTPRequest, SetSessionActionXML) => {

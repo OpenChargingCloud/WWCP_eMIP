@@ -91,9 +91,9 @@ namespace cloud.charging.open.protocols.WWCP
         /// 
         /// <param name="eMIPConfigurator">An optional delegate to configure the new eMIP roaming provider after its creation.</param>
         /// <param name="Configurator">An optional delegate to configure the new roaming provider after its creation.</param>
-        public static WWCPCPOAdapter
+        public static WWCPCPOAdapter?
 
-            CreateeMIPv0_7_4_CSORoamingProvider(this RoamingNetwork                                 RoamingNetwork,
+            CreateeMIPv0_7_4_CSORoamingProvider(this IRoamingNetwork                                RoamingNetwork,
                                                 CSORoamingProvider_Id                               Id,
                                                 I18NString                                          Name,
                                                 I18NString                                          Description,
@@ -159,50 +159,55 @@ namespace cloud.charging.open.protocols.WWCP
 
             #endregion
 
-            var NewRoamingProvider = new WWCPCPOAdapter(Id,
-                                                        Name,
-                                                        Description,
-                                                        RoamingNetwork,
-                                                        CPORoaming,
+            var newRoamingProvider = new WWCPCPOAdapter(
 
-                                                        PartnerId,
-                                                        DefaultOperator,
+                                         Id,
+                                         Name,
+                                         Description,
+                                         RoamingNetwork,
+                                         CPORoaming,
 
-                                                        IncludeEVSEIds,
-                                                        IncludeEVSEs,
-                                                        IncludeChargingStationIds,
-                                                        IncludeChargingStations,
-                                                        IncludeChargingPoolIds,
-                                                        IncludeChargingPools,
-                                                        ChargeDetailRecordFilter,
-                                                        CustomOperatorIdMapper,
-                                                        CustomEVSEIdMapper,
+                                         PartnerId,
+                                         DefaultOperator,
 
-                                                        //EVSE2EVSEDataRecord,
-                                                        //EVSEStatusUpdate2EVSEStatusRecord,
-                                                        WWCPChargeDetailRecord2eMIPChargeDetailRecord,
+                                         IncludeEVSEIds,
+                                         IncludeEVSEs,
+                                         IncludeChargingStationIds,
+                                         IncludeChargingStations,
+                                         IncludeChargingPoolIds,
+                                         IncludeChargingPools,
+                                         ChargeDetailRecordFilter,
+                                         CustomOperatorIdMapper,
+                                         CustomEVSEIdMapper,
 
-                                                        SendHeartbeatsEvery,
-                                                        ServiceCheckEvery,
-                                                        StatusCheckEvery,
-                                                        CDRCheckEvery,
+                                         //EVSE2EVSEDataRecord,
+                                         //EVSEStatusUpdate2EVSEStatusRecord,
+                                         WWCPChargeDetailRecord2eMIPChargeDetailRecord,
 
-                                                        DisableSendHeartbeats,
-                                                        DisablePushData,
-                                                        DisablePushAdminStatus,
-                                                        DisablePushStatus,
-                                                        DisableAuthentication,
-                                                        DisableSendChargeDetailRecords,
+                                         SendHeartbeatsEvery,
+                                         ServiceCheckEvery,
+                                         StatusCheckEvery,
+                                         CDRCheckEvery,
 
-                                                        EllipticCurve,
-                                                        PrivateKey,
-                                                        PublicKeyCertificates);
+                                         DisableSendHeartbeats,
+                                         DisablePushData,
+                                         DisablePushAdminStatus,
+                                         DisablePushStatus,
+                                         DisableAuthentication,
+                                         DisableSendChargeDetailRecords,
 
-            eMIPConfigurator?.Invoke(NewRoamingProvider);
+                                         EllipticCurve,
+                                         PrivateKey,
+                                         PublicKeyCertificates
 
-            return RoamingNetwork.
-                       CreateCSORoamingProvider(NewRoamingProvider,
-                                                Configurator) as WWCPCPOAdapter;
+                                     );
+
+            eMIPConfigurator?.Invoke(newRoamingProvider);
+
+            return RoamingNetwork.CreateCSORoamingProvider(
+                       newRoamingProvider,
+                       Configurator
+                   ) as WWCPCPOAdapter;
 
         }
 

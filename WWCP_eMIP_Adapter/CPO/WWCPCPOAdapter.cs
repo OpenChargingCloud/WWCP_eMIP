@@ -267,7 +267,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public WWCPCPOAdapter(CSORoamingProvider_Id                               Id,
                               I18NString                                          Name,
                               I18NString                                          Description,
-                              RoamingNetwork                                      RoamingNetwork,
+                              IRoamingNetwork                                     RoamingNetwork,
                               CPORoaming                                          CPORoaming,
 
                               Partner_Id                                          PartnerId,
@@ -490,7 +490,6 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                );
 
                     var response = await RoamingNetwork.RemoteStart(
-                                             CSORoamingProvider:       this,
                                              ChargingLocation:         ChargingLocation.FromEVSEId(evseId.Value),
                                              ChargingProduct:          chargingProduct,
                                              ReservationId:            null,
@@ -503,6 +502,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                            new JProperty("eMIP.userId",      Request.UserId.       ToString())
                                                                        ),
                                              AuthenticationPath:       Auth_Path.Parse(Id.ToString()),  // CSO Roaming Provider identification!
+                                             CSORoamingProvider:       this,
 
                                              RequestTimestamp:         Request.Timestamp,
                                              EventTrackingId:          Request.EventTrackingId,
@@ -716,19 +716,21 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                         Request.SessionAction.Nature == SessionActionNatures.Stop)
                     {
 
-                        var response = await RoamingNetwork.
-                                                 RemoteStop(this,
-                                                            Request.ServiceSessionId.ToWWCP(),
-                                                            ReservationHandling.Close,
-                                                            Request.OperatorId.ToWWCP_ProviderId(),
-                                                            null,
-                                                            WWCP.Auth_Path.Parse(Id.ToString()),   // Authentication path == CSO Roaming Provider identification!
+                        var response = await RoamingNetwork.RemoteStop(
 
-                                                            Request.Timestamp,
-                                                            Request.EventTrackingId,
-                                                            Request.RequestTimeout,
-                                                            Request.CancellationToken).
-                                                 ConfigureAwait(false);
+                                                 Request.ServiceSessionId.ToWWCP(),
+                                                 ReservationHandling.Close,
+                                                 Request.OperatorId.ToWWCP_ProviderId(),
+                                                 null,
+                                                 WWCP.Auth_Path.Parse(Id.ToString()),   // Authentication path == CSO Roaming Provider identification!
+                                                 this,
+
+                                                 Request.Timestamp,
+                                                 Request.EventTrackingId,
+                                                 Request.RequestTimeout,
+                                                 Request.CancellationToken
+
+                                             ).ConfigureAwait(false);
 
 
                         #region Response mapping

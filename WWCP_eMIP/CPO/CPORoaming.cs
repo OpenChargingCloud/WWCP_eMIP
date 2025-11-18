@@ -87,8 +87,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The TLS client certificate to use of HTTP authentication.
         /// </summary>
-        X509Certificate?                     IHTTPClient.ClientCert
-            => CPOClient.ClientCert;
+        X509Certificate2?                    IHTTPClient.ClientCertificate
+            => CPOClient.ClientCertificate;
 
         /// <summary>
         /// The TLS protocol to use.
@@ -123,8 +123,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The optional HTTP authentication to use.
         /// </summary>
-        IHTTPAuthentication?                 IHTTPClient.Authentication
-            => CPOClient.Authentication;
+        IHTTPAuthentication?                 IHTTPClient.HTTPAuthentication
+        {
+            get
+            {
+                return CPOClient.HTTPAuthentication;
+            }
+            set
+            {
+                CPOClient.HTTPAuthentication = value;
+            }
+        }
 
         /// <summary>
         /// The HTTP user agent identification.
@@ -1653,6 +1662,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             }
 
         }
+
+        public X509Certificate2? ClientCertificate => throw new NotImplementedException();
+
+        public IHTTPAuthentication? HTTPAuthentication { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TOTPConfig? TOTPConfig { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
 

@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingPoolAvailabilityStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargingPoolAvailabilityStatusResponse Parse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                                                       XElement                                                            SetChargingPoolAvailabilityStatusResponseXML,
                                                                       CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse>  CustomSendSetChargingPoolAvailabilityStatusResponseParser   = null,
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingPoolAvailabilityStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargingPoolAvailabilityStatusResponse Parse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                                                       String                                                              SetChargingPoolAvailabilityStatusResponseText,
                                                                       CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse>  CustomSendSetChargingPoolAvailabilityStatusResponseParser   = null,
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingPoolAvailabilityStatusResponse">The parsed SetChargingPoolAvailabilityStatus response.</param>
         /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                        XElement                                                            SetChargingPoolAvailabilityStatusResponseXML,
                                        out SetChargingPoolAvailabilityStatusResponse                       SetChargingPoolAvailabilityStatusResponse,
@@ -222,7 +222,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingPoolAvailabilityStatusResponse">The parsed SetChargingPoolAvailabilityStatus response.</param>
         /// <param name="CustomSendSetChargingPoolAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingPoolAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargingPoolAvailabilityStatusRequest                            Request,
                                        String                                                              SetChargingPoolAvailabilityStatusResponseText,
                                        out SetChargingPoolAvailabilityStatusResponse                       SetChargingPoolAvailabilityStatusResponse,

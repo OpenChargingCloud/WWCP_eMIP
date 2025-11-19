@@ -151,7 +151,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponseXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
                                               XElement                                    HeartbeatResponseXML,
                                               CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
@@ -184,7 +184,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponseText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static HeartbeatResponse Parse(HeartbeatRequest                            Request,
                                               String                                      HeartbeatResponseText,
                                               CustomXMLParserDelegate<HeartbeatResponse>  CustomSendHeartbeatResponseParser   = null,
@@ -218,7 +218,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        XElement                                    HeartbeatResponseXML,
                                        out HeartbeatResponse                       HeartbeatResponse,
@@ -282,7 +282,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatResponse">The parsed Heartbeat response.</param>
         /// <param name="CustomSendHeartbeatResponseParser">An optional delegate to parse custom HeartbeatResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(HeartbeatRequest                            Request,
                                        String                                      HeartbeatResponseText,
                                        out HeartbeatResponse                       HeartbeatResponse,

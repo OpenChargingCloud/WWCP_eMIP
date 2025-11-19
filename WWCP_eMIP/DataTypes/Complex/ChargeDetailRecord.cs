@@ -257,7 +257,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargeDetailRecordXML">The XML to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static ChargeDetailRecord Parse(XElement                                     ChargeDetailRecordXML,
                                                CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
                                                CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
@@ -287,7 +287,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargeDetailRecordText">The text to parse.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static ChargeDetailRecord Parse(String                                       ChargeDetailRecordText,
                                                CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
                                                CustomXMLParserDelegate<MeterReport>         CustomMeterReportParser          = null,
@@ -318,7 +318,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargeDetailRecord">The parsed charge detail record.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(XElement                                     ChargeDetailRecordXML,
                                        out ChargeDetailRecord                       ChargeDetailRecord,
                                        CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,
@@ -386,7 +386,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="ChargeDetailRecord">The parsed charge detail record.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(String                                       ChargeDetailRecordText,
                                        out ChargeDetailRecord                       ChargeDetailRecord,
                                        CustomXMLParserDelegate<ChargeDetailRecord>  CustomChargeDetailRecordParser   = null,

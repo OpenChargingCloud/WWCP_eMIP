@@ -132,7 +132,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -183,7 +183,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -235,7 +235,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -313,7 +313,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetChargeDetailRecordRequestParser">An optional delegate to parse custom SetChargeDetailRecordRequest XML elements.</param>
         /// <param name="CustomChargeDetailRecordParser">An optional delegate to parse custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

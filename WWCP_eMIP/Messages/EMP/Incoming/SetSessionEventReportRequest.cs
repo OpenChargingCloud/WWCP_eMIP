@@ -178,7 +178,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -226,7 +226,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportRequestText">The text to parse.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -275,7 +275,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -359,7 +359,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionEventReportRequest">The parsed heartbeat request.</param>
         /// <param name="CustomSendSetSessionEventReportRequestParser">An optional delegate to parse custom SetSessionEventReportRequest XML elements.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

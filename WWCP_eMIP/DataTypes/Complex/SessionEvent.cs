@@ -121,7 +121,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="SessionEventXML">The XML to parse.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SessionEvent Parse(XElement                               SessionEventXML,
                                          CustomXMLParserDelegate<SessionEvent>  CustomSessionEventParser,
                                          OnExceptionDelegate                    OnException = null)
@@ -148,7 +148,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="SessionEventText">The text to parse.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SessionEvent Parse(String                                 SessionEventText,
                                          CustomXMLParserDelegate<SessionEvent>  CustomSessionEventParser,
                                          OnExceptionDelegate                    OnException = null)
@@ -176,7 +176,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventXML">The XML to parse.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="SessionEvent">The parsed SessionEvent object.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(XElement                               SessionEventXML,
                                        CustomXMLParserDelegate<SessionEvent>  CustomSessionEventParser,
                                        out SessionEvent                       SessionEvent,
@@ -223,7 +223,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="SessionEventText">The text to parse.</param>
         /// <param name="CustomSessionEventParser">An optional delegate to parse custom SessionEvent XML elements.</param>
         /// <param name="SessionEvent">The parsed SessionEvent object.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(String                                 SessionEventText,
                                        CustomXMLParserDelegate<SessionEvent>  CustomSessionEventParser,
                                        out SessionEvent                       SessionEvent,

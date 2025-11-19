@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSEBusyStatusResponse Parse(SetEVSEBusyStatusRequest                            Request,
                                                       XElement                                            SetEVSEBusyStatusResponseXML,
                                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSEBusyStatusResponse Parse(SetEVSEBusyStatusRequest                            Request,
                                                       String                                              SetEVSEBusyStatusResponseText,
                                                       CustomXMLParserDelegate<SetEVSEBusyStatusResponse>  CustomSendSetEVSEBusyStatusResponseParser   = null,
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusResponse">The parsed SetEVSEBusyStatus response.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSEBusyStatusRequest                            Request,
                                        XElement                                            SetEVSEBusyStatusResponseXML,
                                        out SetEVSEBusyStatusResponse                       SetEVSEBusyStatusResponse,
@@ -215,7 +215,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusResponse">The parsed SetEVSEBusyStatus response.</param>
         /// <param name="CustomSendSetEVSEBusyStatusResponseParser">An optional delegate to parse custom SetEVSEBusyStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSEBusyStatusRequest                            Request,
                                        String                                              SetEVSEBusyStatusResponseText,
                                        out SetEVSEBusyStatusResponse                       SetEVSEBusyStatusResponse,

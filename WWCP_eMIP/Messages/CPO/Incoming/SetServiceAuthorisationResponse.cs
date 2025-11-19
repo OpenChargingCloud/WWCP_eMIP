@@ -119,7 +119,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetServiceAuthorisationResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetServiceAuthorisationResponse Parse(SetServiceAuthorisationRequest                             Request,
                                                             XElement                                                   SetServiceAuthorisationResponseXML,
                                                             CustomXMLParserDelegate<SetServiceAuthorisationResponse>?  CustomSendSetServiceAuthorisationResponseParser   = null,
@@ -154,7 +154,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetServiceAuthorisationResponse">The parsed SetServiceAuthorisation response.</param>
         /// <param name="CustomSendSetServiceAuthorisationResponseParser">An optional delegate to parse custom SetServiceAuthorisationResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetServiceAuthorisationRequest                             Request,
                                        XElement                                                   SetServiceAuthorisationResponseXML,
                                        out SetServiceAuthorisationResponse?                       SetServiceAuthorisationResponse,

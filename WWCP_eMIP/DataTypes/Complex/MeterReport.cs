@@ -170,7 +170,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="MeterReportXML">The XML to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static MeterReport? Parse(XElement                               MeterReportXML,
                                          CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
                                          OnExceptionDelegate?                   OnException               = null)
@@ -197,7 +197,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// </summary>
         /// <param name="MeterReportText">The text to parse.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static MeterReport? Parse(String                                 MeterReportText,
                                          CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
                                          OnExceptionDelegate?                   OnException               = null)
@@ -225,7 +225,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReportXML">The XML to parse.</param>
         /// <param name="MeterReport">The parsed meter report.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(XElement                               MeterReportXML,
                                        out MeterReport?                       MeterReport,
                                        CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,
@@ -269,7 +269,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="MeterReportText">The text to parse.</param>
         /// <param name="MeterReport">The parsed meter report.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(String                                 MeterReportText,
                                        out MeterReport?                       MeterReport,
                                        CustomXMLParserDelegate<MeterReport>?  CustomMeterReportParser   = null,

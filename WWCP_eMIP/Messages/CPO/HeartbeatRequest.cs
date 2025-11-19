@@ -119,7 +119,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="HeartbeatRequestText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -210,7 +210,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequestXML">The XML to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -281,7 +281,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="HeartbeatRequestText">The text to parse.</param>
         /// <param name="CustomSendHeartbeatRequestParser">An optional delegate to parse custom HeartbeatRequest XML elements.</param>
         /// <param name="HeartbeatRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

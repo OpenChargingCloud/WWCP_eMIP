@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingConnectorAvailabilityStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargingConnectorAvailabilityStatusResponse Parse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                                                            XElement                                                                 SetChargingConnectorAvailabilityStatusResponseXML,
                                                                            CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse>  CustomSendSetChargingConnectorAvailabilityStatusResponseParser,
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingConnectorAvailabilityStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargingConnectorAvailabilityStatusResponse Parse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                                                            String                                                                   SetChargingConnectorAvailabilityStatusResponseText,
                                                                            CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse>  CustomSendSetChargingConnectorAvailabilityStatusResponseParser,
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingConnectorAvailabilityStatusResponse">The parsed SetChargingConnectorAvailabilityStatus response.</param>
         /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                        XElement                                                                 SetChargingConnectorAvailabilityStatusResponseXML,
                                        out SetChargingConnectorAvailabilityStatusResponse                       SetChargingConnectorAvailabilityStatusResponse,
@@ -222,7 +222,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetChargingConnectorAvailabilityStatusResponse">The parsed SetChargingConnectorAvailabilityStatus response.</param>
         /// <param name="CustomSendSetChargingConnectorAvailabilityStatusResponseParser">An optional delegate to parse custom SetChargingConnectorAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargingConnectorAvailabilityStatusRequest                            Request,
                                        String                                                                   SetChargingConnectorAvailabilityStatusResponseText,
                                        out SetChargingConnectorAvailabilityStatusResponse                       SetChargingConnectorAvailabilityStatusResponse,

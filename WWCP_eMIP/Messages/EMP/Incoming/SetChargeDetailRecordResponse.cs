@@ -152,7 +152,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetChargeDetailRecordResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargeDetailRecordResponse Parse(SetChargeDetailRecordRequest                            Request,
                                                           XElement                                                SetChargeDetailRecordResponseXML,
                                                           CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
@@ -185,7 +185,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetChargeDetailRecordResponseText">The text to parse.</param>
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetChargeDetailRecordResponse Parse(SetChargeDetailRecordRequest                            Request,
                                                           String                                                  SetChargeDetailRecordResponseText,
                                                           CustomXMLParserDelegate<SetChargeDetailRecordResponse>  CustomSendSetChargeDetailRecordResponseParser   = null,
@@ -219,7 +219,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="SetChargeDetailRecordResponse">The parsed SetChargeDetailRecord response.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargeDetailRecordRequest                            Request,
                                        XElement                                                SetChargeDetailRecordResponseXML,
                                        out SetChargeDetailRecordResponse                       SetChargeDetailRecordResponse,
@@ -275,7 +275,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetChargeDetailRecordResponse">The parsed SetChargeDetailRecord response.</param>
         /// <param name="CustomSendSetChargeDetailRecordResponseParser">An optional delegate to parse custom SetChargeDetailRecordResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetChargeDetailRecordRequest                            Request,
                                        String                                                  SetChargeDetailRecordResponseText,
                                        out SetChargeDetailRecordResponse                       SetChargeDetailRecordResponse,

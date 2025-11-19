@@ -163,7 +163,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="GetServiceAuthorisationRequestXML">The XML to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -208,7 +208,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="GetServiceAuthorisationRequestText">The text to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -254,7 +254,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="GetServiceAuthorisationRequestXML">The XML to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="GetServiceAuthorisationRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -332,7 +332,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="GetServiceAuthorisationRequestText">The text to parse.</param>
         /// <param name="CustomSendGetServiceAuthorisationRequestParser">An optional delegate to parse custom GetServiceAuthorisationRequest XML elements.</param>
         /// <param name="GetServiceAuthorisationRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

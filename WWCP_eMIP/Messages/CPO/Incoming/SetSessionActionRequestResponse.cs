@@ -102,7 +102,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="Request">The SetSessionAction request leading to this response.</param>
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionActionRequestResponse Parse(SetSessionActionRequestRequest                            Request,
                                                             XElement                                                  SetSessionActionResponseXML,
                                                             CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser   = null,
@@ -135,7 +135,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionActionRequestResponse Parse(SetSessionActionRequestRequest                            Request,
                                                             String                                                    SetSessionActionResponseText,
                                                             CustomXMLParserDelegate<SetSessionActionRequestResponse>  CustomSendSetSessionActionResponseParser   = null,
@@ -169,7 +169,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionActionRequestRequest                            Request,
                                        XElement                                                  SetSessionActionResponseXML,
                                        out SetSessionActionRequestResponse                       SetSessionActionResponse,
@@ -224,7 +224,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="CustomSendSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionActionRequestRequest                            Request,
                                        String                                                    SetSessionActionResponseText,
                                        out SetSessionActionRequestResponse                       SetSessionActionResponse,

@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSEAvailabilityStatusResponse Parse(SetEVSEAvailabilityStatusRequest                            Request,
                                                               XElement                                                    SetEVSEAvailabilityStatusResponseXML,
                                                               CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSEAvailabilityStatusResponse Parse(SetEVSEAvailabilityStatusRequest                            Request,
                                                               String                                                      SetEVSEAvailabilityStatusResponseText,
                                                               CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>  CustomSendSetEVSEAvailabilityStatusResponseParser   = null,
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusResponse">The parsed SetEVSEAvailabilityStatus response.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSEAvailabilityStatusRequest                            Request,
                                        XElement                                                    SetEVSEAvailabilityStatusResponseXML,
                                        out SetEVSEAvailabilityStatusResponse                       SetEVSEAvailabilityStatusResponse,
@@ -215,7 +215,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEAvailabilityStatusResponse">The parsed SetEVSEAvailabilityStatus response.</param>
         /// <param name="CustomSendSetEVSEAvailabilityStatusResponseParser">An optional delegate to parse custom SetEVSEAvailabilityStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSEAvailabilityStatusRequest                            Request,
                                        String                                                      SetEVSEAvailabilityStatusResponseText,
                                        out SetEVSEAvailabilityStatusResponse                       SetEVSEAvailabilityStatusResponse,

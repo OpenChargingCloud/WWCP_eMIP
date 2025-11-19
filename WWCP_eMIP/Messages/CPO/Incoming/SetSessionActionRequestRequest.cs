@@ -174,7 +174,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionActionRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -223,7 +223,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CustomSendSetSessionActionRequestParser">An optional delegate to parse custom SetSessionActionRequest XML elements.</param>
         /// <param name="CustomSessionActionParser">An optional delegate to parse custom SessionAction XML elements.</param>
         /// <param name="SetSessionActionRequest">The parsed SetSessionAction request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

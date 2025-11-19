@@ -227,7 +227,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             XElement                                                  GetServiceAuthorisationResponseXML,
                                                             CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
@@ -263,7 +263,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static GetServiceAuthorisationResponse Parse(GetServiceAuthorisationRequest                            Request,
                                                             String                                                    GetServiceAuthorisationResponseText,
                                                             CustomXMLParserDelegate<GetServiceAuthorisationResponse>  CustomSendGetServiceAuthorisationResponseParser   = null,
@@ -300,7 +300,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSendGetServiceAuthorisationResponseParser">An optional delegate to parse custom GetServiceAuthorisationResponse XML elements.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        XElement                                                  GetServiceAuthorisationResponseXML,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,
@@ -370,7 +370,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="GetServiceAuthorisationResponse">The parsed GetServiceAuthorisation response.</param>
         /// <param name="CustomMeterReportParser">An optional delegate to parse custom MeterReport XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(GetServiceAuthorisationRequest                            Request,
                                        String                                                    GetServiceAuthorisationResponseText,
                                        out GetServiceAuthorisationResponse                       GetServiceAuthorisationResponse,

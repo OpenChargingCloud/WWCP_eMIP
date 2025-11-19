@@ -113,7 +113,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         //          <!--   10504: Ko-Error   the request cannot be sent to the CPO/eMSP or the CPO/eMSP does not respond
         //          <!--   10505: Ko-Error   the CPO/eMSP returns an IOP Fault 
         //          <!--   10506: Ko-Error   the CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side
-        //          <!--   10507: Ko-Error   the CPO/eMSP returns an error code: an error occured on its side during the action/report treatment 
+        //          <!--   10507: Ko-Error   the CPO/eMSP returns an error code: an error occurred on its side during the action/report treatment 
         //          <!--   10508: Ko-Error   The requestor is neither eMSP nor CPO for this session.
         //          <!--  <10000: OK:         Reserved for future use! -->
         //          <!-- >=10000: Ko-Error:   Reserved for future use! -->
@@ -134,7 +134,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionEventReportResponseXML">The XML to parse.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionEventReportResponse Parse(SetSessionEventReportRequest                            Request,
                                                           XElement                                                SetSessionEventReportResponseXML,
                                                           CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser  = null,
@@ -167,7 +167,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionEventReportResponseText">The text to parse.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionEventReportResponse Parse(SetSessionEventReportRequest                            Request,
                                                           String                                                  SetSessionEventReportResponseText,
                                                           CustomXMLParserDelegate<SetSessionEventReportResponse>  CustomSetSessionEventReportResponseParser   = null,
@@ -201,7 +201,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetSessionEventReportResponse">The parsed SetSessionEventReport response.</param>
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionEventReportRequest                            Request,
                                        XElement                                                SetSessionEventReportResponseXML,
                                        out SetSessionEventReportResponse                       SetSessionEventReportResponse,
@@ -261,7 +261,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="CustomSetSessionEventReportResponseParser">An optional delegate to parse custom SetSessionEventReportResponse XML elements.</param>
         /// <param name="SetSessionEventReportResponse">The parsed SetSessionEventReport response.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionEventReportRequest                            Request,
                                        String                                                  SetSessionEventReportResponseText,
                                        out SetSessionEventReportResponse                       SetSessionEventReportResponse,

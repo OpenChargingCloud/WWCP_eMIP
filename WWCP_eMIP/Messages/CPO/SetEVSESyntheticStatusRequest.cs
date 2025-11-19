@@ -218,7 +218,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -263,7 +263,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetEVSESyntheticStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -309,7 +309,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -413,7 +413,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusRequestParser">An optional delegate to parse custom SetEVSESyntheticStatusRequest XML elements.</param>
         /// <param name="SetEVSESyntheticStatusRequest">The parsed heartbeat request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

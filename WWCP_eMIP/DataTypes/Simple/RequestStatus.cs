@@ -396,10 +396,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             => new (10506,     "The CPO/eMSP doesn't recognise the actionNature/eventNature: No action on its side!");
 
         /// <summary>
-        /// KO-Error 507: The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!
+        /// KO-Error 507: The CPO/eMSP returns an error code: An error occurred on its side during the action/report treatment!
         /// </summary>
         public static RequestStatus CPOorEMSP_ActionOrReportErrorOccurred
-            => new (10507,     "The CPO/eMSP returns an error code: An error occured on its side during the action/report treatment!");
+            => new (10507,     "The CPO/eMSP returns an error code: An error occurred on its side during the action/report treatment!");
 
         /// <summary>
         /// KO-Error 508: The requestor is neither eMSP nor CPO for this session!

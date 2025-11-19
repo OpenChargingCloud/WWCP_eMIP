@@ -129,7 +129,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponseXML">The XML to parse.</param>
         /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      XElement                                           SetSessionActionResponseXML,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser   = null,
@@ -162,7 +162,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponseText">The text to parse.</param>
         /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetSessionActionResponse Parse(SetSessionActionRequest                            Request,
                                                      String                                             SetSessionActionResponseText,
                                                      CustomXMLParserDelegate<SetSessionActionResponse>  CustomSetSessionActionResponseParser   = null,
@@ -196,7 +196,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        XElement                                           SetSessionActionResponseXML,
                                        out SetSessionActionResponse                       SetSessionActionResponse,
@@ -253,7 +253,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="SetSessionActionResponse">The parsed SetSessionAction response.</param>
         /// <param name="CustomSetSessionActionResponseParser">An optional delegate to parse custom SetSessionActionResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetSessionActionRequest                            Request,
                                        String                                             SetSessionActionResponseText,
                                        out SetSessionActionResponse                       SetSessionActionResponse,

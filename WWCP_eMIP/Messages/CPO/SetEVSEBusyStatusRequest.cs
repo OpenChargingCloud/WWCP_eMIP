@@ -171,7 +171,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -216,7 +216,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -262,7 +262,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequestXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>
@@ -341,7 +341,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSEBusyStatusRequestText">The text to parse.</param>
         /// <param name="CustomSendSetEVSEBusyStatusRequestParser">An optional delegate to parse custom SetEVSEBusyStatusRequest XML elements.</param>
         /// <param name="SetEVSEBusyStatusRequest">The parsed SetEVSEBusyStatus request.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         /// 
         /// <param name="HTTPRequest">The correlated HTTP request of this eMIP request.</param>
         /// <param name="Timestamp">The optional timestamp of the request.</param>

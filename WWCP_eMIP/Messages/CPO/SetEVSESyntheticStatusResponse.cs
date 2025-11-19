@@ -97,7 +97,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusResponseXML">The XML to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            XElement                                                 SetEVSESyntheticStatusResponseXML,
                                                            CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
@@ -130,7 +130,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusResponseText">The text to parse.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static SetEVSESyntheticStatusResponse Parse(SetEVSESyntheticStatusRequest                            Request,
                                                            String                                                   SetEVSESyntheticStatusResponseText,
                                                            CustomXMLParserDelegate<SetEVSESyntheticStatusResponse>  CustomSendSetEVSESyntheticStatusResponseParser   = null,
@@ -164,7 +164,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,
                                        XElement                                                 SetEVSESyntheticStatusResponseXML,
                                        out SetEVSESyntheticStatusResponse                       SetEVSESyntheticStatusResponse,
@@ -222,7 +222,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="SetEVSESyntheticStatusResponse">The parsed SetEVSESyntheticStatus response.</param>
         /// <param name="CustomSendSetEVSESyntheticStatusResponseParser">An optional delegate to parse custom SetEVSESyntheticStatusResponse XML elements.</param>
         /// <param name="HTTPResponse">The correlated HTTP response of this eMIP response.</param>
-        /// <param name="OnException">An optional delegate called whenever an exception occured.</param>
+        /// <param name="OnException">An optional delegate called whenever an exception occurred.</param>
         public static Boolean TryParse(SetEVSESyntheticStatusRequest                            Request,
                                        String                                                   SetEVSESyntheticStatusResponseText,
                                        out SetEVSESyntheticStatusResponse                       SetEVSESyntheticStatusResponse,

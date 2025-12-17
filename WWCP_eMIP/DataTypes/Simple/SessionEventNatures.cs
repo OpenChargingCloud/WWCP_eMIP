@@ -36,7 +36,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
         #region Data
 
-        private static readonly ConcurrentDictionary<Int32, SessionEventNatures> Lookup = new ();
+        private static readonly ConcurrentDictionary<Int32, SessionEventNatures> Lookup = new();
 
         #endregion
 

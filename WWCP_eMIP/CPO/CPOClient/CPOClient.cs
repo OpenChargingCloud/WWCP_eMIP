@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2025 GraphDefined GmbH <achim.friedland@graphdefined.com>
+ * Copyright (c) 2014-2026 GraphDefined GmbH <achim.friedland@graphdefined.com>
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1095,14 +1095,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SendHeartbeat request must not be null!");
 
 
-            Byte                            TransmissionRetry  = 0;
-            HTTPResponse<HeartbeatResponse> result             = null;
+            Byte                             TransmissionRetry   = 0;
+            HTTPResponse<HeartbeatResponse>? result              = null;
 
             #endregion
 
             #region Send OnHeartbeatRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -1112,7 +1112,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSendHeartbeatRequest is not null)
                     await Task.WhenAll(OnSendHeartbeatRequest.GetInvocationList().
                                        Cast<OnSendHeartbeatRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Id,
@@ -1306,7 +1306,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                      Request.TransactionId,
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -1347,14 +1347,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingPoolAvailabilityStatus request must not be null!");
 
 
-            Byte                                                    TransmissionRetry  = 0;
-            HTTPResponse<SetChargingPoolAvailabilityStatusResponse> result             = null;
+            Byte                                                     TransmissionRetry   = 0;
+            HTTPResponse<SetChargingPoolAvailabilityStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetChargingPoolAvailabilityStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -1364,7 +1364,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetChargingPoolAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingPoolAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingPoolAvailabilityStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -1595,7 +1595,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -1636,14 +1636,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingStationAvailabilityStatus request must not be null!");
 
 
-            Byte                                                       TransmissionRetry  = 0;
-            HTTPResponse<SetChargingStationAvailabilityStatusResponse> result             = null;
+            Byte                                                        TransmissionRetry   = 0;
+            HTTPResponse<SetChargingStationAvailabilityStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetChargingStationAvailabilityStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -1653,7 +1653,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetChargingStationAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingStationAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingStationAvailabilityStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -1884,7 +1884,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -1924,14 +1924,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEAvailabilityStatus request must not be null!");
 
 
-            Byte                                            TransmissionRetry  = 0;
-            HTTPResponse<SetEVSEAvailabilityStatusResponse> result             = null;
+            Byte                                             TransmissionRetry   = 0;
+            HTTPResponse<SetEVSEAvailabilityStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetEVSEAvailabilityStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -1941,7 +1941,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetEVSEAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSEAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEAvailabilityStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -2173,7 +2173,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -2213,14 +2213,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargingConnectorAvailabilityStatus request must not be null!");
 
 
-            Byte                                                         TransmissionRetry  = 0;
-            HTTPResponse<SetChargingConnectorAvailabilityStatusResponse> result             = null;
+            Byte                                                          TransmissionRetry   = 0;
+            HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetChargingConnectorAvailabilityStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -2230,7 +2230,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetChargingConnectorAvailabilityStatusRequest is not null)
                     await Task.WhenAll(OnSetChargingConnectorAvailabilityStatusRequest.GetInvocationList().
                                        Cast<OnSetChargingConnectorAvailabilityStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -2461,7 +2461,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -2502,14 +2502,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSEBusyStatus request must not be null!");
 
 
-            Byte                                    TransmissionRetry  = 0;
-            HTTPResponse<SetEVSEBusyStatusResponse> result             = null;
+            Byte                                     TransmissionRetry   = 0;
+            HTTPResponse<SetEVSEBusyStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetEVSEBusyStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -2519,7 +2519,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetEVSEBusyStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSEBusyStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSEBusyStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -2750,7 +2750,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -2790,14 +2790,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetEVSESyntheticStatus request must not be null!");
 
 
-            Byte                                         TransmissionRetry  = 0;
-            HTTPResponse<SetEVSESyntheticStatusResponse> result             = null;
+            Byte                                          TransmissionRetry   = 0;
+            HTTPResponse<SetEVSESyntheticStatusResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetEVSESyntheticStatusRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -2807,7 +2807,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetEVSESyntheticStatusRequest is not null)
                     await Task.WhenAll(OnSetEVSESyntheticStatusRequest.GetInvocationList().
                                        Cast<OnSetEVSESyntheticStatusRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -3046,7 +3046,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -3087,14 +3087,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped GetServiceAuthorisation request must not be null!");
 
 
-            Byte                                          TransmissionRetry  = 0;
-            HTTPResponse<GetServiceAuthorisationResponse> result             = null;
+            Byte                                           TransmissionRetry   = 0;
+            HTTPResponse<GetServiceAuthorisationResponse>? result              = null;
 
             #endregion
 
             #region Send OnGetServiceAuthorisationRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -3104,7 +3104,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnGetServiceAuthorisationRequest is not null)
                     await Task.WhenAll(OnGetServiceAuthorisationRequest.GetInvocationList().
                                        Cast<OnGetServiceAuthorisationRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -3334,7 +3334,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -3376,14 +3376,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetSessionEventReport request must not be null!");
 
 
-            Byte                                        TransmissionRetry  = 0;
-            HTTPResponse<SetSessionEventReportResponse> result             = null;
+            Byte                                         TransmissionRetry   = 0;
+            HTTPResponse<SetSessionEventReportResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetSessionEventReportRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -3393,7 +3393,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetSessionEventReportRequest is not null)
                     await Task.WhenAll(OnSetSessionEventReportRequest.GetInvocationList().
                                        Cast<OnSetSessionEventReportRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -3619,7 +3619,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }
@@ -3660,14 +3660,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(Request), "The mapped SetChargeDetailRecord request must not be null!");
 
 
-            Byte                                        TransmissionRetry  = 0;
-            HTTPResponse<SetChargeDetailRecordResponse> result             = null;
+            Byte                                         TransmissionRetry   = 0;
+            HTTPResponse<SetChargeDetailRecordResponse>? result              = null;
 
             #endregion
 
             #region Send OnSetChargeDetailRecordRequest event
 
-            var StartTime = Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
@@ -3677,7 +3677,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (OnSetChargeDetailRecordRequest is not null)
                     await Task.WhenAll(OnSetChargeDetailRecordRequest.GetInvocationList().
                                        Cast<OnSetChargeDetailRecordRequestDelegate>().
-                                       Select(e => e(StartTime,
+                                       Select(e => e(startTime,
                                                      Request.Timestamp,
                                                      this,
                                                      //Description,
@@ -3902,7 +3902,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      Request.RequestTimeout ?? RequestTimeout,
                                                      result.Content,
-                                                     Endtime - StartTime))).
+                                                     Endtime - startTime))).
                                        ConfigureAwait(false);
 
             }

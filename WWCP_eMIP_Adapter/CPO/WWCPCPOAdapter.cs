@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2014-2025 GraphDefined GmbH <achim.friedland@graphdefined.com>
+ * Copyright (c) 2014-2026 GraphDefined GmbH <achim.friedland@graphdefined.com>
  * This file is part of WWCP eMIP <https://github.com/OpenChargingCloud/WWCP_eMIP>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,7 @@ using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Crypto.Parameters;
 
 using org.GraphDefined.Vanaheimr.Illias;
+using Illias = org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod;
 using org.GraphDefined.Vanaheimr.Hermod.DNS;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
@@ -1277,7 +1278,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        public async Task<PushEVSEAdminStatusResult>
+        public override async Task<PushEVSEAdminStatusResult>
 
             UpdateEVSEAdminStatus(IEnumerable<EVSEAdminStatusUpdate>  EVSEAdminStatusUpdates,
                                   TransmissionTypes                   TransmissionType    = TransmissionTypes.Enqueue,
@@ -1285,7 +1286,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                   DateTimeOffset?                     Timestamp           = null,
                                   EventTracking_Id?                   EventTrackingId     = null,
                                   TimeSpan?                           RequestTimeout      = null,
-                                  User_Id?                            CurrentUserId       = null,
+                                  Illias.User_Id?                     CurrentUserId       = null,
                                   CancellationToken                   CancellationToken   = default)
 
         {
@@ -1395,7 +1396,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <param name="EventTrackingId">An optional event tracking identification for correlating this request with other events.</param>
         /// <param name="RequestTimeout">An optional timeout for this request.</param>
         /// <param name="CancellationToken">An optional token to cancel this request.</param>
-        public async Task<PushEVSEStatusResult>
+        public override async Task<PushEVSEStatusResult>
 
             UpdateEVSEStatus(IEnumerable<EVSEStatusUpdate>  EVSEStatusUpdates,
                              TransmissionTypes              TransmissionType    = TransmissionTypes.Enqueue,
@@ -1403,7 +1404,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                              DateTimeOffset?                Timestamp           = null,
                              EventTracking_Id?              EventTrackingId     = null,
                              TimeSpan?                      RequestTimeout      = null,
-                             User_Id?                       CurrentUserId       = null,
+                             Illias.User_Id?                CurrentUserId       = null,
                              CancellationToken              CancellationToken   = default)
 
         {

@@ -167,7 +167,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
 
 
         public static Operator_Id ToEMIP(this ChargingStationOperator_Id  OperatorId,
-                                         CustomOperatorIdMapperDelegate   CustomOperatorIdMapper = null)
+                                         CustomOperatorIdMapperDelegate?  CustomOperatorIdMapper = null)
 
             => Operator_Id.Parse(CustomOperatorIdMapper is not null
                                      ? CustomOperatorIdMapper(OperatorId.ToString())

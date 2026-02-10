@@ -200,7 +200,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
         public String                                       LoggingPath       { get; }
 
         /// <summary>
-        /// Send debug information via HTTP Server Sent Events.
+        /// Debug information via HTTP Server Sent Events.
         /// </summary>
         public HTTPEventSource<JObject>                     DebugLog          { get; }
 
@@ -304,13 +304,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.WebAPI
             if (!this.DisableLogging)
                 Directory.CreateDirectory(this.LoggingPath);
 
-            this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
-                                                                         HTTPAPI:                  null,
-                                                                         URLTemplate:              this.URLPathPrefix + "/" + DebugLogId.ToString(),
-                                                                         MaxNumberOfCachedEvents:  10000,
-                                                                         RetryInterval:            TimeSpan.FromSeconds(5),
-                                                                         EnableLogging:            true,
-                                                                         LogfilePath:              this.LoggingPath);
+            //this.DebugLog                = HTTPServer.AddJSONEventSource(EventIdentification:      DebugLogId,
+            //                                                             HTTPAPI:                  null,
+            //                                                             URLTemplate:              this.URLPathPrefix + "/" + DebugLogId.ToString(),
+            //                                                             MaxNumberOfCachedEvents:  10000,
+            //                                                             RetryInterval:            TimeSpan.FromSeconds(5),
+            //                                                             EnableLogging:            true,
+            //                                                             LogfilePath:              this.LoggingPath);
 
             RegisterURITemplates();
 

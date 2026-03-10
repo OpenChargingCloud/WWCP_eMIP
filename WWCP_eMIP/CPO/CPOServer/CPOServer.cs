@@ -295,7 +295,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                            Select(e => e(startTime,
                                                          API,
                                                          HTTPRequest,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -459,7 +459,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                          API,
                                                          HTTPRequest,
                                                          httpResponse,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -510,7 +510,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                            Select(e => e(startTime,
                                                          API,
                                                          HTTPRequest,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -665,7 +665,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                          API,
                                                          HTTPRequest,
                                                          httpResponse,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }

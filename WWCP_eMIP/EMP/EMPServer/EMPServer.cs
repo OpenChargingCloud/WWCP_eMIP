@@ -313,7 +313,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                            Select(e => e(StartTime,
                                                          API,
                                                          HTTPRequest,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -468,7 +468,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                          API,
                                                          HTTPRequest,
                                                          HTTPResponse,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -510,7 +510,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                            Select(e => e(StartTime,
                                                          API,
                                                          HTTPRequest,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -667,7 +667,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                          API,
                                                          HTTPRequest,
                                                          HTTPResponse,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -709,7 +709,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                            Select(e => e(StartTime,
                                                          API,
                                                          HTTPRequest,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }
@@ -859,7 +859,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                          API,
                                                          HTTPRequest,
                                                          HTTPResponse,
-                                                         CancellationToken.None))).
+                                                         HTTPRequest.CancellationToken))).
                                            ConfigureAwait(false);
 
                 }

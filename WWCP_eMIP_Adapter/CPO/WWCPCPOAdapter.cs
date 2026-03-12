@@ -228,6 +228,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public delegate void SendHeartbeatFinishedDelegate(WWCPCPOAdapter Sender, DateTimeOffset StartTime, DateTimeOffset EndTime, TimeSpan Runtime, TimeSpan Every, UInt64 RunId);
 
         public event SendHeartbeatFinishedDelegate SendHeartbeatFinishedEvent;
+        public event OnChargeDetailRecordsRequestDelegate? OnChargeDetailRecordsRequest;
 
         #endregion
 

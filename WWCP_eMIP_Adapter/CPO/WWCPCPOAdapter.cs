@@ -1547,7 +1547,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                            ChargingProduct?             ChargingProduct       = null,   // [maxlength: 100]
                            ChargingSession_Id?          SessionId             = null,
                            ChargingSession_Id?          CPOPartnerSessionId   = null,
-                           ChargingStationOperator_Id?  OperatorId            = null,
+                           //ChargingStationOperator_Id?  OperatorId            = null,
+                           EMobilityProvider_Id?        EMobilityProviderId   = null,
 
                            DateTimeOffset?              Timestamp             = null,
                            EventTracking_Id?            EventTrackingId       = null,
@@ -1588,8 +1589,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                 RoamingNetwork.Id,
                                                 null,
                                                 Id,
-                                                OperatorId,
+                                                //OperatorId,
                                                 AuthIdentification,
+                                                EMobilityProviderId,
                                                 ChargingLocation,
                                                 ChargingProduct,
                                                 SessionId,
@@ -1678,7 +1680,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     var response  = await CPORoaming.GetServiceAuthorisation(
                                               PartnerId:                PartnerId,
-                                              OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
+                                              OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? ChargingLocation?.ChargingStationOperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                               EVSEId:                   evseId.Value,
                                               UserId:                   userId.Value,
                                               RequestedServiceId:       Service_Id.GenericChargeService,
@@ -1743,8 +1745,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                  RoamingNetwork.Id,
                                                  null,
                                                  Id,
-                                                 OperatorId,
+                                                 //OperatorId,
                                                  AuthIdentification,
+                                                 EMobilityProviderId,
                                                  ChargingLocation,
                                                  ChargingProduct,
                                                  SessionId,
@@ -1790,7 +1793,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                           LocalAuthentication          AuthIdentification,
                           ChargingLocation?            ChargingLocation      = null,
                           ChargingSession_Id?          CPOPartnerSessionId   = null,
-                          ChargingStationOperator_Id?  OperatorId            = null,
+                          //ChargingStationOperator_Id?  OperatorId            = null,
+                          EMobilityProvider_Id?        EMobilityProviderId   = null,
 
                           DateTimeOffset?              Timestamp             = null,
                           EventTracking_Id?            EventTrackingId       = null,
@@ -1826,11 +1830,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                RoamingNetwork.Id,
                                                null,
                                                Id,
-                                               OperatorId,
+                                               //OperatorId,
                                                ChargingLocation,
                                                SessionId,
                                                CPOPartnerSessionId,
                                                AuthIdentification,
+                                               EMobilityProviderId,
                                                RequestTimeout,
                                                CancellationToken);
 
@@ -1914,7 +1919,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                     var response  = await CPORoaming.GetServiceAuthorisation(
                                               PartnerId:                PartnerId,
-                                              OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? OperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
+                                              OperatorId:               (ChargingLocation.EVSEId?.OperatorId ?? ChargingLocation?.ChargingStationOperatorId ?? DefaultOperator.Id).ToEMIP(CustomOperatorIdMapper),
                                               EVSEId:                   evseId.Value,
                                               UserId:                   userId.Value,
                                               RequestedServiceId:       Service_Id.GenericChargeService,
@@ -1979,11 +1984,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                 RoamingNetwork.Id,
                                                 null,
                                                 Id,
-                                                OperatorId,
+                                                //OperatorId,
                                                 ChargingLocation,
                                                 SessionId,
                                                 CPOPartnerSessionId,
                                                 AuthIdentification,
+                                                EMobilityProviderId,
                                                 RequestTimeout,
                                                 result,
                                                 Runtime,

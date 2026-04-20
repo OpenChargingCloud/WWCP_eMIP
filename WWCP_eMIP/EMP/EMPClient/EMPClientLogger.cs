@@ -170,15 +170,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                               handler => EMPClient.OnSendHeartbeatSOAPRequest  += handler,
                               handler => EMPClient.OnSendHeartbeatSOAPRequest  -= handler,
                               "SendHeartbeat", "Heartbeat", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SendHeartbeatResponse",
                               handler => EMPClient.OnSendHeartbeatSOAPResponse += handler,
                               handler => EMPClient.OnSendHeartbeatSOAPResponse -= handler,
                               "SendHeartbeat", "Heartbeat", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -186,30 +186,30 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                               handler => EMPClient.OnSetServiceAuthorisationSOAPRequest  += handler,
                               handler => EMPClient.OnSetServiceAuthorisationSOAPRequest -= handler,
                               "SetServiceAuthorisation", "ServiceAuthorisation", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetServiceAuthorisationResponse",
                               handler => EMPClient.OnSetServiceAuthorisationSOAPResponse += handler,
                               handler => EMPClient.OnSetServiceAuthorisationSOAPResponse -= handler,
                               "SetServiceAuthorisation", "ServiceAuthorisation", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
                 RegisterEvent("SetSessionActionRequest",
                               handler => EMPClient.OnSetSessionActionSOAPRequest += handler,
                               handler => EMPClient.OnSetSessionActionSOAPRequest -= handler,
                               "SetSessionAction", "SessionAction", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetSessionActionResponse",
                               handler => EMPClient.OnSetSessionActionSOAPResponse += handler,
                               handler => EMPClient.OnSetSessionActionSOAPResponse -= handler,
                               "SetSessionAction", "SessionAction", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 #endregion
 

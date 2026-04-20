@@ -17,16 +17,13 @@
 
 #region Usings
 
-using System;
-using System.Linq;
 using System.Xml.Linq;
-using System.Collections.Generic;
+
+using Newtonsoft.Json.Linq;
 
 using org.GraphDefined.Vanaheimr.Illias;
 using org.GraphDefined.Vanaheimr.Hermod.SOAP;
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
-using Newtonsoft.Json.Linq;
-using org.GraphDefined.Vanaheimr.Hermod.JSON;
 
 #endregion
 

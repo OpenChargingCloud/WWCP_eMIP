@@ -170,15 +170,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnSendHeartbeatSOAPRequest  += handler,
                               handler => CPOClient.OnSendHeartbeatSOAPRequest  -= handler,
                               "SendHeartbeat", "Heartbeat", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SendHeartbeatResponse",
                               handler => CPOClient.OnSendHeartbeatSOAPResponse += handler,
                               handler => CPOClient.OnSendHeartbeatSOAPResponse -= handler,
                               "SendHeartbeat", "Heartbeat", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -186,60 +186,60 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPRequest -= handler,
                               "SetChargingPoolAvailabilityStatus", "SetChargingPoolStatus", "ChargingPool", "AvailabilityStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetChargingPoolAvailabilityStatusResponse",
                               handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetChargingPoolAvailabilityStatusSOAPResponse -= handler,
                               "SetChargingPoolAvailabilityStatus", "SetChargingPoolStatus", "ChargingPool", "AvailabilityStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
                 RegisterEvent("SetChargingStationAvailabilityStatusRequest",
                               handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPRequest -= handler,
                               "SetChargingStationAvailabilityStatus", "SetChargingStationStatus", "ChargingStation", "AvailabilityStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetChargingStationAvailabilityStatusResponse",
                               handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetChargingStationAvailabilityStatusSOAPResponse -= handler,
                               "SetChargingStationAvailabilityStatus", "SetChargingStationStatus", "ChargingStation", "AvailabilityStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
                 RegisterEvent("SetEVSEAvailabilityStatusRequest",
                               handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPRequest -= handler,
                               "SetEVSEAvailabilityStatus", "SetEVSEStatus", "EVSE", "AvailabilityStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetEVSEAvailabilityStatusResponse",
                               handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetEVSEAvailabilityStatusSOAPResponse -= handler,
                               "SetEVSEAvailabilityStatus", "SetEVSEStatus", "EVSE", "AvailabilityStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
                 RegisterEvent("SetChargingConnectorAvailabilityStatusRequest",
                               handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPRequest -= handler,
                               "SetChargingConnectorAvailabilityStatus", "SetChargingConnectorStatus", "ChargingConnector", "AvailabilityStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetChargingConnectorAvailabilityStatusResponse",
                               handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetChargingConnectorAvailabilityStatusSOAPResponse -= handler,
                               "SetChargingConnectorAvailabilityStatus", "SetChargingConnectorStatus", "ChargingConnector", "AvailabilityStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -247,30 +247,30 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetEVSEBusyStatusSOAPRequest -= handler,
                               "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetEVSEBusyStatusResponse",
                               handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetEVSEBusyStatusSOAPResponse -= handler,
                               "SetEVSEBusyStatus", "SetEVSEStatus", "EVSE", "BusyStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
                 RegisterEvent("SetEVSESyntheticStatusRequest",
                               handler => CPOClient.OnSetEVSESyntheticStatusSOAPRequest += handler,
                               handler => CPOClient.OnSetEVSESyntheticStatusSOAPRequest -= handler,
                               "SetEVSESyntheticStatus", "SetEVSEStatus", "EVSE", "SyntheticStatus", "Status", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetEVSESyntheticStatusResponse",
                               handler => CPOClient.OnSetEVSESyntheticStatusSOAPResponse += handler,
                               handler => CPOClient.OnSetEVSESyntheticStatusSOAPResponse -= handler,
                               "SetEVSESyntheticStatus", "SetEVSEStatus", "EVSE", "SyntheticStatus", "Status", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -279,15 +279,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnGetServiceAuthorisationSOAPRequest += handler,
                               handler => CPOClient.OnGetServiceAuthorisationSOAPRequest -= handler,
                               "GetServiceAuthorisation", "Authorisation", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("GetServiceAuthorisationResponse",
                               handler => CPOClient.OnGetServiceAuthorisationSOAPResponse += handler,
                               handler => CPOClient.OnGetServiceAuthorisationSOAPResponse -= handler,
                               "GetServiceAuthorisation", "Authorisation", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -295,15 +295,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnSetSessionEventReportSOAPRequest += handler,
                               handler => CPOClient.OnSetSessionEventReportSOAPRequest -= handler,
                               "SetSessionEventReport", "Authorisation", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetSessionEventReportResponse",
                               handler => CPOClient.OnSetSessionEventReportSOAPResponse += handler,
                               handler => CPOClient.OnSetSessionEventReportSOAPResponse -= handler,
                               "SetSessionEventReport", "Authorisation", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
 
 
@@ -311,15 +311,15 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                               handler => CPOClient.OnSetChargeDetailRecordSOAPRequest += handler,
                               handler => CPOClient.OnSetChargeDetailRecordSOAPRequest -= handler,
                               "SetChargeDetailRecord", "ChargeDetailRecord", "CDR", "Request", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 RegisterEvent("SetChargeDetailRecordResponse",
                               handler => CPOClient.OnSetChargeDetailRecordSOAPResponse += handler,
                               handler => CPOClient.OnSetChargeDetailRecordSOAPResponse -= handler,
                               "SetChargeDetailRecord", "ChargeDetailRecord", "CDR", "Response", "All").
-                    RegisterDefaultConsoleLogTarget(this).
-                    RegisterDefaultDiscLogTarget(this);
+                    RegisterDefaultConsoleLogTargetX(this).
+                    RegisterDefaultDiscLogTargetX(this);
 
                 #endregion
 

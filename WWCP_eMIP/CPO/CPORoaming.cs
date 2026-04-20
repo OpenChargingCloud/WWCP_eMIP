@@ -1183,20 +1183,20 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region Generic HTTP/SOAP server logging
 
-        /// <summary>
-        /// An event called whenever a HTTP request came in.
-        /// </summary>
-        public HTTPRequestLogEvent   RequestLog    = new HTTPRequestLogEvent();
+        ///// <summary>
+        ///// An event called whenever a HTTP request came in.
+        ///// </summary>
+        //public HTTPRequestLogEvent   RequestLog    = new HTTPRequestLogEvent();
 
-        /// <summary>
-        /// An event called whenever a HTTP request could successfully be processed.
-        /// </summary>
-        public HTTPResponseLogEvent  ResponseLog   = new HTTPResponseLogEvent();
+        ///// <summary>
+        ///// An event called whenever a HTTP request could successfully be processed.
+        ///// </summary>
+        //public HTTPResponseLogEvent  ResponseLog   = new HTTPResponseLogEvent();
 
-        /// <summary>
-        /// An event called whenever a HTTP request resulted in an error.
-        /// </summary>
-        public HTTPErrorLogEvent     ErrorLog      = new HTTPErrorLogEvent();
+        ///// <summary>
+        ///// An event called whenever a HTTP request resulted in an error.
+        ///// </summary>
+        //public HTTPErrorLogEvent     ErrorLog      = new HTTPErrorLogEvent();
 
         #endregion
 
@@ -1699,10 +1699,10 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             this.CPOClient  = CPOClient;
             this.CPOServer  = CPOServer;
 
-            // Link HTTP events...
-            CPOServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
-            CPOServer.ResponseLog  += (HTTPProcessor, ServerTimestamp, Request, Response)                       => ResponseLog.WhenAll(HTTPProcessor, ServerTimestamp, Request, Response);
-            CPOServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
+            //// Link HTTP events...
+            //CPOServer.RequestLog   += (HTTPProcessor, ServerTimestamp, Request)                                 => RequestLog. WhenAll(HTTPProcessor, ServerTimestamp, Request);
+            //CPOServer.ResponseLog  += (HTTPProcessor, ServerTimestamp, Request, Response)                       => ResponseLog.WhenAll(HTTPProcessor, ServerTimestamp, Request, Response);
+            //CPOServer.ErrorLog     += (HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException) => ErrorLog.   WhenAll(HTTPProcessor, ServerTimestamp, Request, Response, Error, LastException);
 
         }
 
@@ -1911,6 +1911,16 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         }
 
         #endregion
+
+        public HTTPRequest.Builder CreateRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, CancellationToken CancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HTTPResponse> RunRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, Boolean? ConsumeResponseChunkedTEImmediately = null, EventTracking_Id? EventTrackingId = null, TimeSpan? RequestTimeout = null, ClientRequestLogHandler? RequestLogDelegate = null, ClientResponseLogHandler? ResponseLogDelegate = null, CancellationToken CancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
 
     }
 

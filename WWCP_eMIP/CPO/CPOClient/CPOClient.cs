@@ -141,6 +141,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         public     const           String    DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
 
+
+        private UInt32 InternalBufferSize = 4096;
+
         #endregion
 
         #region Properties
@@ -153,17 +156,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The attached HTTP client logger.
         /// </summary>
-        public new Logger HTTPLogger
-        {
-            get
-            {
-                return base.HTTPLogger as Logger;
-            }
-            set
-            {
-                base.HTTPLogger = value;
-            }
-        }
+        //public new Logger HTTPLogger
+        //{
+        //    get
+        //    {
+        //        return base.HTTPLogger as Logger;
+        //    }
+        //    set
+        //    {
+        //        base.HTTPLogger = value;
+        //    }
+        //}
 
         #endregion
 
@@ -1010,10 +1013,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          APICounterValues?                                          SetSessionEventReport                    = null,
                          APICounterValues?                                          SetChargeDetailRecord                    = null,
 
-                         Boolean?                                                   DisableLogging                           = false,
                          String?                                                    LoggingPath                              = null,
                          String?                                                    LoggingContext                           = Logger.DefaultContext,
                          LogfileCreatorDelegate?                                    LogfileCreator                           = null,
+
+                         Boolean?                                                   DisableLogging                           = null,
                          IDNSClient?                                                DNSClient                                = null)
 
             : base(RemoteURL     ?? URL.Parse("https://api-iop.gireve.com"),
@@ -1039,8 +1043,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    MaxNumberOfRetries,
                    InternalBufferSize,
                    false,
-                   DisableLogging,
                    null,
+
+                   DisableLogging,
                    DNSClient)
 
         {
@@ -1157,8 +1162,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                    MaxNumberOfRetries,
                                                    InternalBufferSize,
                                                    false,
-                                                   false,
                                                    null,
+                                                   false,
                                                    DNSClient))
             {
 
@@ -1190,7 +1195,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                      SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                     return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                     return HTTPResponse<HeartbeatResponse>.FromError(
                                                                 httpresponse,
                                                                 new HeartbeatResponse(
                                                                     Request,
@@ -1216,7 +1221,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                          httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                          httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                         return HTTPResponse<HeartbeatResponse>.FromError(
                                                                     httpresponse,
                                                                     new HeartbeatResponse(
                                                                         Request,
@@ -1227,7 +1232,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                 );
 
 
-                                                     return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                     return HTTPResponse<HeartbeatResponse>.FromError(
                                                                 httpresponse,
                                                                 new HeartbeatResponse(
                                                                     Request,
@@ -1434,8 +1439,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -1467,7 +1472,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
@@ -1493,7 +1498,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
+                                                             return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetChargingPoolAvailabilityStatusResponse(
                                                                             Request,
@@ -1504,7 +1509,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingPoolAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingPoolAvailabilityStatusResponse(
                                                                         Request,
@@ -1723,8 +1728,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -1756,7 +1761,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
@@ -1782,7 +1787,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
+                                                             return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetChargingStationAvailabilityStatusResponse(
                                                                             Request,
@@ -1793,7 +1798,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingStationAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingStationAvailabilityStatusResponse(
                                                                         Request,
@@ -2012,8 +2017,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -2045,7 +2050,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
@@ -2071,7 +2076,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
+                                                             return HTTPResponse<SetEVSEAvailabilityStatusResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetEVSEAvailabilityStatusResponse(
                                                                             Request,
@@ -2082,7 +2087,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetEVSEAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetEVSEAvailabilityStatusResponse(
                                                                         Request,
@@ -2300,8 +2305,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -2333,7 +2338,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
@@ -2359,7 +2364,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
+                                                             return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetChargingConnectorAvailabilityStatusResponse(
                                                                             Request,
@@ -2370,7 +2375,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetChargingConnectorAvailabilityStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargingConnectorAvailabilityStatusResponse(
                                                                         Request,
@@ -2589,8 +2594,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -2622,7 +2627,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                         SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.FromError(
                                                                    httpresponse,
                                                                    new SetEVSEBusyStatusResponse(
                                                                        Request,
@@ -2648,7 +2653,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                             httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                            return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                            return HTTPResponse<SetEVSEBusyStatusResponse>.FromError(
                                                                        httpresponse,
                                                                        new SetEVSEBusyStatusResponse(
                                                                            Request,
@@ -2659,7 +2664,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                    );
 
 
-                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.IsFault(
+                                                        return HTTPResponse<SetEVSEBusyStatusResponse>.FromError(
                                                                    httpresponse,
                                                                    new SetEVSEBusyStatusResponse(
                                                                        Request,
@@ -2881,8 +2886,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -2914,7 +2919,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
@@ -2940,7 +2945,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
+                                                             return HTTPResponse<SetEVSESyntheticStatusResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetEVSESyntheticStatusResponse(
                                                                             Request,
@@ -2951,7 +2956,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.IsFault(
+                                                         return HTTPResponse<SetEVSESyntheticStatusResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetEVSESyntheticStatusResponse(
                                                                         Request,
@@ -3173,8 +3178,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -3207,7 +3212,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
+                                                         return HTTPResponse<GetServiceAuthorisationResponse>.FromError(
                                                                     httpresponse,
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
@@ -3233,7 +3238,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
+                                                             return HTTPResponse<GetServiceAuthorisationResponse>.FromError(
                                                                         httpresponse,
                                                                         new GetServiceAuthorisationResponse(
                                                                             Request,
@@ -3244,7 +3249,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<GetServiceAuthorisationResponse>.IsFault(
+                                                         return HTTPResponse<GetServiceAuthorisationResponse>.FromError(
                                                                     httpresponse,
                                                                     new GetServiceAuthorisationResponse(
                                                                         Request,
@@ -3449,8 +3454,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -3482,7 +3487,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetSessionEventReportResponse>.IsFault(
+                                                         return HTTPResponse<SetSessionEventReportResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetSessionEventReportResponse(
                                                                         Request,
@@ -3510,7 +3515,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetSessionEventReportResponse>.IsFault(
+                                                             return HTTPResponse<SetSessionEventReportResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetSessionEventReportResponse(
                                                                             Request,
@@ -3523,7 +3528,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetSessionEventReportResponse>.IsFault(
+                                                         return HTTPResponse<SetSessionEventReportResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetSessionEventReportResponse(
                                                                         Request,
@@ -3743,8 +3748,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -3778,7 +3783,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
+                                                         return HTTPResponse<SetChargeDetailRecordResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,
@@ -3804,7 +3809,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
+                                                             return HTTPResponse<SetChargeDetailRecordResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetChargeDetailRecordResponse(
                                                                             Request,
@@ -3815,7 +3820,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                     );
 
 
-                                                         return HTTPResponse<SetChargeDetailRecordResponse>.IsFault(
+                                                         return HTTPResponse<SetChargeDetailRecordResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetChargeDetailRecordResponse(
                                                                         Request,

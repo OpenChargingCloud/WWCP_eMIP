@@ -65,6 +65,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// </summary>
         public     const           String    DefaultSOAPActionPrefix     = "https://api-iop.gireve.com/services/";
 
+        private UInt32 InternalBufferSize = 4096;
+
         #endregion
 
         #region Properties
@@ -363,10 +365,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                          TransmissionRetryDelayDelegate?                            TransmissionRetryDelay       = null,
                          UInt16?                                                    MaxNumberOfRetries           = null,
                          UInt32?                                                    InternalBufferSize           = null,
-                         Boolean?                                                   DisableLogging               = false,
                          String?                                                    LoggingPath                  = null,
                          String?                                                    LoggingContext               = Logger.DefaultContext,
                          LogfileCreatorDelegate?                                    LogfileCreator               = null,
+
+                         Boolean?                                                   DisableLogging               = false,
                          DNSClient?                                                 DNSClient                    = null)
 
             : base(RemoteURL     ?? URL.Parse("???"),
@@ -392,8 +395,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                    MaxNumberOfRetries,
                    InternalBufferSize,
                    false,
-                   DisableLogging,
                    null,
+
+                   DisableLogging,
                    DNSClient)
 
         {
@@ -496,8 +500,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -529,7 +533,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                         return HTTPResponse<HeartbeatResponse>.FromError(
                                                                     httpresponse,
                                                                     new HeartbeatResponse(
                                                                         Request,
@@ -555,7 +559,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                             return HTTPResponse<HeartbeatResponse>.FromError(
                                                                         httpresponse,
                                                                         new HeartbeatResponse(
                                                                             Request,
@@ -566,7 +570,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                     );
 
 
-                                                         return HTTPResponse<HeartbeatResponse>.IsFault(
+                                                         return HTTPResponse<HeartbeatResponse>.FromError(
                                                                     httpresponse,
                                                                     new HeartbeatResponse(
                                                                         Request,
@@ -757,8 +761,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -790,7 +794,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
+                                                         return HTTPResponse<SetServiceAuthorisationResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetServiceAuthorisationResponse(
                                                                         Request,
@@ -818,7 +822,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
+                                                             return HTTPResponse<SetServiceAuthorisationResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetServiceAuthorisationResponse(
                                                                             Request,
@@ -831,7 +835,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                     );
 
 
-                                                         return HTTPResponse<SetServiceAuthorisationResponse>.IsFault(
+                                                         return HTTPResponse<SetServiceAuthorisationResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetServiceAuthorisationResponse(
                                                                         Request,
@@ -1033,8 +1037,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
-                                                       false,
                                                        null,
+                                                       false,
                                                        DNSClient))
                 {
 
@@ -1066,7 +1070,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                          SendSOAPError(timestamp, this, httpresponse.Content);
 
-                                                         return HTTPResponse<SetSessionActionResponse>.IsFault(
+                                                         return HTTPResponse<SetSessionActionResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetSessionActionResponse(
                                                                         Request,
@@ -1094,7 +1098,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.Forbidden          ||
                                                              httpresponse.HTTPStatusCode == HTTPStatusCode.NotFound)
 
-                                                             return HTTPResponse<SetSessionActionResponse>.IsFault(
+                                                             return HTTPResponse<SetSessionActionResponse>.FromError(
                                                                         httpresponse,
                                                                         new SetSessionActionResponse(
                                                                             Request,
@@ -1107,7 +1111,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                                     );
 
 
-                                                         return HTTPResponse<SetSessionActionResponse>.IsFault(
+                                                         return HTTPResponse<SetSessionActionResponse>.FromError(
                                                                     httpresponse,
                                                                     new SetSessionActionResponse(
                                                                         Request,

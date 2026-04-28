@@ -2199,10 +2199,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                 try
                                 {
 
-                                    chargeDetailRecordsQueue.Add(chargeDetailRecord.ToEMIP(
-                                                                     RoamingNetwork.GetChargingSessionById(chargeDetailRecord.SessionId),
-                                                                     WWCPChargeDetailRecord2eMIPChargeDetailRecord
-                                                                 ));
+                                    chargeDetailRecordsQueue.Add(
+                                        chargeDetailRecord.ToEMIP(
+                                            RoamingNetwork.GetChargingSessionById(chargeDetailRecord.SessionId),
+                                            WWCPChargeDetailRecord2eMIPChargeDetailRecord
+                                        )
+                                    );
 
                                     sendCDRsResults.Add(
                                         SendCDRResult.Enqueued(
@@ -2422,46 +2424,51 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         private async Task SendHeartbeat2()
         {
 
-            var LockTaken = await SendHeartbeatLock.WaitAsync(0).ConfigureAwait(false);
+            var lockTaken = await SendHeartbeatLock.WaitAsync(0).ConfigureAwait(false);
 
             try
             {
 
-                if (LockTaken)
+                if (lockTaken)
                 {
 
                     #region Send SendHeartbeatStarted Event...
 
-                    var StartTime = Timestamp.Now;
+                    var startTime = Timestamp.Now;
 
-                    SendHeartbeatStartedEvent?.Invoke(this,
-                                                      StartTime,
-                                                      FlushEVSEFastStatusEvery,
-                                                      _SendHeartbeatsRunId);
+                    SendHeartbeatStartedEvent?.Invoke(
+                        this,
+                        startTime,
+                        FlushEVSEFastStatusEvery,
+                        _SendHeartbeatsRunId
+                    );
 
                     #endregion
 
-                    var SendHeartbeatResponse = await CPORoaming.SendHeartbeat(PartnerId,
-                                                                               Operator_Id.Parse("DE*BDO"),
-                                                                               Transaction_Id.Random(),
+                    var sendHeartbeatResponse = await CPORoaming.SendHeartbeat(
+                                                          PartnerId,
+                                                          Operator_Id.Parse("DE*BDO"),
+                                                          Transaction_Id.Random(),
 
-                                                                               null,
-                                                                               Timestamp.Now,
-                                                                               EventTracking_Id.New,
-                                                                               DefaultRequestTimeout,
-                                                                               new CancellationTokenSource().Token).
-                                                                 ConfigureAwait(false);
+                                                          null,
+                                                          Timestamp.Now,
+                                                          EventTracking_Id.New,
+                                                          DefaultRequestTimeout,
+                                                          new CancellationTokenSource().Token
+                                                      ).ConfigureAwait(false);
 
                     #region Send SendHeartbeatFinished Event...
 
-                    var EndTime = Timestamp.Now;
+                    var endTime = Timestamp.Now;
 
-                    SendHeartbeatFinishedEvent?.Invoke(this,
-                                                       StartTime,
-                                                       EndTime,
-                                                       EndTime - StartTime,
-                                                       SendHeartbeatsEvery,
-                                                       _SendHeartbeatsRunId);
+                    SendHeartbeatFinishedEvent?.Invoke(
+                        this,
+                        startTime,
+                        endTime,
+                        endTime - startTime,
+                        SendHeartbeatsEvery,
+                        _SendHeartbeatsRunId
+                    );
 
                     #endregion
 
@@ -2487,7 +2494,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             finally
             {
 
-                if (LockTaken)
+                if (lockTaken)
                 {
                     SendHeartbeatLock.Release();
                 }
@@ -2857,8 +2864,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         protected override async Task FlushChargeDetailRecordsQueues(IEnumerable<ChargeDetailRecord> ChargeDetailRecords)
         {
 
-            HTTPResponse<SetChargeDetailRecordResponse>  response;
-            SendCDRResult                                result;
+            HTTPResponse<SetChargeDetailRecordResponse>  httpResponse;
+            SendCDRResult                                sendCDRResult;
             var cancellationTokenSource = new CancellationTokenSource();
 
             foreach (var chargeDetailRecord in ChargeDetailRecords)
@@ -2867,57 +2874,56 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 try
                 {
 
-                    response = await CPORoaming.SetChargeDetailRecord(
-                                         PartnerId,
-                                         chargeDetailRecord.EVSEId.OperatorId,
-                                         chargeDetailRecord,
-                                         Transaction_Id.Random(),
+                    httpResponse = await CPORoaming.SetChargeDetailRecord(
+                                             PartnerId,
+                                             chargeDetailRecord.EVSEId.OperatorId,
+                                             chargeDetailRecord,
+                                             Transaction_Id.Random(),
 
-                                         null,
-                                         Timestamp.Now,
-                                         EventTracking_Id.New,
-                                         DefaultRequestTimeout,
-                                         cancellationTokenSource.Token
-                                     );
+                                             null,
+                                             Timestamp.Now,
+                                             EventTracking_Id.New,
+                                             DefaultRequestTimeout,
+                                             cancellationTokenSource.Token
+                                         );
 
-                    if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
-                        response.Content               is not null          &&
-                        response.Content.RequestStatus == RequestStatus.Ok)
+                    if (httpResponse.HTTPStatusCode         == HTTPStatusCode.OK &&
+                        httpResponse.Content?.RequestStatus == RequestStatus. Ok)
                     {
 
-                        result = SendCDRResult.Success(
-                                     Timestamp.Now,
-                                     Id,
-                                     chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                     Runtime: response.Runtime
-                                 );
+                        sendCDRResult = SendCDRResult.Success(
+                                            Timestamp.Now,
+                                            Id,
+                                            chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                            Runtime: httpResponse.Runtime
+                                        );
 
                     }
 
                     else
-                        result = SendCDRResult.Error(
-                                     Timestamp.Now,
-                                     Id,
-                                     chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                     Warnings: response.HTTPBodyAsUTF8String is not null
-                                                   ? Warnings.Create(response.HTTPBodyAsUTF8String)
-                                                   : null,
-                                     Runtime:  response.Runtime
-                                 );
+                        sendCDRResult = SendCDRResult.Error(
+                                            Timestamp.Now,
+                                            Id,
+                                            chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                            Warnings: httpResponse.HTTPBodyAsUTF8String is not null
+                                                          ? Warnings.Create(httpResponse.HTTPBodyAsUTF8String)
+                                                          : null,
+                                            Runtime:  httpResponse.Runtime
+                                        );
 
                 }
                 catch (Exception e)
                 {
-                    result = SendCDRResult.CouldNotConvertCDRFormat(
-                                 Timestamp.Now,
-                                 Id,
-                                 chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                 Warnings: Warnings.Create(e.Message),
-                                 Runtime:  TimeSpan.Zero
-                             );
+                    sendCDRResult = SendCDRResult.CouldNotConvertCDRFormat(
+                                        Timestamp.Now,
+                                        Id,
+                                        chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
+                                        Warnings: Warnings.Create(e.Message),
+                                        Runtime:  TimeSpan.Zero
+                                    );
                 }
 
-                await RoamingNetwork.ReceiveSendChargeDetailRecordResult(result);
+                await RoamingNetwork.ReceiveSendChargeDetailRecordResult(sendCDRResult);
 
             }
 

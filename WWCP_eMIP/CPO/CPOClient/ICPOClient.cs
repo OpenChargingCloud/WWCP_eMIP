@@ -17,9 +17,6 @@
 
 #region Usings
 
-using System;
-using System.Threading.Tasks;
-
 using org.GraphDefined.Vanaheimr.Hermod.HTTP;
 
 #endregion

@@ -2859,6 +2859,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             HTTPResponse<SetChargeDetailRecordResponse>  response;
             SendCDRResult                                result;
+            var cancellationTokenSource = new CancellationTokenSource();
 
             foreach (var chargeDetailRecord in ChargeDetailRecords)
             {
@@ -2866,16 +2867,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 try
                 {
 
-                    response = await CPORoaming.SetChargeDetailRecord(PartnerId,
-                                                                      chargeDetailRecord.EVSEId.OperatorId,
-                                                                      chargeDetailRecord,
-                                                                      Transaction_Id.Random(),
+                    response = await CPORoaming.SetChargeDetailRecord(
+                                         PartnerId,
+                                         chargeDetailRecord.EVSEId.OperatorId,
+                                         chargeDetailRecord,
+                                         Transaction_Id.Random(),
 
-                                                                      null,
-                                                                      Timestamp.Now,
-                                                                      EventTracking_Id.New,
-                                                                      DefaultRequestTimeout,
-                                                                      new CancellationTokenSource().Token);
+                                         null,
+                                         Timestamp.Now,
+                                         EventTracking_Id.New,
+                                         DefaultRequestTimeout,
+                                         cancellationTokenSource.Token
+                                     );
 
                     if (response.HTTPStatusCode        == HTTPStatusCode.OK &&
                         response.Content               is not null          &&
@@ -2896,7 +2899,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                      Timestamp.Now,
                                      Id,
                                      chargeDetailRecord.GetInternalDataAs<WWCP.ChargeDetailRecord>(eMIPMapper.WWCP_CDR),
-                                     Warnings: Warnings.Create(response.HTTPBodyAsUTF8String),
+                                     Warnings: response.HTTPBodyAsUTF8String is not null
+                                                   ? Warnings.Create(response.HTTPBodyAsUTF8String)
+                                                   : null,
                                      Runtime:  response.Runtime
                                  );
 

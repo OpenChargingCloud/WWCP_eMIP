@@ -430,7 +430,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="CustomGetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer   = null,
+        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse>? CustomGetServiceAuthorisationResponseSerializer   = null,
                               CustomXMLSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                       = null)
         {
 
@@ -483,7 +483,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// </summary>
         /// <param name="CustomGetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response JSON objects.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport JSON objects.</param>
-        public JObject ToJSON(CustomJObjectSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer   = null,
+        public JObject ToJSON(CustomJObjectSerializerDelegate<GetServiceAuthorisationResponse>? CustomGetServiceAuthorisationResponseSerializer   = null,
                               CustomJObjectSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                       = null)
         {
 

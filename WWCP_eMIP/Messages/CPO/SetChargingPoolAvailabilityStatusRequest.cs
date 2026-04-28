@@ -408,7 +408,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetChargingPoolAvailabilityStatusRequestSerializer">A delegate to serialize custom set ChargingPool availability status request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetChargingPoolAvailabilityStatusRequest> CustomSetChargingPoolAvailabilityStatusRequestSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetChargingPoolAvailabilityStatusRequest>? CustomSetChargingPoolAvailabilityStatusRequestSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetChargingPoolAvailabilityStatusRequest",

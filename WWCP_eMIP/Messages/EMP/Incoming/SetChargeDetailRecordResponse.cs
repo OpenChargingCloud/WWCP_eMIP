@@ -316,7 +316,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetChargeDetailRecordResponseSerializer">A delegate to serialize custom SetChargeDetailRecord response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetChargeDetailRecordResponse> CustomSetChargeDetailRecordResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetChargeDetailRecordResponse>? CustomSetChargeDetailRecordResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetChargeDetailRecordResponse",

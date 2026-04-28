@@ -414,7 +414,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// </summary>
         /// <param name="CustomGetServiceAuthorisationResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationResponseSerializer   = null,
+        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationResponse>? CustomGetServiceAuthorisationResponseSerializer   = null,
                               CustomXMLSerializerDelegate<MeterReport>                     CustomMeterReportSerializer                       = null)
         {
 

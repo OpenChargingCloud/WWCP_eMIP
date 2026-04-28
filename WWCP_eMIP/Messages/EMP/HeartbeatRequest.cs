@@ -336,7 +336,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomHeartbeatRequestSerializer">A delegate to serialize custom Heartbeat request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<HeartbeatRequest> CustomHeartbeatRequestSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<HeartbeatRequest>? CustomHeartbeatRequestSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Default + "eMIP_ToIOP_HeartBeatRequest",

@@ -486,7 +486,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #region CustomHeartbeatRequestMapper
 
-        public Func<HeartbeatRequest, HeartbeatRequest> CustomHeartbeatRequestMapper
+        public Func<HeartbeatRequest, HeartbeatRequest>? CustomHeartbeatRequestMapper
         {
 
             get
@@ -505,7 +505,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #region CustomHeartbeatSOAPRequestMapper
 
-        public Func<HeartbeatRequest, XElement, XElement> CustomHeartbeatSOAPRequestMapper
+        public Func<HeartbeatRequest, XElement, XElement>? CustomHeartbeatSOAPRequestMapper
         {
 
             get
@@ -522,7 +522,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        public CustomXMLParserDelegate<HeartbeatResponse> CustomHeartbeatParser
+        public CustomXMLParserDelegate<HeartbeatResponse>? CustomHeartbeatParser
         {
 
             get
@@ -674,7 +674,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        public HTTPRequest.Builder CreateRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, CancellationToken CancellationToken = default)
+        public HTTPRequest.Builder CreateRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, EventTracking_Id? EventTrackingId = null, CancellationToken CancellationToken = default)
         {
             throw new NotImplementedException();
         }

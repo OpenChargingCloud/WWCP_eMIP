@@ -414,7 +414,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomGetServiceAuthorisationRequestSerializer">A delegate to serialize custom set EVSE busy status request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationRequest> CustomGetServiceAuthorisationRequestSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<GetServiceAuthorisationRequest>? CustomGetServiceAuthorisationRequestSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_GetServiceAuthorisationRequest",

@@ -263,7 +263,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetChargingConnectorAvailabilityStatusResponseSerializer">A delegate to serialize custom SetChargingConnectorAvailabilityStatus response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetChargingConnectorAvailabilityStatusResponse> CustomSetChargingConnectorAvailabilityStatusResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetChargingConnectorAvailabilityStatusResponse>? CustomSetChargingConnectorAvailabilityStatusResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetChargingConnectorAvailabilityStatusResponse",

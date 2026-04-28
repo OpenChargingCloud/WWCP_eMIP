@@ -96,7 +96,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<HeartbeatRequest, HeartbeatRequest> _CustomHeartbeatRequestMapper = _ => _;
 
-        public Func<HeartbeatRequest, HeartbeatRequest> CustomHeartbeatRequestMapper
+        public Func<HeartbeatRequest, HeartbeatRequest>? CustomHeartbeatRequestMapper
         {
 
             get
@@ -118,7 +118,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<HeartbeatRequest, XElement, XElement> _CustomHeartbeatSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<HeartbeatRequest, XElement, XElement> CustomHeartbeatSOAPRequestMapper
+        public Func<HeartbeatRequest, XElement, XElement>? CustomHeartbeatSOAPRequestMapper
         {
 
             get
@@ -136,7 +136,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        public CustomXMLParserDelegate<HeartbeatResponse> CustomHeartbeatParser   { get; set; }
+        public CustomXMLParserDelegate<HeartbeatResponse>? CustomHeartbeatParser   { get; set; }
 
         #endregion
 
@@ -149,7 +149,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<SetServiceAuthorisationRequest, SetServiceAuthorisationRequest> _CustomSetServiceAuthorisationRequestMapper = _ => _;
 
-        public Func<SetServiceAuthorisationRequest, SetServiceAuthorisationRequest> CustomSetServiceAuthorisationRequestMapper
+        public Func<SetServiceAuthorisationRequest, SetServiceAuthorisationRequest>? CustomSetServiceAuthorisationRequestMapper
         {
 
             get
@@ -171,7 +171,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<SetServiceAuthorisationRequest, XElement, XElement> _CustomSetServiceAuthorisationSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetServiceAuthorisationRequest, XElement, XElement> CustomSetServiceAuthorisationSOAPRequestMapper
+        public Func<SetServiceAuthorisationRequest, XElement, XElement>? CustomSetServiceAuthorisationSOAPRequestMapper
         {
 
             get
@@ -189,7 +189,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        public CustomXMLParserDelegate<SetServiceAuthorisationResponse> CustomSetServiceAuthorisationParser   { get; set; }
+        public CustomXMLParserDelegate<SetServiceAuthorisationResponse>? CustomSetServiceAuthorisationParser   { get; set; }
 
         #endregion
 
@@ -202,7 +202,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<SetSessionActionRequest, SetSessionActionRequest> _CustomSetSessionActionRequestMapper = _ => _;
 
-        public Func<SetSessionActionRequest, SetSessionActionRequest> CustomSetSessionActionRequestMapper
+        public Func<SetSessionActionRequest, SetSessionActionRequest>? CustomSetSessionActionRequestMapper
         {
 
             get
@@ -224,7 +224,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         private Func<SetSessionActionRequest, XElement, XElement> _CustomSetSessionActionSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetSessionActionRequest, XElement, XElement> CustomSetSessionActionSOAPRequestMapper
+        public Func<SetSessionActionRequest, XElement, XElement>? CustomSetSessionActionSOAPRequestMapper
         {
 
             get
@@ -242,7 +242,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
         #endregion
 
-        public CustomXMLParserDelegate<SetSessionActionResponse> CustomSetSessionActionParser   { get; set; }
+        public CustomXMLParserDelegate<SetSessionActionResponse>? CustomSetSessionActionParser   { get; set; }
 
         #endregion
 

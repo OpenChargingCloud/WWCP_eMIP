@@ -374,7 +374,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
         /// <param name="CustomSetChargeDetailRecordRequestSerializer">A delegate to serialize custom SetChargeDetailRecord request XML elements.</param>
         /// <param name="CustomChargeDetailRecordSerializer">A delegate to serialize custom ChargeDetailRecord XML elements.</param>
         /// <param name="CustomMeterReportSerializer">A delegate to serialize custom MeterReport XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestSerializer  = null,
+        public XElement ToXML(CustomXMLSerializerDelegate<SetChargeDetailRecordRequest>? CustomSetChargeDetailRecordRequestSerializer  = null,
                               CustomXMLSerializerDelegate<ChargeDetailRecord>           CustomChargeDetailRecordSerializer            = null,
                               CustomXMLSerializerDelegate<MeterReport>                  CustomMeterReportSerializer                   = null)
         {

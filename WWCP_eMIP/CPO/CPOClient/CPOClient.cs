@@ -123,17 +123,17 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// <summary>
         /// The default HTTP user agent string.
         /// </summary>
-        public new const           String    DefaultHTTPUserAgent        = "GraphDefined eMIP " + Version.Number + " CPO Client";
+        public new const           String    DefaultHTTPUserAgent        = $"GraphDefined eMIP {Version.Number} CPO Client";
 
         /// <summary>
         /// The default remote TCP port to connect to.
         /// </summary>
-        public new static readonly IPPort    DefaultRemotePort           = IPPort.Parse(443);
+        public     static readonly IPPort    DefaultRemotePort           = IPPort.Parse(443);
 
         /// <summary>
         /// The default URI prefix.
         /// </summary>
-        public new static readonly HTTPPath  DefaultURLPrefix            = HTTPPath.Parse("/api/emip");
+        public     static readonly HTTPPath  DefaultURLPrefix            = HTTPPath.Parse("/api/emip");
 
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> _CustomSetChargingPoolAvailabilityStatusRequestMapper = _ => _;
 
-        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> CustomSetChargingPoolAvailabilityStatusRequestMapper
+        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest>? CustomSetChargingPoolAvailabilityStatusRequestMapper
         {
 
             get
@@ -254,7 +254,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -285,7 +285,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> _CustomSetChargingStationAvailabilityStatusRequestMapper = _ => _;
 
-        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> CustomSetChargingStationAvailabilityStatusRequestMapper
+        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest>? CustomSetChargingStationAvailabilityStatusRequestMapper
         {
 
             get
@@ -307,7 +307,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingStationAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -338,7 +338,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> _CustomSetEVSEAvailabilityStatusRequestMapper = _ => _;
 
-        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> CustomSetEVSEAvailabilityStatusRequestMapper
+        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest>? CustomSetEVSEAvailabilityStatusRequestMapper
         {
 
             get
@@ -360,7 +360,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> _CustomSetEVSEAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement>? CustomSetEVSEAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -391,7 +391,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> _CustomSetChargingConnectorAvailabilityStatusRequestMapper = _ => _;
 
-        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestMapper
+        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest>? CustomSetChargingConnectorAvailabilityStatusRequestMapper
         {
 
             get
@@ -413,7 +413,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> _CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -445,7 +445,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> _CustomSetEVSEBusyStatusRequestMapper = _ => _;
 
-        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> CustomSetEVSEBusyStatusRequestMapper
+        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest>? CustomSetEVSEBusyStatusRequestMapper
         {
 
             get
@@ -467,7 +467,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSEBusyStatusRequest, XElement, XElement> _CustomSetEVSEBusyStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetEVSEBusyStatusRequest, XElement, XElement> CustomSetEVSEBusyStatusSOAPRequestMapper
+        public Func<SetEVSEBusyStatusRequest, XElement, XElement>? CustomSetEVSEBusyStatusSOAPRequestMapper
         {
 
             get
@@ -498,7 +498,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSESyntheticStatusRequest, SetEVSESyntheticStatusRequest> _CustomSetEVSESyntheticStatusRequestMapper = _ => _;
 
-        public Func<SetEVSESyntheticStatusRequest, SetEVSESyntheticStatusRequest> CustomSetEVSESyntheticStatusRequestMapper
+        public Func<SetEVSESyntheticStatusRequest, SetEVSESyntheticStatusRequest>? CustomSetEVSESyntheticStatusRequestMapper
         {
 
             get
@@ -520,7 +520,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetEVSESyntheticStatusRequest, XElement, XElement> _CustomSetEVSESyntheticStatusSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetEVSESyntheticStatusRequest, XElement, XElement> CustomSetEVSESyntheticStatusSOAPRequestMapper
+        public Func<SetEVSESyntheticStatusRequest, XElement, XElement>? CustomSetEVSESyntheticStatusSOAPRequestMapper
         {
 
             get
@@ -552,7 +552,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> _CustomGetServiceAuthorisationRequestMapper = _ => _;
 
-        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> CustomGetServiceAuthorisationRequestMapper
+        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest>? CustomGetServiceAuthorisationRequestMapper
         {
 
             get
@@ -574,7 +574,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<GetServiceAuthorisationRequest, XElement, XElement> _CustomGetServiceAuthorisationSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<GetServiceAuthorisationRequest, XElement, XElement> CustomGetServiceAuthorisationSOAPRequestMapper
+        public Func<GetServiceAuthorisationRequest, XElement, XElement>? CustomGetServiceAuthorisationSOAPRequestMapper
         {
 
             get
@@ -606,7 +606,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetSessionEventReportRequest, SetSessionEventReportRequest> _CustomSetSessionEventReportRequestMapper = _ => _;
 
-        public Func<SetSessionEventReportRequest, SetSessionEventReportRequest> CustomSetSessionEventReportRequestMapper
+        public Func<SetSessionEventReportRequest, SetSessionEventReportRequest>? CustomSetSessionEventReportRequestMapper
         {
 
             get
@@ -628,7 +628,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetSessionEventReportRequest, XElement, XElement> _CustomSetSessionEventReportSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetSessionEventReportRequest, XElement, XElement> CustomSetSessionEventReportSOAPRequestMapper
+        public Func<SetSessionEventReportRequest, XElement, XElement>? CustomSetSessionEventReportSOAPRequestMapper
         {
 
             get
@@ -660,7 +660,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> _CustomSetChargeDetailRecordRequestMapper = _ => _;
 
-        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestMapper
+        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest>? CustomSetChargeDetailRecordRequestMapper
         {
 
             get
@@ -682,7 +682,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         private Func<SetChargeDetailRecordRequest, XElement, XElement> _CustomSetChargeDetailRecordSOAPRequestMapper = (request, xml) => xml;
 
-        public Func<SetChargeDetailRecordRequest, XElement, XElement> CustomSetChargeDetailRecordSOAPRequestMapper
+        public Func<SetChargeDetailRecordRequest, XElement, XElement>? CustomSetChargeDetailRecordSOAPRequestMapper
         {
 
             get
@@ -1292,7 +1292,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SendHeartbeat.IncResponses_OK();
                 else
                     Counters.SendHeartbeat.IncResponses_Error();
@@ -1445,7 +1445,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingPoolAvailabilityStatusRequestSerializer))),
+                                                                                                              SOAP.Encapsulation(Request.ToXML(CustomSetChargingPoolAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingPoolAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingPoolAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargingPoolAvailabilityStatusSOAPResponse,
@@ -1574,7 +1574,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetChargingPoolAvailabilityStatus.IncResponses_OK();
                 else
                     Counters.SetChargingPoolAvailabilityStatus.IncResponses_Error();
@@ -1734,7 +1734,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingStationAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingStationAvailabilityStatusRequestSerializer))),
+                                                                                                                 SOAP.Encapsulation(Request.ToXML(CustomSetChargingStationAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingStationAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingStationAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargingStationAvailabilityStatusSOAPResponse,
@@ -1863,7 +1863,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetChargingStationAvailabilityStatus.IncResponses_OK();
                 else
                     Counters.SetChargingStationAvailabilityStatus.IncResponses_Error();
@@ -2023,7 +2023,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSEAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
+                                                                                                      SOAP.Encapsulation(Request.ToXML(CustomSetEVSEAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetEVSEAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSEAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetEVSEAvailabilityStatusSOAPResponse,
@@ -2152,7 +2152,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetEVSEAvailabilityStatus.IncResponses_OK();
                 else
                     Counters.SetEVSEAvailabilityStatus.IncResponses_Error();
@@ -2311,7 +2311,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper(Request,
-                                                                                                       SOAP.Encapsulation(Request.ToXML(CustomSetChargingConnectorAvailabilityStatusRequestSerializer))),
+                                                                                                                   SOAP.Encapsulation(Request.ToXML(CustomSetChargingConnectorAvailabilityStatusRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetChargingConnectorAvailabilityStatusV1/",
                                                      RequestLogDelegate:   OnSetChargingConnectorAvailabilityStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetChargingConnectorAvailabilityStatusSOAPResponse,
@@ -2440,7 +2440,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetChargingConnectorAvailabilityStatus.IncResponses_OK();
                 else
                     Counters.SetChargingConnectorAvailabilityStatus.IncResponses_Error();
@@ -2729,7 +2729,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetEVSEBusyStatus.IncResponses_OK();
                 else
                     Counters.SetEVSEBusyStatus.IncResponses_Error();
@@ -2892,7 +2892,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetEVSESyntheticStatusSOAPRequestMapper(Request,
-                                                                                               SOAP.Encapsulation(Request.ToXML(CustomSetEVSESyntheticStatusRequestSerializer))),
+                                                                                                   SOAP.Encapsulation(Request.ToXML(CustomSetEVSESyntheticStatusRequestSerializer))),
                                                      "eMIP_ToIOP_SetEVSESyntheticStatusV1/",
                                                      RequestLogDelegate:   OnSetEVSESyntheticStatusSOAPRequest,
                                                      ResponseLogDelegate:  OnSetEVSESyntheticStatusSOAPResponse,
@@ -3021,7 +3021,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetEVSESyntheticStatus.IncResponses_OK();
                 else
                     Counters.SetEVSESyntheticStatus.IncResponses_Error();
@@ -3184,7 +3184,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomGetServiceAuthorisationSOAPRequestMapper(Request,
-                                                                                                     SOAP.Encapsulation(Request.ToXML(CustomGetServiceAuthorisationRequestSerializer))),
+                                                                                                    SOAP.Encapsulation(Request.ToXML(CustomGetServiceAuthorisationRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_GetServiceAuthorisationV1/",
                                                      RequestLogDelegate:   OnGetServiceAuthorisationSOAPRequest,
                                                      ResponseLogDelegate:  OnGetServiceAuthorisationSOAPResponse,
@@ -3314,7 +3314,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.GetServiceAuthorisation.IncResponses_OK();
                 else
                     Counters.GetServiceAuthorisation.IncResponses_Error();
@@ -3460,7 +3460,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 {
 
                     result = await eMIPClient.Query(_CustomSetSessionEventReportSOAPRequestMapper(Request,
-                                                                                                   SOAP.Encapsulation(Request.ToXML(CustomSetSessionEventReportRequestSerializer))),
+                                                                                                  SOAP.Encapsulation(Request.ToXML(CustomSetSessionEventReportRequestSerializer))),
                                                      DefaultSOAPActionPrefix + "eMIP_ToIOP_SetSessionEventReportV1/",
                                                      RequestLogDelegate:   OnSetSessionEventReportSOAPRequest,
                                                      ResponseLogDelegate:  OnSetSessionEventReportSOAPResponse,
@@ -3599,7 +3599,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetSessionEventReport.IncResponses_OK();
                 else
                     Counters.SetSessionEventReport.IncResponses_Error();
@@ -3885,7 +3885,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 // Update counters
-                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content.RequestStatus.Code == 1)
+                if (result.HTTPStatusCode == HTTPStatusCode.OK && result.Content?.RequestStatus.Code == 1)
                     Counters.SetChargeDetailRecord.IncResponses_OK();
                 else
                     Counters.SetChargeDetailRecord.IncResponses_Error();

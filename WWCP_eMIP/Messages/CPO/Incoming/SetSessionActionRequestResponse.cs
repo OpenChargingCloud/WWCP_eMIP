@@ -265,7 +265,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetSessionActionResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequestResponse> CustomSetSessionActionResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetSessionActionRequestResponse>? CustomSetSessionActionResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.Authorisation + "eMIP_FromIOP_SetSessionActionRequestResponse",

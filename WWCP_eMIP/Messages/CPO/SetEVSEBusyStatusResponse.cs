@@ -256,7 +256,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSetEVSEBusyStatusResponseSerializer">A delegate to serialize custom Heartbeat response XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SetEVSEBusyStatusResponse> CustomSetEVSEBusyStatusResponseSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SetEVSEBusyStatusResponse>? CustomSetEVSEBusyStatusResponseSerializer = null)
         {
 
             var XML = new XElement(eMIPNS.EVCIDynamic + "eMIP_ToIOP_SetEVSEBusyStatusResponse",

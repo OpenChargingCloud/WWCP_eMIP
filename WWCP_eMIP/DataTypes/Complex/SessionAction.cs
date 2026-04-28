@@ -260,7 +260,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// Return a XML representation of this object.
         /// </summary>
         /// <param name="CustomSessionActionSerializer">A delegate to serialize custom set EVSE busy status request XML elements.</param>
-        public XElement ToXML(CustomXMLSerializerDelegate<SessionAction> CustomSessionActionSerializer = null)
+        public XElement ToXML(CustomXMLSerializerDelegate<SessionAction>? CustomSessionActionSerializer = null)
         {
 
             var XML = new XElement("sessionAction",

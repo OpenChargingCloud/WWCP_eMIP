@@ -1208,7 +1208,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomHeartbeatRequestMapper
 
-        public Func<HeartbeatRequest, HeartbeatRequest> CustomHeartbeatRequestMapper
+        public Func<HeartbeatRequest, HeartbeatRequest>? CustomHeartbeatRequestMapper
         {
 
             get
@@ -1227,7 +1227,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomHeartbeatSOAPRequestMapper
 
-        public Func<HeartbeatRequest, XElement, XElement> CustomHeartbeatSOAPRequestMapper
+        public Func<HeartbeatRequest, XElement, XElement>? CustomHeartbeatSOAPRequestMapper
         {
 
             get
@@ -1244,7 +1244,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<HeartbeatResponse> CustomHeartbeatParser
+        public CustomXMLParserDelegate<HeartbeatResponse>? CustomHeartbeatParser
         {
 
             get
@@ -1266,7 +1266,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingPoolAvailabilityStatusRequestMapper
 
-        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest> CustomSetChargingPoolAvailabilityStatusRequestMapper
+        public Func<SetChargingPoolAvailabilityStatusRequest, SetChargingPoolAvailabilityStatusRequest>? CustomSetChargingPoolAvailabilityStatusRequestMapper
         {
 
             get
@@ -1286,7 +1286,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
 
-        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement> CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingPoolAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingPoolAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -1304,7 +1304,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse> CustomSetChargingPoolAvailabilityStatusParser
+        public CustomXMLParserDelegate<SetChargingPoolAvailabilityStatusResponse>? CustomSetChargingPoolAvailabilityStatusParser
         {
 
             get
@@ -1325,7 +1325,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingStationAvailabilityStatusRequestMapper
 
-        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest> CustomSetChargingStationAvailabilityStatusRequestMapper
+        public Func<SetChargingStationAvailabilityStatusRequest, SetChargingStationAvailabilityStatusRequest>? CustomSetChargingStationAvailabilityStatusRequestMapper
         {
 
             get
@@ -1345,7 +1345,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
 
-        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement> CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingStationAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingStationAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -1363,7 +1363,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse> CustomSetChargingStationAvailabilityStatusParser
+        public CustomXMLParserDelegate<SetChargingStationAvailabilityStatusResponse>? CustomSetChargingStationAvailabilityStatusParser
         {
 
             get
@@ -1384,7 +1384,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetEVSEAvailabilityStatusRequestMapper
 
-        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest> CustomSetEVSEAvailabilityStatusRequestMapper
+        public Func<SetEVSEAvailabilityStatusRequest, SetEVSEAvailabilityStatusRequest>? CustomSetEVSEAvailabilityStatusRequestMapper
         {
 
             get
@@ -1404,7 +1404,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetEVSEAvailabilityStatusSOAPRequestMapper
 
-        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement> CustomSetEVSEAvailabilityStatusSOAPRequestMapper
+        public Func<SetEVSEAvailabilityStatusRequest, XElement, XElement>? CustomSetEVSEAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -1422,7 +1422,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse> CustomSetEVSEAvailabilityStatusParser
+        public CustomXMLParserDelegate<SetEVSEAvailabilityStatusResponse>? CustomSetEVSEAvailabilityStatusParser
         {
 
             get
@@ -1443,7 +1443,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingConnectorAvailabilityStatusRequestMapper
 
-        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest> CustomSetChargingConnectorAvailabilityStatusRequestMapper
+        public Func<SetChargingConnectorAvailabilityStatusRequest, SetChargingConnectorAvailabilityStatusRequest>? CustomSetChargingConnectorAvailabilityStatusRequestMapper
         {
 
             get
@@ -1463,7 +1463,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
 
-        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement> CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
+        public Func<SetChargingConnectorAvailabilityStatusRequest, XElement, XElement>? CustomSetChargingConnectorAvailabilityStatusSOAPRequestMapper
         {
 
             get
@@ -1481,7 +1481,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse> CustomSetChargingConnectorAvailabilityStatusParser
+        public CustomXMLParserDelegate<SetChargingConnectorAvailabilityStatusResponse>? CustomSetChargingConnectorAvailabilityStatusParser
         {
 
             get
@@ -1503,7 +1503,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetEVSEBusyStatusRequestMapper
 
-        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest> CustomSetEVSEBusyStatusRequestMapper
+        public Func<SetEVSEBusyStatusRequest, SetEVSEBusyStatusRequest>? CustomSetEVSEBusyStatusRequestMapper
         {
 
             get
@@ -1523,7 +1523,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetEVSEBusyStatusSOAPRequestMapper
 
-        public Func<SetEVSEBusyStatusRequest, XElement, XElement> CustomSetEVSEBusyStatusSOAPRequestMapper
+        public Func<SetEVSEBusyStatusRequest, XElement, XElement>? CustomSetEVSEBusyStatusSOAPRequestMapper
         {
 
             get
@@ -1541,7 +1541,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse> CustomSetEVSEBusyStatusParser
+        public CustomXMLParserDelegate<SetEVSEBusyStatusResponse>? CustomSetEVSEBusyStatusParser
         {
 
             get
@@ -1563,7 +1563,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomGetServiceAuthorisationRequestMapper
 
-        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest> CustomGetServiceAuthorisationRequestMapper
+        public Func<GetServiceAuthorisationRequest, GetServiceAuthorisationRequest>? CustomGetServiceAuthorisationRequestMapper
         {
 
             get
@@ -1583,7 +1583,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomGetServiceAuthorisationSOAPRequestMapper
 
-        public Func<GetServiceAuthorisationRequest, XElement, XElement> CustomGetServiceAuthorisationSOAPRequestMapper
+        public Func<GetServiceAuthorisationRequest, XElement, XElement>? CustomGetServiceAuthorisationSOAPRequestMapper
         {
 
             get
@@ -1601,7 +1601,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<GetServiceAuthorisationResponse> CustomGetServiceAuthorisationParser
+        public CustomXMLParserDelegate<GetServiceAuthorisationResponse>? CustomGetServiceAuthorisationParser
         {
 
             get
@@ -1623,7 +1623,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargeDetailRecordRequestMapper
 
-        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest> CustomSetChargeDetailRecordRequestMapper
+        public Func<SetChargeDetailRecordRequest, SetChargeDetailRecordRequest>? CustomSetChargeDetailRecordRequestMapper
         {
 
             get
@@ -1643,7 +1643,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #region CustomSetChargeDetailRecordSOAPRequestMapper
 
-        public Func<SetChargeDetailRecordRequest, XElement, XElement> CustomSetChargeDetailRecordSOAPRequestMapper
+        public Func<SetChargeDetailRecordRequest, XElement, XElement>? CustomSetChargeDetailRecordSOAPRequestMapper
         {
 
             get
@@ -1661,7 +1661,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public CustomXMLParserDelegate<SetChargeDetailRecordResponse> CustomSetChargeDetailRecordParser
+        public CustomXMLParserDelegate<SetChargeDetailRecordResponse>? CustomSetChargeDetailRecordParser
         {
 
             get
@@ -1912,7 +1912,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
         #endregion
 
-        public HTTPRequest.Builder CreateRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, CancellationToken CancellationToken = default)
+        public HTTPRequest.Builder CreateRequest(HTTPMethod HTTPMethod, HTTPPath HTTPPath, QueryString? QueryString = null, AcceptTypes? Accept = null, IHTTPAuthentication? Authentication = null, Byte[]? Content = null, HTTPContentType? ContentType = null, String? UserAgent = null, ConnectionType? Connection = null, Action<HTTPRequest.Builder>? RequestBuilder = null, Boolean? ConsumeRequestChunkedTEImmediately = null, EventTracking_Id? EventTrackingId = null,CancellationToken CancellationToken = default)
         {
             throw new NotImplementedException();
         }

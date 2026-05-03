@@ -1859,9 +1859,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 Runtime  = Endtime - startTime;
                 result   = AuthStopResult.UnknownLocation(
                                Id,
+                               Runtime,
                                this,
-                               SessionId:  SessionId,
-                               Runtime:    Runtime
+                               SessionId:  SessionId
                            );
 
             }
@@ -1873,9 +1873,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 Runtime  = Endtime - startTime;
                 result   = AuthStopResult.AdminDown(
                                Id,
+                               Runtime,
                                this,
-                               SessionId:  SessionId,
-                               Runtime:    Runtime
+                               SessionId:  SessionId
                            );
 
             }
@@ -1893,9 +1893,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Runtime  = Endtime - startTime;
                     result   = AuthStopResult.UnknownLocation(
                                    Id,
+                                   Runtime,
                                    this,
-                                   SessionId:  SessionId,
-                                   Runtime:    Runtime
+                                   SessionId:  SessionId
                                );
 
                 }
@@ -1907,9 +1907,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     Runtime  = Endtime - startTime;
                     result   = AuthStopResult.InvalidToken(
                                    Id,
+                                   Runtime,
                                    this,
-                                   SessionId:  SessionId,
-                                   Runtime:    Runtime
+                                   SessionId:  SessionId
                                );
 
                 }
@@ -1944,13 +1944,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                         result = AuthStopResult.Authorized(
                                      Id,
+                                     Runtime,
                                      this,
                                      SessionId:        ChargingSession_Id.Parse(response.Content.ServiceSessionId.ToString()),
-                                     ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                     ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP()
                                      //Description:      response.Content.StatusCode.Description,
                                      //AdditionalInfo:   response.Content.StatusCode.AdditionalInfo,
-                                     //NumberOfRetries:  response.NumberOfRetries,
-                                     Runtime:          Runtime
+                                     //NumberOfRetries:  response.NumberOfRetries
                                  );
 
                     }
@@ -1958,12 +1958,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     else
                         result = AuthStopResult.NotAuthorized(
                                      Id,
+                                     Runtime,
                                      this,
                                      SessionId:        SessionId,
-                                     ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                     ProviderId:       response?.Content?.SalesPartnerOperatorId.ToWWCP()
                                      //response.Content.StatusCode.Description,
-                                     //response.Content.StatusCode.AdditionalInfo,
-                                     Runtime:          Runtime
+                                     //response.Content.StatusCode.AdditionalInfo
                                  );
 
                 }

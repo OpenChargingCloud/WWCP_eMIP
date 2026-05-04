@@ -1550,7 +1550,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                            //ChargingStationOperator_Id?  OperatorId            = null,
                            EMobilityProvider_Id?        EMobilityProviderId   = null,
 
-                           DateTimeOffset?              Timestamp             = null,
+                           DateTimeOffset?              RequestTimestamp      = null,
                            EventTracking_Id?            EventTrackingId       = null,
                            TimeSpan?                    RequestTimeout        = null,
                            CancellationToken            CancellationToken     = default)
@@ -1563,8 +1563,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 throw new ArgumentNullException(nameof(AuthIdentification),  "The given authentication token must not be null!");
 
 
-            if (!Timestamp.HasValue)
-                Timestamp = Illias.Timestamp.Now;
+            if (!RequestTimestamp.HasValue)
+                RequestTimestamp = Timestamp.Now;
 
             if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1576,13 +1576,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnAuthorizeStartRequest event
 
-            var startTime = Illias.Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
 
                 OnAuthorizeStartRequest?.Invoke(startTime,
-                                                Timestamp.Value,
+                                                RequestTimestamp.Value,
                                                 this,
                                                 Id.ToString(),
                                                 EventTrackingId,
@@ -1616,13 +1616,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (ChargingLocation?.EVSEId is null)
             {
 
-                Endtime  = Illias.Timestamp.Now;
+                Endtime  = Timestamp.Now;
                 Runtime  = Endtime - startTime;
                 result   = AuthStartResult.UnknownLocation(
                                Id,
                                this,
-                               SessionId:  SessionId,
-                               Runtime:    Runtime
+                               Timestamp.Now,
+                               Runtime,
+                               SessionId:  SessionId
                            );
 
             }
@@ -1630,13 +1631,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             else if (DisableAuthorization)
             {
 
-                Endtime  = Illias.Timestamp.Now;
+                Endtime  = Timestamp.Now;
                 Runtime  = Endtime - startTime;
                 result   = AuthStartResult.AdminDown(
                                Id,
                                this,
-                               SessionId:  SessionId,
-                               Runtime:    Runtime
+                               Timestamp.Now,
+                               Runtime,
+                               SessionId:  SessionId
                            );
 
             }
@@ -1650,13 +1652,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (!evseId.HasValue)
                 {
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
                     result   = AuthStartResult.UnknownLocation(
                                    Id,
                                    this,
-                                   SessionId:  SessionId,
-                                   Runtime:    Runtime
+                                   Timestamp.Now,
+                                   Runtime,
+                                   SessionId:  SessionId
                                );
 
                 }
@@ -1664,13 +1667,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 else if (!userId.HasValue)
                 {
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
                     result   = AuthStartResult.InvalidToken(
                                    Id,
                                    this,
-                                   SessionId:  SessionId,
-                                   Runtime:    Runtime
+                                   Timestamp.Now,
+                                   Runtime,
+                                   SessionId:  SessionId
                                );
 
                 }
@@ -1687,14 +1691,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                               TransactionId:            Transaction_Id.Random(),
                                               PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
 
-                                              Timestamp:                Timestamp,
+                                              Timestamp:                RequestTimestamp,
                                               CancellationToken:        CancellationToken,
                                               EventTrackingId:          EventTrackingId,
                                               RequestTimeout:           RequestTimeout
                                           );
 
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
 
                     if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
@@ -1706,12 +1710,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                         result = AuthStartResult.Authorized(
                                      Id,
                                      this,
+                                     Timestamp.Now,
+                                     Runtime,
                                      SessionId:        ChargingSession_Id.Parse(response.Content.ServiceSessionId.ToString()),
                                      ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
                                      //Description:      response.Content.StatusCode.Description,
                                      //AdditionalInfo:   response.Content.StatusCode.AdditionalInfo,
-                                     NumberOfRetries:  response.NumberOfRetries,
-                                     Runtime:          Runtime
+                                     NumberOfRetries:  response.NumberOfRetries
                                  );
 
                     }
@@ -1720,11 +1725,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                         result = AuthStartResult.NotAuthorized(
                                      Id,
                                      this,
+                                     Timestamp.Now,
+                                     Runtime,
                                      SessionId:        SessionId,
-                                     ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP(),
+                                     ProviderId:       response?.Content?.SalesPartnerOperatorId.ToWWCP()
                                      //response.Content.StatusCode.Description,
-                                     //response.Content.StatusCode.AdditionalInfo,
-                                     Runtime:          Runtime
+                                     //response.Content.StatusCode.AdditionalInfo
                                  );
 
                 }
@@ -1738,7 +1744,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 OnAuthorizeStartResponse?.Invoke(Endtime,
-                                                 Timestamp.Value,
+                                                 RequestTimestamp.Value,
                                                  this,
                                                  Id.ToString(),
                                                  EventTrackingId,
@@ -1796,7 +1802,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                           //ChargingStationOperator_Id?  OperatorId            = null,
                           EMobilityProvider_Id?        EMobilityProviderId   = null,
 
-                          DateTimeOffset?              Timestamp             = null,
+                          DateTimeOffset?              RequestTimestamp      = null,
                           EventTracking_Id?            EventTrackingId       = null,
                           TimeSpan?                    RequestTimeout        = null,
                           CancellationToken            CancellationToken     = default)
@@ -1804,8 +1810,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Initial checks
 
-            if (!Timestamp.HasValue)
-                Timestamp = Illias.Timestamp.Now;
+            if (!RequestTimestamp.HasValue)
+                RequestTimestamp = Timestamp.Now;
 
             if (EventTrackingId is null)
                 EventTrackingId = EventTracking_Id.New;
@@ -1817,13 +1823,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
             #region Send OnAuthorizeStopRequest event
 
-            var startTime = Illias.Timestamp.Now;
+            var startTime = Timestamp.Now;
 
             try
             {
 
                 OnAuthorizeStopRequest?.Invoke(startTime,
-                                               Timestamp.Value,
+                                               RequestTimestamp.Value,
                                                this,
                                                Id.ToString(),
                                                EventTrackingId,
@@ -1855,12 +1861,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             if (ChargingLocation?.EVSEId is null)
             {
 
-                Endtime  = Illias.Timestamp.Now;
+                Endtime  = Timestamp.Now;
                 Runtime  = Endtime - startTime;
                 result   = AuthStopResult.UnknownLocation(
                                Id,
-                               Runtime,
                                this,
+                               Timestamp.Now,
+                               Runtime,
                                SessionId:  SessionId
                            );
 
@@ -1869,12 +1876,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             else if (DisableAuthorization)
             {
 
-                Endtime  = Illias.Timestamp.Now;
+                Endtime  = Timestamp.Now;
                 Runtime  = Endtime - startTime;
                 result   = AuthStopResult.AdminDown(
                                Id,
-                               Runtime,
                                this,
+                               Timestamp.Now,
+                               Runtime,
                                SessionId:  SessionId
                            );
 
@@ -1889,12 +1897,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 if (!evseId.HasValue)
                 {
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
                     result   = AuthStopResult.UnknownLocation(
                                    Id,
-                                   Runtime,
                                    this,
+                                   Timestamp.Now,
+                                   Runtime,
                                    SessionId:  SessionId
                                );
 
@@ -1903,12 +1912,13 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                 else if (!userId.HasValue)
                 {
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
                     result   = AuthStopResult.InvalidToken(
                                    Id,
-                                   Runtime,
                                    this,
+                                   Timestamp.Now,
+                                   Runtime,
                                    SessionId:  SessionId
                                );
 
@@ -1926,14 +1936,14 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                               TransactionId:            Transaction_Id.Random(),
                                               PartnerServiceSessionId:  new PartnerServiceSession_Id?(),
 
-                                              Timestamp:                Timestamp,
+                                              Timestamp:                RequestTimestamp,
                                               CancellationToken:        CancellationToken,
                                               EventTrackingId:          EventTrackingId,
                                               RequestTimeout:           RequestTimeout
                                           );
 
 
-                    Endtime  = Illias.Timestamp.Now;
+                    Endtime  = Timestamp.Now;
                     Runtime  = Endtime - startTime;
 
                     if (response?.HTTPStatusCode              == HTTPStatusCode.OK &&
@@ -1944,8 +1954,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                         result = AuthStopResult.Authorized(
                                      Id,
-                                     Runtime,
                                      this,
+                                     Timestamp.Now,
+                                     Runtime,
                                      SessionId:        ChargingSession_Id.Parse(response.Content.ServiceSessionId.ToString()),
                                      ProviderId:       response.Content.SalesPartnerOperatorId.ToWWCP()
                                      //Description:      response.Content.StatusCode.Description,
@@ -1958,8 +1969,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                     else
                         result = AuthStopResult.NotAuthorized(
                                      Id,
-                                     Runtime,
                                      this,
+                                     Timestamp.Now,
+                                     Runtime,
                                      SessionId:        SessionId,
                                      ProviderId:       response?.Content?.SalesPartnerOperatorId.ToWWCP()
                                      //response.Content.StatusCode.Description,
@@ -1977,7 +1989,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             {
 
                 OnAuthorizeStopResponse?.Invoke(Endtime,
-                                                Timestamp.Value,
+                                                RequestTimestamp.Value,
                                                 this,
                                                 Id.ToString(),
                                                 EventTrackingId,

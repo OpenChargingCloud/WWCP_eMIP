@@ -258,8 +258,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static User_Id? ToEMIP(this AAuthentication Authentication)
         {
 
-            if (Authentication.AuthToken.HasValue)
-                return new User_Id(Authentication.AuthToken.           Value.ToString(),
+            if (Authentication.AuthToken is not null)
+                return new User_Id(Authentication.AuthToken.                 ToString(),
                                    UserIdFormats.RFID_UID);
 
             // Might be a DIN or ISO!!!

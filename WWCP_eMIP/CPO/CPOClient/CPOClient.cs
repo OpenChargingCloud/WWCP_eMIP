@@ -987,7 +987,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public CPOClient(URL?                                                       RemoteURL                                = null,
                          HTTPHostname?                                              VirtualHostname                          = null,
                          I18NString?                                                Description                              = null,
-                         IPVersionPreference?                                       IPVersionPreference                               = null,
+
+                         String?                                                    TLSHostname                              = null,
                          RemoteTLSServerCertificateValidationHandler<IHTTPClient>?  RemoteCertificateValidator               = null,
                          LocalCertificateSelectionHandler?                          LocalCertificateSelector                 = null,
                          IEnumerable<X509Certificate2>?                             ClientCertificates                       = null,
@@ -1001,6 +1002,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                          TransmissionRetryDelayDelegate?                            TransmissionRetryDelay                   = null,
                          UInt16?                                                    MaxNumberOfRetries                       = null,
                          UInt32?                                                    InternalBufferSize                       = null,
+                         IPVersionPreference?                                       IPVersionPreference                      = null,
 
                          APICounterValues?                                          SendHeartbeat                            = null,
                          APICounterValues?                                          SetChargingPoolAvailabilityStatus        = null,
@@ -1023,7 +1025,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             : base(RemoteURL     ?? URL.Parse("https://api-iop.gireve.com"),
                    VirtualHostname,
                    Description,
-                   IPVersionPreference,
+
+                   TLSHostname,
                    RemoteCertificateValidator,
                    LocalCertificateSelector,
                    ClientCertificates,
@@ -1043,8 +1046,9 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    MaxNumberOfRetries,
                    InternalBufferSize,
                    false,
-                   null,
+                   IPVersionPreference,
 
+                   null,
                    DisableLogging,
                    DNSClient)
 
@@ -1142,7 +1146,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                    VirtualHostname,
                                                    false,
                                                    Description,
-                                                   IPVersionPreference,
+
+                                                   TLSHostname,
                                                    RemoteCertificateValidator,
                                                    LocalCertificateSelector,
                                                    ClientCertificates,
@@ -1162,6 +1167,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                    MaxNumberOfRetries,
                                                    InternalBufferSize,
                                                    false,
+                                                   IPVersionPreference,
+
                                                    null,
                                                    false,
                                                    DNSClient))
@@ -1419,7 +1426,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -1439,6 +1447,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -1708,7 +1718,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -1728,6 +1739,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -1997,7 +2010,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -2017,6 +2031,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -2285,7 +2301,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -2305,6 +2322,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -2574,7 +2593,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -2594,6 +2614,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -2866,7 +2888,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -2886,6 +2909,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -3158,7 +3183,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -3178,6 +3204,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -3434,7 +3462,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -3454,6 +3483,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))
@@ -3728,7 +3759,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        VirtualHostname,
                                                        false,
                                                        Description,
-                                                       IPVersionPreference,
+
+                                                       TLSHostname,
                                                        RemoteCertificateValidator,
                                                        LocalCertificateSelector,
                                                        ClientCertificates,
@@ -3748,6 +3780,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                        MaxNumberOfRetries,
                                                        InternalBufferSize,
                                                        false,
+                                                       IPVersionPreference,
+
                                                        null,
                                                        false,
                                                        DNSClient))

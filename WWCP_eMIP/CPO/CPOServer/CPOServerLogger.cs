@@ -28,7 +28,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
     /// <summary>
     /// An eMIP CPO server logger.
     /// </summary>
-    public class CPOServerLogger : HTTPServerLoggerX
+    public class CPOServerLogger : HTTPServerLogger
     {
 
         #region Data

@@ -22,4 +22,4 @@ $TopbarHeight:              60px;
 $CITMBlue95:                rgba( 86, 132, 204, .95);
 $CITMGray:                  rgba(143, 145, 149,   1);
 
-@import "../../../libs/OpenChargingCloudAPI/HTTPRoot/defaults/defaults.scss";
+@use "../../../libs/OpenChargingCloudAPI/HTTPRoot/defaults/defaults.scss" as *;

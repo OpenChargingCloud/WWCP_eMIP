@@ -1,20 +1,37 @@
-﻿{
+{
   "compileOnSave": true,
   "compilerOptions": {
-    "module": "system",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": [ "ES2022", "DOM", "DOM.Iterable" ],
+
+    "strict": false,
     "noImplicitAny": false,
-    "sourceMap": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true,
+
+    "isolatedModules": false,
+    "verbatimModuleSyntax": false,
     "allowJs": false,
-    "target": "ES2018"
+    "skipLibCheck": true,
+
+    "sourceMap": true,
+    "removeComments": false,
+    "newLine": "lf"
   },
   "files": [
-    "../../UsersAPI/UsersAPI/HTTPROOT/defaults/defaults.ts",
-    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/defaults.ts",
+    "../../UsersAPI/UsersAPI/HTTPRoot/defaults/defaults.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPRoot/defaults/defaults.ts",
     "HTTPRoot/defaults/defaults.ts",
-    "../../UsersAPI/UsersAPI/HTTPROOT/login/SignInOut.ts",
-    "../../UsersAPI/UsersAPI/HTTPROOT/defaults/views.ts",
-    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPDatatypes.ts",
-    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPROOT/defaults/WWCPEntities.ts",
+    "../../UsersAPI/UsersAPI/HTTPRoot/login/SignInOut.ts",
+    "../../UsersAPI/UsersAPI/HTTPRoot/defaults/views.ts",
+    "../../UsersAPI/UsersAPI/HTTPRoot/defaults/tools.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPRoot/defaults/WWCPDatatypes.ts",
+    "../../OpenChargingCloudAPI/OpenChargingCloudAPI/HTTPRoot/defaults/WWCPEntities.ts",
     "HTTPRoot/index.ts"
   ]
 }

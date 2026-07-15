@@ -331,6 +331,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                    IncludeChargingPools,
                    null,
                    null,
+                   null,
+                   null,
                    ChargeDetailRecordFilter,
 
                    ServiceCheckEvery,

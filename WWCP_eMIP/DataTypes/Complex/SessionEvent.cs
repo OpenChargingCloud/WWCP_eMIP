@@ -186,12 +186,12 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             try
             {
 
-                SessionEvent = new SessionEvent(SessionEventXML.MapValueOrFail       ("sessionEventNature",     SessionEventNatures.Parse),
-                                                SessionEventXML.MapValueOrFail       ("sessionEventDateTime",   DateTime.           Parse),
+                SessionEvent = new SessionEvent(SessionEventXML.MapValueOrFail     ("sessionEventNature",     SessionEventNatures.Parse),
+                                                SessionEventXML.MapValueOrFail     ("sessionEventDateTime",   DateTime.           Parse),
 
-                                                SessionEventXML.MapValueOrNullable   ("sessionEventId",         SessionEvent_Id.    Parse),
-                                                SessionEventXML.ElementValueOrDefault("sessionEventParameter"),
-                                                SessionEventXML.MapValueOrNullable   ("relatedSessionEventId",  SessionAction_Id.   Parse));
+                                                SessionEventXML.MapValueOrNullable ("sessionEventId",         SessionEvent_Id.    Parse),
+                                                SessionEventXML.MapValueOrNull     ("sessionEventParameter"),
+                                                SessionEventXML.MapValueOrNullable ("relatedSessionEventId",  SessionAction_Id.   Parse));
 
 
                 if (CustomSessionEventParser is not null)

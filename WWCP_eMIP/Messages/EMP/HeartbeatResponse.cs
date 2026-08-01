@@ -69,7 +69,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                  RequestStatus           RequestStatus,
 
                                  HTTPResponse?           HTTPResponse   = null,
-                                 JObject?                CustomData     = null,
+                                 CustomDataNew?          CustomData     = null,
                                  UserDefinedDictionary?  InternalData   = null)
 
             : this(Request,
@@ -102,7 +102,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                  RequestStatus           RequestStatus,
 
                                  HTTPResponse?           HTTPResponse   = null,
-                                 JObject?                CustomData     = null,
+                                 CustomDataNew?          CustomData     = null,
                                  UserDefinedDictionary?  InternalData   = null)
 
             : base(Request,
@@ -525,7 +525,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="Request">A Heartbeat request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(HeartbeatRequest        Request,
-                           JObject?                CustomData     = null,
+                           CustomDataNew?          CustomData     = null,
                            UserDefinedDictionary?  InternalData   = null)
 
                 : base(Request,
@@ -544,7 +544,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="HeartbeatResponse">A Heartbeat response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(HeartbeatResponse?      HeartbeatResponse   = null,
-                           JObject?                CustomData          = null,
+                           CustomDataNew?          CustomData          = null,
                            UserDefinedDictionary?  InternalData        = null)
 
                 : base(HeartbeatResponse?.Request,

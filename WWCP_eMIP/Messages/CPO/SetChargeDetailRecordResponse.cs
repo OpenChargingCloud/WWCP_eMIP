@@ -71,7 +71,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              RequestStatus                 RequestStatus,
 
                                              HTTPResponse?                 HTTPResponse   = null,
-                                             JObject?                      CustomData     = null,
+                                             CustomDataNew?                CustomData     = null,
                                              UserDefinedDictionary?        InternalData   = null)
 
             : this(Request,
@@ -107,7 +107,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
 
                                              PartnerOperator_Id?           SalesPartnerOperatorId   = null,
                                              HTTPResponse?                 HTTPResponse             = null,
-                                             JObject?                      CustomData               = null,
+                                             CustomDataNew?                CustomData               = null,
                                              UserDefinedDictionary?        InternalData             = null)
 
             : base(Request,
@@ -537,7 +537,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="Request">A SetChargeDetailRecord request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetChargeDetailRecordRequest  Request,
-                           JObject?                      CustomData     = null,
+                           CustomDataNew?                CustomData     = null,
                            UserDefinedDictionary?        InternalData   = null)
 
                 : base(Request,
@@ -556,7 +556,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="SetChargeDetailRecordResponse">A SetChargeDetailRecord response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetChargeDetailRecordResponse?  SetChargeDetailRecordResponse   = null,
-                           JObject?                        CustomData                      = null,
+                           CustomDataNew?                  CustomData                      = null,
                            UserDefinedDictionary?          InternalData                    = null)
 
                 : base(SetChargeDetailRecordResponse?.Request,

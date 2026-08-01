@@ -315,34 +315,34 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                      HTTPRequest,
 
                                                      //ToDo: What to do with: <partnerIdType>eMI3</partnerIdType>?
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("partnerId",                Partner_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("partnerId",                Partner_Id.Parse),
 
                                                      //ToDo: What to do with: <operatorIdType>eMI3</operatorIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("operatorId",               Operator_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("operatorId",               Operator_Id.Parse),
 
                                                      //ToDo: What to do with: <targetOperatorIdType>eMI3</targetOperatorIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("targetOperatorId",         Operator_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("targetOperatorId",         Operator_Id.Parse),
 
                                                      //ToDo: What to do with: <EVSEIdType>eMI3</EVSEIdType>
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("EVSEId",                   EVSE_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("EVSEId",                   EVSE_Id.Parse),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("userId",                   s => User_Id.Parse(s,
-                                                         SetServiceAuthorisationRequestXML.MapValueOrFail   ("userIdType",               UserIdFormatsExtensions.Parse))),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("userId",                   s => User_Id.Parse(s,
+                                                         SetServiceAuthorisationRequestXML.MapValueOrFail ("userIdType",               UserIdFormatsExtensions.Parse))),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("requestedServiceId",       Service_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("serviceSessionId",         ServiceSession_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrFail       ("authorisationValue",       ConversionMethods.AsRemoteStartStopValue),
-                                                     SetServiceAuthorisationRequestXML.MapBooleanOrFail     ("intermediateCDRRequested"),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("requestedServiceId",       Service_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("serviceSessionId",         ServiceSession_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrFail     ("authorisationValue",       ConversionMethods.AsRemoteStartStopValue),
+                                                     SetServiceAuthorisationRequestXML.MapBooleanOrFail   ("intermediateCDRRequested"),
 
-                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("transactionId",            Transaction_Id.Parse),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("userContractIdAlias",      Contract_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable ("transactionId",            Transaction_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable ("userContractIdAlias",      Contract_Id.Parse),
 
-                                                     SetServiceAuthorisationRequestXML.MapElements          ("meterLimitList",
-                                                                                                             "meterReport",              xml => MeterReport.Parse(xml,
-                                                                                                                                                                  CustomMeterReportParser,
-                                                                                                                                                                  OnException)),
-                                                     SetServiceAuthorisationRequestXML.ElementValueOrDefault("userContractIdAlias"),
-                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable   ("bookingId",                Booking_Id.Parse),
+                                                     SetServiceAuthorisationRequestXML.MapElements        ("meterLimitList",
+                                                                                                           "meterReport",              xml => MeterReport.Parse(xml,
+                                                                                                                                                                CustomMeterReportParser,
+                                                                                                                                                                OnException)),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNull     ("userContractIdAlias"),
+                                                     SetServiceAuthorisationRequestXML.MapValueOrNullable ("bookingId",                Booking_Id.Parse),
 
                                                      Timestamp,
                                                      CancellationToken,

@@ -69,7 +69,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         private MeterReport(String                  Value,
                             String                  Unit,
                             MeterTypes              Type,
-                            JObject?                CustomData     = null,
+
+                            CustomDataNew?          CustomData     = null,
                             UserDefinedDictionary?  InternalData   = null)
 
             : base(CustomData,

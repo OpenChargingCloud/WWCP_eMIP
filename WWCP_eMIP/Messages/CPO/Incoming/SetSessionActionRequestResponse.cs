@@ -55,7 +55,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                RequestStatus                   RequestStatus,
 
                                                HTTPResponse?                   HTTPResponse   = null,
-                                               JObject?                        CustomData     = null,
+                                               CustomDataNew?                  CustomData     = null,
                                                UserDefinedDictionary?          InternalData   = null)
 
             : base(Request,
@@ -460,7 +460,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="Request">A SetSessionAction request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionActionRequestRequest  Request,
-                           JObject?                        CustomData     = null,
+                           CustomDataNew?                  CustomData     = null,
                            UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
@@ -479,7 +479,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionActionRequestResponse?  SetSessionActionResponse   = null,
-                           JObject?                          CustomData                 = null,
+                           CustomDataNew?                    CustomData                 = null,
                            UserDefinedDictionary?            InternalData               = null)
 
                 : base(SetSessionActionResponse?.Request,

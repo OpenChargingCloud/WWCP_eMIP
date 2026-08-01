@@ -180,18 +180,18 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static Boolean TryParse(XElement                                SessionActionXML,
                                        CustomXMLParserDelegate<SessionAction>  CustomSessionActionParser,
                                        out SessionAction                       SessionAction,
-                                       OnExceptionDelegate                     OnException  = null)
+                                       OnExceptionDelegate?                    OnException   = null)
         {
 
             try
             {
 
-                SessionAction = new SessionAction(SessionActionXML.MapValueOrFail       ("sessionActionNature",    SessionActionNatures.Parse),
-                                                  SessionActionXML.MapValueOrFail       ("sessionActionDateTime",  DateTime.            Parse),
+                SessionAction = new SessionAction(SessionActionXML.MapValueOrFail     ("sessionActionNature",    SessionActionNatures.Parse),
+                                                  SessionActionXML.MapValueOrFail     ("sessionActionDateTime",  DateTime.            Parse),
 
-                                                  SessionActionXML.MapValueOrNullable   ("sessionActionId",        SessionAction_Id.    Parse),
-                                                  SessionActionXML.ElementValueOrDefault("sessionActionParameter"),
-                                                  SessionActionXML.MapValueOrNullable   ("relatedSessionEventId",  SessionEvent_Id.     Parse));
+                                                  SessionActionXML.MapValueOrNullable ("sessionActionId",        SessionAction_Id.    Parse),
+                                                  SessionActionXML.MapValueOrNull     ("sessionActionParameter"),
+                                                  SessionActionXML.MapValueOrNullable ("relatedSessionEventId",  SessionEvent_Id.     Parse));
 
 
                 if (CustomSessionActionParser is not null)

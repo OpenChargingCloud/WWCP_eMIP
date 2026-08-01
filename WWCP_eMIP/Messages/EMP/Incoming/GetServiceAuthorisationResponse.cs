@@ -94,7 +94,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                RequestStatus                   RequestStatus,
 
                                                HTTPResponse?                   HTTPResponse   = null,
-                                               JObject?                        CustomData     = null,
+                                               CustomDataNew?                  CustomData     = null,
                                                UserDefinedDictionary?          InternalData   = null)
             : this(Request,
                    TransactionId,
@@ -141,7 +141,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                                IEnumerable<MeterReport>?       MeterLimits           = null,
                                                String?                         Parameter             = null,
                                                HTTPResponse?                   HTTPResponse          = null,
-                                               JObject?                        CustomData            = null,
+                                               CustomDataNew?                  CustomData            = null,
                                                UserDefinedDictionary?          InternalData          = null)
 
             : base(Request,
@@ -658,7 +658,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="Request">A GetServiceAuthorisation request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(GetServiceAuthorisationRequest  Request,
-                           JObject?                        CustomData     = null,
+                           CustomDataNew?                  CustomData     = null,
                            UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
@@ -677,7 +677,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="GetServiceAuthorisationResponse">A GetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(GetServiceAuthorisationResponse?  GetServiceAuthorisationResponse   = null,
-                           JObject?                          CustomData                        = null,
+                           CustomDataNew?                    CustomData                        = null,
                            UserDefinedDictionary?            InternalData                      = null)
 
                 : base(GetServiceAuthorisationResponse?.Request,

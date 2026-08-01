@@ -125,7 +125,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="Request">The eMIP request leading to this result.</param>
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                Request,
-                                   JObject?                CustomData     = null,
+                                   CustomDataNew?          CustomData     = null,
                                    UserDefinedDictionary?  InternalData   = null)
 
             : this(Request,
@@ -147,7 +147,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         /// <param name="CustomData">Optional customer-specific data of the response.</param>
         protected AResponseBuilder(TRequest                Request,
                                    DateTimeOffset?         ResponseTimestamp   = null,
-                                   JObject?                CustomData          = null,
+                                   CustomDataNew?          CustomData          = null,
                                    UserDefinedDictionary?  InternalData        = null)
 
                 : base(CustomData,

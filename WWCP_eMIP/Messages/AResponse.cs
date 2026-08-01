@@ -89,7 +89,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                             Transaction_Id          TransactionId,
                             RequestStatus           RequestStatus,
                             HTTPResponse?           HTTPResponse   = null,
-                            JObject?                CustomData     = null,
+                            CustomDataNew?          CustomData     = null,
                             UserDefinedDictionary?  InternalData   = null)
 
             : this(Request,
@@ -120,7 +120,8 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                             RequestStatus           RequestStatus,
                             DateTimeOffset?         ResponseTimestamp   = null,
                             HTTPResponse?           HTTPResponse        = null,
-                            JObject?                CustomData          = null,
+
+                            CustomDataNew?          CustomData          = null,
                             UserDefinedDictionary?  InternalData        = null)
 
             : base(CustomData,

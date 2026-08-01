@@ -73,7 +73,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              SessionAction_Id              SessionActionId,
 
                                              HTTPResponse?                 HTTPResponse   = null,
-                                             JObject?                      CustomData     = null,
+                                             CustomDataNew?                CustomData     = null,
                                              UserDefinedDictionary?        InternalData   = null)
 
             : base(Request,
@@ -493,7 +493,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="Request">A SetSessionEventReport request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionEventReportRequest  Request,
-                           JObject?                      CustomData     = null,
+                           CustomDataNew?                CustomData     = null,
                            UserDefinedDictionary?        InternalData   = null)
 
                 : base(Request,
@@ -512,7 +512,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="SetSessionEventReportResponse">A SetSessionEventReport response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionEventReportResponse?  SetSessionEventReportResponse   = null,
-                           JObject?                        CustomData                      = null,
+                           CustomDataNew?                  CustomData                      = null,
                            UserDefinedDictionary?          InternalData                    = null)
 
                 : base(SetSessionEventReportResponse?.Request,

@@ -55,7 +55,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                               RequestStatus                  RequestStatus,
 
                                               HTTPResponse?                  HTTPResponse   = null,
-                                              JObject?                       CustomData     = null,
+                                              CustomDataNew?                 CustomData     = null,
                                               UserDefinedDictionary?         InternalData   = null)
 
             : base(Request,
@@ -447,7 +447,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="Request">A SetEVSESyntheticStatus request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetEVSESyntheticStatusRequest  Request,
-                           JObject?                       CustomData     = null,
+                           CustomDataNew?                 CustomData     = null,
                            UserDefinedDictionary?         InternalData   = null)
 
                 : base(Request,
@@ -466,7 +466,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
             /// <param name="SetEVSESyntheticStatusResponse">A SetEVSESyntheticStatus response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetEVSESyntheticStatusResponse?  SetEVSESyntheticStatusResponse   = null,
-                           JObject?                         CustomData                       = null,
+                           CustomDataNew?                   CustomData                       = null,
                            UserDefinedDictionary?           InternalData                     = null)
 
                 : base(SetEVSESyntheticStatusResponse?.Request,

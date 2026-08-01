@@ -73,7 +73,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
                                         SessionAction_Id         SessionActionId,
 
                                         HTTPResponse?            HTTPResponse   = null,
-                                        JObject?                 CustomData     = null,
+                                        CustomDataNew?           CustomData     = null,
                                         UserDefinedDictionary?   InternalData   = null)
 
             : base(Request,
@@ -485,7 +485,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="Request">A SetSessionAction request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionActionRequest  Request,
-                           JObject?                 CustomData     = null,
+                           CustomDataNew?           CustomData     = null,
                            UserDefinedDictionary?   InternalData   = null)
 
                 : base(Request,
@@ -504,7 +504,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="SetSessionActionResponse">A SetSessionAction response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetSessionActionResponse?  SetSessionActionResponse   = null,
-                           JObject?                   CustomData                 = null,
+                           CustomDataNew?             CustomData                 = null,
                            UserDefinedDictionary?     InternalData               = null)
 
                 : base(SetSessionActionResponse?.Request,

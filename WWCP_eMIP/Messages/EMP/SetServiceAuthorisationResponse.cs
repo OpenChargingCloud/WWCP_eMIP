@@ -73,7 +73,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
 
                                                Operator_Id?                    ExecPartnerOperatorId   = null,
                                                HTTPResponse?                   HTTPResponse            = null,
-                                               JObject?                        CustomData              = null,
+                                               CustomDataNew?                  CustomData              = null,
                                                UserDefinedDictionary?          InternalData            = null)
 
             : base(Request,
@@ -500,7 +500,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="Request">A SetServiceAuthorisation request.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetServiceAuthorisationRequest  Request,
-                           JObject?                        CustomData     = null,
+                           CustomDataNew?                  CustomData     = null,
                            UserDefinedDictionary?          InternalData   = null)
 
                 : base(Request,
@@ -519,7 +519,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.EMP
             /// <param name="SetServiceAuthorisationResponse">A SetServiceAuthorisation response.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(SetServiceAuthorisationResponse?  SetServiceAuthorisationResponse   = null,
-                           JObject?                          CustomData                        = null,
+                           CustomDataNew?                    CustomData                        = null,
                            UserDefinedDictionary?            InternalData                      = null)
 
                 : base(SetServiceAuthorisationResponse?.Request,

@@ -154,7 +154,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
                                   PartnerProduct_Id?         PartnerProductId         = null,
                                   IEnumerable<MeterReport>?  MeterReports             = null,
 
-                                  JObject?                   CustomData               = null,
+                                  CustomDataNew?             CustomData               = null,
                                   UserDefinedDictionary?     InternalData             = null)
 
             : base(CustomData,
@@ -882,7 +882,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
             /// <param name="ChargeDetailRecord">An optional charge detail record.</param>
             /// <param name="CustomData">Optional custom data.</param>
             public Builder(ChargeDetailRecord?     ChargeDetailRecord   = null,
-                           JObject?                CustomData           = null,
+                           CustomDataNew?          CustomData           = null,
                            UserDefinedDictionary?  InternalData         = null)
 
                 : base(CustomData,

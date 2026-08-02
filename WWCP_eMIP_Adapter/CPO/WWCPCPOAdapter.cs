@@ -501,9 +501,11 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                              ProviderId:               Request.OperatorId.          ToWWCP_ProviderId(),
                                              RemoteAuthentication:     Request.UserContractIdAlias?.ToWWCP()
                                                                            ?? Request.UserId.       ToWWCP(),
-                                             AdditionalSessionInfos:   JSONObject.Create(
-                                                                           new JProperty("eMIP.userIdType",  Request.UserId.Format.AsText()),
-                                                                           new JProperty("eMIP.userId",      Request.UserId.       ToString())
+                                             AdditionalSessionInfos:   CustomDataNew.ParseJObject(
+                                                                           JSONObject.Create(
+                                                                               new JProperty("eMIP.userIdType",  Request.UserId.Format.AsText()),
+                                                                               new JProperty("eMIP.userId",      Request.UserId.       ToString())
+                                                                           )
                                                                        ),
                                              AuthenticationPath:       Auth_Path.Parse(Id.ToString()),  // CSO Roaming Provider identification!
                                              CSORoamingProvider:       this,

@@ -110,7 +110,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4
         public static MeterReport Create(String                  Value,
                                          String                  Unit,
                                          MeterTypes              Type,
-                                         JObject?                CustomData     = null,
+                                         CustomDataNew?          CustomData     = null,
                                          UserDefinedDictionary?  InternalData   = null)
 
             => new (Value,

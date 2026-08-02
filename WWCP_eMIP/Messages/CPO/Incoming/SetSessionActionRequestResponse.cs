@@ -297,7 +297,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
         public static SetSessionActionRequestResponse SystemError(SetSessionActionRequestRequest  Request,
                                                                   Transaction_Id                  TransactionId,
                                                                   HTTPResponse?                   HTTPResponse   = null,
-                                                                  JObject?                        CustomData     = null,
+                                                                  CustomDataNew?                  CustomData     = null,
                                                                   UserDefinedDictionary?          InternalData   = null)
 
             => new (Request,

@@ -244,7 +244,7 @@ namespace cloud.charging.open.protocols.eMIPv0_7_4.CPO
                                                                   Transaction_Id                  TransactionId,
                                                                   PartnerServiceSession_Id?       PartnerServiceSessionId   = null,
                                                                   HTTPResponse?                   HTTPResponse              = null,
-                                                                  JObject?                        CustomData                = null,
+                                                                  CustomDataNew?                  CustomData                = null,
                                                                   UserDefinedDictionary?          InternalData              = null)
 
             => new (Request,
